@@ -19,6 +19,16 @@ create table public.passaros (
   anilha_numero    integer check (anilha_numero > 0),
   anilha_observacao text,       -- 'anilha aberta', 'remarcada', etc.
 
+  -- Identificador alternativo (ex.: código COBP no formato COBP-25-04781).
+  -- O handoff de design usa dois formatos de identificação e o cliente ainda
+  -- não confirmou se são o mesmo dado. Enquanto isso, a anilha estruturada
+  -- acima é a oficial e esta coluna acomoda o segundo código sem travar nada.
+  codigo_alternativo text,
+
+  -- O criador dá nome às aves ("Curió Tibiriçá") e é assim que ele as chama;
+  -- o card de ave e o CRO exibem o nome ao lado da anilha.
+  nome          text,
+
   especie_id    uuid references public.especies(id) on delete set null,
   mutacao_id    uuid references public.mutacoes(id) on delete set null,
 
@@ -41,7 +51,6 @@ create table public.passaros (
   portador      text,          -- criador/terceiro que está com a ave
   foto_url      text,
   cor           text,
-  peso_gramas   numeric(6,2),
   observacoes   text,
 
   created_at    timestamptz not null default now(),
@@ -135,3 +144,34 @@ $$;
 create trigger passaros_valida_genealogia
   before insert or update of pai_id, mae_id on public.passaros
   for each row execute function public.tg_valida_genealogia();
+
+-- O código alternativo, quando usado, também identifica unicamente a ave.
+create unique index passaros_codigo_alternativo_unico
+  on public.passaros (criatorio_id, upper(codigo_alternativo))
+  where deleted_at is null and codigo_alternativo is not null;
+
+-- -----------------------------------------------------------------------------
+-- Pesagens
+-- -----------------------------------------------------------------------------
+-- Peso é série histórica, não atributo. O criador pesa o filhote ao anilhamento
+-- e acompanha o ganho; a ficha da ave tem um atalho próprio para isso. Guardar
+-- só o último peso jogaria fora a curva, que é o dado que informa a decisão.
+create table public.pesagens (
+  id           uuid primary key default gen_random_uuid(),
+  criatorio_id uuid not null references public.criatorios(id) on delete cascade,
+  passaro_id   uuid not null references public.passaros(id) on delete cascade,
+  data         date not null default current_date,
+  peso_gramas  numeric(6,2) not null check (peso_gramas > 0),
+  contexto     text,   -- 'anilhamento', 'desmame', 'rotina', 'pré-exposição'
+  observacoes  text,
+  created_at   timestamptz not null default now(),
+  updated_at   timestamptz not null default now(),
+  deleted_at   timestamptz
+);
+
+create index on public.pesagens (criatorio_id, passaro_id, data desc) where deleted_at is null;
+
+comment on table public.pesagens is
+  'Série histórica de peso da ave. O design nunca arredonda peso na exibição — guardar com uma decimal.';
+
+create trigger pesagens_updated_at before update on public.pesagens for each row execute function public.tg_set_updated_at();

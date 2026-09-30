@@ -47,6 +47,7 @@ create table public.criatorios (
   slug           citext not null unique,        -- usado na URL pública do certificado
   clube_id       uuid references public.clubes(id),
   nro_criador    text,                          -- matrícula do criador no clube
+  registro_ibama text,                          -- exigido no cabeçalho do CRO
   cidade         text,
   uf             text,
   logo_url       text,

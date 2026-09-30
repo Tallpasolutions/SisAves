@@ -1,5 +1,5 @@
 -- =============================================================================
--- SisAves · 0005 · Reprodução: casais, rodadas e posturas
+-- SisAves · 0005 · Reprodução: casais, ninhadas e posturas
 -- =============================================================================
 
 -- -----------------------------------------------------------------------------
@@ -63,12 +63,15 @@ create table public.casal_tag_vinculo (
 );
 
 -- -----------------------------------------------------------------------------
--- Rodadas (ninhadas)
+-- Ninhadas
 -- -----------------------------------------------------------------------------
 -- Novidade em relação ao legado: lá "nro_rodada" era um inteiro solto dentro da
 -- postura. Promovê-la a entidade permite datar a ninhada, saber quantos ovos ela
--- teve, e calcular fertilidade por rodada — métrica que o criador realmente usa.
-create table public.rodadas (
+-- teve, e calcular fertilidade por ninhada — métrica que o criador realmente usa.
+--
+-- O nome vem do contrato de vocabulário (CLAUDE.md): o criador diz "ninhada",
+-- e todas as telas dizem "Ninhada 04". "Rodada" era herança do sistema antigo.
+create table public.ninhadas (
   id           uuid primary key default gen_random_uuid(),
   criatorio_id uuid not null references public.criatorios(id) on delete cascade,
   casal_id     uuid not null references public.casais(id) on delete cascade,
@@ -82,7 +85,7 @@ create table public.rodadas (
   unique (casal_id, numero)
 );
 
-create index on public.rodadas (criatorio_id, casal_id) where deleted_at is null;
+create index on public.ninhadas (criatorio_id, casal_id) where deleted_at is null;
 
 -- -----------------------------------------------------------------------------
 -- Posturas (os ovos)
@@ -91,7 +94,7 @@ create table public.posturas (
   id            uuid primary key default gen_random_uuid(),
   criatorio_id  uuid not null references public.criatorios(id) on delete cascade,
   casal_id      uuid not null references public.casais(id) on delete cascade,
-  rodada_id     uuid references public.rodadas(id) on delete set null,
+  ninhada_id     uuid references public.ninhadas(id) on delete set null,
 
   numero_ovo    smallint check (numero_ovo > 0),   -- posição do ovo no ninho
   data_postura  date not null,
@@ -124,13 +127,13 @@ create table public.posturas (
 );
 
 create index on public.posturas (criatorio_id, casal_id) where deleted_at is null;
-create index on public.posturas (rodada_id) where deleted_at is null;
+create index on public.posturas (ninhada_id) where deleted_at is null;
 create index on public.posturas (criatorio_id, data_postura) where deleted_at is null;
 create index on public.posturas (criatorio_id, updated_at);
 create unique index posturas_passaro_unico on public.posturas (passaro_id) where passaro_id is not null and deleted_at is null;
 
 comment on table public.posturas is
-  'Cada ovo de uma rodada. A situação atual NÃO é armazenada: é derivada das datas + prazos da espécie (ver função situacao_postura em 0006).';
+  'Cada ovo de uma ninhada. A situação atual NÃO é armazenada: é derivada das datas + prazos da espécie (ver função situacao_postura em 0006).';
 
 -- Fecha a dependência circular passaros <-> posturas declarada em 0004.
 alter table public.passaros
@@ -158,5 +161,5 @@ create index on public.postura_transferencias (postura_id);
 
 create trigger casal_tags_updated_at before update on public.casal_tags for each row execute function public.tg_set_updated_at();
 create trigger casais_updated_at     before update on public.casais     for each row execute function public.tg_set_updated_at();
-create trigger rodadas_updated_at    before update on public.rodadas    for each row execute function public.tg_set_updated_at();
+create trigger ninhadas_updated_at    before update on public.ninhadas    for each row execute function public.tg_set_updated_at();
 create trigger posturas_updated_at   before update on public.posturas   for each row execute function public.tg_set_updated_at();

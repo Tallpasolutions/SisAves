@@ -69,8 +69,8 @@ select
   p.criatorio_id,
   p.casal_id,
   c.numero                as casal_numero,
-  p.rodada_id,
-  r.numero                as rodada_numero,
+  p.ninhada_id,
+  r.numero                as ninhada_numero,
   p.numero_ovo,
   p.data_postura,
   p.ovoscopia_em,
@@ -114,7 +114,7 @@ select
   p.updated_at
 from public.posturas p
 join public.casais   c on c.id = p.casal_id
-left join public.rodadas r on r.id = p.rodada_id
+left join public.ninhadas r on r.id = p.ninhada_id
 -- A espécie do ovo vem do casal (pelo macho, com a fêmea como alternativa).
 left join public.passaros mp on mp.id = c.macho_id
 left join public.passaros fp on fp.id = c.femea_id
@@ -134,7 +134,7 @@ select
   v.id            as postura_id,
   v.casal_id,
   v.casal_numero,
-  v.rodada_numero,
+  v.ninhada_numero,
   v.especie_nome,
   v.situacao,
   case v.situacao
