@@ -1,0 +1,18 @@
+# Testes de banco
+
+Rodam contra o Postgres real (não há Docker local). Cada arquivo abre uma
+transação e termina em `rollback` — nada fica no banco.
+
+```bash
+node scripts/sql.mjs -f supabase/tests/01_ciclo_do_ovo.sql
+node scripts/sql.mjs -f supabase/tests/02_endogamia.sql
+node scripts/sql.mjs -f supabase/tests/03_isolamento_rls.sql
+```
+
+Toda linha deve sair com `resultado = ok`.
+
+| Arquivo | O que prova |
+|---|---|
+| `01_ciclo_do_ovo.sql` | Os 9 estados da postura derivam corretamente das datas e dos prazos da espécie, incluindo a volta de "anilhar" para "nascido" depois de anilhada. |
+| `02_endogamia.sql` | Coeficiente de Wright em pedigrees de valor conhecido: meios-irmãos 12,50%, irmãos completos 25%, primos-primeiros 6,25%, pai × filha 25%, sem parentesco 0%. |
+| `03_isolamento_rls.sql` | Dois criatórios não enxergam dado um do outro, e o acesso anônimo não enxerga nada. |
