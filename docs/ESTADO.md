@@ -68,6 +68,7 @@ Migrations em `supabase/migrations/`:
 | `0009_rls` | políticas de RLS em todas as tabelas |
 | `0010_documentos` | certificados/CRO, notificações, push, assinatura |
 | `0011_semente_catalogo` | 8 grupos, 33 clubes de SC, 60 espécies |
+| `0012_prazos_e_siglas` | siglas faltantes; `dias_anilha` 3 + janela 1; `dias_separa` 40 |
 
 ### Testes de banco
 
@@ -109,16 +110,24 @@ supabase db push --db-url "postgresql://postgres:${SUPABASE_DB_PASSWORD}@db.${SU
 - **`coeficiente_endogamia()` assume `F_A = 0`.** Decisão documentada na própria
   migration; irrelevante nas 3–4 gerações que um criatório registra.
 
-## Pendências do cliente (bloqueiam trabalho)
+## Pendências do cliente
 
-1. **`dias_anilha` e `dias_separa` das 60 espécies.** Nulos no catálogo de
-   propósito. `dias_anilha` dispara o estado crítico "anilhar", cuja janela, se
-   perdida, impede o registro da ave — inventar seria pior que deixar vazio.
-2. **Formato da anilha.** O handoff usa dois: `SOV 1234 · 2026 · 0087` no
+**Resolvidas em 30/09/2026** (migration `0012_prazos_e_siglas`):
+as siglas dos 4 clubes (CAC, SOB, ASSB, COSB) e os prazos
+`dias_anilha = 3` com `janela_anilha_dias = 1` ("anilhar com 3 dias até 4") e
+`dias_separa = 40`, aplicados às 60 espécies.
+
+**Em aberto:**
+
+1. **`dias_choco` de 32 das 60 espécies.** O cliente enviou a incubação de 28.
+   Sem ela a espécie não pode ser adotada no criatório, porque é o prazo que
+   move todo o ciclo do ovo.
+2. **Prazo de anilhamento por porte.** O valor 3 dias veio único para as 60
+   espécies. Um coleiro e uma graúna não anilham no mesmo dia — os maiores
+   (sabiás, icterídeos) costumam anilhar mais tarde. Revisar espécie a espécie.
+3. **Formato da anilha.** O handoff usa dois: `SOV 1234 · 2026 · 0087` no
    componente e `COBP-25-04781` nos formulários. Modelado de forma flexível
    (anilha estruturada + `codigo_alternativo`), sem travar a decisão.
-3. **Sigla de 4 clubes** que não a divulgam. Coluna aceita nulo, mas o formato
-   de anilha do design depende da sigla.
 
 Ponto a alinhar: as 60 espécies são **passeriformes silvestres brasileiros**
 (SISPASS/IBAMA), os clubes são majoritariamente de **canaricultura**, e as telas
