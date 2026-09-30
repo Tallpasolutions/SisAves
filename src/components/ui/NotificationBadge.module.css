@@ -1,0 +1,42 @@
+/* Badge de notificação — contrato em docs/design/02-componentes.md §14.
+   O ALVO é o botão de 44px; o badge não é alvo de toque. */
+
+.ancora {
+  position: relative;
+  display: inline-flex;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+  /* Borda na cor da superfície-mãe para destacar da borda do botão. */
+  border: var(--border-width-strong) solid var(--surface-page);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Ponto tijolo: há algo grave para ver, sem contagem. */
+.ponto {
+  top: -5px;
+  right: -5px;
+  min-width: 10px;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  background: var(--sis-tijolo-600);
+}

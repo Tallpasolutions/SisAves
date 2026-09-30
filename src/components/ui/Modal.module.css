@@ -1,0 +1,57 @@
+/* Diálogo — contrato em docs/design/02-componentes.md §11.
+   Usa <dialog> nativo: prende o foco, devolve ao disparador e fecha no Esc
+   sem JavaScript próprio. */
+
+.dialogo {
+  width: min(480px, calc(100vw - var(--space-8)));
+  padding: 0;
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
+}
+
+.dialogo::backdrop {
+  background: var(--overlay-scrim);
+}
+
+.dialogo[open] {
+  animation: entrada var(--duration-base) var(--ease-standard);
+}
+
+@keyframes entrada {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialogo[open] { animation: none; }
+}
+
+.cabecalho {
+  padding: 14px var(--space-4);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.titulo {
+  font: var(--type-h4);
+  color: var(--text-heading);
+}
+
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 14px var(--space-4);
+  font: var(--type-body);
+  color: var(--text-primary);
+}
+
+.rodape {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: var(--space-3) var(--space-4);
+  border-top: var(--border-width) solid var(--border-subtle);
+}

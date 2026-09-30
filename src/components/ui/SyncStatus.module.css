@@ -1,0 +1,41 @@
+/* Indicador de sincronização — contrato em docs/design/02-componentes.md §13.
+   Informação de primeira classe: o galpão não tem sinal. */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 32px;
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.compacto {
+  height: 26px;
+  padding: 0 10px;
+  font-size: var(--text-xs);
+}
+
+.offline  { color: var(--status-neutro-fg);  background: var(--status-neutro-bg); }
+.pendente { color: var(--status-atencao-fg); background: var(--status-atencao-bg); }
+.online   { color: var(--status-ok-fg);      background: var(--status-ok-bg); }
+
+.icone { display: inline-flex; flex: none; }
+
+/* Gira só enquanto envia; parado fora disso. */
+.girando { animation: sis-spin 1s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .girando { animation: none; }
+}
+
+.contagem {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  font-weight: var(--weight-medium);
+}

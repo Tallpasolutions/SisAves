@@ -1,0 +1,50 @@
+/* Abas — contrato em docs/design/02-componentes.md §9. Alinhadas à esquerda. */
+
+.abas {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-5);
+  height: 42px;
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.aba {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  background: none;
+  border: none;
+  border-bottom: var(--border-width-strong) solid transparent;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-control);
+}
+
+.aba:hover { color: var(--text-primary); }
+
+.aba:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.ativa {
+  color: var(--text-brand);
+  font-weight: var(--weight-semibold);
+  border-bottom-color: var(--sis-petroleo-700);
+}
+
+/* Contador só onde a contagem informa — "Saúde" não tem, de propósito. */
+.contador {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  color: var(--text-muted);
+}
+
+.ativa .contador { color: var(--text-brand); }

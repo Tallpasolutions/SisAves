@@ -21,6 +21,10 @@ com marca nova, em `sisaves.tallpa.com.br`.
 | `docs/design/05-telas.md` | As 19 telas com as decisões de implementação. |
 | `docs/design/artboards/*.dc.html` | As pranchas. Referência visual, não código de produção. |
 
+A rota `/ds` reproduz o artboard A3 com os 14 componentes e a cópia exata do
+handoff. É a conferência visual rápida — abrir nos dois temas. Sai do app antes
+do lançamento.
+
 **Regra que já foi violada uma vez:** nunca use valor cru da paleta
 (`--sis-petroleo-100`) num componente — só alias semântico (`--text-brand`).
 Valor cru não acompanha a troca de tema e o escuro quebra silenciosamente.
@@ -39,7 +43,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · **CSS Modules** · Supabase
 | 0 · Fundação do repositório | **concluída** |
 | 1 · Banco de dados | **concluída** |
 | 2 · Auth e onboarding | não iniciada |
-| 3 · Biblioteca de componentes | **em andamento** |
+| 3 · Biblioteca de componentes | **concluída** — 14 componentes em `src/components/ui/` |
 | 4 · Núcleo mobile (Faixa B) | não iniciada |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |

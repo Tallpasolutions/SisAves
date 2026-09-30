@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import {
+  Bell,
   Calendar,
   CircleAlert,
   CircleCheck,
@@ -12,11 +14,20 @@ import {
 import {
   Anilha,
   Badge,
+  BirdCard,
   Button,
+  EmptyState,
   Field,
   InbreedingMeter,
   Input,
+  Modal,
+  NotificationBadge,
   SexChip,
+  SyncStatus,
+  Table,
+  TableRow,
+  Tabs,
+  Toast,
 } from "@/components/ui";
 import styles from "./page.module.css";
 
@@ -27,6 +38,9 @@ import styles from "./page.module.css";
  * contra as pranchas. Não é tela de produto — sai do app antes do lançamento.
  */
 export default function DesignSystem() {
+  const [aba, setAba] = useState("plantel");
+  const [modalAberto, setModalAberto] = useState(false);
+
   return (
     <main id="conteudo" className={styles.pagina}>
       <header className={styles.cabecalho}>
@@ -202,6 +216,181 @@ export default function DesignSystem() {
           <div className={styles.cartao}>
             <InbreedingMeter value={14.06} showScale />
           </div>
+        </div>
+      </Secao>
+
+      <Secao titulo="Card de ave" nota="Sem barra colorida à esquerda — isso é exclusivo da linha de tabela.">
+        <div className={styles.grade}>
+          <BirdCard
+            nome="Curió Tibiriçá"
+            subtitulo="Curió · mutação clássica · reprodutor"
+            sexo="macho"
+            anilha={{ sigla: "SOV", criador: "1234", ano: 2024, numero: 10 }}
+            status={
+              <Badge tone="ok" dot size="sm">
+                Plantel ativo
+              </Badge>
+            }
+            dados={[
+              { rotulo: "Peso", valor: "18,4 g" },
+              { rotulo: "Ninhadas", valor: "6" },
+              { rotulo: "Endogamia", valor: "3,13%", destaque: true },
+            ]}
+            onClick={() => undefined}
+          />
+          <BirdCard
+            nome="Jandaia"
+            subtitulo="Coleiro-papa-capim · Lutino · matriz"
+            sexo="femea"
+            anilha={{ sigla: "CAC", criador: "0198", ano: 2025, numero: 42 }}
+            status={
+              <Badge tone="neutro" dot size="sm">
+                Emprestada
+              </Badge>
+            }
+            dados={[
+              { rotulo: "Peso", valor: "16,9 g" },
+              { rotulo: "Ninhadas", valor: "3" },
+              { rotulo: "Endogamia", valor: "9,38%", destaque: true },
+            ]}
+          />
+        </div>
+      </Secao>
+
+      <Secao
+        titulo="Linha de tabela"
+        nota="A faixa de 3px é um dos dois únicos lugares com barra colorida à esquerda."
+      >
+        <Table colunas={["Ninhada", "Postura", "Ovos", "Situação"]}>
+          <TableRow
+            nome="Ninhada 04"
+            data="09/03/2026"
+            quantidade={5}
+            situacao={
+              <Badge tone="info" size="sm" icon={<Thermometer size={12} />}>
+                Chocando
+              </Badge>
+            }
+            onClick={() => undefined}
+          />
+          <TableRow
+            nome="Ninhada 05"
+            data="27/02/2026"
+            quantidade={4}
+            gravidade="atencao"
+            situacao={
+              <Badge tone="acao" size="sm" icon={<Feather size={12} />}>
+                Anilhar
+              </Badge>
+            }
+            onClick={() => undefined}
+          />
+          <TableRow
+            nome="Ninhada 06"
+            data="14/02/2026"
+            quantidade={2}
+            gravidade="critico"
+            selecionada
+            situacao={
+              <Badge tone="critico" size="sm" icon={<CircleAlert size={12} />}>
+                Perda
+              </Badge>
+            }
+            onClick={() => undefined}
+          />
+        </Table>
+      </Secao>
+
+      <Secao titulo="Abas" nota="Contador só onde a contagem informa — “Saúde” não tem, de propósito.">
+        <Tabs
+          aria-label="Seções do criatório"
+          value={aba}
+          onChange={setAba}
+          tabs={[
+            { value: "plantel", label: "Plantel", count: 128 },
+            { value: "ninhadas", label: "Ninhadas", count: 6 },
+            { value: "casais", label: "Casais", count: 14 },
+            { value: "saude", label: "Saúde" },
+          ]}
+        />
+      </Secao>
+
+      <Secao titulo="Toast" nota="Fato + consequência com data. Nunca “Tudo pronto!”.">
+        <div className={styles.linha}>
+          <Toast
+            tone="ok"
+            title="Postura registrada · Ninhada 04 · 5 ovos"
+            description="Ovoscopia prevista para 17/03/2026."
+          />
+          <Toast
+            tone="critico"
+            title="Perda registrada · 2 ovos · 09/03"
+            description="A ninhada 06 segue com 2 ovos em choco."
+          />
+        </div>
+      </Secao>
+
+      <Secao titulo="Diálogo" nota="O corpo diz a consequência real, não “Tem certeza?”.">
+        <div className={styles.linha}>
+          <Button variant="danger" onClick={() => setModalAberto(true)}>
+            Registrar óbito
+          </Button>
+        </div>
+        <Modal
+          aberto={modalAberto}
+          titulo="Registrar óbito"
+          onFechar={() => setModalAberto(false)}
+          acoes={
+            <>
+              <Button variant="ghost" size="sm" onClick={() => setModalAberto(false)}>
+                Cancelar
+              </Button>
+              <Button variant="danger" size="sm" onClick={() => setModalAberto(false)}>
+                Registrar óbito
+              </Button>
+            </>
+          }
+        >
+          A ave sai do plantel ativo e permanece na genealogia.
+          <Anilha dados={{ sigla: "SOV", criador: "1234", ano: 2024, numero: 10 }} tone="quiet" />
+        </Modal>
+      </Secao>
+
+      <Secao titulo="Estado vazio" nota="Alinhado à esquerda, sem ilustração e sem emoji.">
+        <EmptyState
+          icon={<Egg size={28} />}
+          title="Nenhuma ninhada ativa"
+          description="Registre uma postura para acompanhar o ciclo do ovo até o anilhamento."
+          acao={<Button>Registrar postura</Button>}
+        />
+      </Secao>
+
+      <Secao
+        titulo="Sincronização e notificação"
+        nota="A cópia nunca sugere perda: o registro fica no aparelho até subir."
+      >
+        <div className={styles.linha}>
+          <SyncStatus state="offline" />
+          <SyncStatus state="pendente" pending={4} />
+          <SyncStatus state="online" lastSync="hoje 07:42" />
+          <SyncStatus state="pendente" pending={1} compact />
+        </div>
+        <div className={styles.linha}>
+          <NotificationBadge count={3} rotulo="3 tarefas pendentes">
+            <Button variant="secondary" aria-label="Notificações">
+              <Bell size={18} />
+            </Button>
+          </NotificationBadge>
+          <NotificationBadge count={128} rotulo="128 tarefas pendentes">
+            <Button variant="secondary" aria-label="Notificações">
+              <Bell size={18} />
+            </Button>
+          </NotificationBadge>
+          <NotificationBadge dot rotulo="Há algo grave para ver">
+            <Button variant="secondary" aria-label="Notificações">
+              <Bell size={18} />
+            </Button>
+          </NotificationBadge>
         </div>
       </Secao>
     </main>

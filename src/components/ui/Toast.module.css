@@ -1,0 +1,55 @@
+/* Toast — contrato em docs/design/02-componentes.md §10.
+   Não bloqueia e não pede confirmação. */
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: 420px;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  animation: entrada var(--duration-base) var(--ease-standard);
+}
+
+@keyframes entrada {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
+}
+
+.icone {
+  display: inline-flex;
+  flex: none;
+  margin-top: 2px;
+}
+
+.ok      .icone { color: var(--status-ok-fg); }
+.atencao .icone { color: var(--text-accent); }
+.critico .icone { color: var(--text-danger); }
+.info    .icone { color: var(--text-brand); }
+.neutro  .icone { color: var(--text-secondary); }
+
+.textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.titulo {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.descricao {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

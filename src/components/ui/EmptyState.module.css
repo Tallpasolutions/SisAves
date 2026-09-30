@@ -1,0 +1,32 @@
+/* Estado vazio — contrato em docs/design/02-componentes.md §12.
+   Alinhado à ESQUERDA, sem ilustração e sem emoji. */
+
+.vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-7) 0;
+}
+
+.compacto { padding: var(--space-5) 0; }
+
+.icone {
+  display: inline-flex;
+  color: var(--text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.titulo {
+  font: var(--type-h4);
+  color: var(--text-heading);
+}
+
+.descricao {
+  margin: 0;
+  font: var(--type-body);
+  color: var(--text-secondary);
+  max-width: 46ch;
+}
+
+.acao { margin-top: var(--space-3); }
