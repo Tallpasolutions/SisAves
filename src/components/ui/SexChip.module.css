@@ -1,0 +1,49 @@
+/* Chip de sexo — contrato em docs/design/02-componentes.md §5.
+   Sem ícone e sem unicode de gênero: Lucide não tem glifo de sexo e o design
+   proíbe ♂/♀ como ícone. A cor nunca é o único sinal — o rótulo em texto e o
+   aria-label sempre acompanham. */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px 10px;
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  white-space: nowrap;
+}
+
+.glifo {
+  font-family: var(--font-numeric);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-sm);
+}
+
+.rotulo {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* Aliases semânticos, não valor cru da paleta: em claro resolvem exatamente
+   nas cores do spec (petróleo-700 e azul profundo), e em escuro acompanham o
+   tema. Com o valor cru, o "F" desaparecia sobre a superfície escura. */
+.macho       .glifo { color: var(--text-brand); }
+.femea       .glifo { color: var(--text-heading); }
+.indefinido  .glifo { color: var(--text-muted); }
+
+/* Avatar do card de ave: o mesmo glifo em 40px sobre superfície de marca. */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: var(--surface-brand-soft);
+  border: none;
+  border-radius: var(--radius-sm);
+}
+.avatar .glifo { font-size: var(--text-md); }

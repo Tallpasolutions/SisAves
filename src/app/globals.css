@@ -17,6 +17,14 @@
 @import "../styles/tokens/motion.css";
 @import "../styles/tokens/base.css";
 
+/* Adições do projeto aos tokens portados. Ficam AQUI, nunca dentro de
+   src/styles/tokens/, que é cópia intacta do handoff. */
+:root {
+  /* Borda do chip âmbar em 02-componentes.md, reaproveitada como hover do
+     botão de ação. Mantém o texto em azul profundo legível. */
+  --surface-accent-hover: #D69B24;
+}
+
 /* Famílias servidas por next/font (ver src/app/fonts.ts). */
 :root {
   --font-display: var(--font-montserrat), "Inter", Arial, sans-serif;

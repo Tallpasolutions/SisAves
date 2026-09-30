@@ -1,0 +1,108 @@
+/* Campo de formulário — contrato em docs/design/02-componentes.md §2.
+   Estrutura fixa e vertical: rótulo acima -> controle -> ajuda ou erro abaixo.
+   O rótulo é persistente; placeholder nunca faz papel de rótulo. */
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.rotulo {
+  font: var(--type-label);
+  color: var(--text-secondary);
+}
+
+.obrigatorio {
+  color: var(--text-danger);
+  margin-left: 2px;
+}
+
+.ajuda {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* O erro SUBSTITUI a ajuda e cita o dado exato. Texto + ícone, nunca só cor. */
+.erro {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.erroIcone {
+  display: inline-flex;
+  flex: none;
+  margin-top: 1px;
+}
+
+/* --- Controle --------------------------------------------------------------- */
+.envelope {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding: 0 var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-control);
+}
+
+.envelope:focus-within {
+  border-color: var(--border-focus);
+  border-width: var(--border-width-strong);
+  box-shadow: var(--focus-ring);
+  /* Compensa o crescimento da borda para o campo não "pular" ao focar. */
+  padding: 0 calc(var(--space-3) - 1px);
+}
+
+.lg { height: var(--control-h-lg); }
+
+.invalido { border-color: var(--border-danger); }
+
+.desabilitado {
+  background: var(--surface-disabled);
+  border-color: var(--border-subtle);
+}
+
+.entrada {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+}
+
+.entrada::placeholder { color: var(--text-muted); }
+
+.entrada:disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+/* Valor numérico alinha em coluna — peso, anilha, valor financeiro. */
+.numerico {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.adorno {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-muted);
+}
+
+.sufixo {
+  flex: none;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}

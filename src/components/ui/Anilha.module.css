@@ -1,0 +1,38 @@
+/* Etiqueta de anilha — contrato em docs/design/02-componentes.md §3.
+   É o identificador primário da ave, pensada para leitura a meio metro com o
+   animal na mão. Nunca reformatar, abreviar ou quebrar em duas linhas. */
+
+.anilha {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-numeric);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+}
+
+.sm { font-size: var(--text-sm); }
+.md { font-size: var(--text-base); }
+.lg { font-size: var(--text-lg); }
+
+.default { color: var(--text-primary); }
+.brand   { color: var(--text-brand); }
+.quiet   { color: var(--text-secondary); font-weight: var(--weight-medium); }
+
+.clube {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-secondary);
+}
+
+.vazia {
+  font-family: var(--font-ui);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-muted);
+}

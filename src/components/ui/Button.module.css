@@ -1,0 +1,114 @@
+/* Botão — contrato em docs/design/02-componentes.md §1.
+   Estado sempre por cor de superfície + borda. Nunca opacidade, nunca escala. */
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-snug);
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: var(--transition-control);
+}
+
+.botao:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.botao:disabled {
+  background: var(--surface-disabled);
+  color: var(--text-disabled);
+  border-color: var(--border-subtle);
+  cursor: not-allowed;
+}
+
+/* Tamanhos. lg é o do app de campo: o criador opera com uma ave na mão. */
+.sm { height: var(--control-h-sm); font-size: var(--text-sm); }
+.md { height: var(--control-h-md); }
+.lg { height: var(--control-h-lg); }
+
+/* Ocupa a largura toda — usado na ação fixa da base das telas de formulário. */
+.bloco { width: 100%; }
+
+/* --- Primário -------------------------------------------------------------- */
+.primary {
+  background: var(--sis-petroleo-700);
+  color: var(--text-inverse);
+  border-color: var(--sis-petroleo-700);
+}
+.primary:hover:not(:disabled) {
+  background: var(--sis-petroleo-800);
+  border-color: var(--sis-petroleo-900);
+}
+.primary:active:not(:disabled) {
+  background: var(--sis-petroleo-900);
+  border-color: var(--sis-petroleo-950);
+}
+
+/* --- Secundário (contornado) ----------------------------------------------- */
+.secondary {
+  background: var(--surface-card);
+  color: var(--text-brand);
+  border-color: var(--border-default);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--border-brand);
+}
+.secondary:active:not(:disabled) {
+  background: var(--surface-selected);
+}
+
+/* --- Terciário (texto) ------------------------------------------------------ */
+.ghost {
+  background: transparent;
+  color: var(--text-brand);
+  border-color: transparent;
+}
+.ghost:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--border-brand);
+}
+.ghost:active:not(:disabled) {
+  background: var(--surface-selected);
+}
+
+/* --- Destrutivo ------------------------------------------------------------- */
+.danger {
+  background: var(--sis-tijolo-600);
+  color: var(--text-inverse);
+  border-color: var(--sis-tijolo-600);
+}
+.danger:hover:not(:disabled) {
+  background: var(--sis-tijolo-700);
+  border-color: var(--sis-tijolo-700);
+}
+
+/* --- Ação urgente (âmbar) ---------------------------------------------------
+   No máximo UM por tela, e só com prazo vencendo agora. O texto é azul
+   profundo porque âmbar não passa contraste com branco. */
+.accent {
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+  border-color: var(--surface-accent);
+  font-weight: var(--weight-semibold);
+}
+.accent:hover:not(:disabled) {
+  background: var(--surface-accent-hover);
+  border-color: var(--surface-accent-hover);
+}
+
+.icone {
+  display: inline-flex;
+  flex: none;
+}

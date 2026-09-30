@@ -1,0 +1,61 @@
+/* Medidor de endogamia — contrato em docs/design/02-componentes.md §6.
+   Anima só a largura da barra. O valor sai sempre com duas decimais. */
+
+.medidor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.valor {
+  font: var(--type-data-lg);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.rotulo {
+  font: var(--type-label);
+}
+
+.trilho {
+  height: 8px;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  transition: width var(--duration-base) var(--ease-standard);
+}
+
+.seguro  .valor, .seguro  .rotulo { color: var(--text-brand); }
+.seguro  .barra { background: var(--sis-petroleo-700); }
+
+/* Texto em âmbar escurecido: o âmbar puro não passa contraste sobre branco. */
+.atencao .valor, .atencao .rotulo { color: var(--text-accent); }
+.atencao .barra { background: var(--surface-accent); }
+
+.risco   .valor, .risco   .rotulo { color: var(--text-danger); }
+.risco   .barra { background: var(--sis-tijolo-600); }
+
+.escala {
+  display: flex;
+  justify-content: space-between;
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.explicacao {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
