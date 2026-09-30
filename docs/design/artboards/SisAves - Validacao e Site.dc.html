@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/colors.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/typography.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/motion.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/base.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/styles.css">
+<script src="https://unpkg.com/lucide@0.474.0/dist/umd/lucide.js"></script>
+<script src="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+  body { background: #E7ECEB; margin: 0; }
+  a { color: var(--text-link); }
+  a:hover { color: var(--text-link-hover); }
+</style>
+</helmet>
+
+<section style="display:flex;flex-direction:column;gap:20px;padding:36px 40px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--border-subtle);padding-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Faixa D · Documentos e site</span>
+      <h1 style="margin:0;font:var(--type-h2);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Validação por QR e landing page</h1>
+    </div>
+    <span style="font:var(--type-small);color:var(--text-muted);font-variant-numeric:tabular-nums">D2 390 × 844 · D3 1440 × 3000</span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <div id="5a" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">5a</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">D2 · Validação pública por QR</span>
+      </div>
+      <div data-screen-label="D2 Validacao QR" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:0 16px;background:var(--surface-card);border-bottom:1px solid var(--border-subtle)">
+          <img src="assets/sisaves-logo-horizontal.svg" alt="SisAves" style="height:22px;width:auto;display:block">
+          <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">sisaves.tallpa.com.br</span>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column">
+          <div style="flex:none;padding:24px 20px 22px;background:var(--sis-petroleo);color:#fff;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <span style="display:grid;place-items:center;width:64px;height:64px;border-radius:var(--radius-pill);background:#fff">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="CircleCheck" size="34" color="var(--sis-petroleo-700)" hint-size="34px,34px"></x-import>
+            </span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center">
+              <span style="font:var(--weight-bold) var(--text-xl)/1.2 var(--font-display);letter-spacing:var(--tracking-tight);color:#fff">Certificado autêntico</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86);max-width:34ch;text-wrap:pretty">Este CRO consta no registro do SisAves e não foi alterado desde a emissão.</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;padding:5px 12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.14)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="QrCode" size="14" color="#fff" hint-size="14px,14px"></x-import>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:#fff">Consultado em 07/09/2026 às 09:14</span>
+            </div>
+          </div>
+          <div style="flex:1;min-height:0;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="width:64px;height:64px;flex:none"><image-slot id="val-foto-ave" shape="rounded" radius="5" placeholder="Foto" style="width:100%;height:100%"></image-slot></div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                  <span style="font:var(--type-h4);color:var(--text-heading)">Tibiriçá</span>
+                  <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" tone="brand" hint-size="200px,26px"></x-import>
+                  <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Curió · clássica · macho</span>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;border-top:1px solid var(--border-subtle);padding-top:12px">
+                <div style="display:flex;flex-direction:column;gap:1px"><span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Nascimento</span><span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">14/02/2026</span></div>
+                <div style="display:flex;flex-direction:column;gap:1px"><span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Anilhamento</span><span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">19/02/2026</span></div>
+                <div style="display:flex;flex-direction:column;gap:1px"><span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Nº do CRO</span><span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">2026 · 0087</span></div>
+                <div style="display:flex;flex-direction:column;gap:1px"><span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Endogamia</span><span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-brand)">3,13%</span></div>
+              </div>
+            </div>
+            <div style="padding:14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px">
+              <span style="display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-base)/1 var(--font-display);color:var(--text-brand)">CT</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Criatório emissor</span>
+                <span style="font:var(--weight-semibold) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Criatório Tibiriçá</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">IBAMA 2.4189 · Clube SOV 1234 · Atibaia/SP</span>
+              </div>
+            </div>
+            <div style="padding:14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:10px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Genealogia resumida</span>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span style="width:3px;height:26px;flex:none;background:var(--sis-petroleo-700)"></span>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                    <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Pai · Cravo</span>
+                    <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;letter-spacing:var(--tracking-wide);color:var(--text-secondary)">SOV 1234 · 2023 · 0412</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span style="width:3px;height:26px;flex:none;background:var(--sis-azul-profundo)"></span>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                    <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Mãe · Aurora</span>
+                    <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;letter-spacing:var(--tracking-wide);color:var(--text-secondary)">COBP 25 01930</span>
+                  </div>
+                </div>
+              </div>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);border-top:1px solid var(--border-subtle);padding-top:9px">4 avós registrados · 3 gerações completas no certificado impresso.</span>
+            </div>
+            <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" icon-left="Download" full-width="{{ true }}" hint-size="100%,48px">Baixar certificado em PDF</x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);text-align:center">Consulta pública · nenhum dado de contato do criador é exibido.</span>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-card);border-top:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Registro mantido pelo SisAves</span>
+          <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">/v/8f3a-0087</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="5b" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">5b</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">D3 · Landing page</span>
+      </div>
+      <div data-screen-label="D3 Landing" style="width:1440px;height:3000px;display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-default);overflow:hidden">
+
+        <header style="flex:none;display:flex;align-items:center;gap:32px;height:72px;padding:0 64px;background:var(--surface-card);border-bottom:1px solid var(--border-subtle)">
+          <img src="assets/sisaves-logo-horizontal.svg" alt="SisAves" style="height:28px;width:auto;display:block">
+          <nav style="flex:1;display:flex;align-items:center;gap:28px">
+            <span style="font:var(--weight-medium) var(--text-base)/1 var(--font-ui);color:var(--text-primary)">Funcionalidades</span>
+            <span style="font:var(--weight-medium) var(--text-base)/1 var(--font-ui);color:var(--text-primary)">Certificados</span>
+            <span style="font:var(--weight-medium) var(--text-base)/1 var(--font-ui);color:var(--text-primary)">Planos</span>
+            <span style="font:var(--weight-medium) var(--text-base)/1 var(--font-ui);color:var(--text-primary)">Dúvidas</span>
+          </nav>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="ghost" hint-size="auto,40px">Entrar</x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" hint-size="auto,40px">Testar 14 dias</x-import>
+        </header>
+
+        <div style="flex:none;padding:72px 64px 64px;background:var(--sis-petroleo);color:#fff;display:grid;grid-template-columns:1fr 452px;gap:64px;align-items:center">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <span style="display:inline-flex;align-self:flex-start;align-items:center;gap:8px;padding:6px 13px;border-radius:var(--radius-pill);background:rgba(255,255,255,.14);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui);color:#fff">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="WifiOff" size="14" color="#fff" hint-size="14px,14px"></x-import>
+              Funciona no galpão, sem sinal
+            </span>
+            <h2 style="margin:0;font:var(--weight-bold) 54px/1.08 var(--font-display);letter-spacing:var(--tracking-tight);color:#fff;max-width:20ch;text-wrap:balance">A genealogia do seu plantel, registrada como deve ser</h2>
+            <p style="margin:0;font:var(--weight-regular) var(--text-lg)/1.5 var(--font-ui);color:rgba(255,255,255,.88);max-width:52ch;text-wrap:pretty">Anilha, ninhada, ovoscopia, endogamia e certificado com QR Code — em um só lugar, no celular dentro do galpão e no computador quando você senta para fechar o mês.</p>
+            <div style="display:flex;align-items:center;gap:14px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="accent" size="lg" hint-size="auto,48px">Testar 14 dias grátis</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" icon-left="QrCode" hint-size="auto,48px">Ver um certificado</x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:28px;padding-top:12px;border-top:1px solid rgba(255,255,255,.18)">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-bold) var(--text-2xl)/1.15 var(--font-display);font-variant-numeric:tabular-nums;color:#fff">1.240</span>
+                <span style="font:var(--type-small);color:rgba(255,255,255,.78)">criadores usando</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-bold) var(--text-2xl)/1.15 var(--font-display);font-variant-numeric:tabular-nums;color:#fff">86 mil</span>
+                <span style="font:var(--type-small);color:rgba(255,255,255,.78)">aves registradas</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-bold) var(--text-2xl)/1.15 var(--font-display);font-variant-numeric:tabular-nums;color:#fff">19 mil</span>
+                <span style="font:var(--type-small);color:rgba(255,255,255,.78)">CRO emitidos</span>
+              </div>
+            </div>
+          </div>
+          <div style="height:520px"><image-slot id="lp-hero-app" shape="rounded" radius="12" placeholder="Foto do criador usando o app no galpão" style="width:100%;height:100%"></image-slot></div>
+        </div>
+
+        <div style="flex:none;padding:32px 64px;background:var(--surface-sunken);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:40px">
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary);flex:none">Criadores e clubes que usam</span>
+          <div style="flex:1;display:flex;align-items:center;justify-content:space-between;gap:24px">
+            <span style="font:var(--weight-semibold) var(--text-md)/1 var(--font-display);color:var(--text-muted)">Clube SOV</span>
+            <span style="font:var(--weight-semibold) var(--text-md)/1 var(--font-display);color:var(--text-muted)">COBP</span>
+            <span style="font:var(--weight-semibold) var(--text-md)/1 var(--font-display);color:var(--text-muted)">FOB</span>
+            <span style="font:var(--weight-semibold) var(--text-md)/1 var(--font-display);color:var(--text-muted)">CBC Paulista</span>
+            <span style="font:var(--weight-semibold) var(--text-md)/1 var(--font-display);color:var(--text-muted)">Criatório Serra Azul</span>
+            <span style="font:var(--weight-semibold) var(--text-md)/1 var(--font-display);color:var(--text-muted)">Aves do Vale</span>
+          </div>
+        </div>
+
+        <div style="flex:none;padding:72px 64px;display:flex;flex-direction:column;gap:40px">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:48px">
+            <div style="display:flex;flex-direction:column;gap:12px;max-width:56ch">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Funcionalidades</span>
+              <h3 style="margin:0;font:var(--type-h1);color:var(--text-heading);letter-spacing:var(--tracking-tight);text-wrap:balance">Cinco coisas que o caderno não faz</h3>
+            </div>
+            <p style="margin:0;font:var(--type-body);color:var(--text-secondary);max-width:46ch;text-wrap:pretty">Cada função existe porque um criador pediu. Nada aqui é enfeite: o sistema calcula o que você calcularia à mão e avisa o que você não pode esquecer.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:14px">
+              <span style="display:grid;place-items:center;width:48px;height:48px;border-radius:var(--radius-sm);background:var(--surface-brand-soft);color:var(--text-brand)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Dna" size="24" hint-size="24px,24px"></x-import></span>
+              <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Banco genético automático</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Cada filhote entra na árvore no momento do anilhamento. O coeficiente de endogamia do casal é calculado antes de você juntar as aves — não depois da ninhada nascer.</p>
+              <span style="margin-top:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 11px;align-self:flex-start;border-radius:var(--radius-pill);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-xs)/1.4 var(--font-numeric);color:var(--text-brand)">3 gerações · 3,13%</span>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:14px">
+              <span style="display:grid;place-items:center;width:48px;height:48px;border-radius:var(--radius-sm);background:var(--surface-brand-soft);color:var(--text-brand)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Award" size="24" hint-size="24px,24px"></x-import></span>
+              <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Certificado com QR</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Emita o CRO com a genealogia completa e o logotipo do seu criatório. Quem compra escaneia o código e confere a autenticidade na hora, sem depender da sua palavra.</p>
+              <span style="margin-top:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 11px;align-self:flex-start;border-radius:var(--radius-pill);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-xs)/1.4 var(--font-numeric);color:var(--text-brand)">A4 · validação pública</span>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:14px">
+              <span style="display:grid;place-items:center;width:48px;height:48px;border-radius:var(--radius-sm);background:var(--surface-accent-soft);color:var(--text-accent)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Egg" size="24" hint-size="24px,24px"></x-import></span>
+              <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Controle de ovos por prazo</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Registre a postura e o sistema calcula ovoscopia, eclosão, anilhamento e separação pela espécie. O que vence hoje aparece em âmbar na primeira tela — a janela da anilha não espera.</p>
+              <span style="margin-top:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 11px;align-self:flex-start;border-radius:var(--radius-pill);background:var(--surface-accent);font:var(--weight-semibold) var(--text-xs)/1.4 var(--font-ui);color:var(--text-on-accent)">Anilhar hoje</span>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:14px">
+              <span style="display:grid;place-items:center;width:48px;height:48px;border-radius:var(--radius-sm);background:var(--surface-brand-soft);color:var(--text-brand)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Wallet" size="24" hint-size="24px,24px"></x-import></span>
+              <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Financeiro do criatório</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Ração, veterinário, anilhas, vendas e emissão de CRO num só extrato. Saldo por mês e por temporada, com o custo real de cada filhote que sai do galpão.</p>
+              <span style="margin-top:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 11px;align-self:flex-start;border-radius:var(--radius-pill);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-xs)/1.4 var(--font-numeric);color:var(--text-brand)">R$ 1.240,00 em setembro</span>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:14px">
+              <span style="display:grid;place-items:center;width:48px;height:48px;border-radius:var(--radius-sm);background:var(--surface-brand-soft);color:var(--text-brand)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="WifiOff" size="24" hint-size="24px,24px"></x-import></span>
+              <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Funciona offline</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">O galpão não tem sinal e o sistema sabe disso. Todo registro é salvo no aparelho na hora e sobe sozinho quando a internet volta. Nada se perde, e você vê exatamente o que está pendente.</p>
+              <span style="margin-top:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 11px;align-self:flex-start;border-radius:var(--radius-pill);background:var(--status-neutro-bg);font:var(--weight-semibold) var(--text-xs)/1.4 var(--font-ui);color:var(--status-neutro-fg)">4 registros pendentes</span>
+            </div>
+            <div style="padding:28px;background:var(--sis-azul-profundo);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:14px;justify-content:center">
+              <span style="font:var(--type-h3);color:#fff;letter-spacing:var(--tracking-snug)">Traga seu plantel de uma vez</span>
+              <p style="margin:0;font:var(--type-body);color:rgba(255,255,255,.85);text-wrap:pretty">Importamos sua planilha de aves e casais na primeira semana, sem custo. Você começa com o plantel inteiro dentro do sistema.</p>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" icon-left="Upload" hint-size="auto,40px">Falar sobre importação</x-import>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;padding:72px 64px;background:var(--surface-sunken);display:grid;grid-template-columns:420px 1fr;gap:64px;align-items:center">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">No galpão</span>
+            <h3 style="margin:0;font:var(--type-h1);color:var(--text-heading);letter-spacing:var(--tracking-tight);text-wrap:balance">Uma mão na ave, a outra no telefone</h3>
+            <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Botões grandes, teclado numérico para a anilha, sugestão do próximo número da sequência e uma única ação principal por tela. Tema escuro para as madrugadas de eclosão.</p>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="CircleCheck" size="18" color="var(--text-brand)" hint-size="18px,18px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Alvos de toque de 48px, com luva</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="CircleCheck" size="18" color="var(--text-brand)" hint-size="18px,18px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Anilha legível a meio metro de distância</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="CircleCheck" size="18" color="var(--text-brand)" hint-size="18px,18px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Registro em três toques, offline</span></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:24px;justify-content:center">
+            <div style="width:300px;height:640px;flex:none"><image-slot id="lp-app-hoje" shape="rounded" radius="12" placeholder="Tela Hoje do app" style="width:100%;height:100%"></image-slot></div>
+            <div style="width:300px;height:640px;flex:none;margin-top:48px"><image-slot id="lp-app-ovos" shape="rounded" radius="12" placeholder="Tela Ovos do app" style="width:100%;height:100%"></image-slot></div>
+          </div>
+        </div>
+
+        <div style="flex:none;padding:72px 64px;display:flex;flex-direction:column;gap:36px">
+          <div style="display:flex;flex-direction:column;gap:12px;max-width:56ch">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Quem usa</span>
+            <h3 style="margin:0;font:var(--type-h1);color:var(--text-heading);letter-spacing:var(--tracking-tight);text-wrap:balance">Criadores que já não voltam ao caderno</h3>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:18px">
+              <p style="margin:0;font:var(--weight-regular) var(--text-md)/1.55 var(--font-ui);color:var(--text-primary);text-wrap:pretty">Eu perdia a janela da anilha uma ou duas vezes por temporada. Desde que o sistema avisa no dia, não perdi mais nenhuma.</p>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:12px;border-top:1px solid var(--border-subtle);padding-top:16px">
+                <div style="width:44px;height:44px;flex:none"><image-slot id="lp-dep-1" shape="circle" placeholder="Foto" style="width:100%;height:100%"></image-slot></div>
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Marcos Tibiriçá</span>
+                  <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Curiós · Atibaia/SP · 128 aves</span>
+                </div>
+              </div>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:18px">
+              <p style="margin:0;font:var(--weight-regular) var(--text-md)/1.55 var(--font-ui);color:var(--text-primary);text-wrap:pretty">O comprador escaneia o QR na minha frente e vê a árvore inteira. Acabou a conversa de confiar ou não confiar no papel.</p>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:12px;border-top:1px solid var(--border-subtle);padding-top:16px">
+                <div style="width:44px;height:44px;flex:none"><image-slot id="lp-dep-2" shape="circle" placeholder="Foto" style="width:100%;height:100%"></image-slot></div>
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Rosana Beltrão</span>
+                  <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Canários de cor · Curitiba/PR · 240 aves</span>
+                </div>
+              </div>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:18px">
+              <p style="margin:0;font:var(--weight-regular) var(--text-md)/1.55 var(--font-ui);color:var(--text-primary);text-wrap:pretty">Descobri que dois casais que eu ia formar tinham 12,5% de endogamia. Antes eu só saberia olhando o caderno de trás para frente.</p>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:12px;border-top:1px solid var(--border-subtle);padding-top:16px">
+                <div style="width:44px;height:44px;flex:none"><image-slot id="lp-dep-3" shape="circle" placeholder="Foto" style="width:100%;height:100%"></image-slot></div>
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Jairo Menezes</span>
+                  <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Diamantes de Gould · Recife/PE · 96 aves</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;padding:72px 64px;background:var(--surface-sunken);display:flex;flex-direction:column;gap:36px">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:48px">
+            <div style="display:flex;flex-direction:column;gap:12px;max-width:52ch">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Planos</span>
+              <h3 style="margin:0;font:var(--type-h1);color:var(--text-heading);letter-spacing:var(--tracking-tight);text-wrap:balance">Preço de assinatura, não de software</h3>
+            </div>
+            <span style="font:var(--type-body);color:var(--text-secondary)">14 dias grátis · sem cartão · cancele quando quiser</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start">
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font:var(--type-h3);color:var(--text-heading)">Iniciante</span>
+                <span style="font:var(--type-small);color:var(--text-secondary)">Até 30 aves no plantel</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:6px">
+                <span style="font:var(--weight-bold) var(--text-3xl)/1 var(--font-display);font-variant-numeric:tabular-nums;color:var(--text-heading)">R$ 19,90</span>
+                <span style="font:var(--type-body);color:var(--text-secondary)">/mês</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Plantel, casais e ninhadas</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Controle de ovos por prazo</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">App offline</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Minus" size="17" color="var(--text-muted)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-muted)">Sem emissão de CRO</span></div>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" full-width="{{ true }}" hint-size="100%,48px">Começar teste</x-import>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:2px solid var(--sis-petroleo-700);border-radius:var(--radius-md);box-shadow:var(--shadow-md);display:flex;flex-direction:column;gap:20px">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font:var(--type-h3);color:var(--text-heading)">Criador</span>
+                  <span style="font:var(--type-small);color:var(--text-secondary)">Plantel ilimitado</span>
+                </div>
+                <span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:var(--radius-pill);background:var(--surface-accent);color:var(--text-on-accent);font:var(--weight-semibold) var(--text-xs)/1.4 var(--font-ui)">Mais escolhido</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:6px">
+                <span style="font:var(--weight-bold) var(--text-3xl)/1 var(--font-display);font-variant-numeric:tabular-nums;color:var(--text-brand)">R$ 39,90</span>
+                <span style="font:var(--type-body);color:var(--text-secondary)">/mês</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Tudo do Iniciante</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">CRO ilimitado com QR Code</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Genealogia e endogamia</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Financeiro e relatórios</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Importação da sua planilha</span></div>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" size="lg" full-width="{{ true }}" hint-size="100%,48px">Testar 14 dias grátis</x-import>
+            </div>
+            <div style="padding:28px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font:var(--type-h3);color:var(--text-heading)">Clube</span>
+                <span style="font:var(--type-small);color:var(--text-secondary)">Para clubes e associações</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:6px">
+                <span style="font:var(--weight-bold) var(--text-3xl)/1 var(--font-display);color:var(--text-heading)">Sob consulta</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Vários criatórios em uma conta</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Controle de sequência de anilhas</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Certificado com marca do clube</span></div>
+                <div style="display:flex;align-items:flex-start;gap:9px"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="17" color="var(--text-brand)" hint-size="17px,17px"></x-import><span style="font:var(--type-body);color:var(--text-primary)">Suporte por WhatsApp</span></div>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" full-width="{{ true }}" hint-size="100%,48px">Falar com a equipe</x-import>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;padding:72px 64px;display:grid;grid-template-columns:400px 1fr;gap:64px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Dúvidas</span>
+            <h3 style="margin:0;font:var(--type-h1);color:var(--text-heading);letter-spacing:var(--tracking-tight);text-wrap:balance">O que os criadores perguntam</h3>
+            <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Se a sua dúvida não está aqui, fale com a gente no WhatsApp — quem responde é quem constrói o sistema.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);overflow:hidden">
+            <div style="padding:22px 24px;border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+              <span style="font:var(--type-h4);color:var(--text-heading)">Funciona mesmo sem internet no galpão?</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Sim. Todo registro é gravado no aparelho na hora e sobe sozinho quando o sinal volta. A tela mostra quantos registros estão pendentes e o horário do último envio.</p>
+            </div>
+            <div style="padding:22px 24px;border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+              <span style="font:var(--type-h4);color:var(--text-heading)">O certificado tem valor legal?</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">O CRO é um documento de origem do seu criatório, com validação pública por QR Code. Ele não substitui a documentação exigida pelos órgãos ambientais — organiza e comprova a genealogia que você mantém.</p>
+            </div>
+            <div style="padding:22px 24px;border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+              <span style="font:var(--type-h4);color:var(--text-heading)">Consigo trazer meu plantel de uma planilha?</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Sim, e nós fazemos a importação com você na primeira semana, sem custo. Aves, casais e filiação entram de uma vez — a árvore genealógica se monta a partir disso.</p>
+            </div>
+            <div style="padding:22px 24px;border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+              <span style="font:var(--type-h4);color:var(--text-heading)">Como o coeficiente de endogamia é calculado?</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">Pelo coeficiente de Wright, sobre as gerações que você tem registradas. O sistema mostra o valor com duas decimais, a faixa (seguro, atenção, risco) e qual ancestral se repete nos dois lados.</p>
+            </div>
+            <div style="padding:22px 24px;display:flex;flex-direction:column;gap:8px">
+              <span style="font:var(--type-h4);color:var(--text-heading)">Meus dados são meus?</span>
+              <p style="margin:0;font:var(--type-body);color:var(--text-secondary);text-wrap:pretty">São. Você exporta plantel, genealogia e financeiro em planilha quando quiser, inclusive ao cancelar. A página pública de validação mostra só a ave e o criatório emissor — nunca seus contatos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;padding:64px;background:var(--sis-petroleo);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:48px">
+          <div style="display:flex;flex-direction:column;gap:12px;max-width:56ch">
+            <h3 style="margin:0;font:var(--weight-bold) var(--text-3xl)/1.15 var(--font-display);letter-spacing:var(--tracking-tight);color:#fff;text-wrap:balance">Comece pela próxima postura</h3>
+            <p style="margin:0;font:var(--type-body);color:rgba(255,255,255,.86);text-wrap:pretty">Cadastre o plantel, registre a primeira ninhada e veja o ciclo do ovo se organizar sozinho. Quatorze dias, sem cartão.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;flex:none">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="accent" size="lg" hint-size="auto,48px">Testar 14 dias grátis</x-import>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" icon-left="MessageCircle" hint-size="auto,48px">WhatsApp</x-import>
+          </div>
+        </div>
+
+        <footer style="flex:1;min-height:0;padding:48px 64px;background:var(--sis-azul-profundo);color:#fff;display:flex;flex-direction:column;justify-content:space-between;gap:36px">
+          <div style="display:grid;grid-template-columns:1fr repeat(3,180px);gap:48px">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <img src="assets/sisaves-logo-horizontal-white.svg" alt="SisAves" style="height:26px;width:auto;display:block">
+              <p style="margin:0;font:var(--type-small);color:rgba(255,255,255,.72);max-width:40ch;text-wrap:pretty">Gestão de criatório de aves ornamentais. Feito no Brasil, com criadores brasileiros.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:rgba(255,255,255,.6)">Produto</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Funcionalidades</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Certificados</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Planos</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">App offline</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:rgba(255,255,255,.6)">Suporte</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Central de ajuda</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">WhatsApp</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Importar planilha</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Validar certificado</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:rgba(255,255,255,.6)">Legal</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Termos de uso</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">Privacidade</span>
+              <span style="font:var(--type-body);color:rgba(255,255,255,.86)">LGPD</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(255,255,255,.16);padding-top:24px">
+            <span style="font:var(--type-small);color:rgba(255,255,255,.62);font-variant-numeric:tabular-nums">© 2026 SisAves · sisaves.tallpa.com.br</span>
+            <span style="font:var(--type-small);color:rgba(255,255,255,.62)">Atibaia · São Paulo · Brasil</span>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

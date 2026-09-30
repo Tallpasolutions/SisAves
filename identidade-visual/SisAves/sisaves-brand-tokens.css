@@ -1,0 +1,10 @@
+:root {
+  --sisaves-primary: #0B5D5E;
+  --sisaves-deep: #163A45;
+  --sisaves-accent: #F2B544;
+  --sisaves-surface: #F4F7F6;
+  --sisaves-text: #1B2528;
+}
+
+.sisaves-heading { font-family: "Montserrat", "Inter", Arial, sans-serif; font-weight: 700; }
+.sisaves-body { font-family: "Inter", Arial, sans-serif; }

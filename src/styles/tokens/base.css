@@ -1,0 +1,16 @@
+/* SisAves — base. Reset mínimo e defaults de documento. */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--surface-page);color:var(--text-primary);font:var(--type-body);-webkit-font-smoothing:antialiased;text-wrap:pretty}
+h1,h2,h3,h4{margin:0;color:var(--text-heading);font-family:var(--font-display);letter-spacing:var(--tracking-snug)}
+h1{font:var(--type-h1)}h2{font:var(--type-h2)}h3{font:var(--type-h3)}h4{font:var(--type-h4)}
+p{margin:0 0 var(--space-4)}
+a{color:var(--text-link);text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{color:var(--text-link-hover)}
+button,input,select,textarea{font:inherit}
+:focus-visible{outline:2px solid var(--border-focus);outline-offset:var(--focus-ring-offset)}
+table{border-collapse:collapse}
+td,th{text-align:left}
+@keyframes sis-spin{to{transform:rotate(360deg)}}
+@keyframes sis-pulse-ambar{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes sis-dialog-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes sis-sheet-up{from{transform:translateY(100%)}to{transform:none}}

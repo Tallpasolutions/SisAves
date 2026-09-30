@@ -1,0 +1,5 @@
+/* SisAves — webfonts.
+   Nenhum binário de fonte foi fornecido no pacote de identidade. Montserrat e Inter
+   são famílias Google Fonts e são carregadas do CDN. Se a equipe tiver arquivos
+   .woff2 licenciados, substituir o @import por @font-face locais em assets/fonts/. */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");

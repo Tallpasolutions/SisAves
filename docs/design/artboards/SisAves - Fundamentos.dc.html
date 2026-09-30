@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/colors.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/typography.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/motion.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/base.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/styles.css">
+<script src="https://unpkg.com/lucide@0.474.0/dist/umd/lucide.js"></script>
+<script src="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/_ds_bundle.js"></script>
+<style>
+  body { background: #E7ECEB; margin: 0; }
+  a { color: var(--text-link); }
+  a:hover { color: var(--text-link-hover); }
+</style>
+</helmet>
+
+<section id="1a" style="width:1400px;height:1000px;box-sizing:border-box;padding:40px 44px;background:var(--surface-page);border:1px solid var(--border-default);display:flex;flex-direction:column;gap:24px;overflow:hidden">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--border-subtle);padding-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">A1 · Fundamentos</span>
+      <h1 style="margin:0;font:var(--type-h2);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Guia de estilo</h1>
+    </div>
+    <span style="font:var(--type-small);color:var(--text-muted);font-variant-numeric:tabular-nums">1400 × 1000 · SisAves Design System</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:640px 1fr;gap:32px;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:20px;min-height:0">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Paleta oficial · fechada</span>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+          <div style="display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);overflow:hidden">
+            <div style="height:64px;background:var(--sis-petroleo)"></div>
+            <div style="padding:10px 10px 12px;display:flex;flex-direction:column;gap:3px">
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Petróleo</span>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-brand)">#0B5D5E</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Cor principal: texto de marca, ícone, cabeçalho, um bloco cheio por tela.</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);overflow:hidden">
+            <div style="height:64px;background:var(--sis-azul-profundo)"></div>
+            <div style="padding:10px 10px 12px;display:flex;flex-direction:column;gap:3px">
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Azul profundo</span>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-brand)">#163A45</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Títulos, sidebar, contraste máximo.</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);overflow:hidden">
+            <div style="height:64px;background:var(--sis-ambar)"></div>
+            <div style="padding:10px 10px 12px;display:flex;flex-direction:column;gap:3px">
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Âmbar</span>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-brand)">#F2B544</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Reservado à ação humana agora. Nunca em texto pequeno sobre branco.</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);overflow:hidden">
+            <div style="height:64px;background:var(--sis-neve);border-bottom:1px solid var(--border-subtle)"></div>
+            <div style="padding:10px 10px 12px;display:flex;flex-direction:column;gap:3px">
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Neve</span>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-brand)">#F4F7F6</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Fundo de página. Liso, sem gradiente.</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);overflow:hidden">
+            <div style="height:64px;background:var(--sis-grafite)"></div>
+            <div style="padding:10px 10px 12px;display:flex;flex-direction:column;gap:3px">
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-heading)">Grafite</span>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-brand)">#1B2528</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Texto de interface.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Semânticas derivadas · adição intencional</span>
+          <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">Distintas do âmbar — âmbar não comunica estado, comunica ação.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:20px;height:20px;border-radius:var(--radius-xs);background:#1E7A5F;flex:none"></span>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.2 var(--font-ui);color:var(--text-heading)">Sucesso</span>
+            </div>
+            <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:#1E7A5F">#1E7A5F · fundo #E3F1EB</span>
+            <span style="display:inline-flex;align-self:flex-start;padding:3px 9px;border-radius:var(--radius-pill);background:#E3F1EB;color:#14614B;font:var(--weight-medium) var(--text-xs)/1.4 var(--font-ui)">Eclosão confirmada</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Verde-eclosão: mesmo matiz frio do petróleo, um passo para o verde. AA 5,24:1.</span>
+          </div>
+          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:20px;height:20px;border-radius:var(--radius-xs);background:#9A5B23;flex:none"></span>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.2 var(--font-ui);color:var(--text-heading)">Atenção</span>
+            </div>
+            <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:#9A5B23">#9A5B23 · fundo #F6EBDD</span>
+            <span style="display:inline-flex;align-self:flex-start;padding:3px 9px;border-radius:var(--radius-pill);background:#F6EBDD;color:#7E4A1C;font:var(--weight-medium) var(--text-xs)/1.4 var(--font-ui)">Prazo em 2 dias</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Bronze: âmbar escurecido e dessaturado, legível em texto pequeno. AA 5,4:1.</span>
+          </div>
+          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:20px;height:20px;border-radius:var(--radius-xs);background:var(--sis-tijolo-600);flex:none"></span>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.2 var(--font-ui);color:var(--text-heading)">Crítico</span>
+            </div>
+            <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-danger)">#A8352A · fundo #F7E4E1</span>
+            <span style="display:inline-flex;align-self:flex-start;padding:3px 9px;border-radius:var(--radius-pill);background:var(--status-critico-bg);color:var(--status-critico-fg);font:var(--weight-medium) var(--text-xs)/1.4 var(--font-ui)">Perda registrada</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Tijolo: vermelho terroso de gravidade — óbito, perda, erro de validação.</span>
+          </div>
+          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:20px;height:20px;border-radius:var(--radius-xs);background:#1F6C86;flex:none"></span>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.2 var(--font-ui);color:var(--text-heading)">Informação</span>
+            </div>
+            <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:#1F6C86">#1F6C86 · fundo #E4EEF2</span>
+            <span style="display:inline-flex;align-self:flex-start;padding:3px 9px;border-radius:var(--radius-pill);background:#E4EEF2;color:#17566C;font:var(--weight-medium) var(--text-xs)/1.4 var(--font-ui)">Ninhada em ovoscopia</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Azul-mar: matiz do azul profundo, claro o bastante para se separar do petróleo.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;min-height:0">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+        <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Escala tipográfica</span>
+        <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">Montserrat 600/700 · Inter 400/500/600</span>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:14px 18px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0">
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-display);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Plantel ativo</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-display<br>Montserrat 700 · 48/1,15</span>
+        </div>
+        <div style="height:1px;background:var(--border-subtle)"></div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-h1);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Ninhadas do galpão</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-h1<br>Montserrat 700 · 38/1,15</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-h2);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Coeficiente de endogamia</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-h2<br>Montserrat 600 · 30/1,3</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Ciclo do ovo</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-h3<br>Montserrat 600 · 24/1,3</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-h4);color:var(--text-heading)">Ovoscopia pendente</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-h4<br>Montserrat 600 · 17/1,3</span>
+        </div>
+        <div style="height:1px;background:var(--border-subtle)"></div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-body);color:var(--text-primary);max-width:44ch">Registre a postura no dia em que ela acontece: o cálculo de ovoscopia e de eclosão prevista parte dessa data.</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-body<br>Inter 400 · 15/1,5</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-small);color:var(--text-secondary);max-width:48ch">Legenda e texto de ajuda — usado sob campos, em rodapé de card e em nota de tabela.</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-small<br>Inter 400 · 13/1,5</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Aves ativas</span>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-overline<br>Inter 600 · 11 · +0,08em</span>
+        </div>
+        <div style="height:1px;background:var(--border-subtle)"></div>
+        <div style="display:grid;grid-template-columns:1fr 160px;align-items:baseline;gap:16px">
+          <div style="display:flex;align-items:baseline;gap:14px">
+            <span style="font:var(--type-data-lg);font-variant-numeric:tabular-nums;color:var(--text-brand);white-space:nowrap">3,13%</span>
+            <span style="font:var(--type-data-lg);font-variant-numeric:tabular-nums;color:var(--text-heading);white-space:nowrap">R$ 1.240,00</span>
+            <span style="font:var(--weight-semibold) var(--text-base)/1.35 var(--font-numeric);font-variant-numeric:tabular-nums;letter-spacing:var(--tracking-wide);color:var(--text-heading);white-space:nowrap">COBP 25 04781</span>
+          </div>
+          <span style="font:var(--weight-medium) var(--text-xs)/1.4 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-muted);text-align:right">--type-data-lg<br>tabular-nums sempre</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 380px 300px;gap:24px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Espaçamento · grade 4px</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:14px 16px;display:flex;align-items:flex-end;gap:10px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:4px;height:4px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">4</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:8px;height:8px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">8</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:12px;height:12px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">12</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:16px;height:16px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">16</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:20px;height:20px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">20</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:24px;height:24px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">24</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:32px;height:32px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">32</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:40px;height:40px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">40</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:48px;height:48px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">48</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:64px;height:64px;background:var(--sis-petroleo-600)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">64</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:80px;height:80px;background:var(--sis-petroleo-200)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">80</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:96px;height:96px;background:var(--sis-petroleo-100)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">96</span></div>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">Alvo de toque 44px mínimo · 48px no app de campo · linha de tabela 36 / 44 / 56px</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Raios de canto</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:14px 16px;display:flex;gap:14px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:44px;background:var(--sis-petroleo-50);border:1px solid var(--border-brand);border-radius:3px"></div><span style="font:var(--weight-medium) 11px/1.3 var(--font-numeric);color:var(--text-muted);text-align:center">3px<br>chip</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:44px;background:var(--sis-petroleo-50);border:1px solid var(--border-brand);border-radius:5px"></div><span style="font:var(--weight-medium) 11px/1.3 var(--font-numeric);color:var(--text-muted);text-align:center">5px<br>controle</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:44px;background:var(--sis-petroleo-50);border:1px solid var(--border-brand);border-radius:8px"></div><span style="font:var(--weight-medium) 11px/1.3 var(--font-numeric);color:var(--text-muted);text-align:center">8px<br>card</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:44px;background:var(--sis-petroleo-50);border:1px solid var(--border-brand);border-radius:12px"></div><span style="font:var(--weight-medium) 11px/1.3 var(--font-numeric);color:var(--text-muted);text-align:center">12px<br>sheet</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:44px;background:var(--sis-petroleo-50);border:1px solid var(--border-brand);border-radius:999px"></div><span style="font:var(--weight-medium) 11px/1.3 var(--font-numeric);color:var(--text-muted);text-align:center">pílula<br>badge</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Elevações</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:18px 16px;display:flex;gap:14px;align-items:flex-end;justify-content:space-between">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:48px;height:36px;background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);box-shadow:var(--shadow-xs)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">xs</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:48px;height:36px;background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">sm</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:48px;height:36px;background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);box-shadow:var(--shadow-md)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">md</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:48px;height:36px;background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);box-shadow:var(--shadow-lg)"></div><span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">lg</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="1b" style="width:1400px;height:800px;box-sizing:border-box;padding:40px 44px;background:var(--surface-page);border:1px solid var(--border-default);display:flex;flex-direction:column;gap:24px;overflow:hidden">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--border-subtle);padding-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">A2 · Fundamentos</span>
+      <h1 style="margin:0;font:var(--type-h2);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Aplicação do logo</h1>
+    </div>
+    <span style="font:var(--type-small);color:var(--text-muted);font-variant-numeric:tabular-nums">1400 × 800 · assinatura, símbolo, área livre</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 210px 210px;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Assinatura horizontal</span>
+      <div style="height:130px;display:grid;place-items:center;background:var(--sis-neve);border:1px solid var(--border-subtle);border-radius:var(--radius-md)">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="horizontal" height="{{ 40 }}" hint-size="180px,40px"></x-import>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Uso padrão sobre Neve ou branco. "Sis" em azul profundo, "Aves" em petróleo.</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Versão branca</span>
+      <div style="height:130px;display:grid;place-items:center;background:var(--sis-petroleo);border:1px solid var(--sis-petroleo);border-radius:var(--radius-md)">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="horizontal-white" height="{{ 40 }}" hint-size="180px,40px"></x-import>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Obrigatória sobre petróleo, azul profundo e fotografia escura.</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Símbolo</span>
+      <div style="height:130px;display:grid;place-items:center;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md)">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="symbol" height="{{ 64 }}" hint-size="64px,64px"></x-import>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Isolado só quando a marca já foi estabelecida na tela.</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">App icon</span>
+      <div style="height:130px;display:grid;place-items:center;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md)">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="app-icon" height="{{ 72 }}" hint-size="72px,72px"></x-import>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Único uso permitido abaixo de 32px.</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:270px 300px 1fr;gap:20px;align-items:start;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Favicon</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:16px;display:flex;gap:28px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="app-icon" height="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">16 px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="app-icon" height="{{ 32 }}" hint-size="32px,32px"></x-import>
+          <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">32 px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="app-icon" height="{{ 64 }}" hint-size="64px,64px"></x-import>
+          <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);color:var(--text-muted)">64 px</span>
+        </div>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Em 16px o olho vazado fecha: usar o app icon, nunca a assinatura.</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Área livre · 1/4 da altura</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:20px;display:flex;justify-content:center">
+        <div style="position:relative;padding:24px;border:1px dashed var(--sis-petroleo-500);background:var(--sis-petroleo-50)">
+          <div style="border:1px solid var(--border-default);background:var(--surface-card);display:grid;place-items:center;padding:0">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="symbol" height="{{ 96 }}" hint-size="96px,96px"></x-import>
+          </div>
+          <span style="position:absolute;top:4px;left:8px;font:var(--weight-semibold) 11px/1 var(--font-numeric);color:var(--text-brand)">24 px</span>
+        </div>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Símbolo de 96px → margem de respiro de 24px em todos os lados. Nada entra nessa faixa: nem texto, nem borda, nem foto.</span>
+    </div>
+
+    <sc-if value="{{ mostrarUsosIncorretos }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-danger)">Usos incorretos</span>
+          <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">Nenhuma destas versões pode ir ao ar.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:104px;display:grid;place-items:center;background:linear-gradient(135deg,#7C3AED,#0EA5E9);border:1px solid var(--border-danger);border-radius:var(--radius-md)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="horizontal-white" height="{{ 26 }}" hint-size="120px,26px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="X" size="13" color="var(--text-danger)" hint-size="13px,13px"></x-import>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-ui);color:var(--text-danger)">Gradiente</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:104px;display:grid;place-items:center;background:var(--surface-card);border:1px solid var(--border-danger);border-radius:var(--radius-md)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="horizontal" height="{{ 26 }}" style="filter:drop-shadow(4px 6px 3px rgba(0,0,0,.45))" hint-size="120px,26px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="X" size="13" color="var(--text-danger)" hint-size="13px,13px"></x-import>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-ui);color:var(--text-danger)">Sombra</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:104px;display:grid;place-items:center;background:var(--surface-card);border:1px solid var(--border-danger);border-radius:var(--radius-md)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="symbol" height="{{ 56 }}" style="filter:drop-shadow(1.5px 0 0 #A8352A) drop-shadow(-1.5px 0 0 #A8352A) drop-shadow(0 1.5px 0 #A8352A) drop-shadow(0 -1.5px 0 #A8352A)" hint-size="56px,56px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="X" size="13" color="var(--text-danger)" hint-size="13px,13px"></x-import>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-ui);color:var(--text-danger)">Contorno</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:104px;display:grid;place-items:center;background:var(--surface-card);border:1px solid var(--border-danger);border-radius:var(--radius-md);overflow:hidden">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="horizontal" height="{{ 26 }}" style="transform:rotate(-18deg)" hint-size="120px,26px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="X" size="13" color="var(--text-danger)" hint-size="13px,13px"></x-import>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-ui);color:var(--text-danger)">Rotação</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:104px;display:grid;place-items:center;background:var(--surface-card);border:1px solid var(--border-danger);border-radius:var(--radius-md);overflow:hidden">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="horizontal" height="{{ 26 }}" style="transform:scaleX(1.7) scaleY(.8)" hint-size="120px,26px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="X" size="13" color="var(--text-danger)" hint-size="13px,13px"></x-import>
+              <span style="font:var(--weight-medium) var(--text-xs)/1.3 var(--font-ui);color:var(--text-danger)">Distorção</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+<section id="1c" style="width:1400px;height:1200px;box-sizing:border-box;padding:40px 44px;background:var(--surface-page);border:1px solid var(--border-default);display:flex;flex-direction:column;gap:22px;overflow:hidden">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--border-subtle);padding-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">A3 · Fundamentos</span>
+      <h1 style="margin:0;font:var(--type-h2);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Biblioteca de componentes</h1>
+    </div>
+    <span style="font:var(--type-small);color:var(--text-muted);font-variant-numeric:tabular-nums">1400 × 1200 · contraste AA · toque ≥ 44px</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:620px 1fr;gap:24px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Botões · normal · hover · foco · desabilitado</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:grid;grid-template-columns:96px repeat(4,1fr);gap:12px;align-items:center">
+          <span></span>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted)">Normal</span>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted)">Hover</span>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted)">Foco</span>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted)">Desabilitado</span>
+        </div>
+        <div style="display:grid;grid-template-columns:96px repeat(4,1fr);gap:12px;align-items:center">
+          <span style="font:var(--type-label);color:var(--text-secondary)">Primário</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" hint-size="auto,40px">Registrar postura</x-import>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:var(--sis-petroleo-800);color:var(--text-inverse);border:1px solid var(--sis-petroleo-900);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-base)/1 var(--font-ui);letter-spacing:var(--tracking-snug)">Registrar postura</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:var(--sis-petroleo-700);color:var(--text-inverse);border:1px solid var(--sis-petroleo-700);border-radius:var(--radius-sm);outline:2px solid var(--border-focus);outline-offset:2px;font:var(--weight-medium) var(--text-base)/1 var(--font-ui)">Registrar postura</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" disabled="{{ true }}" hint-size="auto,40px">Registrar postura</x-import>
+        </div>
+        <div style="display:grid;grid-template-columns:96px repeat(4,1fr);gap:12px;align-items:center">
+          <span style="font:var(--type-label);color:var(--text-secondary)">Secundário</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" hint-size="auto,40px">Ver ninhada</x-import>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:var(--surface-hover);color:var(--text-brand);border:1px solid var(--border-brand);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-base)/1 var(--font-ui)">Ver ninhada</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:var(--surface-card);color:var(--text-brand);border:1px solid var(--border-default);border-radius:var(--radius-sm);outline:2px solid var(--border-focus);outline-offset:2px;font:var(--weight-medium) var(--text-base)/1 var(--font-ui)">Ver ninhada</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" disabled="{{ true }}" hint-size="auto,40px">Ver ninhada</x-import>
+        </div>
+        <div style="display:grid;grid-template-columns:96px repeat(4,1fr);gap:12px;align-items:center">
+          <span style="font:var(--type-label);color:var(--text-secondary)">Terciário</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="ghost" hint-size="auto,40px">Cancelar</x-import>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:var(--surface-hover);color:var(--text-brand);border:1px solid var(--border-brand);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-base)/1 var(--font-ui)">Cancelar</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:transparent;color:var(--text-brand);border:1px solid transparent;border-radius:var(--radius-sm);outline:2px solid var(--border-focus);outline-offset:2px;font:var(--weight-medium) var(--text-base)/1 var(--font-ui)">Cancelar</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="ghost" disabled="{{ true }}" hint-size="auto,40px">Cancelar</x-import>
+        </div>
+        <div style="display:grid;grid-template-columns:96px repeat(4,1fr);gap:12px;align-items:center">
+          <span style="font:var(--type-label);color:var(--text-secondary)">Destrutivo</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="danger" hint-size="auto,40px">Registrar óbito</x-import>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:var(--sis-tijolo-700);color:#fff;border:1px solid var(--sis-tijolo-700);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-base)/1 var(--font-ui)">Registrar óbito</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;background:var(--sis-tijolo-600);color:#fff;border:1px solid var(--sis-tijolo-600);border-radius:var(--radius-sm);outline:2px solid var(--border-focus);outline-offset:2px;font:var(--weight-medium) var(--text-base)/1 var(--font-ui)">Registrar óbito</span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="danger" disabled="{{ true }}" hint-size="auto,40px">Registrar óbito</x-import>
+        </div>
+        <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">Altura 40px (md) e 48px (lg, app de campo). Um botão âmbar por tela, no máximo — e só quando há prazo vencendo.</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Campos de formulário</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px 20px">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="Anilha da matriz" required="{{ true }}" hint-size="100%,76px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" placeholder="COBP-25-04781" hint-size="100%,40px"></x-import>
+        </x-import>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="Peso ao anilhamento" hint="Gramas, com uma decimal. Não arredondar." hint-size="100%,76px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" numeric="{{ true }}" suffix="g" placeholder="0,0" hint-size="100%,40px"></x-import>
+        </x-import>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="Código COBP" error="O código COBP-25-04781 já existe no plantel." hint-size="100%,76px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" invalid="{{ true }}" default-value="COBP-25-04781" hint-size="100%,40px"></x-import>
+        </x-import>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="Data da postura" hint-size="100%,76px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" icon-left="Calendar" default-value="09/03/2026" hint-size="100%,40px"></x-import>
+        </x-import>
+      </div>
+      <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">Rótulo acima, ajuda abaixo; erro substitui a ajuda e cita o dado exato. Foco em contorno petróleo 2px + halo.</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:340px 1fr 300px;gap:24px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Etiqueta de anilha</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" size="lg" hint-size="220px,32px"></x-import>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" club="Clube SOV" hint-size="220px,26px"></x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" tone="brand" hint-size="200px,26px"></x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" tone="quiet" size="sm" hint-size="180px,20px"></x-import>
+        </div>
+        <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Clube · ano · sequencial. Peso 600, tabular-nums e +0,04em de tracking para leitura a meio metro.</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Chips de estado do ovo</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="info" icon="Thermometer" hint-size="auto,24px">Chocando · dia 6</x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="neutro" icon="Egg" hint-size="auto,24px">Ovoscopia</x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="ok" icon="CircleCheck" hint-size="auto,24px">Eclosão · 21/03</x-import>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;background:var(--surface-accent);color:var(--text-on-accent);border:1px solid #D69B24;border-radius:var(--radius-pill);font:var(--weight-semibold) var(--text-xs)/1.4 var(--font-ui)">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Feather" size="13" hint-size="13px,13px"></x-import>
+            Anilhar hoje
+          </span>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="neutro" icon="Users" hint-size="auto,24px">Separação · 24/04</x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="critico" icon="CircleAlert" hint-size="auto,24px">Perda · 2 ovos</x-import>
+        </div>
+        <div style="display:flex;gap:20px;align-items:flex-start;border-top:1px solid var(--border-subtle);padding-top:12px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted)">Chip de sexo</span>
+            <div style="display:flex;gap:8px">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);background:var(--surface-card)"><span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span><span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Macho</span></span>
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);background:var(--surface-card)"><span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span><span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Fêmea</span></span>
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--border-subtle);border-radius:var(--radius-xs);background:var(--surface-card)"><span aria-label="Sexo indefinido" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--text-muted)">—</span><span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Indefinido</span></span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted)">Badge de notificação</span>
+            <div style="display:flex;gap:14px;align-items:center">
+              <span style="position:relative;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--border-default);border-radius:var(--radius-sm);background:var(--surface-card)">
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bell" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+                <span style="position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;display:grid;place-items:center;border-radius:var(--radius-pill);background:var(--surface-accent);color:var(--text-on-accent);border:2px solid var(--surface-card);font:var(--weight-semibold) 11px/1 var(--font-numeric);font-variant-numeric:tabular-nums">3</span>
+              </span>
+              <span style="position:relative;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--border-default);border-radius:var(--radius-sm);background:var(--surface-card)">
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Egg" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+                <span style="position:absolute;top:-5px;right:-5px;width:10px;height:10px;border-radius:var(--radius-pill);background:var(--sis-tijolo-600);border:2px solid var(--surface-card)"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Medidor de endogamia</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:flex;flex-direction:column;gap:16px">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.InbreedingMeter" value="{{ f1 }}" show-scale="{{ false }}" hint-size="100%,64px"></x-import>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.InbreedingMeter" value="{{ f2 }}" show-scale="{{ false }}" hint-size="100%,64px"></x-import>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.InbreedingMeter" value="{{ f3 }}" hint-size="100%,84px"></x-import>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:350px 290px 300px 1fr;gap:20px;align-items:start;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Tabs e linha de tabela</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tabs" tabs="{{ tabs }}" value="{{ tab }}" on-change="{{ setTab }}" hint-size="100%,42px"></x-import>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);overflow:hidden">
+            <div style="display:grid;grid-template-columns:3px 1fr 74px 44px 90px;align-items:center;gap:10px;height:36px;padding-right:12px;background:var(--surface-sunken);border-bottom:1px solid var(--border-subtle)">
+              <span></span>
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ninhada</span>
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Postura</span>
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary);text-align:right">Ovos</span>
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Etapa</span>
+            </div>
+            <div style="display:grid;grid-template-columns:3px 1fr 74px 44px 90px;align-items:center;gap:10px;height:44px;padding-right:12px;border-bottom:1px solid var(--border-subtle)">
+              <span style="width:3px;height:100%;background:transparent"></span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Ninhada 04</span>
+              <span style="font:var(--weight-regular) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-secondary)">09/03/2026</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary);text-align:right">5</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="info" size="sm" hint-size="auto,20px">Chocando</x-import>
+            </div>
+            <div style="display:grid;grid-template-columns:3px 1fr 74px 44px 90px;align-items:center;gap:10px;height:44px;padding-right:12px;background:var(--surface-accent-soft);border-bottom:1px solid var(--border-subtle)">
+              <span style="width:3px;height:100%;background:var(--sis-ambar)"></span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Ninhada 05</span>
+              <span style="font:var(--weight-regular) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-secondary)">27/02/2026</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary);text-align:right">4</span>
+              <span style="display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;background:var(--surface-accent);color:var(--text-on-accent);border-radius:var(--radius-pill);font:var(--weight-semibold) 11px/1.4 var(--font-ui)">Anilhar</span>
+            </div>
+            <div style="display:grid;grid-template-columns:3px 1fr 74px 44px 90px;align-items:center;gap:10px;height:44px;padding-right:12px;background:var(--surface-selected)">
+              <span style="width:3px;height:100%;background:var(--sis-tijolo-600)"></span>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Ninhada 06</span>
+              <span style="font:var(--weight-regular) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-secondary)">14/02/2026</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary);text-align:right">2</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="critico" size="sm" hint-size="auto,20px">Perda</x-import>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Card de ave</span>
+      <div style="display:flex;flex-direction:column;gap:8px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Card" interactive="{{ true }}" padding="md" hint-size="100%,150px">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="display:grid;place-items:center;width:40px;height:40px;border-radius:var(--radius-sm);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-md)/1 var(--font-numeric);color:var(--sis-petroleo-700)" aria-label="Macho">M</span>
+                    <div style="display:flex;flex-direction:column;gap:2px">
+                      <span style="font:var(--type-h4);color:var(--text-heading)">Curió Tibiriçá</span>
+                      <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Curió · mutação clássica · reprodutor</span>
+                    </div>
+                  </div>
+                  <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="ok" dot="{{ true }}" size="sm" hint-size="auto,20px">Plantel ativo</x-import>
+                </div>
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" hint-size="200px,26px"></x-import>
+                <div style="display:flex;gap:20px;border-top:1px solid var(--border-subtle);padding-top:10px">
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Peso</span>
+                    <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">18,4 g</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ninhadas</span>
+                    <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">6</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Endogamia</span>
+                    <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-brand)">3,13%</span>
+                  </div>
+                </div>
+              </div>
+            </x-import>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">Faixa de 3px à esquerda só na linha de tabela — nunca no card.</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Modal</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+        <div style="background:var(--overlay-scrim);border-radius:var(--radius-sm);padding:16px;display:grid;place-items:center">
+          <div style="width:100%;background:var(--surface-card);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--border-subtle);font:var(--type-h4);color:var(--text-heading)">Registrar óbito</div>
+            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+              <p style="margin:0;font:var(--type-body);color:var(--text-primary)">A ave sai do plantel ativo e permanece na genealogia.</p>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" tone="quiet" hint-size="200px,26px"></x-import>
+            </div>
+            <div style="padding:12px 16px;border-top:1px solid var(--border-subtle);display:flex;justify-content:flex-end;gap:10px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="ghost" size="sm" hint-size="auto,32px">Cancelar</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="danger" size="sm" hint-size="auto,32px">Registrar óbito</x-import>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Toast, sincronização e vazio</span>
+      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Toast" tone="ok" title="Postura registrada · Ninhada 04 · 5 ovos" description="Ovoscopia prevista para 17/03/2026." hint-size="100%,64px"></x-import>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="offline" hint-size="auto,32px"></x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="pendente" pending="{{ 4 }}" hint-size="auto,32px"></x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="online" last-sync="hoje 07:42" compact="{{ true }}" hint-size="auto,26px"></x-import>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.EmptyState" icon="Egg" title="Nenhuma ninhada ativa" description="Registre uma postura para acompanhar o ciclo do ovo até o anilhamento." compact="{{ true }}" hint-size="100%,150px">
+        </x-import>
+      </div>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mostrarUsosIncorretos&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Artboard A2&quot;}}">
+class Component extends DCLogic {
+  state = { tab: "plantel" };
+  renderVals() {
+    return {
+      mostrarUsosIncorretos: this.props.mostrarUsosIncorretos ?? true,
+      f1: 3.13, f2: 9.38, f3: 14.06,
+      tabs: [
+        { value: "plantel", label: "Plantel", count: 128 },
+        { value: "ninhadas", label: "Ninhadas", count: 6 },
+        { value: "casais", label: "Casais", count: 14 },
+        { value: "saude", label: "Saúde" },
+      ],
+      tab: this.state.tab,
+      setTab: (v) => this.setState({ tab: v }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/colors.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/typography.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/motion.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/tokens/base.css">
+<link rel="stylesheet" href="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/styles.css">
+<script src="https://unpkg.com/lucide@0.474.0/dist/umd/lucide.js"></script>
+<script src="_ds/sisaves-design-system-a74bdb92-04ed-46d9-a36f-cfcf55dd3b47/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+  body { background: #E7ECEB; margin: 0; }
+  a { color: var(--text-link); }
+  a:hover { color: var(--text-link-hover); }
+</style>
+</helmet>
+
+<section style="display:flex;flex-direction:column;gap:20px;padding:36px 40px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--border-subtle);padding-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Faixa B · Telas mobile · parte 2</span>
+      <h1 style="margin:0;font:var(--type-h2);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Login, plantel, genealogia, casais, postura, financeiro e menu</h1>
+    </div>
+    <span style="font:var(--type-small);color:var(--text-muted);font-variant-numeric:tabular-nums">390 × 844 · B4 a B11</span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <div id="3a" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3a</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B4 · Login</span>
+      </div>
+      <div data-screen-label="B4 Login" style="width:390px;height:844px;position:relative;display:flex;flex-direction:column;justify-content:center;padding:24px;background:var(--sis-petroleo);border:1px solid var(--sis-petroleo-900);overflow:hidden">
+        <img src="assets/sisaves-symbol-primary.svg" alt="" style="position:absolute;right:-90px;bottom:-40px;width:420px;opacity:.07;pointer-events:none">
+        <div style="position:absolute;top:40px;left:24px;display:flex;flex-direction:column;gap:6px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Logo" variant="horizontal-white" height="{{ 34 }}" hint-size="150px,34px"></x-import>
+          <span style="font:var(--type-small);color:rgba(255,255,255,.78)">Gestão de criatório de aves ornamentais</span>
+        </div>
+        <div style="background:var(--surface-card);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:22px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Entrar</span>
+            <span style="font:var(--type-small);color:var(--text-secondary)">Use o e-mail cadastrado no criatório.</span>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="E-mail" hint-size="100%,80px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" size="lg" icon-left="Mail" default-value="tibirica@criatorio.com.br" hint-size="100%,48px"></x-import>
+          </x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="Senha" hint-size="100%,80px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" size="lg" icon-left="Lock" type="password" default-value="••••••••••" hint-size="100%,48px"></x-import>
+          </x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" size="lg" full-width="{{ true }}" hint-size="100%,48px">Entrar</x-import>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="flex:1;height:1px;background:var(--border-subtle)"></span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">ou</span>
+            <span style="flex:1;height:1px;background:var(--border-subtle)"></span>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" icon-left="Chrome" full-width="{{ true }}" hint-size="100%,48px">Entrar com Google</x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="ghost" size="md" full-width="{{ true }}" hint-size="100%,40px">Recuperar senha</x-import>
+        </div>
+        <div style="position:absolute;bottom:26px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.7)">sisaves.tallpa.com.br</span>
+          <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums">v 1.4.2</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="3b" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3b</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B5 · Plantel</span>
+      </div>
+      <div data-screen-label="B5 Plantel" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Plantel</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">128 aves · 7 espécies</span>
+          </div>
+          <span style="display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(255,255,255,.12)">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Plus" size="20" color="#fff" hint-size="20px,20px"></x-import>
+          </span>
+        </header>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-card);border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:10px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" size="lg" icon-left="Search" placeholder="Buscar anilha, nome ou mutação" hint-size="100%,48px"></x-import>
+          <div style="display:flex;gap:8px;overflow:hidden">
+            <span style="flex:none;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 11px;border-radius:var(--radius-pill);background:var(--surface-selected);border:1px solid var(--border-brand);color:var(--text-brand);font:var(--weight-semibold) var(--text-sm)/1 var(--font-ui)">Curió <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="X" size="13" hint-size="13px,13px"></x-import></span>
+            <span style="flex:none;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 11px;border-radius:var(--radius-pill);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Sexo <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronDown" size="13" hint-size="13px,13px"></x-import></span>
+            <span style="flex:none;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 11px;border-radius:var(--radius-pill);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Situação <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronDown" size="13" hint-size="13px,13px"></x-import></span>
+            <span style="flex:none;display:inline-flex;align-items:center;height:32px;padding:0 11px;border-radius:var(--radius-pill);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Idade</span>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">42 curiós</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Anilha ↑</span>
+          </div>
+          <button type="button" style="display:flex;align-items:center;gap:11px;width:100%;min-height:68px;padding:10px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken);color:var(--text-muted)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="22" hint-size="22px,22px"></x-import></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" hint-size="200px,22px"></x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Tibiriçá · Curió · clássica</span>
+            </span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">6 meses</span>
+            </span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:11px;width:100%;min-height:68px;padding:10px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken);color:var(--text-muted)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="22" hint-size="22px,22px"></x-import></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="COBP 25 01930" hint-size="160px,22px"></x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Aurora · Curió · clássica</span>
+            </span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">1 a 7 m</span>
+            </span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:11px;width:100%;min-height:68px;padding:10px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken);color:var(--text-muted)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="22" hint-size="22px,22px"></x-import></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="FOB 24 00412" hint-size="150px,22px"></x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Cravo · Canário · ágata</span>
+            </span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">2 anos</span>
+            </span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:11px;width:100%;min-height:68px;padding:10px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken);color:var(--text-muted)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="22" hint-size="22px,22px"></x-import></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0091" hint-size="200px,22px"></x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Névoa · Curió · clássica</span>
+            </span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">5 meses</span>
+            </span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:11px;width:100%;min-height:68px;padding:10px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken);color:var(--text-muted)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="22" hint-size="22px,22px"></x-import></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="CBC 25 00733" hint-size="150px,22px"></x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Gould · Diamante de Gould</span>
+            </span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">1 ano</span>
+            </span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:11px;width:100%;min-height:68px;padding:10px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken);color:var(--text-muted)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="22" hint-size="22px,22px"></x-import></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="FOB 24 01204" hint-size="150px,22px"></x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Sol · Agapornis · lutino</span>
+            </span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">1 a 9 m</span>
+            </span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:11px;width:100%;min-height:68px;padding:10px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:var(--radius-sm);background:var(--surface-accent-soft);color:var(--text-accent)"><x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Feather" size="22" hint-size="22px,22px"></x-import></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0104" hint-size="200px,22px"></x-import>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Sem nome · Curió · a anilhar</span>
+            </span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+              <span aria-label="Sexo indefinido" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--text-muted)">—</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">2 meses</span>
+            </span>
+          </button>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="plantel" on-change="{{ noop }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="3c" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3c</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B6 · Árvore genealógica</span>
+      </div>
+      <div data-screen-label="B6 Arvore genealogica" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronLeft" size="22" color="#fff" hint-size="22px,22px"></x-import>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Árvore genealógica</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">Tibiriçá · 3 gerações</span>
+          </div>
+        </header>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-accent-soft);border-bottom:1px solid var(--border-accent);display:flex;gap:10px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="TriangleAlert" size="18" color="var(--text-accent)" hint-size="18px,18px"></x-import>
+          <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+            <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Ancestral repetido nos dois lados</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Vento (SOV 1234 · 2021 · 0033) é avô paterno e avô materno. Endogamia 9,38%.</span>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:16px 0 16px 16px;display:flex;align-items:center;gap:0">
+          <div style="flex:none;width:150px;display:flex;flex-direction:column;gap:6px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Indivíduo</span>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.PedigreeNode" name="Tibiriçá" code="SOV 1234 · 2026 · 0087" sex="M" mutation="clássica" hint-size="150px,56px"></x-import>
+          </div>
+          <div style="position:relative;flex:none;width:28px;align-self:stretch">
+            <span style="position:absolute;left:0;top:50%;width:14px;height:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;top:28%;bottom:28%;width:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;top:28%;width:14px;height:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;bottom:28%;width:14px;height:1px;background:var(--border-default)"></span>
+          </div>
+          <div style="flex:none;width:160px;display:flex;flex-direction:column;gap:6px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Pais</span>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.PedigreeNode" name="Cravo" code="SOV 1234 · 2023 · 0412" sex="M" generation="{{ 2 }}" compact="{{ true }}" hint-size="160px,44px"></x-import>
+            <div style="height:70px"></div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.PedigreeNode" name="Aurora" code="COBP 25 01930" sex="F" generation="{{ 2 }}" compact="{{ true }}" hint-size="160px,44px"></x-import>
+          </div>
+          <div style="position:relative;flex:none;width:28px;align-self:stretch">
+            <span style="position:absolute;left:0;top:22%;width:14px;height:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:0;bottom:22%;width:14px;height:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;top:9%;bottom:9%;width:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;top:9%;width:14px;height:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;top:35%;width:14px;height:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;bottom:35%;width:14px;height:1px;background:var(--border-default)"></span>
+            <span style="position:absolute;left:14px;bottom:9%;width:14px;height:1px;background:var(--border-default)"></span>
+          </div>
+          <div style="flex:none;width:170px;display:flex;flex-direction:column;gap:10px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Avós</span>
+            <div style="outline:2px solid var(--sis-ambar);outline-offset:1px;border-radius:var(--radius-sm)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.PedigreeNode" name="Vento" code="SOV 1234 · 2021 · 0033" sex="M" generation="{{ 3 }}" compact="{{ true }}" hint-size="170px,44px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.PedigreeNode" name="Brisa" code="FOB 22 00871" sex="F" generation="{{ 3 }}" compact="{{ true }}" hint-size="170px,44px"></x-import>
+            <div style="outline:2px solid var(--sis-ambar);outline-offset:1px;border-radius:var(--radius-sm)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.PedigreeNode" name="Vento" code="SOV 1234 · 2021 · 0033" sex="M" generation="{{ 3 }}" compact="{{ true }}" hint-size="170px,44px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.PedigreeNode" unknown="{{ true }}" compact="{{ true }}" hint-size="170px,44px"></x-import>
+          </div>
+        </div>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-card);border-top:1px solid var(--border-subtle);display:flex;align-items:center;gap:14px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font:var(--type-small);font-size:12px;color:var(--text-secondary)"><span style="width:3px;height:14px;background:var(--sis-petroleo-700)"></span> Macho</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font:var(--type-small);font-size:12px;color:var(--text-secondary)"><span style="width:3px;height:14px;background:var(--sis-azul-profundo)"></span> Fêmea</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font:var(--type-small);font-size:12px;color:var(--text-secondary)"><span style="width:10px;height:10px;border:2px solid var(--sis-ambar)"></span> Repetido</span>
+          <span style="flex:1;text-align:right;font:var(--type-small);font-size:12px;color:var(--text-muted)">arraste →</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="3d" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3d</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B7 · Casais</span>
+      </div>
+      <div data-screen-label="B7 Casais" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Casais</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">14 ativos · 23 ovos em choco</span>
+          </div>
+          <span style="display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(255,255,255,.12)">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Plus" size="20" color="#fff" hint-size="20px,20px"></x-import>
+          </span>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-ambar);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <span style="font:var(--weight-semibold) var(--text-md)/1.2 var(--font-display);color:var(--text-heading)">Casal 07</span>
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--radius-pill);background:var(--surface-accent);color:var(--text-on-accent);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-ui)">
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Feather" size="12" hint-size="12px,12px"></x-import>
+                Anilhar hoje
+              </span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" size="sm" hint-size="180px,20px"></x-import>
+              <span style="font:var(--type-small);color:var(--text-muted)">×</span>
+              <span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="COBP 25 01930" size="sm" hint-size="140px,20px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" tone="brand" hint-size="auto,20px">Curió</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" hint-size="auto,20px">Clássica</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" tone="accent" hint-size="auto,20px">Gaiola 12</x-import>
+            </div>
+            <div style="display:flex;gap:18px;border-top:1px solid var(--border-subtle);padding-top:8px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Rodada</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">3</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Filhotes</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">3</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Endogamia</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-accent)">9,38%</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <span style="font:var(--weight-semibold) var(--text-md)/1.2 var(--font-display);color:var(--text-heading)">Casal 12</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="info" size="sm" hint-size="auto,20px">Ovoscopia hoje</x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="FOB 24 00412" size="sm" hint-size="140px,20px"></x-import>
+              <span style="font:var(--type-small);color:var(--text-muted)">×</span>
+              <span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0091" size="sm" hint-size="180px,20px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" tone="brand" hint-size="auto,20px">Curió</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" hint-size="auto,20px">Névoa × Cravo</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" tone="accent" hint-size="auto,20px">Gaiola 04</x-import>
+            </div>
+            <div style="display:flex;gap:18px;border-top:1px solid var(--border-subtle);padding-top:8px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Rodada</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">1</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ovos ativos</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">4</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Endogamia</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-brand)">3,13%</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <span style="font:var(--weight-semibold) var(--text-md)/1.2 var(--font-display);color:var(--text-heading)">Casal 04</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="neutro" size="sm" hint-size="auto,20px">Chocando · dia 9</x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="FOB 22 00871" size="sm" hint-size="140px,20px"></x-import>
+              <span style="font:var(--type-small);color:var(--text-muted)">×</span>
+              <span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="CBC 25 00733" size="sm" hint-size="140px,20px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" tone="brand" hint-size="auto,20px">Canário</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Tag" hint-size="auto,20px">Ágata</x-import>
+            </div>
+            <div style="display:flex;gap:18px;border-top:1px solid var(--border-subtle);padding-top:8px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Rodada</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">2</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ovos ativos</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">5</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Endogamia</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-brand)">0,00%</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-tijolo-600);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <span style="font:var(--weight-semibold) var(--text-md)/1.2 var(--font-display);color:var(--text-heading)">Casal 03</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="critico" size="sm" hint-size="auto,20px">Perda · 2 ovos</x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="FOB 24 01204" size="sm" hint-size="140px,20px"></x-import>
+              <span style="font:var(--type-small);color:var(--text-muted)">×</span>
+              <span aria-label="Fêmea" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-azul-profundo)">F</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="CBC 25 00218" size="sm" hint-size="140px,20px"></x-import>
+            </div>
+            <div style="display:flex;gap:18px;border-top:1px solid var(--border-subtle);padding-top:8px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Rodada</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">4</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ovos ativos</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">1</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Separar</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">38 d</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="casais" on-change="{{ noop }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="3e" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3e</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B8 · Ficha do casal e endogamia</span>
+      </div>
+      <div data-screen-label="B8 Ficha do casal" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronLeft" size="22" color="#fff" hint-size="22px,22px"></x-import>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Casal 07</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">Gaiola 12 · Curió · rodada 3</span>
+          </div>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:var(--radius-sm);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-base)/1 var(--font-numeric);color:var(--sis-petroleo-700)" aria-label="Macho">M</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Tibiriçá</span>
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" size="sm" hint-size="190px,20px"></x-import>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;border-top:1px solid var(--border-subtle);padding-top:10px">
+              <span style="display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:var(--radius-sm);background:var(--status-info-bg);font:var(--weight-semibold) var(--text-base)/1 var(--font-numeric);color:var(--sis-azul-profundo)" aria-label="Fêmea">F</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Aurora</span>
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="COBP 25 01930" size="sm" hint-size="150px,20px"></x-import>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </div>
+          </div>
+          <div style="padding:14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:10px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.InbreedingMeter" value="{{ 9.38 }}" hint-size="100%,84px"></x-import>
+            <div style="display:flex;gap:10px;background:var(--surface-accent-soft);border:1px solid var(--border-accent);border-radius:var(--radius-sm);padding:10px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Dna" size="18" color="var(--text-accent)" hint-size="18px,18px"></x-import>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Avós paternos em comum</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Vento aparece nos dois lados da árvore.</span>
+              </div>
+            </div>
+            <button type="button" style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;background:transparent;border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui);color:var(--text-brand);cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Dna" size="16" hint-size="16px,16px"></x-import>
+              Ver árvore genealógica
+            </button>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Histórico de rodadas</span>
+          <div style="padding:14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md)">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Timeline" steps="{{ rodadas }}" hint-size="100%,230px"></x-import>
+          </div>
+        </div>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-card);border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:6px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" size="lg" icon-left="Egg" full-width="{{ true }}" hint-size="100%,48px">Registrar nova postura</x-import>
+        </div>
+      </div>
+    </div>
+
+    <div id="3f" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3f</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B9 · Registrar postura</span>
+      </div>
+      <div data-screen-label="B9 Registrar postura" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="X" size="22" color="#fff" hint-size="22px,22px"></x-import>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Novo filhote</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">Casal 07 · rodada 3</span>
+          </div>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="Anilha" required="{{ true }}" hint="Toque para digitar só os números da sequência." hint-size="100%,84px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" size="lg" numeric="{{ true }}" default-value="SOV 1234 · 2026 · 0105" hint-size="100%,48px"></x-import>
+          </x-import>
+          <button type="button" style="display:flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0 12px;background:var(--surface-brand-soft);border:1px solid var(--border-brand);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui);color:var(--text-brand);cursor:pointer">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Check" size="16" hint-size="16px,16px"></x-import>
+            Usar sugestão · 0105
+          </button>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Field" label="Data de nascimento" hint-size="100%,84px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Input" size="lg" icon-left="Calendar" default-value="06/09/2026" hint-size="100%,48px"></x-import>
+          </x-import>
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;gap:10px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Teclado numérico</span>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">1</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">2</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">3</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">4</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">5</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">6</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">7</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">8</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">9</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui);color:var(--text-secondary)">·</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:var(--radius-sm);font:var(--weight-medium) var(--text-lg)/1 var(--font-numeric);color:var(--text-primary)">0</span>
+              <span style="display:grid;place-items:center;height:52px;background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-sm);color:var(--text-secondary)">
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Delete" size="20" hint-size="20px,20px"></x-import>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-card);border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" size="lg" full-width="{{ true }}" hint-size="100%,48px">Salvar filhote</x-import>
+          <div style="display:flex;align-items:center;justify-content:center;gap:7px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="WifiOff" size="14" color="var(--text-secondary)" hint-size="14px,14px"></x-import>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Salvo no aparelho · sobe quando o sinal voltar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="3g" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3g</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B10 · Financeiro</span>
+      </div>
+      <div data-screen-label="B10 Financeiro" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Financeiro</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">Setembro de 2026</span>
+          </div>
+          <span style="display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(255,255,255,.12)">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Plus" size="20" color="#fff" hint-size="20px,20px"></x-import>
+          </span>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.StatCard" label="Receita" value="R$ 4.180,00" icon="TrendingUp" hint-size="100%,86px"></x-import>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.StatCard" label="Despesa" value="R$ 2.940,00" icon="TrendingDown" hint-size="100%,86px"></x-import>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.StatCard" label="Saldo do mês" value="R$ 1.240,00" tone="brand" hint="12 lançamentos" hint-size="100%,96px"></x-import>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Saldo dos últimos 6 meses</span>
+          <div style="padding:14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:flex-end;justify-content:space-between;gap:8px;height:150px">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-secondary)">640</span>
+              <div style="width:100%;height:38px;background:var(--sis-petroleo-200);border-radius:var(--radius-xs) var(--radius-xs) 0 0"></div>
+              <span style="font:var(--weight-medium) 11px/1 var(--font-ui);color:var(--text-muted)">abr</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-secondary)">890</span>
+              <div style="width:100%;height:53px;background:var(--sis-petroleo-200);border-radius:var(--radius-xs) var(--radius-xs) 0 0"></div>
+              <span style="font:var(--weight-medium) 11px/1 var(--font-ui);color:var(--text-muted)">mai</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-danger)">−310</span>
+              <div style="width:100%;height:18px;background:var(--sis-tijolo-100);border:1px solid var(--sis-tijolo-600);border-radius:var(--radius-xs) var(--radius-xs) 0 0"></div>
+              <span style="font:var(--weight-medium) 11px/1 var(--font-ui);color:var(--text-muted)">jun</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-secondary)">1.020</span>
+              <div style="width:100%;height:61px;background:var(--sis-petroleo-200);border-radius:var(--radius-xs) var(--radius-xs) 0 0"></div>
+              <span style="font:var(--weight-medium) 11px/1 var(--font-ui);color:var(--text-muted)">jul</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <span style="font:var(--weight-medium) 11px/1 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-secondary)">1.480</span>
+              <div style="width:100%;height:88px;background:var(--sis-petroleo-200);border-radius:var(--radius-xs) var(--radius-xs) 0 0"></div>
+              <span style="font:var(--weight-medium) 11px/1 var(--font-ui);color:var(--text-muted)">ago</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <span style="font:var(--weight-semibold) 11px/1 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-brand)">1.240</span>
+              <div style="width:100%;height:74px;background:var(--sis-petroleo-700);border-radius:var(--radius-xs) var(--radius-xs) 0 0"></div>
+              <span style="font:var(--weight-semibold) 11px/1 var(--font-ui);color:var(--text-brand)">set</span>
+            </div>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Lançamentos</span>
+          <div style="display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);overflow:hidden">
+            <div style="display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px;border-bottom:1px solid var(--border-subtle)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="18" color="var(--text-brand)" hint-size="18px,18px"></x-import>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Venda de curió · SOV 2025 0041</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">04/09/2026</span>
+              </div>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--status-ok-fg)">+ 2.800,00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px;border-bottom:1px solid var(--border-subtle)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Wallet" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Ração e suplementos</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">02/09/2026</span>
+              </div>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-danger)">− 1.340,00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px;border-bottom:1px solid var(--border-subtle)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Award" size="18" color="var(--text-brand)" hint-size="18px,18px"></x-import>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Emissão de 6 CRO</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">01/09/2026</span>
+              </div>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-danger)">− 180,00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Syringe" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Veterinário · plantel</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">28/08/2026</span>
+              </div>
+              <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-danger)">− 420,00</span>
+            </div>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="mais" on-change="{{ noop }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="3h" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">3h</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B11 · Mais</span>
+      </div>
+      <div data-screen-label="B11 Mais" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <span style="flex:1;font:var(--type-h4);color:#fff">Mais</span>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="padding:14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px">
+            <span style="display:grid;place-items:center;width:48px;height:48px;flex:none;border-radius:var(--radius-sm);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-md)/1 var(--font-display);color:var(--text-brand)">CT</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <span style="font:var(--weight-semibold) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Criatório Tibiriçá</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">SOV 1234 · Registro IBAMA 2.4189</span>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+          </div>
+          <div style="padding:12px 14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px">
+            <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-label);color:var(--text-heading)">Plano Criador</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">Renova em 12/10/2026 · R$ 39,90/mês</span>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="ok" dot="{{ true }}" size="sm" hint-size="auto,20px">Ativa</x-import>
+          </div>
+          <div style="display:flex;flex-direction:column;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);overflow:hidden">
+            <button type="button" style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;background:transparent;border:none;border-bottom:1px solid var(--border-subtle);font:inherit;text-align:left;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Syringe" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-primary)">Saúde do plantel</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="atencao" size="sm" hint-size="auto,20px">2 em tratamento</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;background:transparent;border:none;border-bottom:1px solid var(--border-subtle);font:inherit;text-align:left;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Bird" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-primary)">Espécies e prazos</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">7</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;background:transparent;border:none;border-bottom:1px solid var(--border-subtle);font:inherit;text-align:left;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChartColumn" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-primary)">Relatórios</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;background:transparent;border:none;border-bottom:1px solid var(--border-subtle);font:inherit;text-align:left;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Award" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-primary)">Certificados · CRO</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">34</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;background:transparent;border:none;border-bottom:1px solid var(--border-subtle);font:inherit;text-align:left;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Settings" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-primary)">Configurações</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;background:transparent;border:none;border-bottom:1px solid var(--border-subtle);font:inherit;text-align:left;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="User" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-primary)">Perfil e assinatura</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;background:transparent;border:none;font:inherit;text-align:left;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="MessageCircle" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-primary)">Ajuda no WhatsApp</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ExternalLink" size="16" color="var(--text-muted)" hint-size="16px,16px"></x-import>
+            </button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="online" last-sync="hoje 07:42" hint-size="100%,32px"></x-import>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">SisAves 1.4.2 · sisaves.tallpa.com.br</span>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="mais" on-change="{{ noop }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px;padding:36px 40px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--border-subtle);padding-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Faixa B · Telas mobile</span>
+      <h1 style="margin:0;font:var(--type-h2);color:var(--text-heading);letter-spacing:var(--tracking-tight)">Hoje, Ovos e Ficha da ave</h1>
+    </div>
+    <span style="font:var(--type-small);color:var(--text-muted);font-variant-numeric:tabular-nums">390 × 844 · alvos ≥ 48px · tema claro e escuro</span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <div id="2a" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2a</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B1 · Hoje</span>
+      </div>
+      <div data-screen-label="B1 Hoje" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Hoje</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">6 de setembro · Temporada 2026</span>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="pendente" pending="{{ 4 }}" compact="{{ true }}" hint-size="140px,26px"></x-import>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Bom dia, Tibiriçá</span>
+            <span style="font:var(--type-small);color:var(--text-secondary)">Domingo · 3 tarefas no galpão</span>
+          </div>
+          <div style="padding:16px;background:var(--sis-petroleo);color:#fff;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:rgba(255,255,255,.78)">Tarefas de hoje</span>
+              <span style="font:var(--weight-bold) var(--text-4xl)/1 var(--font-display);font-variant-numeric:tabular-nums">3</span>
+              <span style="font:var(--type-small);color:rgba(255,255,255,.8)">2 ninhadas e 1 separação</span>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Sun" size="28" color="rgba(255,255,255,.7)" hint-size="28px,28px"></x-import>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Precisa de você agora</span>
+          <button type="button" style="display:flex;align-items:center;gap:12px;width:100%;min-height:66px;padding:11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-ambar);border-radius:var(--radius-md);font:inherit;color:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--surface-accent-soft);color:var(--text-accent)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Feather" size="22" hint-size="22px,22px"></x-import>
+            </span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">3 filhotes para anilhar</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Casal 07 · nasceram há 5 dias</span>
+            </span>
+            <span style="flex:none;display:inline-flex;align-items:center;padding:3px 9px;border-radius:var(--radius-pill);background:var(--surface-accent);color:var(--text-on-accent);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-ui)">Hoje</span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:12px;width:100%;min-height:66px;padding:11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;color:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--status-info-bg);color:var(--status-info-fg)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Egg" size="22" hint-size="22px,22px"></x-import>
+            </span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">2 ovos para ovoscopia</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Casal 12 · dia 8 de 8</span>
+            </span>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="20" color="var(--text-muted)" hint-size="20px,20px"></x-import>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:12px;width:100%;min-height:66px;padding:11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;color:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--status-neutro-bg);color:var(--status-neutro-fg)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Users" size="22" hint-size="22px,22px"></x-import>
+            </span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">1 filhote para separar</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Casal 03 · 38 dias de vida</span>
+            </span>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="20" color="var(--text-muted)" hint-size="20px,20px"></x-import>
+          </button>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary);margin-top:2px">Plantel</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Aves</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">128</span>
+            </div>
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Casais ativos</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">14</span>
+            </div>
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ovos em choco</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">23</span>
+            </div>
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Nascimentos no mês</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">9</span>
+            </div>
+          </div>
+          <div style="padding:12px 14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+              <span style="font:var(--type-label);color:var(--text-heading)">Temporada 2026</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">de 01/07 a 31/12</span>
+            </div>
+            <div style="display:flex;gap:18px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Eclosão</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-brand)">78%</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ninhadas</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">12</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Anilhados</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">34</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="{{ abaB1 }}" on-change="{{ setB1 }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="2b" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2b</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B2 · Ovos — pipeline</span>
+      </div>
+      <div data-screen-label="B2 Ovos" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Ovos</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">12 ninhadas ativas · 23 ovos</span>
+          </div>
+          <span style="display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(255,255,255,.12)">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Search" size="20" color="#fff" hint-size="20px,20px"></x-import>
+          </span>
+        </header>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-card);border-bottom:1px solid var(--border-subtle);display:flex;gap:8px;overflow:hidden">
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);background:var(--sis-petroleo-700);color:#fff;font:var(--weight-semibold) var(--text-sm)/1 var(--font-ui)">Todas <span style="font-variant-numeric:tabular-nums;opacity:.85">12</span></span>
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);background:var(--surface-card);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Anilhar <span style="font-variant-numeric:tabular-nums;color:var(--text-accent);font-weight:600">3</span></span>
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);background:var(--surface-card);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Chocando <span style="font-variant-numeric:tabular-nums">4</span></span>
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);background:var(--surface-card);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Ovoscopia <span style="font-variant-numeric:tabular-nums">2</span></span>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-accent)">Anilhar · 3</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">janela fecha hoje</span>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-ambar);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-semibold) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 07 · Rodada 3</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Tibiriçá × Aurora · 3 filhotes</span>
+              </div>
+              <span style="flex:none;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--radius-pill);background:var(--surface-accent);color:var(--text-on-accent);border:1px solid #D69B24;font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-ui)">
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Feather" size="12" hint-size="12px,12px"></x-import>
+                Anilhar hoje
+              </span>
+            </div>
+            <div style="display:flex;gap:16px;border-top:1px solid var(--border-subtle);padding-top:8px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Nascimento</span>
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">01/09/2026</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Decorridos</span>
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">5 dias</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Prazo</span>
+                <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-accent)">hoje</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-ambar);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-semibold) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 11 · Rodada 2</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">2 filhotes · 6 dias · vence amanhã</span>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="20" color="var(--text-muted)" hint-size="20px,20px"></x-import>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary);margin-top:4px">Ovoscopia · 2</span>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 12 · Rodada 1</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Névoa × Cravo · 4 ovos · dia 8 de 8</span>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="info" size="sm" hint-size="auto,20px">Ovoscopia</x-import>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.ProgressBar" value="{{ 8 }}" max="{{ 8 }}" tone="atencao" label="Postura em 29/08" value-label="vence hoje" hint-size="100%,34px"></x-import>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary);margin-top:4px">Chocando · 4</span>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 04 · Rodada 2</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Vento × Brisa · 5 ovos · dia 9 de 14</span>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="neutro" size="sm" hint-size="auto,20px">Chocando</x-import>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.ProgressBar" value="{{ 9 }}" max="{{ 14 }}" label="Eclosão prevista 11/09" value-label="dia 9 de 14" hint-size="100%,34px"></x-import>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 09 · Rodada 1</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">3 ovos · dia 3 de 14</span>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="20" color="var(--text-muted)" hint-size="20px,20px"></x-import>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="{{ abaB2 }}" on-change="{{ setB2 }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="2c" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2c</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B3 · Ficha da ave</span>
+      </div>
+      <div data-screen-label="B3 Ficha da ave" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <div style="flex:none;position:relative;height:230px;background:var(--surface-sunken)">
+          <image-slot id="sisaves-ficha-ave" shape="rect" style="width:100%;height:100%" placeholder="Solte aqui a foto da ave"></image-slot>
+          <span style="position:absolute;top:12px;left:12px;display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(9,29,32,.55);pointer-events:none">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronLeft" size="22" color="#fff" hint-size="22px,22px"></x-import>
+          </span>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Tibiriçá</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2026 · 0087" size="lg" tone="brand" hint-size="230px,32px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="ok" dot="{{ true }}" size="sm" hint-size="auto,20px">Plantel ativo</x-import>
+          </div>
+          <div style="padding:12px 14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:grid;grid-template-columns:1fr 1fr;gap:12px 14px">
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Espécie</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Curió</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Mutação</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Clássica</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Sexo</span>
+              <span style="display:inline-flex;align-items:center;gap:6px"><span aria-label="Macho" style="font:var(--weight-semibold) var(--text-sm)/1 var(--font-numeric);color:var(--sis-petroleo-700)">M</span><span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Macho</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Nascimento</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">14/02/2026</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Situação</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Reprodutor</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Portador</span>
+              <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-primary)">Criatório Tibiriçá</span>
+            </div>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Filiação</span>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button type="button" style="display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:9px 11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+              <span style="display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:var(--radius-sm);background:var(--surface-brand-soft);font:var(--weight-semibold) var(--text-base)/1 var(--font-numeric);color:var(--sis-petroleo-700)" aria-label="Macho">M</span>
+              <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-secondary)">Pai · Cravo</span>
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="SOV 1234 · 2023 · 0412" size="sm" hint-size="190px,20px"></x-import>
+              </span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:9px 11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;cursor:pointer">
+              <span style="display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:var(--radius-sm);background:var(--status-info-bg);font:var(--weight-semibold) var(--text-base)/1 var(--font-numeric);color:var(--sis-azul-profundo)" aria-label="Fêmea">F</span>
+              <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-ui);color:var(--text-secondary)">Mãe · Aurora</span>
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Anilha" code="COBP 25 01930" size="sm" hint-size="190px,20px"></x-import>
+              </span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:2px">
+            <button type="button" style="display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:0 12px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);font:inherit;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Dna" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Árvore genealógica</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">3 gerações</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:0 12px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);font:inherit;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Award" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Certificado · CRO</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="ok" size="sm" hint-size="auto,20px">Emitido</x-import>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+            <button type="button" style="display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:0 12px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);font:inherit;cursor:pointer">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Scale" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+              <span style="flex:1;font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Histórico e pesagens</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums">18,4 g</span>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="18" color="var(--text-muted)" hint-size="18px,18px"></x-import>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="2d" data-theme="dark" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2d</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B1 · Hoje — tema escuro</span>
+      </div>
+      <div data-screen-label="B1 Hoje escuro" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--surface-card);border-bottom:1px solid var(--border-subtle);color:var(--text-primary)">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:var(--text-heading)">Hoje</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">03:12 · madrugada de eclosão</span>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="offline" compact="{{ true }}" hint-size="150px,26px"></x-import>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Boa madrugada, Tibiriçá</span>
+            <span style="font:var(--type-small);color:var(--text-secondary)">2 ninhadas em eclosão agora</span>
+          </div>
+          <div style="padding:16px;background:var(--surface-brand-soft);border:1px solid var(--border-brand);color:var(--text-primary);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-brand)">Tarefas de agora</span>
+              <span style="font:var(--weight-bold) var(--text-4xl)/1 var(--font-display);font-variant-numeric:tabular-nums;color:var(--text-heading)">2</span>
+              <span style="font:var(--type-small);color:var(--text-secondary)">Casal 04 e Casal 09</span>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Moon" size="28" color="var(--text-brand)" hint-size="28px,28px"></x-import>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Precisa de você agora</span>
+          <button type="button" style="display:flex;align-items:center;gap:12px;width:100%;min-height:66px;padding:11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-ambar);border-radius:var(--radius-md);font:inherit;color:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--surface-accent-soft);color:var(--text-accent)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Feather" size="22" hint-size="22px,22px"></x-import>
+            </span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">3 filhotes para anilhar</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Casal 07 · nasceram há 5 dias</span>
+            </span>
+            <span style="flex:none;display:inline-flex;align-items:center;padding:3px 9px;border-radius:var(--radius-pill);background:var(--surface-accent);color:var(--text-on-accent);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-ui)">Hoje</span>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:12px;width:100%;min-height:66px;padding:11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;color:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--status-info-bg);color:var(--status-info-fg)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Egg" size="22" hint-size="22px,22px"></x-import>
+            </span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">2 ovos para ovoscopia</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Casal 12 · dia 8 de 8</span>
+            </span>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="20" color="var(--text-muted)" hint-size="20px,20px"></x-import>
+          </button>
+          <button type="button" style="display:flex;align-items:center;gap:12px;width:100%;min-height:66px;padding:11px;text-align:left;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--border-subtle);border-radius:var(--radius-md);font:inherit;color:inherit;cursor:pointer">
+            <span style="display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--status-neutro-bg);color:var(--status-neutro-fg)">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Users" size="22" hint-size="22px,22px"></x-import>
+            </span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">1 filhote para separar</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Casal 03 · 38 dias de vida</span>
+            </span>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="20" color="var(--text-muted)" hint-size="20px,20px"></x-import>
+          </button>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary);margin-top:2px">Plantel</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Aves</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">128</span>
+            </div>
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Casais ativos</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">14</span>
+            </div>
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ovos em choco</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">23</span>
+            </div>
+            <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Nascimentos no mês</span>
+              <span style="font:var(--weight-semibold) var(--text-xl)/1.15 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-heading)">9</span>
+            </div>
+          </div>
+          <div style="padding:12px 14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+              <span style="font:var(--type-label);color:var(--text-heading)">Temporada 2026</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">de 01/07 a 31/12</span>
+            </div>
+            <div style="display:flex;gap:18px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Eclosão</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-brand)">78%</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Ninhadas</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">12</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Anilhados</span>
+                <span style="font:var(--type-data);font-variant-numeric:tabular-nums;color:var(--text-primary)">34</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="{{ abaB1d }}" on-change="{{ setB1d }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="2e" data-theme="dark" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2e</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">B2 · Ovos — tema escuro</span>
+      </div>
+      <div data-screen-label="B2 Ovos escuro" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--surface-card);border-bottom:1px solid var(--border-subtle)">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:var(--text-heading)">Ovos</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">12 ninhadas ativas · 23 ovos</span>
+          </div>
+          <span style="display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius-sm);background:var(--surface-hover)">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Search" size="20" color="var(--text-brand)" hint-size="20px,20px"></x-import>
+          </span>
+        </header>
+        <div style="flex:none;padding:12px 16px;background:var(--surface-card);border-bottom:1px solid var(--border-subtle);display:flex;gap:8px;overflow:hidden">
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);background:var(--surface-selected);border:1px solid var(--border-brand);color:var(--text-brand);font:var(--weight-semibold) var(--text-sm)/1 var(--font-ui)">Todas <span style="font-variant-numeric:tabular-nums">12</span></span>
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Anilhar <span style="font-variant-numeric:tabular-nums;color:var(--text-accent);font-weight:600">3</span></span>
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Chocando <span style="font-variant-numeric:tabular-nums">4</span></span>
+          <span style="flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:var(--radius-pill);border:1px solid var(--border-default);color:var(--text-secondary);font:var(--weight-medium) var(--text-sm)/1 var(--font-ui)">Ovoscopia <span style="font-variant-numeric:tabular-nums">2</span></span>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+            <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-accent)">Anilhar · 3</span>
+            <span style="font:var(--type-small);font-size:12px;color:var(--text-muted)">janela fecha hoje</span>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-ambar);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-semibold) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 07 · Rodada 3</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Tibiriçá × Aurora · 3 filhotes</span>
+              </div>
+              <span style="flex:none;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--radius-pill);background:var(--surface-accent);color:var(--text-on-accent);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-ui)">
+                <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="Feather" size="12" hint-size="12px,12px"></x-import>
+                Anilhar hoje
+              </span>
+            </div>
+            <div style="display:flex;gap:16px;border-top:1px solid var(--border-subtle);padding-top:8px">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Nascimento</span>
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">01/09/2026</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Decorridos</span>
+                <span style="font:var(--weight-medium) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-primary)">5 dias</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary)">Prazo</span>
+                <span style="font:var(--weight-semibold) var(--text-sm)/1.3 var(--font-numeric);font-variant-numeric:tabular-nums;color:var(--text-accent)">hoje</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-ambar);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font:var(--weight-semibold) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 11 · Rodada 2</span>
+              <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">2 filhotes · 6 dias · vence amanhã</span>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="ChevronRight" size="20" color="var(--text-muted)" hint-size="20px,20px"></x-import>
+          </div>
+          <span style="font:var(--type-overline);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-secondary);margin-top:4px">Nascimento agora · 2</span>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--sis-petroleo-500);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 04 · Rodada 2</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">Vento × Brisa · 5 ovos · dia 14 de 14</span>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="ok" size="sm" hint-size="auto,20px">Eclodindo</x-import>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.ProgressBar" value="{{ 14 }}" max="{{ 14 }}" label="2 ovos bicados às 02:40" value-label="dia 14 de 14" hint-size="100%,34px"></x-import>
+          </div>
+          <div style="padding:12px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font:var(--weight-medium) var(--text-base)/1.3 var(--font-ui);color:var(--text-heading)">Casal 09 · Rodada 1</span>
+                <span style="font:var(--type-small);font-size:12px;color:var(--text-secondary)">3 ovos · dia 13 de 14</span>
+              </div>
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Badge" tone="info" size="sm" hint-size="auto,20px">Chocando</x-import>
+            </div>
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.ProgressBar" value="{{ 13 }}" max="{{ 14 }}" label="Eclosão prevista 07/09" value-label="dia 13 de 14" hint-size="100%,34px"></x-import>
+          </div>
+          <div style="padding:11px 12px;background:var(--surface-accent-soft);border:1px solid var(--border-accent);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="WifiOff" size="18" color="var(--text-accent)" hint-size="18px,18px"></x-import>
+            <span style="flex:1;font:var(--type-small);color:var(--text-primary)">Offline — os 4 registros da madrugada estão salvos no aparelho.</span>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="{{ abaB2d }}" on-change="{{ setB2d }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="2f" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2f</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">Estado vazio · primeiro acesso</span>
+      </div>
+      <div data-screen-label="Estado vazio" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Hoje</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">6 de setembro · Temporada 2026</span>
+          </div>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span style="font:var(--type-h3);color:var(--text-heading);letter-spacing:var(--tracking-snug)">Bem-vindo ao SisAves</span>
+            <span style="font:var(--type-small);color:var(--text-secondary)">Seu criatório ainda não tem aves cadastradas.</span>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.EmptyState" icon="Bird" title="Nenhuma ave no plantel" description="Cadastre a primeira ave com a anilha oficial do clube. Casais, ninhadas e genealogia partem dela." hint-size="100%,190px">
+          </x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" size="lg" icon-left="Bird" full-width="{{ true }}" hint-size="100%,48px">Cadastrar primeira ave</x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" icon-left="Upload" full-width="{{ true }}" hint-size="100%,48px">Importar planilha do plantel</x-import>
+          <div style="padding:12px 14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:6px">
+            <span style="font:var(--type-label);color:var(--text-heading)">Antes de começar</span>
+            <span style="font:var(--type-small);color:var(--text-secondary)">Tenha à mão o código do clube e o ano das anilhas. O SisAves sugere o próximo número da sequência a cada filhote.</span>
+          </div>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="hoje" on-change="{{ noop }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="2g" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2g</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">Carregando</span>
+      </div>
+      <div data-screen-label="Carregando" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Hoje</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">carregando plantel…</span>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="pendente" pending="{{ 4 }}" compact="{{ true }}" hint-size="140px,26px"></x-import>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="width:180px;height:20px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+            <div style="width:120px;height:13px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+          </div>
+          <div style="height:96px;border-radius:var(--radius-md);background:var(--surface-sunken)"></div>
+          <div style="width:150px;height:11px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+          <div style="height:66px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;padding:11px">
+            <div style="width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken)"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+              <div style="width:70%;height:14px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+              <div style="width:45%;height:11px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+            </div>
+          </div>
+          <div style="height:66px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;padding:11px">
+            <div style="width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken)"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+              <div style="width:60%;height:14px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+              <div style="width:38%;height:11px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+            </div>
+          </div>
+          <div style="height:66px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;padding:11px">
+            <div style="width:44px;height:44px;flex:none;border-radius:var(--radius-sm);background:var(--surface-sunken)"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+              <div style="width:66%;height:14px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+              <div style="width:42%;height:11px;border-radius:var(--radius-xs);background:var(--surface-sunken)"></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="height:66px;border-radius:var(--radius-md);background:var(--surface-sunken)"></div>
+            <div style="height:66px;border-radius:var(--radius-md);background:var(--surface-sunken)"></div>
+            <div style="height:66px;border-radius:var(--radius-md);background:var(--surface-sunken)"></div>
+            <div style="height:66px;border-radius:var(--radius-md);background:var(--surface-sunken)"></div>
+          </div>
+          <span style="font:var(--type-small);color:var(--text-muted)">Sem brilho, sem shimmer: bloco cinza estático até o dado chegar.</span>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="hoje" on-change="{{ noop }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+    <div id="2h" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-xs);background:var(--surface-brand-soft);color:var(--text-brand);font:var(--weight-semibold) var(--text-2xs)/1.4 var(--font-numeric)">2h</span>
+        <span style="font:var(--type-label);color:var(--text-heading)">Erro · sem conexão</span>
+      </div>
+      <div data-screen-label="Erro sem conexao" style="width:390px;height:844px;display:flex;flex-direction:column;background:var(--surface-page);border:1px solid var(--border-default);overflow:hidden">
+        <header style="flex:none;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:var(--sis-petroleo);color:#fff">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+            <span style="font:var(--type-h4);color:#fff">Hoje</span>
+            <span style="font:var(--type-small);font-size:12px;color:rgba(255,255,255,.78)">6 de setembro · Temporada 2026</span>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.SyncStatus" state="offline" compact="{{ true }}" hint-size="150px,26px"></x-import>
+        </header>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div style="padding:14px;background:var(--surface-danger-soft);border:1px solid var(--border-danger);border-radius:var(--radius-md);display:flex;gap:12px">
+            <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="WifiOff" size="22" color="var(--status-critico-fg)" hint-size="22px,22px"></x-import>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+              <span style="font:var(--weight-semibold) var(--text-base)/1.3 var(--font-ui);color:var(--status-critico-fg)">Sem conexão com o servidor</span>
+              <span style="font:var(--type-small);color:var(--text-primary)">Última sincronização às 07:42. As tarefas de hoje abaixo são as do último envio.</span>
+            </div>
+          </div>
+          <div style="padding:12px 14px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Icon" name="RefreshCw" size="18" color="var(--text-accent)" hint-size="18px,18px"></x-import>
+              <span style="flex:1;font:var(--type-label);color:var(--text-heading)">4 registros pendentes no aparelho</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--border-subtle);padding-top:10px">
+              <span style="font:var(--type-small);color:var(--text-secondary)">Postura · Casal 04 · 5 ovos · 06/09 06:10</span>
+              <span style="font:var(--type-small);color:var(--text-secondary)">Anilhamento · Casal 07 · 3 filhotes · 06/09 06:32</span>
+              <span style="font:var(--type-small);color:var(--text-secondary)">Pesagem · SOV 1234 · 2026 · 0087 · 06/09 06:48</span>
+              <span style="font:var(--type-small);color:var(--text-secondary)">Ovoscopia · Casal 12 · 4 ovos · 06/09 07:05</span>
+            </div>
+          </div>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="primary" size="lg" icon-left="RefreshCw" full-width="{{ true }}" hint-size="100%,48px">Tentar sincronizar agora</x-import>
+          <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.Button" variant="secondary" size="lg" full-width="{{ true }}" hint-size="100%,48px">Continuar offline</x-import>
+          <span style="font:var(--type-small);color:var(--text-muted)">Nada se perde: o registro fica no aparelho e sobe sozinho quando o sinal voltar.</span>
+        </div>
+        <x-import component-from-global-scope="SisAvesDesignSystem_a74bdb.TabBar" items="{{ destinos }}" value="hoje" on-change="{{ noop }}" hint-size="100%,60px"></x-import>
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { b1: "hoje", b2: "ovos", b1d: "hoje", b2d: "ovos" };
+  renderVals() {
+    return {
+      destinos: [
+        { id: "hoje", icon: "Sun", label: "Hoje", badge: 3 },
+        { id: "plantel", icon: "Bird", label: "Plantel" },
+        { id: "casais", icon: "Users", label: "Casais" },
+        { id: "ovos", icon: "Egg", label: "Ovos", badge: 2 },
+        { id: "mais", icon: "Menu", label: "Mais" },
+      ],
+      abaB1: this.state.b1,
+      abaB2: this.state.b2,
+      abaB1d: this.state.b1d,
+      abaB2d: this.state.b2d,
+      setB1: (id) => this.setState({ b1: id }),
+      setB2: (id) => this.setState({ b2: id }),
+      setB1d: (id) => this.setState({ b1d: id }),
+      setB2d: (id) => this.setState({ b2d: id }),
+      noop: () => {},
+      rodadas: [
+        { label: "Rodada 1 · 4 ovos", date: "12/03/2026", state: "done", icon: "Egg", detail: "3 eclodiram · 3 anilhados" },
+        { label: "Rodada 2 · 5 ovos", date: "28/05/2026", state: "done", icon: "Egg", detail: "4 eclodiram · 1 perda em ovoscopia" },
+        { label: "Rodada 3 · 3 filhotes", date: "01/09/2026", state: "current", icon: "Feather", detail: "Anilhamento vence hoje" },
+        { label: "Rodada 4", state: "pending", detail: "Postura ainda não registrada" },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

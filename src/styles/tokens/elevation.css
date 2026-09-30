@@ -1,0 +1,26 @@
+/* SisAves — elevação. Sombras curtas e frias; a hierarquia vem de borda + fundo,
+   não de sombra difusa. Nada de sombra colorida ou brilho. */
+:root{
+  --shadow-none:none;
+  --shadow-xs:0 1px 1px rgba(11,45,48,.06);
+  --shadow-sm:0 1px 2px rgba(11,45,48,.08),0 1px 1px rgba(11,45,48,.04);
+  --shadow-md:0 2px 6px rgba(11,45,48,.10),0 1px 2px rgba(11,45,48,.06);
+  --shadow-lg:0 8px 24px rgba(11,45,48,.14);
+  --shadow-inset:inset 0 1px 0 rgba(255,255,255,.5);
+  --shadow-sticky:0 1px 0 var(--border-subtle);
+
+  --focus-ring:0 0 0 3px color-mix(in oklch,var(--border-focus) 34%,transparent);
+  --focus-ring-offset:2px;
+
+  --overlay-scrim:rgba(9,29,32,.55);
+  --blur-overlay:blur(2px); /* @kind other */
+}
+
+[data-theme="dark"]{
+  --shadow-xs:0 1px 1px rgba(0,0,0,.4);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+  --shadow-md:0 2px 8px rgba(0,0,0,.5);
+  --shadow-lg:0 10px 28px rgba(0,0,0,.6);
+  --shadow-inset:inset 0 1px 0 rgba(255,255,255,.05);
+  --overlay-scrim:rgba(3,12,14,.7);
+}

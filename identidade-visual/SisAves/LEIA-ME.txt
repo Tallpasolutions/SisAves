@@ -1,0 +1,44 @@
+SISAVES — PACOTE DE IDENTIDADE VISUAL
+
+CONCEITO
+O símbolo combina uma ave em movimento com a letra S. A forma comunica natureza,
+organização e tecnologia sem depender de detalhes delicados.
+
+PALETA
+- Petróleo: #0B5D5E — cor principal
+- Azul profundo: #163A45 — textos e contraste
+- Âmbar: #F2B544 — destaque pontual
+- Neve: #F4F7F6 — fundos claros
+- Grafite: #1B2528 — textos de interface
+
+TIPOGRAFIA
+- Marca e títulos: Montserrat SemiBold/Bold
+- Interfaces e textos: Inter Regular/Medium
+- Fallback seguro: Arial, sans-serif
+
+ARQUIVOS PRINCIPAIS
+- sisaves-logo-horizontal.svg / .png: assinatura principal
+- sisaves-symbol-primary.svg / .png: símbolo isolado
+- sisaves-app-icon.svg e sisaves-app-icon-master-1024.png: ícone principal
+- favicon.ico: favicon com 16, 32, 48, 64, 128 e 256 px
+- apple-touch-icon.png: iOS
+- android-chrome-192x192.png e android-chrome-512x512.png: PWA/Android
+- site.webmanifest: manifesto-base para web app
+- sisaves-brand-tokens.css: variáveis de cores e tipografia
+
+HTML RECOMENDADO
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+REGRAS DE USO
+- Manter uma área livre mínima igual a 1/4 da altura do símbolo.
+- Usar a versão branca sobre fundos escuros.
+- Não aplicar gradiente, sombra, contorno, rotação ou compressão desproporcional.
+- Em 16–32 px, usar sempre o app icon, não a assinatura horizontal.
+
+OBSERVAÇÃO
+O SVG horizontal mantém o texto editável e usa Montserrat/Inter/Arial como pilha.
+Carregue Montserrat no projeto para obter a aparência recomendada.

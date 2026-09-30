@@ -1,0 +1,149 @@
+/* SisAves — cores. Paleta oficial fechada; tons derivados mantêm o matiz da cor-mãe. */
+:root{
+  /* --- Paleta oficial (não inventar cores fora desta lista) --- */
+  --sis-petroleo:#0B5D5E;
+  --sis-azul-profundo:#163A45;
+  --sis-ambar:#F2B544;
+  --sis-neve:#F4F7F6;
+  --sis-grafite:#1B2528;
+
+  /* --- Tons derivados do petróleo (mesmo matiz, só luminosidade) --- */
+  --sis-petroleo-950:#052A2B;
+  --sis-petroleo-900:#073B3C;
+  --sis-petroleo-800:#094C4D;
+  --sis-petroleo-700:#0B5D5E;
+  --sis-petroleo-600:#0E7273;
+  --sis-petroleo-500:#128A8B;
+  --sis-petroleo-200:#B9D5D5;
+  --sis-petroleo-100:#DCEAEA;
+  --sis-petroleo-50:#EFF5F5;
+
+  /* --- Tons derivados do âmbar --- */
+  --sis-ambar-700:#8A5E12;   /* âmbar escurecido: único tom de âmbar aprovado para texto pequeno sobre branco */
+  --sis-ambar-600:#B07A1C;
+  --sis-ambar-500:#F2B544;
+  --sis-ambar-200:#FAE3B0;
+  --sis-ambar-100:#FDF3DF;
+
+  /* --- Neutros (grafite dessaturado, matiz frio do neve) --- */
+  --sis-neutro-900:#1B2528;
+  --sis-neutro-800:#2C383C;
+  --sis-neutro-700:#425257;
+  --sis-neutro-600:#5A6B70;
+  --sis-neutro-500:#78888D;
+  --sis-neutro-400:#9BA8AC;
+  --sis-neutro-300:#C2CCCF;
+  --sis-neutro-200:#DDE4E5;
+  --sis-neutro-100:#ECF0F0;
+  --sis-neutro-50:#F4F7F6;
+  --sis-branco:#FFFFFF;
+
+  /* --- Adição intencional: vermelho de gravidade (perda de ninhada, óbito, erro).
+         A paleta oficial não tem cor de erro; este tom é terroso e sério, AA sobre branco. --- */
+  --sis-tijolo-700:#8E2A20;
+  --sis-tijolo-600:#A8352A;
+  --sis-tijolo-100:#F7E4E1;
+
+  /* ================= ALIASES SEMÂNTICOS — TEMA CLARO ================= */
+  --surface-page:var(--sis-neve);
+  --surface-card:var(--sis-branco);
+  --surface-sunken:var(--sis-neutro-100);
+  --surface-raised:var(--sis-branco);
+  --surface-inverse:var(--sis-petroleo-700);
+  --surface-inverse-deep:var(--sis-azul-profundo);
+  --surface-brand-soft:var(--sis-petroleo-50);
+  --surface-accent-soft:var(--sis-ambar-100);
+  --surface-accent:var(--sis-ambar);
+  --surface-danger-soft:var(--sis-tijolo-100);
+  --surface-hover:var(--sis-petroleo-50);
+  --surface-selected:var(--sis-petroleo-100);
+  --surface-disabled:var(--sis-neutro-100);
+
+  --text-primary:var(--sis-grafite);
+  --text-secondary:var(--sis-neutro-600);
+  --text-muted:var(--sis-neutro-500);
+  --text-brand:var(--sis-petroleo-700);
+  --text-heading:var(--sis-azul-profundo);
+  --text-inverse:var(--sis-branco);
+  --text-on-accent:var(--sis-azul-profundo);
+  --text-accent:var(--sis-ambar-700);
+  --text-danger:var(--sis-tijolo-600);
+  --text-disabled:var(--sis-neutro-400);
+  --text-link:var(--sis-petroleo-700);
+  --text-link-hover:var(--sis-petroleo-900);
+
+  --border-subtle:var(--sis-neutro-200);
+  --border-default:var(--sis-neutro-300);
+  --border-strong:var(--sis-neutro-500);
+  --border-brand:var(--sis-petroleo-700);
+  --border-accent:var(--sis-ambar);
+  --border-danger:var(--sis-tijolo-600);
+  --border-focus:var(--sis-petroleo-600);
+
+  /* --- Status do plantel / ciclo do ovo --- */
+  --status-ok-fg:var(--sis-petroleo-800);
+  --status-ok-bg:var(--sis-petroleo-100);
+  --status-atencao-fg:var(--sis-ambar-700);
+  --status-atencao-bg:var(--sis-ambar-100);
+  --status-critico-fg:var(--sis-tijolo-700);
+  --status-critico-bg:var(--sis-tijolo-100);
+  --status-neutro-fg:var(--sis-neutro-700);
+  --status-neutro-bg:var(--sis-neutro-100);
+  --status-info-fg:var(--sis-azul-profundo);
+  --status-info-bg:var(--sis-petroleo-50);
+
+  color-scheme:light;
+}
+
+/* ================= TEMA ESCURO =================
+   Uso real: o criador acompanha eclosões de madrugada no galpão. Fundos em azul
+   profundo/petróleo escurecido, nunca preto puro; âmbar continua parcimonioso. */
+[data-theme="dark"]{
+  --surface-page:#0D1C21;
+  --surface-card:#12272D;
+  --surface-sunken:#0A171B;
+  --surface-raised:#173238;
+  --surface-inverse:var(--sis-neve);
+  --surface-inverse-deep:var(--sis-branco);
+  --surface-brand-soft:#123A3B;
+  --surface-accent-soft:#3A2C10;
+  --surface-accent:var(--sis-ambar);
+  --surface-danger-soft:#3B1A16;
+  --surface-hover:#1A3439;
+  --surface-selected:#1D4143;
+  --surface-disabled:#1A2A2F;
+
+  --text-primary:#E8EFEE;
+  --text-secondary:#A8BCBD;
+  --text-muted:#7E9496;
+  --text-brand:#5FB8B6;
+  --text-heading:#E8EFEE;
+  --text-inverse:var(--sis-grafite);
+  --text-on-accent:var(--sis-azul-profundo);
+  --text-accent:var(--sis-ambar);
+  --text-danger:#E98A7C;
+  --text-disabled:#5C7074;
+  --text-link:#5FB8B6;
+  --text-link-hover:#8AD2D0;
+
+  --border-subtle:#1F3A40;
+  --border-default:#2A4A50;
+  --border-strong:#456A70;
+  --border-brand:#3E9B99;
+  --border-accent:var(--sis-ambar);
+  --border-danger:#C4584B;
+  --border-focus:#5FB8B6;
+
+  --status-ok-fg:#7FCFCB;
+  --status-ok-bg:#123A3B;
+  --status-atencao-fg:#F5C868;
+  --status-atencao-bg:#3A2C10;
+  --status-critico-fg:#EE9A8D;
+  --status-critico-bg:#3B1A16;
+  --status-neutro-fg:#A8BCBD;
+  --status-neutro-bg:#1A2A2F;
+  --status-info-fg:#A8CFD0;
+  --status-info-bg:#12272D;
+
+  color-scheme:dark;
+}
