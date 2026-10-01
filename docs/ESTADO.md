@@ -12,6 +12,34 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 (Gestão Plantel / Meu Plantel, da Fênix Sites), com marca nova, em
 `sisaves.tallpa.com.br`.
 
+## Próximo passo — decidido em 30/09/2026
+
+**Completar as escritas que faltam, antes de seguir para a Fase 5.**
+
+Hoje um criador novo termina o onboarding e trava: não há como cadastrar ave
+nem formar casal pela interface. O ciclo só funciona porque a semente de
+desenvolvimento preencheu o banco. Três telas fecham essa lacuna:
+
+1. **Cadastrar ave** — nome, espécie, mutação, sexo, nascimento, anilha e
+   filiação. Com sugestão do próximo número de anilha **como botão**
+   ("Usar sugestão · 0105"), nunca preenchimento silencioso — regra do spec.
+2. **Formar casal** — escolher macho e fêmea, com o coeficiente de endogamia
+   calculado **antes** de confirmar. É a decisão técnica central do criador, e
+   o aviso tem de vir antes, não depois.
+3. **Anilhar filhote** — a ação mais urgente do produto, disparada da tela
+   Hoje ou de Ovos. Fecha o ciclo: a postura vira ave no plantel.
+
+Só então as fases 5 (árvore genealógica), 6 (offline) e as demais.
+
+**Por quê antes da Fase 5:** a árvore e o CRO são diferenciais de venda, mas o
+produto não fica utilizável sem as escritas. Com elas, um criador consegue sair
+do zero e operar.
+
+Todas seguem o padrão estabelecido na B9 (`src/app/(app)/casais/[id]/postura/`):
+Server Action com esquema Zod espelhando as constraints, erro por campo citando
+o dado exato, e `redirect` com parâmetros que a tela de destino transforma em
+confirmação de fato + consequência.
+
 ## Onde está tudo
 
 | | |
@@ -254,6 +282,8 @@ node scripts/sql.mjs -f supabase/seeds/desenvolvimento.sql
 ```
 
 Cria 11 aves com genealogia, 3 casais e ninhadas em **cada** estado do ciclo.
+O banco de desenvolvimento tem ainda a ninhada 06 do Casal 03, criada à mão ao
+testar a B9 — rodar a semente de novo limpa e recria tudo.
 As datas são relativas a `current_date`, calculadas dos prazos da própria
 espécie — então a semente continua válida amanhã, e sempre há o que ver na
 tela "Hoje". É idempotente: apaga o que semeou antes e recria.
