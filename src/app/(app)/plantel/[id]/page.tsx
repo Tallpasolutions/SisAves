@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { Award, ChevronLeft, Dna, Scale } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Anilha, Badge, SexChip } from "@/components/ui";
+import { Anilha, Badge, SexChip, Toast } from "@/components/ui";
 import {
   descreverEspecie,
   descreverSituacao,
   obterAve,
   type ResumoAve,
 } from "@/lib/dados/plantel";
-import { formatarData, formatarIdade, formatarPeso } from "@/lib/formato";
+import { descreverAve, formatarData, formatarIdade, formatarPeso } from "@/lib/formato";
 import styles from "./ficha.module.css";
 
 export async function generateMetadata({
@@ -27,12 +27,17 @@ const ROTULO_ORIGEM: Record<string, string> = {
   transferencia: "Transferida",
 };
 
-export default async function Ficha({ params }: PageProps<"/plantel/[id]">) {
+export default async function Ficha({
+  params,
+  searchParams,
+}: PageProps<"/plantel/[id]">) {
   const { id } = await params;
+  const consulta = await searchParams;
   const ave = await obterAve(id);
   if (!ave) notFound();
 
   const situacao = descreverSituacao(ave.situacao);
+  const recemCadastrada = consulta.cadastrada === "1";
 
   return (
     <div className={styles.tela}>
@@ -40,6 +45,20 @@ export default async function Ficha({ params }: PageProps<"/plantel/[id]">) {
         <ChevronLeft size={18} aria-hidden="true" />
         Plantel
       </Link>
+
+      {/* Confirmação do cadastro: o fato, e a consequência — o que esta ave
+          passa a poder fazer no sistema. */}
+      {recemCadastrada ? (
+        <Toast
+          tone="ok"
+          title={`Ave cadastrada · ${descreverAve(ave)}`}
+          description={
+            ave.sexo === "indefinido"
+              ? "Defina o sexo para que ela possa entrar num casal."
+              : "Já pode entrar num casal e aparecer na genealogia dos filhotes."
+          }
+        />
+      ) : null}
 
       <header className={styles.identidade}>
         <span className={styles.foto}>

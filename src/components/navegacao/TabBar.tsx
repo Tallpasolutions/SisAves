@@ -11,7 +11,11 @@ import styles from "./TabBar.module.css";
  * empilhar as duas — docs/design/05-telas.md, decisão transversal 1. Sem isto
  * o botão de salvar fica atrás da navegação.
  */
-const ROTAS_SEM_BARRA = [/^\/casais\/[^/]+\/postura$/];
+const ROTAS_SEM_BARRA = [
+  /^\/casais\/[^/]+\/postura$/,
+  /^\/plantel\/nova$/,
+  /^\/casais\/novo$/,
+];
 
 const DESTINOS = [
   { href: "/", rotulo: "Hoje", Icone: Sun },

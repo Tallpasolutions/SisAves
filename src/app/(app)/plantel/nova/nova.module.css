@@ -1,0 +1,221 @@
+/* Cadastrar ave — tela de escrita. Não foi desenhada no handoff; segue a
+   linguagem da B9: campos lg, grupos nomeados, ação fixa na base. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-11);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.formulario { display: flex; flex-direction: column; gap: var(--space-6); }
+
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-danger-soft);
+  color: var(--text-danger);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.alertaIcone { display: inline-flex; flex: none; margin-top: 1px; }
+
+/* --- Grupos de campos -------------------------------------------------------
+   O formulário é longo; nomear as partes dá ao criador onde parar e retomar. */
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* O fieldset nasce com min-inline-size: min-content e ignora a largura do
+     pai: sem isto a grade de duas colunas vaza para fora da tela. */
+  min-inline-size: 0;
+}
+
+.grupoTitulo {
+  padding: 0;
+  /* O legend fica fora do fluxo flex, então o gap do grupo não vale para ele. */
+  margin-bottom: var(--space-2);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.grupoNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.linhaDupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.linhaDupla > * { min-width: 0; }
+
+/* --- Sugestão de anilha ----------------------------------------------------- */
+.sugestao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.sugestaoNota {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Sexo ------------------------------------------------------------------
+   Três alvos de 48px. A letra e o nome estão escritos: cor nunca é o único
+   sinal, e o contrato proíbe unicode de gênero. */
+.sexo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-inline-size: 0;
+}
+
+.rotuloSexo {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  font: var(--type-label);
+  color: var(--text-secondary);
+}
+
+.sexoOpcoes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.sexoOpcao {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h-lg);
+  padding: 0 var(--space-2);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-control);
+}
+
+.sexoOpcao:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-brand);
+}
+
+/* Esconde o controle sem tirá-lo da árvore de acessibilidade nem do teclado:
+   `opacity: 0` com `pointer-events: none` some para leitor de tela. */
+.sexoEntrada {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.sexoRotulo {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.sexoOpcao:has(.sexoEntrada:checked) {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+}
+
+.sexoOpcao:has(.sexoEntrada:checked) .sexoRotulo {
+  font-weight: var(--weight-semibold);
+  color: var(--text-brand);
+}
+
+.sexoOpcao:has(.sexoEntrada:focus-visible) {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.sexoErro {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+/* --- Ação fixa -------------------------------------------------------------- */
+.acaoFixa {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 20;
+  padding: var(--space-3) var(--space-4);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: var(--surface-card);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.acaoFixaInterno {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

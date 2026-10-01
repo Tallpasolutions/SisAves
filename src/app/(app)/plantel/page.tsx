@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Bird, Search } from "lucide-react";
 import Link from "next/link";
-import { Anilha, EmptyState, SexChip } from "@/components/ui";
+import { Anilha, Button, EmptyState, SexChip } from "@/components/ui";
 import {
   descreverEspecie,
   listarPlantel,
@@ -31,10 +31,16 @@ export default async function Plantel({ searchParams }: PageProps<"/plantel">) {
   return (
     <div className={styles.tela}>
       <header className={styles.cabecalho}>
-        <h1 className={styles.titulo}>Plantel</h1>
-        <span className={styles.contagem}>
-          {aves.length} {aves.length === 1 ? "ave" : "aves"}
-        </span>
+        <div className={styles.cabecalhoTextos}>
+          <h1 className={styles.titulo}>Plantel</h1>
+          <span className={styles.contagem}>
+            {aves.length} {aves.length === 1 ? "ave" : "aves"}
+          </span>
+        </div>
+        {/* Única ação da tela, e o único bloco cheio de petróleo nela. */}
+        <Button href="/plantel/nova" size="lg">
+          Cadastrar ave
+        </Button>
       </header>
 
       {/* Busca sem JavaScript: GET recarrega a lista. Funciona com a conexão

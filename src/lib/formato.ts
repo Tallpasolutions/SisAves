@@ -136,3 +136,17 @@ export function formatarAnilha(anilha: {
   const sequencial = String(numero).padStart(4, "0");
   return encadear(cabeca || null, String(ano), sequencial);
 }
+
+/**
+ * "Curió Tibiriçá · SOV 1234 · 2026 · 0087" — a ave como o criador a
+ * identifica numa lista de escolha, nome e anilha juntos.
+ *
+ * Diz "sem anilha" em vez de omitir: uma linha que mostra só o nome esconde
+ * justamente o dado que distingue duas aves homônimas.
+ */
+export function descreverAve(ave: {
+  nome?: string | null;
+  anilha: Parameters<typeof formatarAnilha>[0];
+}): string {
+  return `${ave.nome ?? "Sem nome"} · ${formatarAnilha(ave.anilha) ?? "sem anilha"}`;
+}

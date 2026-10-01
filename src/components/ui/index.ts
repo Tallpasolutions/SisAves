@@ -10,8 +10,8 @@ export type { BadgeProps, TomBadge } from "./Badge";
 export { SexChip } from "./SexChip";
 export type { SexChipProps, Sexo } from "./SexChip";
 
-export { Field, Input } from "./Field";
-export type { FieldProps, InputProps } from "./Field";
+export { Field, Input, Select } from "./Field";
+export type { FieldProps, InputProps, SelectProps } from "./Field";
 
 export { InbreedingMeter, faixaEndogamia } from "./InbreedingMeter";
 export type { InbreedingMeterProps, FaixaEndogamia } from "./InbreedingMeter";

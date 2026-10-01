@@ -106,3 +106,41 @@
   font-size: var(--text-sm);
   color: var(--text-secondary);
 }
+
+/* --- Seleção ----------------------------------------------------------------
+   O select nativo ocupa o envelope inteiro para o toque acertar em qualquer
+   ponto do campo, inclusive sobre a seta. */
+.envelopeSelecao {
+  position: relative;
+  padding: 0;
+}
+
+.envelopeSelecao:focus-within { padding: 0; }
+
+.selecao {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--space-9) 0 var(--space-3);
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  appearance: none;
+  cursor: pointer;
+}
+
+.selecao:disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.adornoFim {
+  position: absolute;
+  right: var(--space-3);
+  display: inline-flex;
+  color: var(--text-muted);
+  pointer-events: none;
+}

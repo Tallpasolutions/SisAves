@@ -23,6 +23,14 @@
   /* Borda do chip âmbar em 02-componentes.md, reaproveitada como hover do
      botão de ação. Mantém o texto em azul profundo legível. */
   --surface-accent-hover: #D69B24;
+
+  /* Texto sobre preenchimento sólido que NÃO muda com o tema.
+     O botão primário é petróleo e o destrutivo é tijolo nos dois temas, mas
+     --text-inverse vira grafite no escuro (lá, "inverso" quer dizer escuro
+     sobre claro). O rótulo do botão primário saía 2,06:1 no tema escuro.
+     Estes dois são brancos sempre, como --text-on-accent é azul sempre. */
+  --text-on-brand: var(--sis-branco);
+  --text-on-danger: var(--sis-branco);
 }
 
 /* Famílias servidas por next/font (ver src/app/fonts.ts). */

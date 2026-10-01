@@ -32,6 +32,9 @@ export function FormularioPostura({
   );
   const [quantidade, setQuantidade] = useState(1);
   const [data, setData] = useState(() => new Date().toISOString().slice(0, 10));
+  // Controlado porque o React 19 reseta o formulário quando a ação termina,
+  // inclusive em erro: solto, o campo se esvaziaria junto com a mensagem.
+  const [observacoes, setObservacoes] = useState("");
 
   return (
     <form action={acao} className={styles.formulario}>
@@ -80,7 +83,14 @@ export function FormularioPostura({
 
       <Field label="Observações" hint="Opcional. Ex.: ninho trocado, fêmea arrancando pena.">
         {({ id, descritoPor }) => (
-          <Input id={id} name="observacoes" size="lg" aria-describedby={descritoPor} />
+          <Input
+            id={id}
+            name="observacoes"
+            size="lg"
+            value={observacoes}
+            onChange={(e) => setObservacoes(e.target.value)}
+            aria-describedby={descritoPor}
+          />
         )}
       </Field>
 

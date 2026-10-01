@@ -46,7 +46,7 @@ a.botao { text-decoration: none; }
 /* --- Primário -------------------------------------------------------------- */
 .primary {
   background: var(--sis-petroleo-700);
-  color: var(--text-inverse);
+  color: var(--text-on-brand);
   border-color: var(--sis-petroleo-700);
 }
 .primary:hover:not(:disabled) {
@@ -89,7 +89,7 @@ a.botao { text-decoration: none; }
 /* --- Destrutivo ------------------------------------------------------------- */
 .danger {
   background: var(--sis-tijolo-600);
-  color: var(--text-inverse);
+  color: var(--text-on-danger);
   border-color: var(--sis-tijolo-600);
 }
 .danger:hover:not(:disabled) {

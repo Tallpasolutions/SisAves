@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleAlert } from "lucide-react";
+import { ChevronDown, CircleAlert } from "lucide-react";
 import { useId } from "react";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import styles from "./Field.module.css";
@@ -109,6 +109,56 @@ export function Input({
         {...resto}
       />
       {suffix ? <span className={styles.sufixo}>{suffix}</span> : null}
+    </div>
+  );
+}
+
+export interface SelectProps extends Omit<ComponentPropsWithoutRef<"select">, "size"> {
+  invalid?: boolean;
+  size?: "md" | "lg";
+}
+
+/**
+ * Lista de escolha. Usa o `<select>` nativo de propósito: no celular ele abre
+ * a roda do sistema, que é o alvo mais confiável no galpão — e funciona antes
+ * da hidratação, com a conexão ruim de lá.
+ *
+ * O handoff não desenhou este controle; ele herda o envelope do `Input` para
+ * não introduzir uma segunda linguagem de campo.
+ */
+export function Select({
+  invalid = false,
+  size = "md",
+  disabled,
+  className,
+  children,
+  ...resto
+}: SelectProps) {
+  const envelope = [
+    styles.envelope,
+    styles.envelopeSelecao,
+    size === "lg" ? styles.lg : null,
+    invalid ? styles.invalido : null,
+    disabled ? styles.desabilitado : null,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <div className={envelope}>
+      <select
+        className={styles.selecao}
+        aria-invalid={invalid || undefined}
+        disabled={disabled}
+        {...resto}
+      >
+        {children}
+      </select>
+      {/* Decorativo: o alvo é o próprio select, que cobre o envelope inteiro. */}
+      <span className={styles.adornoFim} aria-hidden="true">
+        <ChevronDown size={18} />
+      </span>
     </div>
   );
 }
