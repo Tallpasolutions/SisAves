@@ -239,7 +239,7 @@ export async function obterCasal(id: string): Promise<CasalDetalhe | null> {
   };
 }
 
-async function calcularEndogamia(
+export async function calcularEndogamia(
   machoId?: string,
   femeaId?: string,
 ): Promise<number | null> {
@@ -262,7 +262,7 @@ async function calcularEndogamia(
  * O número sozinho não ajuda o criador a decidir: ele precisa saber DE ONDE
  * vem o parentesco para julgar se aceita o cruzamento.
  */
-async function explicarEndogamia(
+export async function explicarEndogamia(
   machoId?: string,
   femeaId?: string,
 ): Promise<string | null> {

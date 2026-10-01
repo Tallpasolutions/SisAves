@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Users } from "lucide-react";
 import Link from "next/link";
-import { Anilha, Badge, EmptyState, SexChip } from "@/components/ui";
+import { Anilha, Badge, Button, EmptyState, SexChip } from "@/components/ui";
 import { faixaEndogamia } from "@/components/ui";
 import { listarCasais, type CasalListado, type ParceiroCasal } from "@/lib/dados/casais";
 import { ROTULO_ESTADO, TOM_ESTADO } from "@/lib/dados/ovos";
@@ -17,10 +17,16 @@ export default async function Casais() {
   return (
     <div className={styles.tela}>
       <header className={styles.cabecalho}>
-        <h1 className={styles.titulo}>Casais</h1>
-        <span className={styles.contagem}>
-          {ativos.length} {ativos.length === 1 ? "ativo" : "ativos"}
-        </span>
+        <div className={styles.cabecalhoTextos}>
+          <h1 className={styles.titulo}>Casais</h1>
+          <span className={styles.contagem}>
+            {ativos.length} {ativos.length === 1 ? "ativo" : "ativos"}
+          </span>
+        </div>
+        {/* Única ação da tela, e o único bloco cheio de petróleo nela. */}
+        <Button href="/casais/novo" size="lg">
+          Formar casal
+        </Button>
       </header>
 
       {casais.length === 0 ? (

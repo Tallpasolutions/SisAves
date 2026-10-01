@@ -5,9 +5,16 @@
 
 .cabecalho {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+}
+
+.cabecalhoTextos {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-width: 0;
 }
 
 .titulo { font: var(--type-h2); }

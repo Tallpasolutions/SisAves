@@ -6,6 +6,7 @@ import { useActionState } from "react";
 import { Button, Field, Input, Select } from "@/components/ui";
 import type { OpcoesCadastroAve } from "@/lib/dados/cadastro";
 import { descreverAve } from "@/lib/formato";
+import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
 import { cadastrarAve, type EstadoCadastroAve } from "./acoes";
 import styles from "./nova.module.css";
 
@@ -53,10 +54,14 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
     observacoes: "",
   }));
 
+  const { erro, marcar, enviar } = useErrosQueEnvelhecem(estado.campos);
+
   const mudar =
     (campo: string) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       setCampos((atual) => ({ ...atual, [campo]: e.target.value }));
+      marcar(campo);
+    };
 
   // Mutação de criatório pertence a uma espécie; a de catálogo vale para todas.
   const mutacoes = useMemo(
@@ -72,7 +77,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
   const hoje = new Date().toISOString().slice(0, 10);
 
   return (
-    <form action={acao} className={styles.formulario}>
+    <form action={acao} onSubmit={enviar} className={styles.formulario}>
       {estado.erro ? (
         <p className={styles.alerta} role="alert">
           <span className={styles.alertaIcone}>
@@ -88,7 +93,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
         <Field
           label="Nome"
           hint="Como você chama a ave. Opcional."
-          error={estado.campos?.nome}
+          error={erro("nome")}
         >
           {({ id, descritoPor, invalido }) => (
             <Input
@@ -105,7 +110,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
           )}
         </Field>
 
-        <Field label="Espécie" required error={estado.campos?.especie_id}>
+        <Field label="Espécie" required error={erro("especie_id")}>
           {({ id, descritoPor, invalido }) => (
             <Select
               id={id}
@@ -134,7 +139,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
               ? "Opcional."
               : "Escolha a espécie para ver as mutações dela."
           }
-          error={estado.campos?.mutacao_id}
+          error={erro("mutacao_id")}
         >
           {({ id, descritoPor, invalido }) => (
             <Select
@@ -159,14 +164,17 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
 
         <Sexo
           valor={campos.sexo}
-          onMudar={(v) => setCampos((atual) => ({ ...atual, sexo: v }))}
-          erro={estado.campos?.sexo}
+          onMudar={(v) => {
+            setCampos((atual) => ({ ...atual, sexo: v }));
+            marcar("sexo");
+          }}
+          erro={erro("sexo")}
         />
 
         <Field
           label="Nascimento"
           hint="Opcional. A idade na ficha vem desta data."
-          error={estado.campos?.dt_nascimento}
+          error={erro("dt_nascimento")}
         >
           {({ id, descritoPor, invalido }) => (
             <Input
@@ -184,7 +192,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
           )}
         </Field>
 
-        <Field label="Origem" error={estado.campos?.origem}>
+        <Field label="Origem" error={erro("origem")}>
           {({ id, descritoPor, invalido }) => (
             <Select
               id={id}
@@ -213,7 +221,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
         </p>
 
         <div className={styles.linhaDupla}>
-          <Field label="Clube" error={estado.campos?.anilha_sigla}>
+          <Field label="Clube" error={erro("anilha_sigla")}>
             {({ id, descritoPor, invalido }) => (
               <Input
                 id={id}
@@ -229,7 +237,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
             )}
           </Field>
 
-          <Field label="Criador" error={estado.campos?.anilha_criador}>
+          <Field label="Criador" error={erro("anilha_criador")}>
             {({ id, descritoPor, invalido }) => (
               <Input
                 id={id}
@@ -248,7 +256,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
         </div>
 
         <div className={styles.linhaDupla}>
-          <Field label="Ano" error={estado.campos?.anilha_ano}>
+          <Field label="Ano" error={erro("anilha_ano")}>
             {({ id, descritoPor, invalido }) => (
               <Input
                 id={id}
@@ -264,7 +272,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
             )}
           </Field>
 
-          <Field label="Número" error={estado.campos?.anilha_numero}>
+          <Field label="Número" error={erro("anilha_numero")}>
             {({ id, descritoPor, invalido }) => (
               <Input
                 id={id}
@@ -304,7 +312,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
         <Field
           label="Código alternativo"
           hint="Opcional. Ex.: COBP-25-04781."
-          error={estado.campos?.codigo_alternativo}
+          error={erro("codigo_alternativo")}
         >
           {({ id, descritoPor, invalido }) => (
             <Input
@@ -329,7 +337,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
             endogamia. Só aves no plantel ativo aparecem na lista.
           </p>
 
-          <Field label="Pai" error={estado.campos?.pai_id}>
+          <Field label="Pai" error={erro("pai_id")}>
             {({ id, descritoPor, invalido }) => (
               <Select
                 id={id}
@@ -351,7 +359,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
             )}
           </Field>
 
-          <Field label="Mãe" error={estado.campos?.mae_id}>
+          <Field label="Mãe" error={erro("mae_id")}>
             {({ id, descritoPor, invalido }) => (
               <Select
                 id={id}
@@ -378,7 +386,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
       <Field
         label="Observações"
         hint="Opcional. De onde veio, nome dos pais quando não estão no plantel, marcas."
-        error={estado.campos?.observacoes}
+        error={erro("observacoes")}
       >
         {({ id, descritoPor, invalido }) => (
           <Input
@@ -430,17 +438,13 @@ function Sexo({
       <legend className={styles.rotuloSexo}>Sexo</legend>
       <div className={styles.sexoOpcoes}>
         {SEXOS.map((s) => (
-          <label key={s.valor} className={styles.sexoOpcao}>
-            <input
-              type="radio"
-              name="sexo"
-              value={s.valor}
-              checked={valor === s.valor}
-              onChange={(e) => onMudar(e.target.value)}
-              className={styles.sexoEntrada}
-            />
-            <span className={styles.sexoRotulo}>{s.rotulo}</span>
-          </label>
+          <OpcaoSexo
+            key={s.valor}
+            valor={s.valor}
+            rotulo={s.rotulo}
+            marcado={valor === s.valor}
+            onMudar={onMudar}
+          />
         ))}
       </div>
       {erro ? (
@@ -450,5 +454,35 @@ function Sexo({
         </span>
       ) : null}
     </fieldset>
+  );
+}
+
+function OpcaoSexo({
+  valor,
+  rotulo,
+  marcado,
+  onMudar,
+}: {
+  valor: string;
+  rotulo: string;
+  marcado: boolean;
+  onMudar: (v: string) => void;
+}) {
+  // O reset de formulário do React 19 desmarca o radio sem o React reaplicar.
+  const ref = useMarcacaoFirme(marcado);
+
+  return (
+    <label className={styles.sexoOpcao}>
+      <input
+        ref={ref}
+        type="radio"
+        name="sexo"
+        value={valor}
+        checked={marcado}
+        onChange={(e) => onMudar(e.target.value)}
+        className={styles.sexoEntrada}
+      />
+      <span className={styles.sexoRotulo}>{rotulo}</span>
+    </label>
   );
 }

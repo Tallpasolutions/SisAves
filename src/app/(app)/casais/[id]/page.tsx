@@ -17,7 +17,7 @@ import {
   type ParceiroCasal,
 } from "@/lib/dados/casais";
 import { ROTULO_ESTADO, TOM_ESTADO } from "@/lib/dados/ovos";
-import { encadear, formatarData } from "@/lib/formato";
+import { encadear, formatarData, formatarPercentual } from "@/lib/formato";
 import styles from "./ficha.module.css";
 
 export async function generateMetadata({
@@ -47,6 +47,9 @@ export default async function FichaCasal({
   const ovosRegistrados =
     typeof consulta.ovos === "string" ? consulta.ovos : null;
 
+  // Confirmação vinda da formação do casal.
+  const formado = typeof consulta.formado === "string" ? consulta.formado : null;
+
   return (
     <>
       <div className={styles.tela}>
@@ -54,6 +57,18 @@ export default async function FichaCasal({
           <ChevronLeft size={18} aria-hidden="true" />
           Casais
         </Link>
+
+        {formado ? (
+          <Toast
+            tone="ok"
+            title={`Casal ${formado.padStart(2, "0")} formado · ${casal.macho?.nome ?? "macho"} e ${casal.femea?.nome ?? "fêmea"}`}
+            description={
+              endogamia !== null
+                ? `Endogamia de ${formatarPercentual(endogamia)} registrada na formação. Já pode receber postura.`
+                : "Já pode receber postura."
+            }
+          />
+        ) : null}
 
         {registrada && ovosRegistrados ? (
           <Toast

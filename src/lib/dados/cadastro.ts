@@ -19,6 +19,7 @@ export interface OpcaoProgenitor {
   nome: string | null;
   sexo: Sexo;
   especieId: string | null;
+  especie: string | null;
   anilha: {
     sigla: string | null;
     criador: string | null;
@@ -51,7 +52,7 @@ export interface OpcoesCadastroAve {
 }
 
 const CAMPOS_PROGENITOR =
-  "id, nome, sexo, especie_id, anilha_sigla, anilha_criador, anilha_ano, anilha_numero";
+  "id, nome, sexo, especie_id, anilha_sigla, anilha_criador, anilha_ano, anilha_numero, especie:especies(nome)";
 
 export async function opcoesCadastroAve(): Promise<OpcoesCadastroAve> {
   const supabase = await criarClienteServidor();
@@ -101,6 +102,7 @@ export async function opcoesCadastroAve(): Promise<OpcoesCadastroAve> {
     nome: string | null;
     sexo: Sexo;
     especie_id: string | null;
+    especie: { nome: string } | { nome: string }[] | null;
     anilha_sigla: string | null;
     anilha_criador: string | null;
     anilha_ano: number | null;
@@ -110,6 +112,7 @@ export async function opcoesCadastroAve(): Promise<OpcoesCadastroAve> {
     nome: p.nome,
     sexo: p.sexo,
     especieId: p.especie_id,
+    especie: (Array.isArray(p.especie) ? p.especie[0] : p.especie)?.nome ?? null,
     anilha: {
       sigla: p.anilha_sigla,
       criador: p.anilha_criador,
@@ -131,5 +134,63 @@ export async function opcoesCadastroAve(): Promise<OpcoesCadastroAve> {
       ano,
       sugestao: ultimaAnilha?.anilha_numero ? Number(ultimaAnilha.anilha_numero) + 1 : null,
     },
+  };
+}
+
+export interface OpcoesFormarCasal {
+  machos: OpcaoProgenitor[];
+  femeas: OpcaoProgenitor[];
+  /** Numeração do casal é sequencial dentro do criatório. */
+  proximoNumero: number;
+}
+
+export async function opcoesFormarCasal(): Promise<OpcoesFormarCasal> {
+  const supabase = await criarClienteServidor();
+
+  const [{ data: aves }, { data: ultimo }] = await Promise.all([
+    supabase
+      .from("passaros")
+      .select(CAMPOS_PROGENITOR)
+      .is("deleted_at", null)
+      .eq("situacao", "ativo")
+      .in("sexo", ["macho", "femea"])
+      .order("anilha_numero", { ascending: true, nullsFirst: false }),
+    supabase
+      .from("casais")
+      .select("numero")
+      .is("deleted_at", null)
+      .order("numero", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
+
+  const lista = ((aves ?? []) as Array<{
+    id: string;
+    nome: string | null;
+    sexo: Sexo;
+    especie_id: string | null;
+    especie: { nome: string } | { nome: string }[] | null;
+    anilha_sigla: string | null;
+    anilha_criador: string | null;
+    anilha_ano: number | null;
+    anilha_numero: number | null;
+  }>).map((p) => ({
+    id: p.id,
+    nome: p.nome,
+    sexo: p.sexo,
+    especieId: p.especie_id,
+    especie: (Array.isArray(p.especie) ? p.especie[0] : p.especie)?.nome ?? null,
+    anilha: {
+      sigla: p.anilha_sigla,
+      criador: p.anilha_criador,
+      ano: p.anilha_ano,
+      numero: p.anilha_numero,
+    },
+  }));
+
+  return {
+    machos: lista.filter((p) => p.sexo === "macho"),
+    femeas: lista.filter((p) => p.sexo === "femea"),
+    proximoNumero: (ultimo?.numero ?? 0) + 1,
   };
 }

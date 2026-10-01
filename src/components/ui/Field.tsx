@@ -2,6 +2,7 @@
 
 import { ChevronDown, CircleAlert } from "lucide-react";
 import { useId } from "react";
+import { useSelecaoFirme } from "@/lib/formulario";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import styles from "./Field.module.css";
 
@@ -134,6 +135,11 @@ export function Select({
   children,
   ...resto
 }: SelectProps) {
+  // O reset automático de formulário do React 19 esvazia o select no DOM sem
+  // que o React reaplique o valor. Ver src/lib/formulario.ts.
+  const ref = useSelecaoFirme(
+    typeof resto.value === "string" ? resto.value : undefined,
+  );
   const envelope = [
     styles.envelope,
     styles.envelopeSelecao,
@@ -148,6 +154,7 @@ export function Select({
   return (
     <div className={envelope}>
       <select
+        ref={ref}
         className={styles.selecao}
         aria-invalid={invalid || undefined}
         disabled={disabled}
