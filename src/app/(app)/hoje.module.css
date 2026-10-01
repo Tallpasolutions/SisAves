@@ -1,0 +1,176 @@
+/* Tela "Hoje" (B1) — a mais importante do produto.
+   docs/design/05-telas.md: saudação -> bloco petróleo com contagem ->
+   fila por urgência -> indicadores. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.rotuloCriatorio {
+  margin: 0;
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.nomeCriatorio { font: var(--type-h2); }
+
+/* --- Bloco de destaque ------------------------------------------------------
+   Único petróleo cheio da tela. No tema escuro vira superfície de marca com
+   borda, conforme a decisão registrada para a B1 escura. */
+.destaque {
+  --destaque-fundo: var(--surface-inverse);
+  --destaque-borda: transparent;
+  --destaque-titulo: var(--text-inverse);
+  --destaque-texto: var(--sis-petroleo-100);
+  --destaque-icone: var(--sis-petroleo-200);
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--destaque-fundo);
+  border: var(--border-width) solid var(--destaque-borda);
+  border-radius: var(--radius-md);
+}
+
+:global([data-theme="dark"]) .destaque {
+  --destaque-fundo: var(--surface-brand-soft);
+  --destaque-borda: var(--border-brand);
+  --destaque-titulo: var(--text-heading);
+  --destaque-texto: var(--text-secondary);
+  --destaque-icone: var(--text-brand);
+}
+
+.destaqueIcone {
+  display: inline-flex;
+  flex: none;
+  margin-top: 2px;
+  color: var(--destaque-icone);
+}
+
+.destaqueTitulo {
+  margin: 0 0 2px;
+  font: var(--type-h4);
+  color: var(--destaque-titulo);
+}
+
+.destaqueTexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--destaque-texto);
+}
+
+/* --- Seções ---------------------------------------------------------------- */
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.secaoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* --- Fila de tarefas -------------------------------------------------------- */
+.tarefas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tarefa {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-comfort);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+/* Único elemento âmbar da tela, e só porque a janela fecha em dois dias. */
+.tarefaUrgente {
+  background: var(--surface-accent-soft);
+  border-color: var(--border-accent);
+}
+
+.tarefaIcone {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-secondary);
+}
+
+.tarefaUrgente .tarefaIcone { color: var(--text-accent); }
+
+.tarefaTextos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.tarefaTitulo {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.tarefaDetalhe {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+/* --- Indicadores ------------------------------------------------------------ */
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.indicador {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.indicadorRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.indicadorValor {
+  margin: 0;
+  font: var(--type-data-lg);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-heading);
+}

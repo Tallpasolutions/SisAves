@@ -65,7 +65,7 @@ abriria brecha para cor fora da paleta.
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | **próxima** |
+| 4 · Núcleo mobile (Faixa B) | **em andamento** — B1 Hoje e a tab bar prontos |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |
 | 7 · Desktop (Faixa C) | não iniciada |
@@ -216,6 +216,19 @@ Saúde do plantel, Espécies e prazos, Relatórios, lista de Certificados,
 Configurações, Perfil, onboarding de criatório, e o tema escuro das telas B3–B11
 e C1–C3. Os tokens escuros existem; as pranchas não. Construir na linguagem das
 telas existentes.
+
+## Semente de desenvolvimento
+
+```bash
+node scripts/usuario-teste.mjs criar                      # conta confirmada
+# fazer o onboarding na interface, então:
+node scripts/sql.mjs -f supabase/seeds/desenvolvimento.sql
+```
+
+Cria 11 aves com genealogia, 3 casais e ninhadas em **cada** estado do ciclo.
+As datas são relativas a `current_date`, calculadas dos prazos da própria
+espécie — então a semente continua válida amanhã, e sempre há o que ver na
+tela "Hoje". É idempotente: apaga o que semeou antes e recria.
 
 ## Autenticação e onboarding
 
