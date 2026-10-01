@@ -34,6 +34,10 @@
 .femea       .glifo { color: var(--text-heading); }
 .indefinido  .glifo { color: var(--text-muted); }
 
+/* Compacta: só o glifo, para linhas densas onde "Sexo indefinido" não cabe.
+   O sinal não visual continua sendo a LETRA e o aria-label, nunca a cor. */
+.compacta { padding: 4px 8px; }
+
 /* Avatar do card de ave: o mesmo glifo em 40px sobre superfície de marca. */
 .avatar {
   display: inline-flex;

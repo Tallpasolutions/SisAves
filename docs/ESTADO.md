@@ -65,7 +65,7 @@ abriria brecha para cor fora da paleta.
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | **em andamento** — B1 Hoje e a tab bar prontos |
+| 4 · Núcleo mobile (Faixa B) | **em andamento** — B1 Hoje, B5 Plantel e B3 Ficha prontos |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |
 | 7 · Desktop (Faixa C) | não iniciada |
@@ -259,6 +259,13 @@ tela "Hoje". É idempotente: apaga o que semeou antes e recria.
   de elemento, não por coordenada guardada.
 - Em página de demonstração há **vários** elementos com o mesmo texto. Ao testar
   por seletor de texto, filtrar pelo contexto certo.
+- **PostgREST não resolve relação auto-referente.** Com dica de constraint dá
+  `PGRST200`; com dica de coluna inverte a direção e devolve os filhos em vez do
+  pai. Pai e mãe vêm de consulta própria por id — ver `obterAve`.
+- `base.css` sublinha todo `<a>`. Link que embrulha uma linha inteira precisa de
+  `text-decoration: none`, senão nome, anilha e idade saem todos riscados.
+- Engolir o `error` do Supabase (`if (error || !data) return null`) transforma
+  falha de consulta em "não encontrado". Registrar o erro antes de desistir.
 - Fixture de teste não pode usar e-mail que exista de verdade no banco: a conta
   de desenvolvimento derrubou o teste de endogamia. Usar `.invalid`.
 - Texto fora do cartão branco, sobre o fundo petróleo, precisa de cor clara. O
