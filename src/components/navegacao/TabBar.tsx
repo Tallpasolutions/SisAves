@@ -6,6 +6,13 @@ import { usePathname } from "next/navigation";
 import { NotificationBadge } from "@/components/ui";
 import styles from "./TabBar.module.css";
 
+/**
+ * Telas de formulário substituem a tab bar pela ação fixa na base, em vez de
+ * empilhar as duas — docs/design/05-telas.md, decisão transversal 1. Sem isto
+ * o botão de salvar fica atrás da navegação.
+ */
+const ROTAS_SEM_BARRA = [/^\/casais\/[^/]+\/postura$/];
+
 const DESTINOS = [
   { href: "/", rotulo: "Hoje", Icone: Sun },
   { href: "/plantel", rotulo: "Plantel", Icone: Bird },
@@ -16,6 +23,8 @@ const DESTINOS = [
 
 export function TabBar({ tarefasPendentes = 0 }: { tarefasPendentes?: number }) {
   const caminho = usePathname();
+
+  if (ROTAS_SEM_BARRA.some((padrao) => padrao.test(caminho))) return null;
 
   return (
     <nav className={styles.barra} aria-label="Navegação principal">

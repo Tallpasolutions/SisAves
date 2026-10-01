@@ -9,6 +9,7 @@ import {
   EmptyState,
   InbreedingMeter,
   SexChip,
+  Toast,
 } from "@/components/ui";
 import {
   obterCasal,
@@ -27,13 +28,24 @@ export async function generateMetadata({
   return { title: casal ? `Casal ${String(casal.numero).padStart(2, "0")}` : "Casal" };
 }
 
-export default async function FichaCasal({ params }: PageProps<"/casais/[id]">) {
+export default async function FichaCasal({
+  params,
+  searchParams,
+}: PageProps<"/casais/[id]">) {
   const { id } = await params;
+  const consulta = await searchParams;
   const casal = await obterCasal(id);
   if (!casal) notFound();
 
   const numero = String(casal.numero).padStart(2, "0");
   const endogamia = casal.endogamiaAtual ?? casal.endogamiaPct;
+
+  // Confirmação vinda do registro de postura. A ninhada recém-criada é a
+  // primeira da lista, então a data de ovoscopia sai do próprio histórico.
+  const registrada =
+    typeof consulta.registrada === "string" ? consulta.registrada : null;
+  const ovosRegistrados =
+    typeof consulta.ovos === "string" ? consulta.ovos : null;
 
   return (
     <>
@@ -42,6 +54,18 @@ export default async function FichaCasal({ params }: PageProps<"/casais/[id]">) 
           <ChevronLeft size={18} aria-hidden="true" />
           Casais
         </Link>
+
+        {registrada && ovosRegistrados ? (
+          <Toast
+            tone="ok"
+            title={`Postura registrada · Ninhada ${registrada.padStart(2, "0")} · ${ovosRegistrados} ${ovosRegistrados === "1" ? "ovo" : "ovos"}`}
+            description={
+              casal.ninhadas[0]
+                ? `Acompanhe o ciclo pela aba Ovos.`
+                : undefined
+            }
+          />
+        ) : null}
 
         <header className={styles.cabecalho}>
           <h1 className={styles.titulo}>Casal {numero}</h1>
@@ -122,7 +146,7 @@ export default async function FichaCasal({ params }: PageProps<"/casais/[id]">) 
       {casal.ativo ? (
         <div className={styles.acaoFixa}>
           <div className={styles.acaoFixaInterno}>
-            <Button bloco size="lg" disabled>
+            <Button href={`/casais/${id}/postura`} bloco size="lg">
               Registrar postura
             </Button>
           </div>

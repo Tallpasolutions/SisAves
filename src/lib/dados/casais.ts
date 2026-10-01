@@ -209,6 +209,16 @@ export async function obterCasal(id: string): Promise<CasalDetalhe | null> {
     0,
   );
 
+  // O estado do casal é o MAIS URGENTE entre todas as ninhadas, não o da mais
+  // recente. Usar a mais recente escondia o que importa: registrar uma postura
+  // nova fazia sumir o aviso de que filhotes de uma ninhada anterior ainda
+  // precisam de anilha. Mesma regra da listagem.
+  const estadoMaisUrgente = ninhadas.reduce<EstadoOvo | null>((maisUrgente, n) => {
+    if (!n.estado) return maisUrgente;
+    if (maisUrgente === null) return n.estado;
+    return URGENCIA[n.estado] < URGENCIA[maisUrgente] ? n.estado : maisUrgente;
+  }, null);
+
   return {
     id: data.id,
     numero: data.numero,
@@ -225,7 +235,7 @@ export async function obterCasal(id: string): Promise<CasalDetalhe | null> {
     ninhadas,
     ninhadaAtual: ninhadas[0]?.numero ?? null,
     ovosAtivos,
-    estadoMaisUrgente: ninhadas[0]?.estado ?? null,
+    estadoMaisUrgente,
   };
 }
 

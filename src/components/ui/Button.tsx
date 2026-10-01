@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import styles from "./Button.module.css";
 
@@ -11,6 +12,11 @@ export interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   bloco?: boolean;
   iconeEsquerda?: ReactNode;
   iconeDireita?: ReactNode;
+  /**
+   * Quando presente, o botão vira link. Navegação é <a>, não <button> dentro
+   * de <a> — que além de HTML inválido quebra teclado e leitor de tela.
+   */
+  href?: string;
 }
 
 /**
@@ -31,6 +37,7 @@ export function Button({
   className,
   children,
   type = "button",
+  href,
   ...resto
 }: ButtonProps) {
   const classes = [
@@ -43,8 +50,8 @@ export function Button({
     .filter(Boolean)
     .join(" ");
 
-  return (
-    <button type={type} className={classes} {...resto}>
+  const conteudo = (
+    <>
       {iconeEsquerda ? (
         <span className={styles.icone} aria-hidden="true">
           {iconeEsquerda}
@@ -56,6 +63,20 @@ export function Button({
           {iconeDireita}
         </span>
       ) : null}
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={classes}>
+        {conteudo}
+      </Link>
+    );
+  }
+
+  return (
+    <button type={type} className={classes} {...resto}>
+      {conteudo}
     </button>
   );
 }

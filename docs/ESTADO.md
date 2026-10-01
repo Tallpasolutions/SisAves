@@ -65,7 +65,7 @@ abriria brecha para cor fora da paleta.
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | **em andamento** — falta só B9 (registrar postura) |
+| 4 · Núcleo mobile (Faixa B) | **concluída** |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |
 | 7 · Desktop (Faixa C) | não iniciada |
@@ -191,6 +191,7 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/plantel/[id]` | B3 Ficha da ave | anilha em destaque, filiação clicável, 3 atalhos |
 | `/casais` | B7 Casais | par com anilhas, ninhada atual, ovos ativos e endogamia por faixa |
 | `/casais/[id]` | B8 Ficha do casal | `InbreedingMeter` com explicação vinda de `ancestrais_comuns`, histórico de ninhadas |
+| `/casais/[id]/postura` | B9 Registrar postura | **primeira tela de escrita**: Server Action + Zod, previsões ao vivo, tab bar escondida |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
 | `/comecar`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais |
 | `/ds` | biblioteca | referência do artboard A3; sai antes do lançamento |
@@ -198,10 +199,15 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 As subrotas `/plantel/[id]/genealogia`, `/certificado` e `/pesagens` existem
 como vazio honesto, para os atalhos da ficha não darem 404 antes das fases 5 e 8.
 
-**Tudo construído até aqui é leitura.** O sistema ainda não escreve nada: não
-há cadastro de ave, formação de casal nem registro de postura. A B9 é a
-primeira tela de escrita e traz Server Actions, validação com Zod e a base da
-fila offline da Fase 6.
+**Escrita começou na B9.** O padrão a seguir nas próximas: Server Action com
+esquema Zod espelhando as constraints, erro por campo citando o dado exato,
+e `redirect` com parâmetros que a tela de destino transforma em confirmação
+("fato + consequência com data"). Ainda faltam cadastro de ave e formação de
+casal.
+
+Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
+o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
+navegação.
 
 ## Pendências do cliente
 

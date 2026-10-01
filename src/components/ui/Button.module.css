@@ -20,6 +20,9 @@
   transition: var(--transition-control);
 }
 
+/* Quando o botão é um link, o sublinhado padrão de base.css não se aplica. */
+a.botao { text-decoration: none; }
+
 .botao:focus-visible {
   outline: var(--border-width-strong) solid var(--border-focus);
   outline-offset: var(--focus-ring-offset);
