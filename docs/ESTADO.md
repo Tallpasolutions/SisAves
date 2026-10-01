@@ -1,49 +1,70 @@
 # Estado do projeto
 
-> **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que já existe,
-> o que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **30/09/2026**.
+> **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
+> que está verificado, o que falta e o que depende de terceiros.
+> Atualizado em **30/09/2026**, após a Fase 3.
 
 ## O produto em uma frase
 
 SisAves é um SaaS de gestão de criatórios de aves ornamentais — plantel, casais,
 ciclo do ovo, genealogia com coeficiente de endogamia, financeiro, saúde e
-emissão de CRO com validação por QR. Reconstrução do zero de um sistema legado,
-com marca nova, em `sisaves.tallpa.com.br`.
+emissão de CRO com validação por QR. Reconstrução do zero de um sistema legado
+(Gestão Plantel / Meu Plantel, da Fênix Sites), com marca nova, em
+`sisaves.tallpa.com.br`.
+
+## Onde está tudo
+
+| | |
+|---|---|
+| Repositório | https://github.com/Tallpasolutions/SisAves (**público**, por escolha do cliente) |
+| Supabase | projeto `lisvevesopyrkviixwha`; credenciais em `.env.local` (fora do git, modo 600) |
+| Legado, para referência | `gestaoplantel.com.br` · `app2.meuplantel.com` · `api.meuplantel.com/api/v1` (expõe OpenAPI em `/docs`) |
+| Handoff de design | `docs/design/` e as pranchas em `docs/design/artboards/*.dc.html` |
+
+**Sem Docker nesta máquina.** O banco local não roda: migrations e testes vão
+direto no projeto remoto.
+
+```bash
+set -a; . ./.env.local; set +a
+supabase db push --db-url "postgresql://postgres:${SUPABASE_DB_PASSWORD}@db.${SUPABASE_PROJECT_REF}.supabase.co:5432/postgres"
+node scripts/sql.mjs "select 1"                            # consulta avulsa
+node scripts/sql.mjs -f supabase/tests/01_ciclo_do_ovo.sql  # teste
+```
 
 ## Contratos que governam o trabalho
 
 | Arquivo | O que manda |
 |---|---|
-| `CLAUDE.md` (raiz) | Contrato visual e de voz. Vem do handoff de design e vale para todo código de interface. Não é sugestão. |
+| `CLAUDE.md` (raiz) | Contrato visual e de voz. Vem do handoff e vale para todo código de interface. Não é sugestão. |
 | `docs/design/01-tokens.md` | Fonte de verdade das variáveis CSS. |
 | `docs/design/02-componentes.md` | Contrato de cada componente: medidas, estados, cópia exata. |
-| `docs/design/05-telas.md` | As 19 telas com as decisões de implementação. |
-| `docs/design/artboards/*.dc.html` | As pranchas. Referência visual, não código de produção. |
+| `docs/design/03-conteudo-e-copy.md` | Voz, vocabulário do domínio e tabela de cópia. |
+| `docs/design/04-acessibilidade.md` | Contrastes medidos. |
+| `docs/design/05-telas.md` | As 19 telas com decisões de implementação. |
+| `docs/design/06-documentos-e-site.md` | CRO A4, validação por QR e landing. |
 
 A rota `/ds` reproduz o artboard A3 com os 14 componentes e a cópia exata do
-handoff. É a conferência visual rápida — abrir nos dois temas. Sai do app antes
-do lançamento.
-
-**Regra que já foi violada uma vez:** nunca use valor cru da paleta
-(`--sis-petroleo-100`) num componente — só alias semântico (`--text-brand`).
-Valor cru não acompanha a troca de tema e o escuro quebra silenciosamente.
+handoff — é a conferência visual rápida. Abrir **nos dois temas**. Sai do app
+antes do lançamento.
 
 ## Stack
 
 Next.js 16 (App Router) · React 19 · TypeScript · **CSS Modules** · Supabase
-(Postgres + Auth + Storage + RLS) · Vercel · Cloudflare · GitHub.
+(Postgres + Auth + Storage + RLS) · Vercel · Cloudflare · GitHub ·
+`lucide-react` para ícones.
 
-Ícones: **Lucide** (`lucide-react`), léxico fixo definido no `CLAUDE.md`.
+**CSS Modules e não Tailwind** porque o contrato exige consumir aliases
+semânticos via `var(--*)`; traduzir uma paleta fechada para escala utilitária
+abriria brecha para cor fora da paleta.
 
 ## Fases
 
 | Fase | Situação |
 |---|---|
-| 0 · Fundação do repositório | **concluída** |
-| 1 · Banco de dados | **concluída** |
-| 2 · Auth e onboarding | não iniciada |
-| 3 · Biblioteca de componentes | **concluída** — 14 componentes em `src/components/ui/` |
+| 0 · Fundação do repositório | **concluída** (`e7441db`) |
+| 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
+| 2 · Auth e onboarding | **próxima** |
+| 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
 | 4 · Núcleo mobile (Faixa B) | não iniciada |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |
@@ -53,11 +74,11 @@ Next.js 16 (App Router) · React 19 · TypeScript · **CSS Modules** · Supabase
 | 10 · Assinatura (Mercado Pago) | banco pronto; integração não iniciada |
 | 11 · Landing e lançamento | não iniciada |
 
-## Banco — o que existe e está verificado
+---
 
-**21 tabelas**, aplicadas no projeto Supabase `lisvevesopyrkviixwha`.
+## Banco — 29 tabelas, aplicadas e testadas
 
-Migrations em `supabase/migrations/`:
+Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 
 | Arquivo | Conteúdo |
 |---|---|
@@ -74,69 +95,111 @@ Migrations em `supabase/migrations/`:
 | `0011_semente_catalogo` | 8 grupos, 33 clubes de SC, 60 espécies |
 | `0012_prazos_e_siglas` | siglas faltantes; `dias_anilha` 3 + janela 1; `dias_separa` 40 |
 
-### Testes de banco
+### Funções do domínio
 
-Rodam contra o Postgres real (não há Docker na máquina). Cada um abre transação
-e termina em `rollback`.
+`situacao_postura` · `ancestrais` · `ancestrais_comuns` · `arvore_genealogica` ·
+`coeficiente_endogamia` · `faixa_endogamia` · `montar_snapshot_certificado` ·
+`validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
+`casal_ativo`
 
-```bash
-node scripts/sql.mjs -f supabase/tests/01_ciclo_do_ovo.sql      # 11/11
-node scripts/sql.mjs -f supabase/tests/02_endogamia.sql          #  5/5
-node scripts/sql.mjs -f supabase/tests/03_isolamento_rls.sql     #  8/8
-node scripts/sql.mjs -f supabase/tests/04_certificado.sql        #  9/9
-```
-
-Toda linha deve sair com `resultado = ok`.
-
-### Aplicar migrations
+### Testes de banco — 33 asserções, todas passando
 
 ```bash
-set -a; . ./.env.local; set +a
-supabase db push --db-url "postgresql://postgres:${SUPABASE_DB_PASSWORD}@db.${SUPABASE_PROJECT_REF}.supabase.co:5432/postgres"
+node scripts/sql.mjs -f supabase/tests/01_ciclo_do_ovo.sql      # 11
+node scripts/sql.mjs -f supabase/tests/02_endogamia.sql         #  5
+node scripts/sql.mjs -f supabase/tests/03_isolamento_rls.sql    #  8
+node scripts/sql.mjs -f supabase/tests/04_certificado.sql       #  9
 ```
+
+Cada um abre transação e termina em `rollback`. Toda linha deve sair com
+`resultado = ok`. **Rodar os quatro depois de qualquer migration.**
 
 ### Conceitos do banco que não são óbvios
 
 - **A situação da postura nunca é armazenada.** É derivada das datas observadas
   e dos prazos da espécie por `situacao_postura()`, que é `immutable` para o
   mesmo cálculo rodar no cliente offline. No legado era coluna gravada, e um ovo
-  continuava "chocando" meses depois porque ninguém abriu a tela.
+  seguia "chocando" meses depois porque ninguém abriu a tela.
 - **O tenant é o criatório**, não o usuário — permite mais de um criatório por
   pessoa e mais de uma pessoa operando o mesmo criatório.
 - **RLS é a fronteira de segurança.** Toda política passa por
-  `public.meus_criatorios()`, que é `security definer` para não recursar.
+  `meus_criatorios()`, que é `security definer` para não recursar.
 - **O certificado guarda `snapshot jsonb`.** A árvore muda quando o criador
   corrige uma filiação, mas um CRO emitido em 2026 tem de provar o que era
   verdade em 2026.
 - **A validação pública do CRO é função, não tabela exposta.**
   `validar_certificado(hash, sequencial)` é lista branca explícita do que sai —
   com RLS na tabela, uma coluna nova vazaria por descuido.
-- **`coeficiente_endogamia()` assume `F_A = 0`.** Decisão documentada na própria
+- **`coeficiente_endogamia()` assume `F_A = 0`.** Documentado na própria
   migration; irrelevante nas 3–4 gerações que um criatório registra.
+- **A janela de anilhamento tem dois dias** (`dias_anilha` 3, `janela` 1). É por
+  isso que "anilhar" é o único estado em âmbar no design.
+
+---
+
+## Interface — 14 componentes em `src/components/ui/`
+
+| Componente | Observação de contrato |
+|---|---|
+| `Button` | 5 variantes × 4 estados. `accent` (âmbar) é no máximo um por tela, só com prazo vencendo. |
+| `Anilha` | Identificador primário. Nunca reformatar. Diz "Sem anilha" em vez de sumir. |
+| `Badge` | 6 chips do ciclo. `acao` (âmbar cheio) é separado de `atencao`: um convoca, o outro informa. |
+| `SexChip` | `M`/`F`/`—` com `aria-label`. Sem unicode de gênero. Cor nunca é o único sinal. |
+| `Field` + `Input` | Rótulo persistente; erro substitui a ajuda e cita o dado. Validar no blur e no envio. |
+| `InbreedingMeter` | Faixas 6,25% / 12,5%. Mesma regra de `faixa_endogamia` no banco — mudar os dois juntos. |
+| `BirdCard` | Vira `<button>` com `onClick`. **Sem** barra colorida à esquerda. |
+| `Table` + `TableRow` | Faixa de gravidade de 3px: um dos dois únicos lugares com barra à esquerda. |
+| `Tabs` | Contador só onde a contagem informa. |
+| `Toast` | Fato + consequência com data. |
+| `Modal` | `<dialog>` nativo: foco preso, Esc, devolução ao disparador. Corpo diz a consequência real. |
+| `EmptyState` | Alinhado à esquerda, sem ilustração, sem emoji. |
+| `SyncStatus` | Nunca sugere perda: "Offline — salvo no aparelho". |
+| `NotificationBadge` | `pointer-events: none` — o alvo é o botão de 44px embaixo. |
+
+Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
+`formatarMoeda`, `formatarPercentual`, `formatarPeso`, `formatarIdade`,
+`formatarAnilha`, `encadear` (separador `·`).
+
+### Regras de código que já falharam na prática
+
+- **Valor cru da paleta (`--sis-petroleo-100`) só em fundo sólido, nunca em cor
+  de texto.** Quebrou duas vezes: o bloco da home na Fase 0 e o glifo de sexo na
+  Fase 3, onde o "F" sumia no tema escuro. Use alias semântico
+  (`--text-brand`, `--text-heading`).
+- **Card ou linha clicável é `<button>`**, não `<div>` com `onClick`.
+- **`data-theme="dark"` é obrigatório desde o primeiro componente.**
+  `colors.css` só aplica o escuro sob esse atributo — não há media query.
+
+---
 
 ## Pendências do cliente
 
-**Resolvidas em 30/09/2026** (migration `0012_prazos_e_siglas`):
-as siglas dos 4 clubes (CAC, SOB, ASSB, COSB) e os prazos
-`dias_anilha = 3` com `janela_anilha_dias = 1` ("anilhar com 3 dias até 4") e
-`dias_separa = 40`, aplicados às 60 espécies.
+**Resolvidas em 30/09/2026** (`0012`): siglas dos 4 clubes (CAC, SOB, ASSB,
+COSB) e os prazos `dias_anilha = 3` com `janela_anilha_dias = 1` ("anilhar com
+3 dias até 4") e `dias_separa = 40`, nas 60 espécies.
 
 **Em aberto:**
 
 1. **`dias_choco` de 32 das 60 espécies.** O cliente enviou a incubação de 28.
    Sem ela a espécie não pode ser adotada no criatório, porque é o prazo que
    move todo o ciclo do ovo.
-2. **Prazo de anilhamento por porte.** O valor 3 dias veio único para as 60
-   espécies. Um coleiro e uma graúna não anilham no mesmo dia — os maiores
-   (sabiás, icterídeos) costumam anilhar mais tarde. Revisar espécie a espécie.
+2. **Prazo de anilhamento por porte.** Os 3 dias vieram como valor único. Um
+   coleiro e uma graúna não anilham no mesmo dia; os maiores (sabiás,
+   icterídeos) anilham mais tarde. Revisar espécie a espécie.
 3. **Formato da anilha.** O handoff usa dois: `SOV 1234 · 2026 · 0087` no
    componente e `COBP-25-04781` nos formulários. Modelado de forma flexível
    (anilha estruturada + `codigo_alternativo`), sem travar a decisão.
 
-Ponto a alinhar: as 60 espécies são **passeriformes silvestres brasileiros**
-(SISPASS/IBAMA), os clubes são majoritariamente de **canaricultura**, e as telas
-do design usam "Agapornis Roseicollis", psitacídeo exótico. Três regimes legais
+**Ponto a alinhar:** as 60 espécies são passeriformes silvestres brasileiros
+(SISPASS/IBAMA), os clubes são majoritariamente de canaricultura, e as telas do
+design usam "Agapornis Roseicollis", psitacídeo exótico. Três regimes legais
 diferentes — muda conteúdo de tela e talvez validação de anilha.
+
+**Segurança:** as chaves do Supabase passaram pelo chat; recomendado rotacionar
+em Settings → API. O repositório é público por decisão do cliente, avisado do
+risco.
+
+---
 
 ## O que o handoff de design não cobre
 
@@ -155,3 +218,7 @@ telas existentes.
   `suppressHydrationWarning`.
 - O buffer de console do navegador não é limpo pelo parâmetro `clear` — erro
   antigo reaparece e parece atual. Conferir o conteúdo antes de concluir.
+- A moldura do screenshot muda de tamanho entre chamadas; clique por referência
+  de elemento, não por coordenada guardada.
+- Em página de demonstração há **vários** elementos com o mesmo texto. Ao testar
+  por seletor de texto, filtrar pelo contexto certo.
