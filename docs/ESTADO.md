@@ -2,7 +2,7 @@
 
 > **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
 > que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **30/09/2026**, após a Fase 3.
+> Atualizado em **01/10/2026**, depois de fechar as três telas de escrita.
 
 ## O produto em uma frase
 
@@ -12,33 +12,23 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 (Gestão Plantel / Meu Plantel, da Fênix Sites), com marca nova, em
 `sisaves.tallpa.com.br`.
 
-## Próximo passo — decidido em 30/09/2026
+## Próximo passo
 
-**Completar as escritas que faltam, antes de seguir para a Fase 5.**
+**Fase 5 — árvore genealógica (B6).**
 
-Hoje um criador novo termina o onboarding e trava: não há como cadastrar ave
-nem formar casal pela interface. O ciclo só funciona porque a semente de
-desenvolvimento preencheu o banco. Três telas fecham essa lacuna:
+As três escritas que faltavam foram feitas em 01/10/2026: cadastrar ave, formar
+casal e anilhar filhote. O ciclo agora fecha sozinho pela interface — um criador
+novo sai do onboarding, cadastra as primeiras aves, forma um casal, registra a
+postura e anilha os filhotes, que entram no plantel com a filiação resolvida.
 
-1. **Cadastrar ave** — nome, espécie, mutação, sexo, nascimento, anilha e
-   filiação. Com sugestão do próximo número de anilha **como botão**
-   ("Usar sugestão · 0105"), nunca preenchimento silencioso — regra do spec.
-2. **Formar casal** — escolher macho e fêmea, com o coeficiente de endogamia
-   calculado **antes** de confirmar. É a decisão técnica central do criador, e
-   o aviso tem de vir antes, não depois.
-3. **Anilhar filhote** — a ação mais urgente do produto, disparada da tela
-   Hoje ou de Ovos. Fecha o ciclo: a postura vira ave no plantel.
+A B6 está desenhada na prancha `3c` e consome `arvore_genealogica()` e
+`ancestrais_comuns()`, já no banco desde a `0008`. Três gerações em rolagem
+horizontal, `PedigreeNode` com faixa de sexo de 2px, ancestral repetido com
+contorno âmbar e aviso fixo no topo, e "Desconhecido" como estado de primeira
+classe — não como lacuna.
 
-Só então as fases 5 (árvore genealógica), 6 (offline) e as demais.
-
-**Por quê antes da Fase 5:** a árvore e o CRO são diferenciais de venda, mas o
-produto não fica utilizável sem as escritas. Com elas, um criador consegue sair
-do zero e operar.
-
-Todas seguem o padrão estabelecido na B9 (`src/app/(app)/casais/[id]/postura/`):
-Server Action com esquema Zod espelhando as constraints, erro por campo citando
-o dado exato, e `redirect` com parâmetros que a tela de destino transforma em
-confirmação de fato + consequência.
+Hoje `/plantel/[id]/genealogia` existe como vazio honesto, só para o atalho da
+ficha não dar 404.
 
 ## Onde está tudo
 
@@ -53,10 +43,17 @@ confirmação de fato + consequência.
 direto no projeto remoto.
 
 ```bash
-set -a; . ./.env.local; set +a
-supabase db push --db-url "postgresql://postgres:${SUPABASE_DB_PASSWORD}@db.${SUPABASE_PROJECT_REF}.supabase.co:5432/postgres"
-node scripts/sql.mjs "select 1"                            # consulta avulsa
-node scripts/sql.mjs -f supabase/tests/01_ciclo_do_ovo.sql  # teste
+node scripts/sql.mjs -f supabase/migrations/0014_anilhamento.sql  # aplicar migration
+node scripts/sql.mjs "select 1"                                   # consulta avulsa
+for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
+```
+
+O runner conecta pelo **pooler**, não pelo host direto: `db.<ref>.supabase.co`
+passou a resolver só em IPv6 e devolve `ENOTFOUND` em máquina sem rota IPv6.
+Para usar o CLI do Supabase, a URL é a do pooler, com a senha percent-encoded:
+
+```bash
+supabase db push --db-url "postgresql://postgres.<ref>:<senha>@aws-0-us-east-2.pooler.supabase.com:5432/postgres"
 ```
 
 ## Contratos que governam o trabalho
@@ -93,7 +90,7 @@ abriria brecha para cor fora da paleta.
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | **concluída** |
+| 4 · Núcleo mobile (Faixa B) | **concluída**, incluídas as três telas de escrita (`7d4f435`, `f885075`, `f514dc5`) |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |
 | 7 · Desktop (Faixa C) | não iniciada |
@@ -123,15 +120,16 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0011_semente_catalogo` | 8 grupos, 33 clubes de SC, 60 espécies |
 | `0012_prazos_e_siglas` | siglas faltantes; `dias_anilha` 3 + janela 1; `dias_separa` 40 |
 | `0013_perfil_automatico` | trigger que cria `perfis` junto com `auth.users` |
+| `0014_anilhamento` | `anilhar_filhotes()`; `ninhada_id` em `vw_tarefas_hoje` |
 
 ### Funções do domínio
 
 `situacao_postura` · `ancestrais` · `ancestrais_comuns` · `arvore_genealogica` ·
 `coeficiente_endogamia` · `faixa_endogamia` · `montar_snapshot_certificado` ·
 `validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
-`casal_ativo`
+`casal_ativo` · `anilhar_filhotes`
 
-### Testes de banco — 40 asserções, todas passando
+### Testes de banco — 52 asserções, todas passando
 
 ```bash
 for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
@@ -144,12 +142,13 @@ for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
 | `03_isolamento_rls` | 8 |
 | `04_certificado` | 9 |
 | `05_perfil_automatico` | 7 |
+| `06_anilhamento` | 12 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
 
 Cada um abre transação e termina em `rollback`. Toda linha deve sair com
-`resultado = ok`. **Rodar os quatro depois de qualquer migration.**
+`resultado = ok`. **Rodar os seis depois de qualquer migration.**
 
 ### Conceitos do banco que não são óbvios
 
@@ -171,6 +170,10 @@ Cada um abre transação e termina em `rollback`. Toda linha deve sair com
   migration; irrelevante nas 3–4 gerações que um criatório registra.
 - **A janela de anilhamento tem dois dias** (`dias_anilha` 3, `janela` 1). É por
   isso que "anilhar" é o único estado em âmbar no design.
+- **`anilhar_filhotes()` existe porque anilhar são três escritas por filhote**
+  (ave, postura, pesagem) que precisam valer juntas. Soltas na aplicação, uma
+  anilha repetida no terceiro filhote deixaria os dois primeiros criados e a
+  ninhada pela metade. É `security invoker`: a RLS continua sendo a fronteira.
 
 ---
 
@@ -182,7 +185,7 @@ Cada um abre transação e termina em `rollback`. Toda linha deve sair com
 | `Anilha` | Identificador primário. Nunca reformatar. Diz "Sem anilha" em vez de sumir. |
 | `Badge` | 6 chips do ciclo. `acao` (âmbar cheio) é separado de `atencao`: um convoca, o outro informa. |
 | `SexChip` | `M`/`F`/`—` com `aria-label`. Sem unicode de gênero. Cor nunca é o único sinal. |
-| `Field` + `Input` | Rótulo persistente; erro substitui a ajuda e cita o dado. Validar no blur e no envio. |
+| `Field` + `Input` + `Select` | Rótulo persistente; erro substitui a ajuda e cita o dado. O `Select` não vem do handoff: herda o envelope do `Input` e usa `<select>` nativo, que no celular abre a roda do sistema e funciona antes da hidratação. |
 | `InbreedingMeter` | Faixas 6,25% / 12,5%. Mesma regra de `faixa_endogamia` no banco — mudar os dois juntos. |
 | `BirdCard` | Vira `<button>` com `onClick`. **Sem** barra colorida à esquerda. |
 | `Table` + `TableRow` | Faixa de gravidade de 3px: um dos dois únicos lugares com barra à esquerda. |
@@ -206,6 +209,21 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 - **Card ou linha clicável é `<button>`**, não `<div>` com `onClick`.
 - **`data-theme="dark"` é obrigatório desde o primeiro componente.**
   `colors.css` só aplica o escuro sob esse atributo — não há media query.
+- **Em formulário com Server Action, todo campo é controlado.** O React 19
+  reseta o formulário quando a ação termina, inclusive quando ela volta com
+  erro. Campo solto perde o conteúdo justamente quando o criador precisa dele
+  de volta.
+- **`<select>` e `radio` precisam de mais que `value`/`checked`.** O reset os
+  limpa no DOM e o React não reaplica, porque a prop não mudou entre
+  renderizações: o estado fica certo e a tela mente. Use `useSelecaoFirme` /
+  `useMarcacaoFirme` de `src/lib/formulario.ts`.
+- **Erro tem de envelhecer junto com o dado.** A mensagem cita o dado exato, e
+  por isso precisa sumir quando o campo muda — senão passa a acusar algo que já
+  não está na tela. `useErrosQueEnvelhecem`, mesmo arquivo.
+- **`--text-inverse` não serve para texto sobre preenchimento fixo.** No tema
+  escuro ele vira grafite ("inverso" lá quer dizer escuro sobre claro), e o
+  rótulo do botão primário saía 2,06:1 sobre petróleo. Use `--text-on-brand` e
+  `--text-on-danger`, brancos nos dois temas.
 
 ---
 
@@ -220,6 +238,9 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/casais` | B7 Casais | par com anilhas, ninhada atual, ovos ativos e endogamia por faixa |
 | `/casais/[id]` | B8 Ficha do casal | `InbreedingMeter` com explicação vinda de `ancestrais_comuns`, histórico de ninhadas |
 | `/casais/[id]/postura` | B9 Registrar postura | **primeira tela de escrita**: Server Action + Zod, previsões ao vivo, tab bar escondida |
+| `/plantel/nova` | Cadastrar ave | não desenhada; sugestão de anilha como botão, filiação só quando a ave nasceu no criatório |
+| `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
+| `/ovos/[ninhada]/anilhar` | Anilhar filhote | não desenhada; um bloco por filhote, numeração em sequência por botão, anilhamento parcial permitido |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
 | `/comecar`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais |
 | `/ds` | biblioteca | referência do artboard A3; sai antes do lançamento |
@@ -227,11 +248,16 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 As subrotas `/plantel/[id]/genealogia`, `/certificado` e `/pesagens` existem
 como vazio honesto, para os atalhos da ficha não darem 404 antes das fases 5 e 8.
 
-**Escrita começou na B9.** O padrão a seguir nas próximas: Server Action com
-esquema Zod espelhando as constraints, erro por campo citando o dado exato,
-e `redirect` com parâmetros que a tela de destino transforma em confirmação
-("fato + consequência com data"). Ainda faltam cadastro de ave e formação de
-casal.
+**O padrão de escrita**, estabelecido na B9 e repetido nas três telas novas:
+Server Action com esquema Zod espelhando as constraints, erro por campo citando
+o dado exato, e `redirect` com parâmetros que a tela de destino transforma em
+confirmação ("fato + consequência com data"). Quando a escrita toca mais de uma
+tabela por item — o anilhamento toca três —, ela vira função no banco, para
+falhar inteira em vez de pela metade.
+
+Validação que o banco não faz, mas o domínio exige, fica na Server Action, com
+mensagem que nomeia a ave: progenitor mais novo que o filho, par já vigente,
+vigência anterior ao nascimento, anilha repetida dentro do mesmo envio.
 
 Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
@@ -282,8 +308,12 @@ node scripts/sql.mjs -f supabase/seeds/desenvolvimento.sql
 ```
 
 Cria 11 aves com genealogia, 3 casais e ninhadas em **cada** estado do ciclo.
-O banco de desenvolvimento tem ainda a ninhada 06 do Casal 03, criada à mão ao
-testar a B9 — rodar a semente de novo limpa e recria tudo.
+
+O banco de desenvolvimento tem também o que foi criado à mão ao verificar as
+telas de escrita: a ninhada 06 do Casal 03 (B9), a ave Carijó `0090`, o Casal 13
+(Tibiriçá × Iracema) e os filhotes anilhados `0091` Guaratuba e `0092`. Rodar a
+semente de novo limpa e recria tudo.
+
 As datas são relativas a `current_date`, calculadas dos prazos da própria
 espécie — então a semente continua válida amanhã, e sempre há o que ver na
 tela "Hoje". É idempotente: apaga o que semeou antes e recria.
@@ -328,3 +358,19 @@ tela "Hoje". É idempotente: apaga o que semeou antes e recria.
   de desenvolvimento derrubou o teste de endogamia. Usar `.invalid`.
 - Texto fora do cartão branco, sobre o fundo petróleo, precisa de cor clara. O
   rodapé do login saiu com 1,38:1 por usar o cinza do cartão.
+- **`db.<ref>.supabase.co` só resolve em IPv6.** Sem rota IPv6 na máquina, o
+  Node devolve `ENOTFOUND` e parece que o banco caiu. `scripts/sql.mjs` conecta
+  pelo pooler (`aws-0-us-east-2.pooler.supabase.com`, usuário
+  `postgres.<ref>`), que tem IPv4 e, em modo sessão na 5432, aceita DDL e
+  transação. A região não se deduz do ref — descobre-se tentando.
+- `fieldset` nasce com `min-inline-size: min-content` e ignora a largura do pai:
+  grade de duas colunas dentro dele vaza para fora da tela. Zerar.
+- `legend` fica fora do fluxo flex, então o `gap` do grupo não vale para ele.
+  Precisa de `margin-bottom` próprio.
+- Esconder controle com `opacity: 0` + `pointer-events: none` tira ele da
+  árvore de acessibilidade. Use `clip-path: inset(50%)` (está em
+  `.visually-hidden`, no `globals.css`).
+- Screenshot tirado logo depois de trocar o tema pega a transição no meio e
+  parece defeito de cor. Esperar, ou conferir o valor computado.
+- Peso e qualquer decimal chegam com vírgula do teclado pt-BR. `z.coerce.number()`
+  lê `NaN` — normalizar antes de validar.
