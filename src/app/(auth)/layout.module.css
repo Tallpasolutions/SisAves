@@ -1,0 +1,149 @@
+/* Telas de acesso — contrato B4 em docs/design/05-telas.md.
+   Fundo petróleo com o símbolo em marca-d'água a 7%, cartão claro sobre ele. */
+
+.tela {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-6) var(--space-4);
+  background: var(--sis-petroleo-700);
+  overflow: hidden;
+}
+
+/* A marca-d'água é decorativa: fica fora da árvore de acessibilidade. */
+.marca {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(140vw, 760px);
+  transform: translate(-50%, -50%);
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.conteudo {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.assinatura {
+  align-self: center;
+  height: 36px;
+  width: auto;
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: var(--sis-branco);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+/* O cartão é sempre claro, mesmo no tema escuro: ele é a superfície de
+   contraste sobre o petróleo. Por isso as cores de dentro são fixadas aqui,
+   em vez de seguirem os aliases do tema. */
+.cartao .titulo {
+  font: var(--type-h3);
+  color: var(--sis-azul-profundo);
+}
+
+.cartao .subtitulo {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--sis-neutro-600);
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.separador {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--type-small);
+  color: var(--sis-neutro-500);
+}
+
+.separador::before,
+.separador::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--sis-neutro-200);
+}
+
+/* O rodapé fica SOBRE o petróleo, fora do cartão: precisa de texto claro.
+   Com o cinza do cartão ele ficava ilegível. */
+.rodape {
+  text-align: center;
+  font: var(--type-small);
+  color: var(--sis-petroleo-100);
+}
+
+.rodape a {
+  color: var(--sis-branco);
+  font-weight: var(--weight-medium);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.rodape a:hover {
+  color: var(--sis-branco);
+}
+
+.rodape a:focus-visible {
+  outline: var(--border-width-strong) solid var(--sis-branco);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.link {
+  align-self: flex-start;
+  font: var(--type-small);
+  color: var(--sis-petroleo-700);
+}
+
+/* Alerta dentro do cartão — texto + ícone, nunca só cor. */
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.alertaErro {
+  background: var(--sis-tijolo-100);
+  color: var(--sis-tijolo-700);
+}
+
+.alertaAviso {
+  background: var(--sis-petroleo-50);
+  color: var(--sis-petroleo-800);
+}
+
+.alertaIcone {
+  display: inline-flex;
+  flex: none;
+  margin-top: 1px;
+}

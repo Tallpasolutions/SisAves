@@ -63,9 +63,9 @@ abriria brecha para cor fora da paleta.
 |---|---|
 | 0 · Fundação do repositório | **concluída** (`e7441db`) |
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
-| 2 · Auth e onboarding | **próxima** |
+| 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | não iniciada |
+| 4 · Núcleo mobile (Faixa B) | **próxima** |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |
 | 7 · Desktop (Faixa C) | não iniciada |
@@ -94,6 +94,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0010_documentos` | certificados/CRO, notificações, push, assinatura |
 | `0011_semente_catalogo` | 8 grupos, 33 clubes de SC, 60 espécies |
 | `0012_prazos_e_siglas` | siglas faltantes; `dias_anilha` 3 + janela 1; `dias_separa` 40 |
+| `0013_perfil_automatico` | trigger que cria `perfis` junto com `auth.users` |
 
 ### Funções do domínio
 
@@ -102,14 +103,22 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
 `casal_ativo`
 
-### Testes de banco — 33 asserções, todas passando
+### Testes de banco — 40 asserções, todas passando
 
 ```bash
-node scripts/sql.mjs -f supabase/tests/01_ciclo_do_ovo.sql      # 11
-node scripts/sql.mjs -f supabase/tests/02_endogamia.sql         #  5
-node scripts/sql.mjs -f supabase/tests/03_isolamento_rls.sql    #  8
-node scripts/sql.mjs -f supabase/tests/04_certificado.sql       #  9
+for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
 ```
+
+| Arquivo | Asserções |
+|---|---|
+| `01_ciclo_do_ovo` | 11 |
+| `02_endogamia` | 5 |
+| `03_isolamento_rls` | 8 |
+| `04_certificado` | 9 |
+| `05_perfil_automatico` | 7 |
+
+E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
+os testes já quebraram por colidir com a conta de desenvolvimento.
 
 Cada um abre transação e termina em `rollback`. Toda linha deve sair com
 `resultado = ok`. **Rodar os quatro depois de qualquer migration.**
@@ -208,6 +217,21 @@ Configurações, Perfil, onboarding de criatório, e o tema escuro das telas B3�
 e C1–C3. Os tokens escuros existem; as pranchas não. Construir na linguagem das
 telas existentes.
 
+## Autenticação e onboarding
+
+- Sessão renovada no `middleware`, que chama `getUser()` — ele revalida o token
+  no servidor do Supabase. Ler a sessão do cookie sem validar aceitaria cookie
+  forjado.
+- `service_role` **nunca** no cliente nem em Server Component: só migrations,
+  testes e `scripts/`. Os clientes de app usam a chave anônima, com RLS valendo.
+- O criatório é pré-requisito de tudo: `/` manda para `/comecar` enquanto não
+  existir um.
+- Conta de desenvolvimento: `node scripts/usuario-teste.mjs criar` cria
+  `teste@sisaves.local` já confirmada (senha no próprio script). `limpar` remove.
+- **Node 22 é necessário.** `@supabase/supabase-js` exige WebSocket nativo, que
+  o Node 20 não tem; `scripts/usuario-teste.mjs` usa `fetch` direto na API
+  administrativa para contornar. Subir a versão resolve.
+
 ## Armadilhas já encontradas
 
 - `sed` do macOS não suporta `\b`. Um rename passou pela metade sem avisar. Usar
@@ -222,3 +246,7 @@ telas existentes.
   de elemento, não por coordenada guardada.
 - Em página de demonstração há **vários** elementos com o mesmo texto. Ao testar
   por seletor de texto, filtrar pelo contexto certo.
+- Fixture de teste não pode usar e-mail que exista de verdade no banco: a conta
+  de desenvolvimento derrubou o teste de endogamia. Usar `.invalid`.
+- Texto fora do cartão branco, sobre o fundo petróleo, precisa de cor clara. O
+  rodapé do login saiu com 1,38:1 por usar o cinza do cartão.

@@ -18,3 +18,11 @@ Toda linha deve sair com `resultado = ok`.
 | `02_endogamia.sql` | Coeficiente de Wright em pedigrees de valor conhecido: meios-irmãos 12,50%, irmãos completos 25%, primos-primeiros 6,25%, pai × filha 25%, sem parentesco 0%. |
 | `03_isolamento_rls.sql` | Dois criatórios não enxergam dado um do outro, e o acesso anônimo não enxerga nada. |
 | `04_certificado.sql` | O snapshot do CRO congela na emissão (renomear a ave depois não muda o documento), nenhum contato do criador sai na validação pública, e o anônimo não lê a tabela — só a função `validar_certificado`. |
+
+## Regra dos fixtures
+
+E-mails de teste usam o TLD reservado **`.invalid`**, com prefixo por arquivo
+(`endogamia@`, `rls-ana@`, `cert-carla@`). O motivo é concreto: os testes já
+quebraram por usarem `teste@sisaves.local`, o mesmo e-mail da conta de
+desenvolvimento criada por `scripts/usuario-teste.mjs` — a conta persiste no
+banco e colidia com o `insert` do fixture, mesmo dentro de transação.

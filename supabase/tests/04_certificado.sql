@@ -1,7 +1,7 @@
 begin;
 
 insert into auth.users (id, email, aud, role)
-values ('cccccccc-0000-0000-0000-000000000003', 'carla@sisaves.local', 'authenticated', 'authenticated');
+values ('cccccccc-0000-0000-0000-000000000003', 'cert-carla@teste.invalid', 'authenticated', 'authenticated');
 
 insert into public.clubes (id, sigla, nome) values
   ('dddddddd-0000-0000-0000-000000000004', 'TESTE-SOV', 'Clube de teste');

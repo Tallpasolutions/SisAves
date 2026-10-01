@@ -2,7 +2,7 @@ begin;
 
 -- Usuário e criatório de teste. Tudo desfeito no rollback ao final.
 insert into auth.users (id, email, aud, role)
-values ('11111111-1111-1111-1111-111111111111', 'teste@sisaves.local', 'authenticated', 'authenticated');
+values ('11111111-1111-1111-1111-111111111111', 'endogamia@teste.invalid', 'authenticated', 'authenticated');
 
 insert into public.criatorios (id, owner_id, nome, slug)
 values ('22222222-2222-2222-2222-222222222222',

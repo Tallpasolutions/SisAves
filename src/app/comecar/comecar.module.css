@@ -1,0 +1,210 @@
+/* Onboarding. Não foi desenhado no handoff — construído na linguagem das telas
+   existentes: cabeçalho à esquerda, um bloco de destaque, cartão branco. */
+
+.tela {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4) var(--space-10);
+  background: var(--surface-page);
+}
+
+.conteudo {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.passo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-brand);
+}
+
+.titulo { font: var(--type-h1); }
+
+.resumo {
+  margin: 0;
+  font: var(--type-body);
+  color: var(--text-secondary);
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.duasColunas {
+  display: grid;
+  grid-template-columns: 1fr 96px;
+  gap: var(--space-3);
+}
+
+.selecao {
+  width: 100%;
+  height: var(--control-h-lg);
+  padding: 0 var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+}
+
+.selecao:focus-visible {
+  outline: none;
+  border-color: var(--border-focus);
+  border-width: var(--border-width-strong);
+  box-shadow: var(--focus-ring);
+}
+
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-danger-soft);
+  color: var(--text-danger);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.alertaIcone { display: inline-flex; flex: none; margin-top: 1px; }
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+/* --- Lista de espécies --------------------------------------------------- */
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.grupoNome {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.especies {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--space-2);
+}
+
+.especie {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: 10px var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-control);
+}
+
+.especie:hover { background: var(--surface-hover); }
+
+.especie:has(input:checked) {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+}
+
+.especie:has(input:focus-visible) {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.caixa {
+  margin: 2px 0 0;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: var(--sis-petroleo-700);
+}
+
+.especieTextos {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.especieNome {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.especieCientifico {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.especiePrazo {
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+/* Espécie sem incubação conhecida: o criador precisa informar. */
+.semPrazo { color: var(--text-accent); }
+
+.contagem {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.contagemTexto {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.contagemNumero {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-semibold);
+  color: var(--text-brand);
+}

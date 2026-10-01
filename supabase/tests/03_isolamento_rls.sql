@@ -2,8 +2,8 @@ begin;
 
 -- Dois criadores independentes, cada um com o seu criatório e as suas aves.
 insert into auth.users (id, email, aud, role) values
-  ('aaaaaaaa-0000-0000-0000-000000000001', 'ana@sisaves.local',  'authenticated', 'authenticated'),
-  ('bbbbbbbb-0000-0000-0000-000000000002', 'bruno@sisaves.local','authenticated', 'authenticated');
+  ('aaaaaaaa-0000-0000-0000-000000000001', 'rls-ana@teste.invalid',  'authenticated', 'authenticated'),
+  ('bbbbbbbb-0000-0000-0000-000000000002', 'rls-bruno@teste.invalid','authenticated', 'authenticated');
 
 insert into public.criatorios (id, owner_id, nome, slug) values
   ('aaaaaaaa-1111-1111-1111-111111111111','aaaaaaaa-0000-0000-0000-000000000001','Criatório Ana','ana'),
