@@ -1,0 +1,143 @@
+/* Casais (B7) — macho × fêmea com anilhas, etiquetas, ninhada atual,
+   ovos ativos e endogamia. Faixa de gravidade de 3px. */
+
+.tela { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.titulo { font: var(--type-h2); }
+
+.contagem {
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.casal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  text-decoration: none;
+  transition: var(--transition-control);
+}
+
+.casal:hover { background: var(--surface-hover); }
+
+.casal:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Faixa de gravidade: permitida em cartão de casal e de ninhada. */
+.casal::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--border-width-marker);
+  background: transparent;
+}
+
+.urgente::before { background: var(--border-accent); }
+.perda::before { background: var(--border-danger); }
+
+.topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.numero {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-heading);
+}
+
+.contexto {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* --- Par ------------------------------------------------------------------- */
+.par {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.parceiro {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.parceiroNome {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.parceiroVazio {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* --- Rodapé ---------------------------------------------------------------- */
+.rodape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.dado { display: flex; flex-direction: column; gap: 1px; }
+
+.dadoRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.dadoValor {
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.endogamiaSeguro { color: var(--text-brand); }
+.endogamiaAtencao { color: var(--text-accent); }
+.endogamiaRisco { color: var(--text-danger); }

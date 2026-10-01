@@ -65,7 +65,7 @@ abriria brecha para cor fora da paleta.
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | **em andamento** — B1 Hoje, B2 Ovos, B5 Plantel e B3 Ficha prontos |
+| 4 · Núcleo mobile (Faixa B) | **em andamento** — falta só B9 (registrar postura) |
 | 5 · Genealogia (B6) | não iniciada |
 | 6 · Offline (fila + cache) | não iniciada |
 | 7 · Desktop (Faixa C) | não iniciada |
@@ -189,12 +189,19 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/ovos` | B2 Ovos | pipeline com pílulas de estado; ninhada herda o estado mais urgente dos seus ovos |
 | `/plantel` | B5 Plantel | busca por anilha ou nome (GET, sem JavaScript) e 4 filtros |
 | `/plantel/[id]` | B3 Ficha da ave | anilha em destaque, filiação clicável, 3 atalhos |
+| `/casais` | B7 Casais | par com anilhas, ninhada atual, ovos ativos e endogamia por faixa |
+| `/casais/[id]` | B8 Ficha do casal | `InbreedingMeter` com explicação vinda de `ancestrais_comuns`, histórico de ninhadas |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
 | `/comecar`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais |
 | `/ds` | biblioteca | referência do artboard A3; sai antes do lançamento |
 
 As subrotas `/plantel/[id]/genealogia`, `/certificado` e `/pesagens` existem
 como vazio honesto, para os atalhos da ficha não darem 404 antes das fases 5 e 8.
+
+**Tudo construído até aqui é leitura.** O sistema ainda não escreve nada: não
+há cadastro de ave, formação de casal nem registro de postura. A B9 é a
+primeira tela de escrita e traz Server Actions, validação com Zod e a base da
+fila offline da Fase 6.
 
 ## Pendências do cliente
 
