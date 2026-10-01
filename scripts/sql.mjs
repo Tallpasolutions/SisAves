@@ -31,10 +31,21 @@ if (!sql?.trim()) {
   process.exit(1);
 }
 
+/*
+ * Conexão pelo POOLER, não pelo host direto.
+ *
+ * `db.<ref>.supabase.co` passou a resolver só em IPv6 (tem AAAA, não tem A).
+ * Em máquina sem rota IPv6 o Node devolve ENOTFOUND e parece que o banco caiu.
+ * O pooler tem IPv4 e, em modo sessão (porta 5432), aceita DDL e transação —
+ * é o que as migrations e os testes precisam.
+ *
+ * A região não dá para deduzir do ref do projeto; descobre-se tentando conectar.
+ * Este projeto está em us-east-2. SUPABASE_DB_HOST sobrepõe, se mudar.
+ */
 const client = new pg.Client({
-  host: `db.${env.SUPABASE_PROJECT_REF}.supabase.co`,
+  host: env.SUPABASE_DB_HOST ?? "aws-0-us-east-2.pooler.supabase.com",
   port: 5432,
-  user: "postgres",
+  user: `postgres.${env.SUPABASE_PROJECT_REF}`,
   password: env.SUPABASE_DB_PASSWORD,
   database: "postgres",
   ssl: { rejectUnauthorized: false },

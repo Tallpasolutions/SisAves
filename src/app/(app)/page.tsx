@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CircleCheck, Egg, Feather, Sun, Thermometer, Users } from "lucide-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { Badge, EmptyState, SyncStatus } from "@/components/ui";
 import { obterCriatorioAtual } from "@/lib/criatorio";
@@ -67,22 +68,7 @@ export default async function Hoje() {
           <ul className={styles.tarefas}>
             {tarefas.map((t) => (
               <li key={t.chave}>
-                <article
-                  className={`${styles.tarefa} ${t.situacao === "anilhar" ? styles.tarefaUrgente : ""}`}
-                >
-                  <span className={styles.tarefaIcone} aria-hidden="true">
-                    {ICONE[t.situacao]}
-                  </span>
-                  <div className={styles.tarefaTextos}>
-                    <span className={styles.tarefaTitulo}>{descreverTarefa(t)}</span>
-                    <span className={styles.tarefaDetalhe}>{detalharTarefa(t)}</span>
-                  </div>
-                  {t.situacao === "anilhar" ? (
-                    <Badge tone="acao" size="sm" icon={<Feather size={12} />}>
-                      {t.anilhamentoVencido ? "Atrasado" : "Hoje"}
-                    </Badge>
-                  ) : null}
-                </article>
+                <LinhaTarefa tarefa={t} />
               </li>
             ))}
           </ul>
@@ -100,6 +86,42 @@ export default async function Hoje() {
       </section>
     </div>
   );
+}
+
+/**
+ * A tarefa de anilhar abre o anilhamento; as outras ainda não têm para onde ir.
+ *
+ * É a única acionável hoje, e também a única com prazo que fecha — fazer dela
+ * um link é o caminho mais curto entre ver a pendência e resolvê-la.
+ */
+function LinhaTarefa({ tarefa: t }: { tarefa: Tarefa }) {
+  const conteudo = (
+    <>
+      <span className={styles.tarefaIcone} aria-hidden="true">
+        {ICONE[t.situacao]}
+      </span>
+      <div className={styles.tarefaTextos}>
+        <span className={styles.tarefaTitulo}>{descreverTarefa(t)}</span>
+        <span className={styles.tarefaDetalhe}>{detalharTarefa(t)}</span>
+      </div>
+      {t.situacao === "anilhar" ? (
+        <Badge tone="acao" size="sm" icon={<Feather size={12} />}>
+          {t.anilhamentoVencido ? "Atrasado" : "Hoje"}
+        </Badge>
+      ) : null}
+    </>
+  );
+
+  const classe = `${styles.tarefa} ${t.situacao === "anilhar" ? styles.tarefaUrgente : ""}`;
+
+  if (t.situacao === "anilhar" && t.ninhadaId) {
+    return (
+      <Link href={`/ovos/${t.ninhadaId}/anilhar`} className={classe}>
+        {conteudo}
+      </Link>
+    );
+  }
+  return <article className={classe}>{conteudo}</article>;
 }
 
 function Indicador({ rotulo, valor }: { rotulo: string; valor: number }) {

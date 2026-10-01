@@ -105,6 +105,17 @@
   border: var(--border-width) solid var(--border-subtle);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-xs);
+  /* A tarefa de anilhar é um <a>, e base.css sublinha todo link: sem isto o
+     título, o contexto e o prazo saem todos riscados. */
+  color: inherit;
+  text-decoration: none;
+}
+
+a.tarefa:hover { border-color: var(--border-brand); }
+
+a.tarefa:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* Único elemento âmbar da tela, e só porque a janela fecha em dois dias. */

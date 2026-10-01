@@ -15,6 +15,7 @@ const ROTAS_SEM_BARRA = [
   /^\/casais\/[^/]+\/postura$/,
   /^\/plantel\/nova$/,
   /^\/casais\/novo$/,
+  /^\/ovos\/[^/]+\/anilhar$/,
 ];
 
 const DESTINOS = [

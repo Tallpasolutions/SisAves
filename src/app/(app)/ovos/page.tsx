@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Badge, EmptyState } from "@/components/ui";
+import { Badge, Button, EmptyState, Toast } from "@/components/ui";
 import {
   contarPorEstado,
   ESTADOS_ATIVOS,
@@ -48,8 +48,24 @@ export default async function Ovos({ searchParams }: PageProps<"/ovos">) {
   const contagem = contarPorEstado(todas);
   const ninhadas = filtro ? await listarNinhadas(filtro) : todas;
 
+  // Confirmação vinda do anilhamento.
+  const anilhados = Number(params.anilhados);
+  const confirmacao = Number.isFinite(anilhados) && anilhados > 0 ? anilhados : null;
+
   return (
     <div className={styles.tela}>
+      {confirmacao ? (
+        <Toast
+          tone="ok"
+          title={`${confirmacao} ${confirmacao === 1 ? "filhote anilhado" : "filhotes anilhados"}`}
+          description={
+            confirmacao === 1
+              ? "A ave já está no plantel, com a filiação do casal."
+              : "As aves já estão no plantel, com a filiação do casal."
+          }
+        />
+      ) : null}
+
       <header className={styles.cabecalho}>
         <h1 className={styles.titulo}>Ovos</h1>
         <span className={styles.contagem}>
@@ -161,6 +177,17 @@ function CartaoNinhada({ ninhada: n }: { ninhada: Ninhada }) {
           </Badge>
         ))}
       </div>
+
+      {/* A ação fica no cartão porque é ali que o criador vê o prazo. Variante
+          secundária: o âmbar da tela já é o do estado, e o contrato admite um
+          só elemento âmbar de ação por tela. */}
+      {urgente && n.ninhadaId ? (
+        <div className={styles.acao}>
+          <Button href={`/ovos/${n.ninhadaId}/anilhar`} variant="secondary" size="md">
+            Anilhar filhotes
+          </Button>
+        </div>
+      ) : null}
 
       <div className={styles.rodape}>
         <Prazo rotulo="Ovos" valor={String(n.total)} />

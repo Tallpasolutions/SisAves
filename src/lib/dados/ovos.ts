@@ -27,6 +27,8 @@ export const ESTADOS_ATIVOS: EstadoOvo[] = [
 export interface Ninhada {
   chave: string;
   casalId: string;
+  /** Null quando a postura foi registrada sem ninhada (dado antigo). */
+  ninhadaId: string | null;
   casalNumero: number;
   ninhadaNumero: number | null;
   especie: string | null;
@@ -49,6 +51,7 @@ export interface Ninhada {
 interface LinhaPostura {
   id: string;
   casal_id: string;
+  ninhada_id: string | null;
   casal_numero: number;
   ninhada_numero: number | null;
   especie_nome: string | null;
@@ -84,7 +87,7 @@ export async function listarNinhadas(filtro?: EstadoOvo): Promise<Ninhada[]> {
   const { data, error } = await supabase
     .from("vw_posturas")
     .select(
-      "id, casal_id, casal_numero, ninhada_numero, especie_nome, data_postura, data_eclosao, situacao, previsao_eclosao, limite_anilhamento, dias_restantes_anilha, anilhamento_vencido",
+      "id, casal_id, ninhada_id, casal_numero, ninhada_numero, especie_nome, data_postura, data_eclosao, situacao, previsao_eclosao, limite_anilhamento, dias_restantes_anilha, anilhamento_vencido",
     )
     .order("data_postura", { ascending: false });
 
@@ -103,6 +106,7 @@ export async function listarNinhadas(filtro?: EstadoOvo): Promise<Ninhada[]> {
       n = {
         chave,
         casalId: l.casal_id,
+        ninhadaId: l.ninhada_id,
         casalNumero: l.casal_numero,
         ninhadaNumero: l.ninhada_numero,
         especie: l.especie_nome,

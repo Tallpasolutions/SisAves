@@ -180,3 +180,8 @@
 }
 
 .prazoAtencao { color: var(--text-accent); }
+
+/* Ação dentro do cartão da ninhada, acima do rodapé de prazos. */
+.acao {
+  display: flex;
+}

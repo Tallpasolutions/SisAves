@@ -8,6 +8,8 @@ export interface Tarefa {
   situacao: SituacaoTarefa;
   casalId: string;
   casalNumero: number;
+  /** Null quando a postura foi registrada sem ninhada (dado antigo). */
+  ninhadaId: string | null;
   ninhadaNumero: number | null;
   especie: string | null;
   /** Quantos ovos ou filhotes dessa ninhada estão nesse estado. */
@@ -28,6 +30,7 @@ export interface IndicadoresPlantel {
 interface LinhaTarefa {
   postura_id: string;
   casal_id: string;
+  ninhada_id: string | null;
   casal_numero: number;
   ninhada_numero: number | null;
   especie_nome: string | null;
@@ -52,7 +55,7 @@ export async function obterTarefasDeHoje(): Promise<Tarefa[]> {
   const { data, error } = await supabase
     .from("vw_tarefas_hoje")
     .select(
-      "postura_id, casal_id, casal_numero, ninhada_numero, especie_nome, situacao, prioridade, dias_restantes_anilha, anilhamento_vencido, previsao_eclosao",
+      "postura_id, casal_id, ninhada_id, casal_numero, ninhada_numero, especie_nome, situacao, prioridade, dias_restantes_anilha, anilhamento_vencido, previsao_eclosao",
     )
     .order("prioridade");
 
@@ -83,6 +86,7 @@ export async function obterTarefasDeHoje(): Promise<Tarefa[]> {
       situacao: linha.situacao,
       casalId: linha.casal_id,
       casalNumero: linha.casal_numero,
+      ninhadaId: linha.ninhada_id,
       ninhadaNumero: linha.ninhada_numero,
       especie: linha.especie_nome,
       quantidade: 1,
