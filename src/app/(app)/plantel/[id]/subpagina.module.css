@@ -1,0 +1,26 @@
+/* Subpáginas da ficha da ave (genealogia, certificado, pesagens). */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
