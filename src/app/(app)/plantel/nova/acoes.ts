@@ -73,6 +73,11 @@ export async function cadastrarAve(
   _anterior: EstadoCadastroAve,
   dados: FormData,
 ): Promise<EstadoCadastroAve> {
+  // Chave gerada no cliente: o reenvio da fila offline bate na PK e é
+  // reconhecido como já aplicado, em vez de cadastrar a ave duas vezes.
+  const aveId = String(dados.get("ave_id") ?? "") || null;
+  const reenvio = dados.get("reenvio") === "1";
+
   const resultado = EsquemaAve.safeParse({
     nome: opcional(dados.get("nome")),
     especie_id: String(dados.get("especie_id") ?? ""),
@@ -101,7 +106,11 @@ export async function cadastrarAve(
 
   const ave = resultado.data;
   const criatorio = await obterCriatorioAtual();
-  if (!criatorio) redirect("/comecar");
+  if (!criatorio) {
+    // No reenvio não há ninguém para mandar ao onboarding: o item fica na fila.
+    if (reenvio) return { erro: "Criatório não encontrado." };
+    redirect("/comecar");
+  }
 
   const supabase = await criarClienteServidor();
 
@@ -159,6 +168,7 @@ export async function cadastrarAve(
   const { data: criada, error } = await supabase
     .from("passaros")
     .insert({
+      ...(aveId ? { id: aveId } : {}),
       criatorio_id: criatorio.id,
       nome: ave.nome ?? null,
       especie_id: ave.especie_id,
@@ -182,6 +192,12 @@ export async function cadastrarAve(
     // 23505 = unicidade. São dois índices possíveis, e a mensagem precisa dizer
     // QUAL identificação colidiu — é o erro mais caro do domínio.
     if (error?.code === "23505") {
+      // Chave primária: esta escrita já chegou antes.
+      if (error.message.includes("passaros_pkey") && aveId) {
+        revalidatePath("/", "layout");
+        if (reenvio) return {};
+        redirect(`/plantel/${aveId}`);
+      }
       if (error.message.includes("passaros_anilha_unica")) {
         const anilha = [
           [ave.anilha_sigla, ave.anilha_criador].filter(Boolean).join(" "),
@@ -209,6 +225,7 @@ export async function cadastrarAve(
   }
 
   revalidatePath("/", "layout");
+  if (reenvio) return {};
   redirect(`/plantel/${criada.id}?cadastrada=1`);
 }
 

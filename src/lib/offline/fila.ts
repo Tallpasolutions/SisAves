@@ -119,10 +119,18 @@ export async function registrarFalha(id: string, erro: string): Promise<void> {
   }
 }
 
-/** O FormData que a Server Action recebe, montado de volta a partir da fila. */
+/**
+ * O FormData que a Server Action recebe, montado de volta a partir da fila.
+ *
+ * `reenvio` avisa a ação de que não há ninguém olhando: ela grava e devolve,
+ * sem `redirect`. Sem essa marca, esvaziar a fila em segundo plano arrastava o
+ * criador para a tela de destino da escrita — ele podia estar no meio de outra
+ * coisa, no galpão, quando o sinal voltou.
+ */
 export function paraFormData(item: ItemFila): FormData {
   const dados = new FormData();
   for (const [chave, valor] of item.campos) dados.append(chave, valor);
+  dados.set("reenvio", "1");
   return dados;
 }
 

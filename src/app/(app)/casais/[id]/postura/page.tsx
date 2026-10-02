@@ -38,6 +38,7 @@ export default async function RegistrarPostura({
 
       <FormularioPostura
         casalId={id}
+        casalNumero={casal.numero}
         proximaNinhada={(casal.ninhadas[0]?.numero ?? 0) + 1}
         prazos={prazos}
       />

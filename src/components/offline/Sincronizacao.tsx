@@ -120,9 +120,18 @@ export function ProvedorSincronizacao({ children }: { children: ReactNode }) {
     if (!("serviceWorker" in navigator)) return;
     // Em desenvolvimento o SW serviria HTML velho por cima do hot reload.
     if (process.env.NODE_ENV !== "production") return;
-    navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {
-      // Falhar o registro não pode derrubar o app: ele só perde o offline.
-    });
+    navigator.serviceWorker
+      // `updateViaCache: "none"` garante que o próprio service worker nunca
+      // venha do cache HTTP — sem isso, uma correção nele pode demorar a
+      // chegar ao aparelho, e não dá para depender só do cabeçalho.
+      .register("/sw.js", { scope: "/", updateViaCache: "none" })
+      .catch((erro) => {
+        // Falhar o registro não derruba o app: ele só perde o offline. Mas
+        // engolir o motivo em silêncio torna a falha invisível, e aí ninguém
+        // descobre que o galpão ficou sem offline. Alguns navegadores
+        // embutidos simplesmente não permitem service worker.
+        console.warn("SisAves: service worker não registrou —", erro);
+      });
   }, []);
 
   useEffect(() => {

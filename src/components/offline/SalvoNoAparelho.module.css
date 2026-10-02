@@ -1,0 +1,65 @@
+/* Confirmação de escrita offline. Alinhada à esquerda, como todo bloco de
+   estado do produto. */
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.icone {
+  display: inline-flex;
+  color: var(--text-brand);
+}
+
+.titulo {
+  margin: 0;
+  font: var(--type-h4);
+  color: var(--text-heading);
+}
+
+.texto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* O aviso é o ponto do bloco: diz onde o registro está de verdade. */
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: var(--space-1) 0 0;
+  padding: var(--space-3);
+  background: var(--surface-brand-soft);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-primary);
+}
+
+.aviso svg { flex: none; margin-top: 2px; }
+
+.acao {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-h-lg);
+  margin-top: var(--space-2);
+  padding: 0 var(--space-5);
+  background: var(--sis-petroleo-700);
+  color: var(--text-on-brand);
+  border-radius: var(--radius-sm);
+  font: var(--type-body-strong);
+  text-decoration: none;
+}
+
+.acao:hover { background: var(--sis-petroleo-800); }
+
+.acao:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}

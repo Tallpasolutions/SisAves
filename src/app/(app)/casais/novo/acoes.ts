@@ -63,6 +63,11 @@ export async function formarCasal(
     return v === "" ? undefined : v;
   };
 
+  // Chave gerada no cliente, pelo mesmo motivo das demais escritas: o reenvio
+  // da fila offline não pode formar o casal duas vezes.
+  const casalId = String(dados.get("casal_id") ?? "") || null;
+  const reenvio = dados.get("reenvio") === "1";
+
   const resultado = EsquemaCasal.safeParse({
     macho_id: String(dados.get("macho_id") ?? ""),
     femea_id: String(dados.get("femea_id") ?? ""),
@@ -82,7 +87,10 @@ export async function formarCasal(
 
   const casal = resultado.data;
   const criatorio = await obterCriatorioAtual();
-  if (!criatorio) redirect("/comecar");
+  if (!criatorio) {
+    if (reenvio) return { erro: "Criatório não encontrado." };
+    redirect("/comecar");
+  }
 
   const supabase = await criarClienteServidor();
 
@@ -165,6 +173,7 @@ export async function formarCasal(
   const { data: criado, error } = await supabase
     .from("casais")
     .insert({
+      ...(casalId ? { id: casalId } : {}),
       criatorio_id: criatorio.id,
       numero,
       macho_id: casal.macho_id,
@@ -181,6 +190,12 @@ export async function formarCasal(
     // 23505 = dois casais com o mesmo número, o que só acontece se outra aba
     // gravou no intervalo entre ler o último número e escrever.
     if (error?.code === "23505") {
+      // Chave primária: esta escrita já chegou antes.
+      if (error.message.includes("casais_pkey") && casalId) {
+        revalidatePath("/", "layout");
+        if (reenvio) return {};
+        redirect(`/casais/${casalId}`);
+      }
       return { erro: "Outro casal foi formado agora mesmo. Tente de novo." };
     }
     console.error("formarCasal:", error?.message);
@@ -188,6 +203,7 @@ export async function formarCasal(
   }
 
   revalidatePath("/", "layout");
+  if (reenvio) return {};
   redirect(`/casais/${criado.id}?formado=${numero}`);
 }
 

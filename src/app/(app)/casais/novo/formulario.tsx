@@ -10,6 +10,8 @@ import {
   type ChangeEvent,
 } from "react";
 import { Button, Field, InbreedingMeter, Input, Select } from "@/components/ui";
+import { SalvoNoAparelho } from "@/components/offline/SalvoNoAparelho";
+import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
 import type { OpcaoProgenitor, OpcoesFormarCasal } from "@/lib/dados/cadastro";
 import { descreverAve } from "@/lib/formato";
 import { useErrosQueEnvelhecem } from "@/lib/formulario";
@@ -92,15 +94,39 @@ export function FormularioCasal({ opcoes }: { opcoes: OpcoesFormarCasal }) {
 
   const numero = String(opcoes.proximoNumero).padStart(2, "0");
 
+  const { id, aoEnviar, salvoNoAparelho, online } = useEnvioOffline({
+    tipo: "casal",
+    resumo: () =>
+      `Casal ${numero} · ${macho?.nome ?? "macho"} e ${femea?.nome ?? "fêmea"}`,
+  });
+
+  if (salvoNoAparelho) {
+    return (
+      <SalvoNoAparelho
+        titulo={`Casal ${numero} salvo no aparelho · ${macho?.nome ?? "macho"} e ${femea?.nome ?? "fêmea"}`}
+        consequencia={
+          leitura?.valor !== null && leitura
+            ? `Endogamia de ${leitura.valor.toFixed(2).replace(".", ",")}% será registrada na formação.`
+            : "Só recebe postura depois que o registro subir."
+        }
+        voltarPara="/casais"
+        rotuloVoltar="Voltar para os casais"
+      />
+    );
+  }
+
   return (
     <form
       action={acao}
-      onSubmit={() => {
+      onSubmit={(evento) => {
         enviar();
         setParEnviado(chaveDoPar);
+        aoEnviar(evento);
       }}
       className={styles.formulario}
     >
+      {/* Chave do casal gerada aqui: idempotência do reenvio da fila. */}
+      <input type="hidden" name="casal_id" value={id} />
       {erroGeral ? (
         <p className={styles.alerta} role="alert">
           <span className={styles.alertaIcone}>
@@ -244,10 +270,12 @@ export function FormularioCasal({ opcoes }: { opcoes: OpcoesFormarCasal }) {
           <Button type="submit" size="lg" bloco disabled={enviando}>
             {enviando ? "Formando…" : `Formar casal ${numero}`}
           </Button>
-          <span className={styles.aviso}>
-            <WifiOff size={14} aria-hidden="true" />
-            Precisa de conexão para salvar
-          </span>
+          {!online ? (
+            <span className={styles.aviso}>
+              <WifiOff size={14} aria-hidden="true" />
+              Offline — será salvo no aparelho
+            </span>
+          ) : null}
         </div>
       </div>
     </form>

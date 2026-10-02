@@ -2,7 +2,17 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 /** Rotas que não exigem sessão. */
-const PUBLICAS = ["/entrar", "/cadastrar", "/recuperar-senha", "/auth", "/v"];
+// `/offline` é a tela que o service worker serve quando não há rede. Exigir
+// sessão nela seria pedir uma ida ao servidor justamente quando não há
+// servidor alcançável.
+const PUBLICAS = [
+  "/entrar",
+  "/cadastrar",
+  "/recuperar-senha",
+  "/auth",
+  "/v",
+  "/offline",
+];
 
 function ehPublica(pathname: string) {
   return PUBLICAS.some((p) => pathname === p || pathname.startsWith(`${p}/`));

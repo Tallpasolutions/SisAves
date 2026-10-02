@@ -3,6 +3,8 @@
 import { CircleAlert, TriangleAlert, WifiOff } from "lucide-react";
 import { useActionState, useState, type ChangeEvent } from "react";
 import { Button, Field, Input } from "@/components/ui";
+import { SalvoNoAparelho } from "@/components/offline/SalvoNoAparelho";
+import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
 import type { FilhoteParaAnilhar, NinhadaParaAnilhar } from "@/lib/dados/anilhamento";
 import { formatarData } from "@/lib/formato";
 import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
@@ -64,13 +66,44 @@ export function FormularioAnilhamento({ ninhada }: { ninhada: NinhadaParaAnilhar
     });
   };
 
+  /*
+   * O anilhamento não manda chave própria: quem garante a idempotência é a
+   * função `anilhar_filhotes`, que recusa filhote já anilhado com mensagem do
+   * domínio. O reenvio da fila reconhece essa recusa como sucesso.
+   */
+  const { aoEnviar, salvoNoAparelho, online } = useEnvioOffline({
+    tipo: "anilhamento",
+    resumo: () =>
+      `Anilhamento · Ninhada ${String(ninhada.ninhadaNumero ?? 0).padStart(2, "0")} · ${marcados.length} ${
+        marcados.length === 1 ? "filhote" : "filhotes"
+      }`,
+  });
+
   const jaNumerado =
     sugestao !== null &&
     marcados.length > 0 &&
     marcados.every((f, i) => filhotes[f.posturaId]?.numero === String(sugestao + i));
 
+  if (salvoNoAparelho) {
+    return (
+      <SalvoNoAparelho
+        titulo={`Anilhamento salvo no aparelho · ${marcados.length} ${marcados.length === 1 ? "filhote" : "filhotes"}`}
+        consequencia="Os filhotes entram no plantel, com a filiação do casal, assim que o registro subir."
+        voltarPara="/ovos"
+        rotuloVoltar="Voltar para os ovos"
+      />
+    );
+  }
+
   return (
-    <form action={acao} onSubmit={enviar} className={styles.formulario}>
+    <form
+      action={acao}
+      onSubmit={(evento) => {
+        enviar();
+        aoEnviar(evento);
+      }}
+      className={styles.formulario}
+    >
       <input type="hidden" name="ninhada_id" value={ninhada.ninhadaId} />
 
       {estado.erro ? (
@@ -215,10 +248,12 @@ export function FormularioAnilhamento({ ninhada }: { ninhada: NinhadaParaAnilhar
                 ? "Anilhar 1 filhote"
                 : `Anilhar ${marcados.length} filhotes`}
           </Button>
-          <span className={styles.aviso}>
-            <WifiOff size={14} aria-hidden="true" />
-            Precisa de conexão para salvar
-          </span>
+          {!online ? (
+            <span className={styles.aviso}>
+              <WifiOff size={14} aria-hidden="true" />
+              Offline — será salvo no aparelho
+            </span>
+          ) : null}
         </div>
       </div>
     </form>

@@ -3,6 +3,8 @@
 import { CircleAlert, Minus, Plus, WifiOff } from "lucide-react";
 import { useActionState, useState } from "react";
 import { Button, Field, Input } from "@/components/ui";
+import { SalvoNoAparelho } from "@/components/offline/SalvoNoAparelho";
+import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
 import { registrarPostura, type EstadoPostura } from "./acoes";
 import styles from "./postura.module.css";
 
@@ -19,10 +21,12 @@ const MAX_OVOS = 12;
 
 export function FormularioPostura({
   casalId,
+  casalNumero,
   proximaNinhada,
   prazos,
 }: {
   casalId: string;
+  casalNumero: number;
   proximaNinhada: number;
   prazos: Prazos | null;
 }) {
@@ -36,9 +40,36 @@ export function FormularioPostura({
   // inclusive em erro: solto, o campo se esvaziaria junto com a mensagem.
   const [observacoes, setObservacoes] = useState("");
 
+  const { id, aoEnviar, salvoNoAparelho, online } = useEnvioOffline({
+    tipo: "postura",
+    // O criador lê isto na lista de pendentes: precisa dizer de QUAL casal é.
+    resumo: () =>
+      `Postura · Casal ${String(casalNumero).padStart(2, "0")} · Ninhada ${String(
+        proximaNinhada,
+      ).padStart(2, "0")} · ${quantidade} ${quantidade === 1 ? "ovo" : "ovos"}`,
+  });
+
+  if (salvoNoAparelho) {
+    return (
+      <SalvoNoAparelho
+        titulo={`Postura salva no aparelho · Ninhada ${String(proximaNinhada).padStart(2, "0")} · ${quantidade} ${quantidade === 1 ? "ovo" : "ovos"}`}
+        consequencia={
+          prazos
+            ? `Ovoscopia prevista para ${somarDias(data, prazos.dias_ovoscopia)}.`
+            : undefined
+        }
+        voltarPara={`/casais/${casalId}`}
+        rotuloVoltar="Voltar para o casal"
+      />
+    );
+  }
+
   return (
-    <form action={acao} className={styles.formulario}>
+    <form action={acao} onSubmit={aoEnviar} className={styles.formulario}>
       <input type="hidden" name="casal_id" value={casalId} />
+      {/* Chave da ninhada gerada aqui: é o que torna o reenvio da fila
+          idempotente se a resposta da primeira tentativa se perder. */}
+      <input type="hidden" name="ninhada_id" value={id} />
 
       {estado.erro ? (
         <p className={styles.alerta} role="alert">
@@ -101,12 +132,14 @@ export function FormularioPostura({
               ? "Registrando…"
               : `Registrar ninhada ${String(proximaNinhada).padStart(2, "0")}`}
           </Button>
-          {/* A fila offline entra na Fase 6; até lá o aviso não promete o que
-              o sistema ainda não faz. */}
-          <span className={styles.aviso}>
-            <WifiOff size={14} aria-hidden="true" />
-            Precisa de conexão para salvar
-          </span>
+          {/* Sem sinal o registro não se perde: vai para a fila do aparelho e
+              sobe sozinho. A cópia nunca sugere perda. */}
+          {!online ? (
+            <span className={styles.aviso}>
+              <WifiOff size={14} aria-hidden="true" />
+              Offline — será salvo no aparelho
+            </span>
+          ) : null}
         </div>
       </div>
     </form>
@@ -182,11 +215,7 @@ function Previsoes({ data, prazos }: { data: string; prazos: Prazos }) {
   const base = new Date(`${data}T00:00:00`);
   if (Number.isNaN(base.getTime())) return null;
 
-  const mais = (dias: number) => {
-    const d = new Date(base);
-    d.setDate(d.getDate() + dias);
-    return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-  };
+  const mais = (dias: number) => somarDias(data, dias);
 
   return (
     <div className={styles.previsoes}>
@@ -205,4 +234,12 @@ function Previsoes({ data, prazos }: { data: string; prazos: Prazos }) {
       </span>
     </div>
   );
+}
+
+/** "17/03" — a data que cai N dias depois da informada. */
+function somarDias(data: string, dias: number): string {
+  const d = new Date(`${data}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return "";
+  d.setDate(d.getDate() + dias);
+  return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
 }

@@ -39,6 +39,19 @@ export async function registrarPostura(
   const casalId = String(dados.get("casal_id") ?? "");
   if (!casalId) return { erro: "Casal não identificado." };
 
+  /*
+   * Chave gerada no cliente, usada como PK da ninhada.
+   *
+   * É o que torna o reenvio da fila offline idempotente: se a primeira
+   * tentativa chegou ao servidor e só a resposta se perdeu — o caso clássico
+   * de sinal ruim —, a segunda bate na chave primária e é reconhecida como já
+   * aplicada, em vez de criar uma segunda ninhada idêntica.
+   */
+  const ninhadaId = String(dados.get("ninhada_id") ?? "") || null;
+
+  // Reenvio da fila offline: grava e devolve, sem navegar. Ver paraFormData.
+  const reenvio = dados.get("reenvio") === "1";
+
   const resultado = EsquemaPostura.safeParse({
     data_postura: dados.get("data_postura"),
     quantidade: dados.get("quantidade"),
@@ -98,6 +111,7 @@ export async function registrarPostura(
   const { data: ninhada, error: erroNinhada } = await supabase
     .from("ninhadas")
     .insert({
+      ...(ninhadaId ? { id: ninhadaId } : {}),
       criatorio_id: casal.criatorio_id,
       casal_id: casalId,
       numero,
@@ -108,9 +122,16 @@ export async function registrarPostura(
     .single();
 
   if (erroNinhada || !ninhada) {
-    // 23505 = violação de unicidade: duas ninhadas com o mesmo número no casal,
-    // o que só acontece se outra aba gravou no intervalo entre ler e escrever.
     if (erroNinhada?.code === "23505") {
+      // Chave primária: esta mesma escrita já chegou antes. Não é erro — o
+      // registro está lá, e repetir seria duplicar a ninhada.
+      if (erroNinhada.message.includes("ninhadas_pkey")) {
+        revalidatePath("/", "layout");
+        if (reenvio) return {};
+        redirect(`/casais/${casalId}`);
+      }
+      // Dois números iguais no mesmo casal: outra aba gravou entre ler e
+      // escrever.
       return { erro: "Outra ninhada foi registrada agora mesmo. Tente de novo." };
     }
     console.error("registrarPostura/ninhada:", erroNinhada?.message);

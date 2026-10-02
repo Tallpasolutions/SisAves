@@ -46,6 +46,7 @@ export async function anilharFilhotes(
 ): Promise<EstadoAnilhamento> {
   const ninhadaId = String(dados.get("ninhada_id") ?? "");
   const ids = dados.getAll("postura_id").map(String).filter(Boolean);
+  const reenvio = dados.get("reenvio") === "1";
 
   if (!ninhadaId || ids.length === 0) {
     return { erro: "Nenhum filhote informado para anilhar." };
@@ -154,6 +155,7 @@ export async function anilharFilhotes(
   }
 
   revalidatePath("/", "layout");
+  if (reenvio) return {};
   redirect(`/ovos?anilhados=${filhotes.length}&ninhada=${ninhadaId}`);
 }
 

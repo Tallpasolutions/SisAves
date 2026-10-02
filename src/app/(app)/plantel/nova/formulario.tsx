@@ -4,6 +4,8 @@ import { CircleAlert, WifiOff } from "lucide-react";
 import { useMemo, useState, type ChangeEvent } from "react";
 import { useActionState } from "react";
 import { Button, Field, Input, Select } from "@/components/ui";
+import { SalvoNoAparelho } from "@/components/offline/SalvoNoAparelho";
+import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
 import type { OpcoesCadastroAve } from "@/lib/dados/cadastro";
 import { descreverAve } from "@/lib/formato";
 import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
@@ -56,6 +58,17 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
 
   const { erro, marcar, enviar } = useErrosQueEnvelhecem(estado.campos);
 
+  const nomeDaAve = () => campos.nome?.trim() || "Ave sem nome";
+  const { id, aoEnviar, salvoNoAparelho, online } = useEnvioOffline({
+    tipo: "ave",
+    resumo: () =>
+      `Cadastro de ave · ${nomeDaAve()}${
+        campos.anilha_numero
+          ? ` · ${String(campos.anilha_numero).padStart(4, "0")}`
+          : ""
+      }`,
+  });
+
   const mudar =
     (campo: string) =>
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -76,8 +89,28 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
   const sugestao = opcoes.anilha.sugestao;
   const hoje = new Date().toISOString().slice(0, 10);
 
+  if (salvoNoAparelho) {
+    return (
+      <SalvoNoAparelho
+        titulo={`Ave salva no aparelho · ${nomeDaAve()}`}
+        consequencia="Ela entra no plantel assim que o registro subir, e só então pode formar casal."
+        voltarPara="/plantel"
+        rotuloVoltar="Voltar para o plantel"
+      />
+    );
+  }
+
   return (
-    <form action={acao} onSubmit={enviar} className={styles.formulario}>
+    <form
+      action={acao}
+      onSubmit={(evento) => {
+        enviar();
+        aoEnviar(evento);
+      }}
+      className={styles.formulario}
+    >
+      {/* Chave da ave gerada aqui: idempotência do reenvio da fila. */}
+      <input type="hidden" name="ave_id" value={id} />
       {estado.erro ? (
         <p className={styles.alerta} role="alert">
           <span className={styles.alertaIcone}>
@@ -406,12 +439,12 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
           <Button type="submit" size="lg" bloco disabled={enviando}>
             {enviando ? "Cadastrando…" : "Cadastrar ave"}
           </Button>
-          {/* A fila offline entra na Fase 6; até lá o aviso não promete o que
-              o sistema ainda não faz. */}
-          <span className={styles.aviso}>
-            <WifiOff size={14} aria-hidden="true" />
-            Precisa de conexão para salvar
-          </span>
+          {!online ? (
+            <span className={styles.aviso}>
+              <WifiOff size={14} aria-hidden="true" />
+              Offline — será salvo no aparelho
+            </span>
+          ) : null}
         </div>
       </div>
     </form>
