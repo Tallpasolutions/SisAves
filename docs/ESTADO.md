@@ -2,7 +2,7 @@
 
 > **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
 > que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **02/10/2026**, depois da Fase 5.
+> Atualizado em **02/10/2026**, depois da Fase 6.
 
 ## O produto em uma frase
 
@@ -14,27 +14,25 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Fase 6 — offline.** É o requisito de primeira classe que ainda não existe, e
-o que separa o produto do legado no único lugar em que ele é usado de verdade:
-em pé no galpão, sem sinal.
+**Testar o service worker em navegador de verdade, antes de qualquer outra
+coisa.** É a única parte da Fase 6 que não pôde ser verificada aqui: o
+navegador embutido do ambiente de desenvolvimento bloqueia service worker.
 
-Três peças, na ordem:
+O arquivo é servido corretamente (200, `application/javascript`,
+`Service-Worker-Allowed: /`) e a página consegue buscá-lo, mas `register()`
+falha com *"unknown error when fetching the script"*. O registro agora avisa no
+console em vez de engolir o erro. O que precisa ser confirmado no Chrome ou
+Safari de um aparelho real:
 
-1. **Service Worker com Serwist** — cache do shell e das leituras
-   (stale-while-revalidate).
-2. **Fila de escrita em IndexedDB** — a mutação grava local primeiro; o
-   `SyncStatus` reflete `offline → pendente (contagem) → sincronizado · hh:mm`.
-   As PKs já são `uuid` geradas no cliente, exatamente para a idempotência do
-   reenvio.
-3. **Reenvio com backoff** ao voltar a rede, com `last-write-wins` por
-   `updated_at` e registro do descarte.
+1. `navigator.serviceWorker.getRegistrations()` devolve o registro;
+2. visitar Hoje, Plantel e Ovos, desligar a rede e recarregar — as três abrem
+   com o último estado conhecido;
+3. pedir uma rota nunca visitada sem rede cai em `/offline`.
 
-As quatro telas de escrita hoje dizem "Precisa de conexão para salvar" — um
-aviso honesto que a Fase 6 substitui por "Offline — salvo no aparelho". A cópia
-exata está no `CLAUDE.md`: nunca "Tente novamente mais tarde".
-
-`situacao_postura()` é `immutable` de propósito, para o mesmo cálculo do ciclo
-do ovo rodar no cliente offline — a Fase 6 é onde isso finalmente se usa.
+**Depois disso, Fase 7 — desktop (Faixa C).** Painel (`4a`), plantel em tabela
+(`4b`) e editor de CRO (`4c`). Os gráficos são SVG à mão, não biblioteca: o
+design proíbe escala multicolorida e usa só petróleo-200, petróleo-700 e
+tijolo vazado.
 
 ## Onde está tudo
 
@@ -99,7 +97,7 @@ abriria brecha para cor fora da paleta.
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
 | 4 · Núcleo mobile (Faixa B) | **concluída**, incluídas as três telas de escrita (`7d4f435`, `f885075`, `f514dc5`) |
 | 5 · Genealogia (B6) | **concluída** (`10c0800`) |
-| 6 · Offline (fila + cache) | não iniciada |
+| 6 · Offline (fila + cache) | **concluída** (`ec2288f`, `32eef1f`); registro do service worker pendente de teste em navegador real |
 | 7 · Desktop (Faixa C) | não iniciada |
 | 8 · CRO, QR e validação pública | banco pronto; interface não iniciada |
 | 9 · Financeiro e saúde | banco pronto; interface não iniciada |
@@ -235,6 +233,12 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 - **Erro tem de envelhecer junto com o dado.** A mensagem cita o dado exato, e
   por isso precisa sumir quando o campo muda — senão passa a acusar algo que já
   não está na tela. `useErrosQueEnvelhecem`, mesmo arquivo.
+- **Toda mensagem de erro do Zod precisa de texto no tipo base.** A mensagem
+  da regra (`.regex`, `.uuid`, `.min`) só aparece se o valor chegou do tipo
+  certo; vazio falha antes e vaza o texto cru em inglês.
+- **`redirect()` em Server Action chamada fora de formulário navega o
+  usuário.** No reenvio da fila offline isso arrastava o criador para outra
+  tela. A ação recebe `reenvio` e devolve sem navegar.
 - **Quem ocupa espaço fixo reserva o próprio espaço.** O espaçador da tab bar
   mora na `TabBar`, que sabe quando se esconde; no layout, ele deixava 60px de
   rodapé vazio em toda tela sem barra.
@@ -252,7 +256,8 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 
 | Rota | Tela | Observação |
 |---|---|---|
-| `/` | B1 Hoje | tarefas agrupadas por ninhada, sobre `vw_tarefas_hoje` |
+| `/` | B1 Hoje | tarefas agrupadas por ninhada, sobre `vw_tarefas_hoje`; traz o estado `2h` (sem conexão) e a lista de pendentes |
+| `/offline` | recurso do service worker | estática e pública: a tela pedida nunca foi visitada neste aparelho |
 | `/ovos` | B2 Ovos | pipeline com pílulas de estado; ninhada herda o estado mais urgente dos seus ovos |
 | `/plantel` | B5 Plantel | busca por anilha ou nome (GET, sem JavaScript) e 4 filtros |
 | `/plantel/[id]` | B3 Ficha da ave | anilha em destaque, filiação clicável, 3 atalhos |
@@ -284,6 +289,53 @@ vigência anterior ao nascimento, anilha repetida dentro do mesmo envio.
 Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
 navegação.
+
+## Offline
+
+Requisito de primeira classe: o galpão não tem sinal. Três peças.
+
+| Peça | Onde | O que faz |
+|---|---|---|
+| Service worker | `public/sw.js` | guarda a última resposta de cada página visitada e a devolve sem rede |
+| Fila de escrita | `src/lib/offline/fila.ts` | IndexedDB; guarda o que foi digitado sem sinal |
+| Reenvio | `src/lib/offline/sincronizar.ts` | esvazia a fila ao voltar a rede, em ordem de registro |
+
+A interface vive em `src/components/offline/`: `ProvedorSincronizacao` (no
+layout, para sobreviver à troca de aba), `IndicadorSync` (o chip do cabeçalho
+da Hoje), `PainelPendentes` (o estado `2h`) e `useEnvioOffline` (o gancho que
+cada formulário usa).
+
+### Decisões que não são óbvias
+
+- **Service worker escrito à mão, sem Serwist.** O plugin do Serwist é de
+  webpack e o Next 16 usa Turbopack por padrão (serwist/serwist#54). Tirar o
+  build inteiro do Turbopack por um plugin custaria mais que 120 linhas de SW —
+  e o que este app precisa não é precache de shell estático (toda rota é
+  dinâmica e exige sessão), é reabrir o que já foi visto.
+- **Escrita nunca passa por cache.** Uma Server Action respondida do cache
+  diria "salvo" sem ter salvo nada.
+- **A fila guarda intenção, não requisição.** Ela tem os campos do formulário,
+  não o payload HTTP da Server Action — que carrega um identificador que muda a
+  cada build e faria o reenvio falhar depois de um deploy. O reenvio chama a
+  ação diretamente. `$ACTION_*` é filtrado na hora de enfileirar.
+- **Idempotência por chave gerada no cliente.** Cada formulário gera o UUID que
+  vira a chave primária da linha. No reenvio a ação bate na chave e reconhece a
+  escrita como já aplicada. O anilhamento é a exceção: `anilhar_filhotes` já
+  recusa filhote anilhado, e o reenvio lê a recusa como sucesso.
+- **`reenvio=1` suprime o `redirect`.** Sem isso, esvaziar a fila em segundo
+  plano arrastava o criador para a tela de destino da escrita — ele podia estar
+  no meio de outra coisa quando o sinal voltou.
+- **Ordem de registro é ordem de envio**, e erro de rede interrompe a rodada:
+  anilhar um filhote antes de cadastrar o casal que o gerou falharia. Erro de
+  **dado** não interrompe — é de outro registro e não melhora com o tempo, então
+  fica parado com o motivo à vista.
+- **`/sw.js` e `/offline` ficam fora do middleware de sessão.** Um service
+  worker que recebe redirect de login nunca registra, e a tela de recurso
+  aparece justamente quando não há servidor alcançável.
+
+### O que falta verificar
+
+O registro do service worker, num navegador de verdade — ver "Próximo passo".
 
 ## Pendências do cliente
 
@@ -408,6 +460,17 @@ tela "Hoje". É idempotente: apaga o que semeou antes e recria.
 - `npx prettier` sem configuração no projeto reformata o arquivo inteiro com os
   padrões dele (80 colunas) e enterra a mudança real no ruído. **Não há
   `.prettierrc` aqui** — editar à mão e deixar o `eslint` julgar.
+- **Campo obrigatório vazio falha no tipo base do Zod, antes da regra
+  específica.** `z.string().regex(..., "mensagem")` com valor nulo devolve
+  "Invalid input: expected string, received null", em inglês, na cara do
+  criador. A mensagem tem de estar no tipo base: `z.string({ error: "..." })`.
+- **O navegador embutido deste ambiente bloqueia service worker.**
+  `register()` falha com "unknown error when fetching the script" mesmo com o
+  arquivo servindo 200 e a página conseguindo buscá-lo. Não é defeito do código
+  — mas também não serve como verificação.
+- O middleware de sessão pega tudo o que não for estático, inclusive `/sw.js`.
+  Arquivo que o navegador busca sem contexto de sessão precisa ficar de fora do
+  `matcher`, senão recebe redirect de login.
 - `fieldset` e `legend` já apareceram aqui; na árvore o problema equivalente é o
   `grid` com altura fixa. `space-around` só põe os centros em 12,5/37,5/62,5/87,5%
   se os itens tiverem a mesma altura — rótulo dentro do nó quebra a geometria dos
