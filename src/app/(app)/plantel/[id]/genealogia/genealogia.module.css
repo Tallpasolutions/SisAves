@@ -1,0 +1,254 @@
+/* B6 Árvore genealógica — prancha 3c.
+
+   Três gerações em rolagem horizontal, conectores de 1px, aviso de ancestral
+   repetido fixo no topo e legenda fixa no rodapé. A tela traz as próprias
+   barras: a tab bar sai (TabBar.tsx), senão ficariam duas barras empilhadas. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  /* A tela ocupa a janela: a legenda é barra de rodapé, não um bloco solto no
+     meio da página. */
+  min-height: 100dvh;
+  /* Sangria: o layout do app dá padding, e o cabeçalho de marca é de borda a
+     borda. Anular aqui é mais honesto que tirar o padding do layout inteiro. */
+  margin: calc(var(--space-5) * -1) calc(var(--space-4) * -1) 0;
+}
+
+/* --- Cabeçalho --------------------------------------------------------------
+   Único bloco de petróleo cheio da tela. */
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-2) var(--space-4);
+  background: var(--sis-petroleo);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  margin-left: calc(var(--space-3) * -1);
+  color: var(--text-on-brand);
+  text-decoration: none;
+}
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--text-on-brand);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+  border-radius: var(--radius-xs);
+}
+
+.cabecalhoTextos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.titulo {
+  font: var(--type-h4);
+  color: var(--text-on-brand);
+}
+
+/* Sobre petróleo cheio, o cinza do cartão daria 1,38:1 — o erro já cometido no
+   rodapé do login. Branco a 78% dá 6,0:1. */
+.subtitulo {
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* --- Aviso de ancestral repetido -------------------------------------------- */
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-accent-soft);
+  border-bottom: var(--border-width) solid var(--border-accent);
+}
+
+.avisoIcone {
+  display: inline-flex;
+  flex: none;
+  margin-top: 1px;
+  color: var(--text-accent);
+}
+
+.avisoTextos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.avisoTitulo {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.avisoTexto {
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.semAncestral {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- A árvore ---------------------------------------------------------------
+   Rolagem horizontal: três gerações não cabem em 390px sem encolher a anilha. */
+.arvore {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: var(--space-4) var(--space-4) var(--space-5);
+  -webkit-overflow-scrolling: touch;
+}
+
+.trilho {
+  display: grid;
+  /* 200px e não os 150/160/170 da prancha: ali o exemplo era "SOV 1234 · 2026
+     · 0087" e aqui a anilha real não cabia — saía "COF 1234 · 20…". A anilha é
+     o identificador oficial da ave e o contrato proíbe abreviá-la. Como a
+     rolagem já é horizontal, alargar não custa nada. */
+  grid-template-columns: 200px 28px 200px 28px 200px;
+  /* A linha dos nós ocupa a altura disponível: quanto mais espaço, mais os
+     quatro avós respiram. `space-around` põe os centros em 50% com um nó,
+     25%/75% com dois e 12,5%/37,5%/62,5%/87,5% com quatro — é dessa geometria
+     que os conectores saem, e ela vale em qualquer altura. O mínimo impede os
+     nós de 44px se encavalarem em tela baixa. */
+  grid-template-rows: auto minmax(300px, 1fr);
+  row-gap: var(--space-2);
+  width: max-content;
+}
+
+.colunaTitulo {
+  grid-row: 1;
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.tituloIndividuo { grid-column: 1; }
+.tituloPais      { grid-column: 3; }
+.tituloAvos      { grid-column: 5; }
+
+.coluna {
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.colunaIndividuo { grid-column: 1; }
+.colunaPais      { grid-column: 3; }
+.colunaAvos      { grid-column: 5; }
+
+/* --- Conectores -------------------------------------------------------------
+   Linhas de 1px. A geometria segue os centros que `space-around` produz. */
+.conector {
+  grid-row: 2;
+  position: relative;
+}
+
+.conectorPais { grid-column: 2; }
+.conectorAvos { grid-column: 4; }
+
+.entrada,
+.tronco,
+.saida {
+  position: absolute;
+  background: var(--border-default);
+}
+
+.entrada,
+.saida {
+  height: 1px;
+  width: 14px;
+}
+
+.tronco { width: 1px; }
+
+/* Raiz (50%) para pai (25%) e mãe (75%). */
+.conectorPais .entrada { left: 0; top: 50%; }
+.conectorPais .tronco  { left: 14px; top: 25%; bottom: 25%; }
+.saidaSuperior { left: 14px; top: 25%; }
+.saidaInferior { left: 14px; top: 75%; }
+
+/* Dois troncos separados, um por ramo: uma linha única ligando os quatro faria
+   o lado paterno parecer continuar no materno. */
+.conectorAvos .entrada { left: 0; }
+.conectorAvos .saida   { left: 14px; }
+
+.entradaPaterna { top: 25%; }
+.entradaMaterna { top: 75%; }
+
+.troncoPaterno { left: 14px; top: 12.5%; height: 25%; }
+.troncoMaterno { left: 14px; top: 62.5%; height: 25%; }
+
+.saidaPP { top: 12.5%; }
+.saidaPM { top: 37.5%; }
+.saidaMP { top: 62.5%; }
+.saidaMM { top: 87.5%; }
+
+/* --- Legenda ---------------------------------------------------------------- */
+.legenda {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: var(--surface-card);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.amostra {
+  width: var(--border-width-marker);
+  height: 14px;
+}
+
+.amostraMacho { background: var(--text-brand); }
+.amostraFemea { background: var(--text-heading); }
+
+.amostraRepetido {
+  width: 10px;
+  height: 10px;
+  border: var(--border-width-strong) solid var(--sis-ambar);
+}
+
+/* A prancha usava --text-muted aqui (3,68:1). O contrato de acessibilidade
+   manda --text-secondary em legenda pequena, e ele vale mais que o mockup. */
+.arraste {
+  flex: 1;
+  text-align: right;
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}

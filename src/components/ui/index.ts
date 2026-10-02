@@ -37,5 +37,8 @@ export type { EmptyStateProps } from "./EmptyState";
 export { SyncStatus } from "./SyncStatus";
 export type { SyncStatusProps, EstadoSync } from "./SyncStatus";
 
+export { PedigreeNode } from "./PedigreeNode";
+export type { PedigreeNodeProps } from "./PedigreeNode";
+
 export { NotificationBadge } from "./NotificationBadge";
 export type { NotificationBadgeProps } from "./NotificationBadge";

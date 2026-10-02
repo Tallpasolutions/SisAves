@@ -1,3 +1,7 @@
+.espaco {
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-5));
+}
+
 /* Barra de navegação — 5 destinos, presente em toda tela mobile de nível raiz.
    docs/design/05-telas.md, decisão transversal 1. */
 

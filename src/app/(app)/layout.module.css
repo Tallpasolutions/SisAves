@@ -1,8 +1,8 @@
 .app {
   min-height: 100dvh;
   background: var(--surface-page);
-  /* Espaço para a barra fixa não cobrir o fim do conteúdo. */
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-5));
+  /* O espaço da barra fixa é reservado pela própria TabBar, que sabe quando se
+     esconde. Aqui ele deixaria rodapé vazio nas telas sem barra. */
 }
 
 .conteudo {
