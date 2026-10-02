@@ -321,6 +321,10 @@ Configurações, Perfil, onboarding de criatório, e o tema escuro das telas B3�
 e C1–C3. Os tokens escuros existem; as pranchas não. Construir na linguagem das
 telas existentes.
 
+**O tema escuro não ficou de fora por falta de prancha.** Toda tela construída
+até aqui foi conferida nos dois temas, com varredura de contraste sobre o CSS
+computado. O que falta são os desenhos, não a implementação.
+
 ## Semente de desenvolvimento
 
 ```bash
