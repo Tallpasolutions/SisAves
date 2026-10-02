@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { obterTarefasDeHoje } from "@/lib/dados/hoje";
 import { TabBar } from "@/components/navegacao/TabBar";
+import { ProvedorSincronizacao } from "@/components/offline/Sincronizacao";
 import styles from "./layout.module.css";
 
 export default async function LayoutApp({ children }: { children: ReactNode }) {
@@ -13,11 +14,15 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
   const tarefas = await obterTarefasDeHoje();
 
   return (
-    <div className={styles.app}>
-      <main id="conteudo" className={styles.conteudo}>
-        {children}
-      </main>
-      <TabBar tarefasPendentes={tarefas.length} />
-    </div>
+    // A fila offline é estado de aplicação, não de tela: vive no layout para
+    // sobreviver à navegação entre abas.
+    <ProvedorSincronizacao>
+      <div className={styles.app}>
+        <main id="conteudo" className={styles.conteudo}>
+          {children}
+        </main>
+        <TabBar tarefasPendentes={tarefas.length} />
+      </div>
+    </ProvedorSincronizacao>
   );
 }

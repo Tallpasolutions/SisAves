@@ -40,11 +40,15 @@ export async function consultarEndogamia(
 }
 
 const EsquemaCasal = z.object({
-  macho_id: z.string().uuid("Escolha o macho do casal."),
-  femea_id: z.string().uuid("Escolha a fêmea do casal."),
+  macho_id: z
+    .string({ error: "Escolha o macho do casal." })
+    .uuid("Escolha o macho do casal."),
+  femea_id: z
+    .string({ error: "Escolha a fêmea do casal." })
+    .uuid("Escolha a fêmea do casal."),
   gaiola: z.string().trim().max(30, "A identificação da gaiola tem no máximo 30 caracteres.").optional(),
   vigencia_inicio: z
-    .string()
+    .string({ error: "Informe a data em que o casal foi formado." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
     .refine((d) => d <= hoje(), "A formação do casal não pode ser no futuro."),
   observacoes: z.string().trim().max(500, "As observações não passam de 500 caracteres.").optional(),

@@ -18,11 +18,14 @@ export interface EstadoPostura {
  */
 const EsquemaPostura = z.object({
   data_postura: z
-    .string()
+    // A mensagem no tipo base, e não só no regex: campo que chega vazio falha
+    // ANTES do regex, e sem ela o criador recebia o texto cru do Zod, em
+    // inglês ("Invalid input: expected string, received null").
+    .string({ error: "Informe a data da postura." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
     .refine((d) => d <= hoje(), "A postura não pode ser no futuro."),
   quantidade: z.coerce
-    .number()
+    .number({ error: "Informe quantos ovos a ninhada tem." })
     .int("Informe um número inteiro de ovos.")
     .min(1, "A ninhada precisa de ao menos 1 ovo.")
     .max(12, "Mais de 12 ovos numa ninhada: confira o número."),

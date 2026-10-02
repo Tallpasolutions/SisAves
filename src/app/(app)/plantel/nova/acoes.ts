@@ -25,12 +25,16 @@ const opcional = (v: FormDataEntryValue | null) => {
 const EsquemaAve = z
   .object({
     nome: z.string().trim().max(120, "O nome não pode passar de 120 caracteres.").optional(),
-    especie_id: z.string().uuid("Escolha a espécie da ave."),
+    especie_id: z
+      .string({ error: "Escolha a espécie da ave." })
+      .uuid("Escolha a espécie da ave."),
     mutacao_id: z.string().uuid().optional(),
     sexo: z.enum(["macho", "femea", "indefinido"], {
-      message: "Informe o sexo, ou deixe como indefinido.",
+      error: "Informe o sexo, ou deixe como indefinido.",
     }),
-    origem: z.enum(["nascimento_proprio", "compra", "doacao_recebida", "transferencia"]),
+    origem: z.enum(["nascimento_proprio", "compra", "doacao_recebida", "transferencia"], {
+      error: "Informe a origem da ave.",
+    }),
     dt_nascimento: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")

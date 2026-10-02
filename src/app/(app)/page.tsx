@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { CircleCheck, Egg, Feather, Sun, Thermometer, Users } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Badge, EmptyState, SyncStatus } from "@/components/ui";
+import { Badge, EmptyState } from "@/components/ui";
+import { IndicadorSync } from "@/components/offline/IndicadorSync";
+import { PainelPendentes } from "@/components/offline/PainelPendentes";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import {
   descreverTarefa,
@@ -40,8 +42,11 @@ export default async function Hoje() {
           <p className={styles.rotuloCriatorio}>Criatório</p>
           <h1 className={styles.nomeCriatorio}>{criatorio?.nome}</h1>
         </div>
-        <SyncStatus state="online" lastSync="agora" compact />
+        <IndicadorSync compact />
       </header>
+
+      {/* Só aparece sem rede ou com registro esperando envio. */}
+      <PainelPendentes />
 
       {/* Único bloco de petróleo cheio da tela. */}
       <section className={styles.destaque}>

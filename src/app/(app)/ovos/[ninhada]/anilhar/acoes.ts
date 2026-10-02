@@ -15,7 +15,7 @@ export interface EstadoAnilhamento {
 const EsquemaFilhote = z.object({
   postura_id: z.string().uuid(),
   anilha_numero: z.coerce
-    .number()
+    .number({ error: "Informe o número da anilha deste filhote." })
     .int("O número da anilha é um número inteiro.")
     .positive("O número da anilha começa em 1."),
   nome: z.string().trim().max(120).optional(),
@@ -28,13 +28,13 @@ const EsquemaFilhote = z.object({
 
 const EsquemaAnilhamento = z.object({
   data_anilhamento: z
-    .string()
+    .string({ error: "Informe a data do anilhamento." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
     .refine((d) => d <= hoje(), "O anilhamento não pode ser no futuro."),
   anilha_sigla: z.string().trim().max(12).optional(),
   anilha_criador: z.string().trim().max(20).optional(),
   anilha_ano: z.coerce
-    .number()
+    .number({ error: "Informe o ano da anilha." })
     .int("O ano da anilha é um número inteiro.")
     .min(1950, "O ano da anilha começa em 1950.")
     .max(2200, "Confira o ano da anilha."),

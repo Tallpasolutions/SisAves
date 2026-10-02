@@ -1,0 +1,121 @@
+/* Estado "sem conexão" da Hoje — prancha 2h. */
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* --- Alerta de rede ---------------------------------------------------------
+   Tijolo: é a única coisa na tela que mudou de verdade para pior. */
+.semRede {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-danger-soft);
+  border: var(--border-width) solid var(--border-danger);
+  border-radius: var(--radius-md);
+}
+
+.semRedeIcone {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-danger);
+}
+
+.semRedeTextos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.semRedeTitulo {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-danger);
+}
+
+.semRedeTexto {
+  font: var(--type-small);
+  color: var(--text-primary);
+}
+
+/* --- Pendentes --------------------------------------------------------------- */
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.cartaoTopo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cartaoIcone {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-accent);
+}
+
+.cartaoTitulo {
+  font: var(--type-label);
+  color: var(--text-heading);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) 0 0;
+  border-top: var(--border-width) solid var(--border-subtle);
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.itemTexto {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.itemErro {
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: var(--text-danger);
+}
+
+.acoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.garantia {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* Gira só enquanto o envio acontece — o contrato proíbe ícone pulsando à toa. */
+.girando { animation: giro 1s linear infinite; }
+
+@keyframes giro {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .girando { animation: none; }
+}
