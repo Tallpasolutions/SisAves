@@ -2,7 +2,7 @@
 
 > **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
 > que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **01/10/2026**, depois de fechar as três telas de escrita.
+> Atualizado em **02/10/2026**, depois da Fase 5.
 
 ## O produto em uma frase
 
@@ -14,21 +14,27 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Fase 5 — árvore genealógica (B6).**
+**Fase 6 — offline.** É o requisito de primeira classe que ainda não existe, e
+o que separa o produto do legado no único lugar em que ele é usado de verdade:
+em pé no galpão, sem sinal.
 
-As três escritas que faltavam foram feitas em 01/10/2026: cadastrar ave, formar
-casal e anilhar filhote. O ciclo agora fecha sozinho pela interface — um criador
-novo sai do onboarding, cadastra as primeiras aves, forma um casal, registra a
-postura e anilha os filhotes, que entram no plantel com a filiação resolvida.
+Três peças, na ordem:
 
-A B6 está desenhada na prancha `3c` e consome `arvore_genealogica()` e
-`ancestrais_comuns()`, já no banco desde a `0008`. Três gerações em rolagem
-horizontal, `PedigreeNode` com faixa de sexo de 2px, ancestral repetido com
-contorno âmbar e aviso fixo no topo, e "Desconhecido" como estado de primeira
-classe — não como lacuna.
+1. **Service Worker com Serwist** — cache do shell e das leituras
+   (stale-while-revalidate).
+2. **Fila de escrita em IndexedDB** — a mutação grava local primeiro; o
+   `SyncStatus` reflete `offline → pendente (contagem) → sincronizado · hh:mm`.
+   As PKs já são `uuid` geradas no cliente, exatamente para a idempotência do
+   reenvio.
+3. **Reenvio com backoff** ao voltar a rede, com `last-write-wins` por
+   `updated_at` e registro do descarte.
 
-Hoje `/plantel/[id]/genealogia` existe como vazio honesto, só para o atalho da
-ficha não dar 404.
+As quatro telas de escrita hoje dizem "Precisa de conexão para salvar" — um
+aviso honesto que a Fase 6 substitui por "Offline — salvo no aparelho". A cópia
+exata está no `CLAUDE.md`: nunca "Tente novamente mais tarde".
+
+`situacao_postura()` é `immutable` de propósito, para o mesmo cálculo do ciclo
+do ovo rodar no cliente offline — a Fase 6 é onde isso finalmente se usa.
 
 ## Onde está tudo
 
@@ -68,9 +74,10 @@ supabase db push --db-url "postgresql://postgres.<ref>:<senha>@aws-0-us-east-2.p
 | `docs/design/05-telas.md` | As 19 telas com decisões de implementação. |
 | `docs/design/06-documentos-e-site.md` | CRO A4, validação por QR e landing. |
 
-A rota `/ds` reproduz o artboard A3 com os 14 componentes e a cópia exata do
-handoff — é a conferência visual rápida. Abrir **nos dois temas**. Sai do app
-antes do lançamento.
+A rota `/ds` reproduz o artboard A3 com os 14 componentes dele e a cópia exata
+do handoff — é a conferência visual rápida. Abrir **nos dois temas**. Sai do
+app antes do lançamento. O `PedigreeNode` não aparece lá porque não está no A3;
+confere-se na própria B6.
 
 ## Stack
 
@@ -91,7 +98,7 @@ abriria brecha para cor fora da paleta.
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
 | 4 · Núcleo mobile (Faixa B) | **concluída**, incluídas as três telas de escrita (`7d4f435`, `f885075`, `f514dc5`) |
-| 5 · Genealogia (B6) | não iniciada |
+| 5 · Genealogia (B6) | **concluída** (`10c0800`) |
 | 6 · Offline (fila + cache) | não iniciada |
 | 7 · Desktop (Faixa C) | não iniciada |
 | 8 · CRO, QR e validação pública | banco pronto; interface não iniciada |
@@ -121,6 +128,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0012_prazos_e_siglas` | siglas faltantes; `dias_anilha` 3 + janela 1; `dias_separa` 40 |
 | `0013_perfil_automatico` | trigger que cria `perfis` junto com `auth.users` |
 | `0014_anilhamento` | `anilhar_filhotes()`; `ninhada_id` em `vw_tarefas_hoje` |
+| `0015_arvore_com_caminho` | `caminho` em `arvore_genealogica()` e no snapshot do CRO |
 
 ### Funções do domínio
 
@@ -129,7 +137,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
 `casal_ativo` · `anilhar_filhotes`
 
-### Testes de banco — 52 asserções, todas passando
+### Testes de banco — 63 asserções, todas passando
 
 ```bash
 for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
@@ -143,12 +151,13 @@ for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
 | `04_certificado` | 9 |
 | `05_perfil_automatico` | 7 |
 | `06_anilhamento` | 12 |
+| `07_arvore_genealogica` | 11 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
 
 Cada um abre transação e termina em `rollback`. Toda linha deve sair com
-`resultado = ok`. **Rodar os seis depois de qualquer migration.**
+`resultado = ok`. **Rodar os sete depois de qualquer migration.**
 
 ### Conceitos do banco que não são óbvios
 
@@ -170,6 +179,11 @@ Cada um abre transação e termina em `rollback`. Toda linha deve sair com
   migration; irrelevante nas 3–4 gerações que um criatório registra.
 - **A janela de anilhamento tem dois dias** (`dias_anilha` 3, `janela` 1). É por
   isso que "anilhar" é o único estado em âmbar no design.
+- **`arvore_genealogica()` devolve `caminho`, não só `papel`.** `papel` é
+  relativo ao nó anterior, e na geração dos avós há dois 'pai' e dois 'mae' —
+  não dava para saber qual é paterno. `caminho` concatena da raiz: `pp` é avô
+  paterno, `mm` é avó materna. O mesmo `passaro_id` em dois caminhos é
+  ancestral repetido, que é de onde a endogamia vem.
 - **`anilhar_filhotes()` existe porque anilhar são três escritas por filhote**
   (ave, postura, pesagem) que precisam valer juntas. Soltas na aplicação, uma
   anilha repetida no terceiro filhote deixaria os dois primeiros criados e a
@@ -177,7 +191,7 @@ Cada um abre transação e termina em `rollback`. Toda linha deve sair com
 
 ---
 
-## Interface — 14 componentes em `src/components/ui/`
+## Interface — 15 componentes em `src/components/ui/`
 
 | Componente | Observação de contrato |
 |---|---|
@@ -195,6 +209,7 @@ Cada um abre transação e termina em `rollback`. Toda linha deve sair com
 | `EmptyState` | Alinhado à esquerda, sem ilustração, sem emoji. |
 | `SyncStatus` | Nunca sugere perda: "Offline — salvo no aparelho". |
 | `NotificationBadge` | `pointer-events: none` — o alvo é o botão de 44px embaixo. |
+| `PedigreeNode` | Nó da árvore. Faixa de sexo de 3px à esquerda: o **segundo** dos dois únicos lugares com barra colorida à esquerda. `desconhecido` nomeia a posição vazia; `repetido` ganha contorno âmbar. Não está em `02-componentes.md`, só na prancha `3c`. |
 
 Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 `formatarMoeda`, `formatarPercentual`, `formatarPeso`, `formatarIdade`,
@@ -220,6 +235,12 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 - **Erro tem de envelhecer junto com o dado.** A mensagem cita o dado exato, e
   por isso precisa sumir quando o campo muda — senão passa a acusar algo que já
   não está na tela. `useErrosQueEnvelhecem`, mesmo arquivo.
+- **Quem ocupa espaço fixo reserva o próprio espaço.** O espaçador da tab bar
+  mora na `TabBar`, que sabe quando se esconde; no layout, ele deixava 60px de
+  rodapé vazio em toda tela sem barra.
+- **O mockup não vence o contrato de acessibilidade.** A prancha `3c` usa
+  `--text-muted` na legenda da árvore (3,68:1); `04-acessibilidade.md` reserva
+  o muted a rótulo ≥24px ou texto não essencial. Vale o documento escrito.
 - **`--text-inverse` não serve para texto sobre preenchimento fixo.** No tema
   escuro ele vira grafite ("inverso" lá quer dizer escuro sobre claro), e o
   rótulo do botão primário saía 2,06:1 sobre petróleo. Use `--text-on-brand` e
@@ -241,12 +262,13 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/plantel/nova` | Cadastrar ave | não desenhada; sugestão de anilha como botão, filiação só quando a ave nasceu no criatório |
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
 | `/ovos/[ninhada]/anilhar` | Anilhar filhote | não desenhada; um bloco por filhote, numeração em sequência por botão, anilhamento parcial permitido |
+| `/plantel/[id]/genealogia` | B6 Árvore genealógica | três gerações em rolagem horizontal; aviso de ancestral repetido no topo; cabeçalho petróleo de borda a borda e legenda fixa no rodapé |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
 | `/comecar`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais |
 | `/ds` | biblioteca | referência do artboard A3; sai antes do lançamento |
 
-As subrotas `/plantel/[id]/genealogia`, `/certificado` e `/pesagens` existem
-como vazio honesto, para os atalhos da ficha não darem 404 antes das fases 5 e 8.
+As subrotas `/plantel/[id]/certificado` e `/pesagens` ainda existem como vazio
+honesto, para os atalhos da ficha não darem 404 antes das fases 8 e 9.
 
 **O padrão de escrita**, estabelecido na B9 e repetido nas três telas novas:
 Server Action com esquema Zod espelhando as constraints, erro por campo citando
@@ -314,6 +336,11 @@ telas de escrita: a ninhada 06 do Casal 03 (B9), a ave Carijó `0090`, o Casal 1
 (Tibiriçá × Iracema) e os filhotes anilhados `0091` Guaratuba e `0092`. Rodar a
 semente de novo limpa e recria tudo.
 
+**Guaratuba `0091` é o melhor caso para conferir a B6:** Jacundá aparece como
+avô paterno e avô materno (ancestral repetido, 12,50%) e a avó materna é
+desconhecida — o cenário exato da prancha `3c`. Jacundá `0001` serve para o
+caso oposto, de ave sem nenhum ancestral.
+
 As datas são relativas a `current_date`, calculadas dos prazos da própria
 espécie — então a semente continua válida amanhã, e sempre há o que ver na
 tela "Hoje". É idempotente: apaga o que semeou antes e recria.
@@ -374,3 +401,10 @@ tela "Hoje". É idempotente: apaga o que semeou antes e recria.
   parece defeito de cor. Esperar, ou conferir o valor computado.
 - Peso e qualquer decimal chegam com vírgula do teclado pt-BR. `z.coerce.number()`
   lê `NaN` — normalizar antes de validar.
+- `npx prettier` sem configuração no projeto reformata o arquivo inteiro com os
+  padrões dele (80 colunas) e enterra a mudança real no ruído. **Não há
+  `.prettierrc` aqui** — editar à mão e deixar o `eslint` julgar.
+- `fieldset` e `legend` já apareceram aqui; na árvore o problema equivalente é o
+  `grid` com altura fixa. `space-around` só põe os centros em 12,5/37,5/62,5/87,5%
+  se os itens tiverem a mesma altura — rótulo dentro do nó quebra a geometria dos
+  conectores. A posição foi para dentro do nó vazio, onde ela também informa mais.
