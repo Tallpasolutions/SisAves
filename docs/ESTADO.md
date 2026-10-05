@@ -2,7 +2,7 @@
 
 > **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
 > que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **02/10/2026**, depois da Fase 6.
+> Atualizado em **05/10/2026**, com a Fase 6 verificada em navegador real.
 
 ## O produto em uma frase
 
@@ -14,25 +14,22 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Testar o service worker em navegador de verdade, antes de qualquer outra
-coisa.** É a única parte da Fase 6 que não pôde ser verificada aqui: o
-navegador embutido do ambiente de desenvolvimento bloqueia service worker.
+**Fase 7 — desktop (Faixa C).** Painel (`4a`), plantel em tabela (`4b`) e
+editor de CRO (`4c`).
 
-O arquivo é servido corretamente (200, `application/javascript`,
-`Service-Worker-Allowed: /`) e a página consegue buscá-lo, mas `register()`
-falha com *"unknown error when fetching the script"*. O registro agora avisa no
-console em vez de engolir o erro. O que precisa ser confirmado no Chrome ou
-Safari de um aparelho real:
+Até aqui o produto é inteiro mobile. A Faixa C é o outro contexto de uso do
+contrato: *sentado no computador*, onde densidade de dados é requisito, não
+descuido. Sidebar de 248px, top bar de 56px.
 
-1. `navigator.serviceWorker.getRegistrations()` devolve o registro;
-2. visitar Hoje, Plantel e Ovos, desligar a rede e recarregar — as três abrem
-   com o último estado conhecido;
-3. pedir uma rota nunca visitada sem rede cai em `/offline`.
+Três pontos de atenção registrados no handoff:
 
-**Depois disso, Fase 7 — desktop (Faixa C).** Painel (`4a`), plantel em tabela
-(`4b`) e editor de CRO (`4c`). Os gráficos são SVG à mão, não biblioteca: o
-design proíbe escala multicolorida e usa só petróleo-200, petróleo-700 e
-tijolo vazado.
+- **Gráficos são SVG à mão, não biblioteca.** O design proíbe escala
+  multicolorida e usa só petróleo-200, petróleo-700 e tijolo vazado. Meses
+  futuros em cinza.
+- A grade do `4b` vem corrigida no handoff: fixos 703px + 9 gaps de 10px +
+  20px de padding. Linhas de 44px, seleção múltipla com 4 ações em lote.
+- O `4c` é painel de 340px + prévia A4 paisagem em tempo real — ele encosta na
+  Fase 8 (CRO), mas a prévia pode vir antes da emissão.
 
 ## Onde está tudo
 
@@ -97,7 +94,7 @@ abriria brecha para cor fora da paleta.
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
 | 4 · Núcleo mobile (Faixa B) | **concluída**, incluídas as três telas de escrita (`7d4f435`, `f885075`, `f514dc5`) |
 | 5 · Genealogia (B6) | **concluída** (`10c0800`) |
-| 6 · Offline (fila + cache) | **concluída** (`ec2288f`, `32eef1f`); registro do service worker pendente de teste em navegador real |
+| 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
 | 7 · Desktop (Faixa C) | não iniciada |
 | 8 · CRO, QR e validação pública | banco pronto; interface não iniciada |
 | 9 · Financeiro e saúde | banco pronto; interface não iniciada |
@@ -333,9 +330,33 @@ cada formulário usa).
   worker que recebe redirect de login nunca registra, e a tela de recurso
   aparece justamente quando não há servidor alcançável.
 
-### O que falta verificar
+### Verificado no Chrome, com o servidor derrubado
 
-O registro do service worker, num navegador de verdade — ver "Próximo passo".
+1. o service worker registra, ativa e assume a página;
+2. telas já visitadas abrem inteiras do cache — inclusive as que o Next
+   prefetchou sozinho, como os destinos da tab bar;
+3. rota nunca visitada cai em `/offline`.
+
+A fila foi verificada à parte: postura registrada sem sinal ficou guardada sem
+tocar o banco, subiu sozinha quando o sinal voltou, e reenviar o mesmo item não
+criou duplicata.
+
+### A tela `/offline` não usa tokens, e é de propósito
+
+É a única do produto com estilo embutido e ícone SVG inline. Ela aparece quando
+a rota pedida nunca foi visitada **e** não há rede — e nesse momento a folha de
+estilo do build, um arquivo com hash que talvez nunca tenha sido baixado,
+também não carrega. Com CSS Module ela chegava sem estilo nenhum.
+
+Os cinco valores são cópia literal de `tokens/colors.css`. **Se a paleta mudar
+lá, mude aqui.**
+
+### `VERSAO` no service worker
+
+Subir ao mudar `/offline` ou a estratégia de cache: o navegador só reinstala o
+SW quando o arquivo muda em bytes, e `/offline` é guardado no `install`. Deploy
+que não toca em nenhum dos dois não precisa — as páginas normais são
+rede-primeiro e se renovam sozinhas.
 
 ## Pendências do cliente
 
