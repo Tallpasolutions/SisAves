@@ -17,7 +17,16 @@
  * src/lib/offline/, porque precisa mostrar ao criador o que está pendente.
  */
 
-const VERSAO = "v1";
+/*
+ * SUBIR ESTA VERSÃO ao mudar a tela /offline ou a estratégia de cache.
+ *
+ * O navegador só reinstala o service worker quando o arquivo muda em bytes.
+ * Como `/offline` é guardado no `install`, um deploy que mude aquela tela sem
+ * mexer aqui deixaria a versão antiga no aparelho para sempre. Deploy que não
+ * toca em nenhum dos dois não precisa de bump: as páginas normais são
+ * rede-primeiro e se renovam sozinhas.
+ */
+const VERSAO = "v3";
 const PAGINAS = `sisaves-paginas-${VERSAO}`;
 const ESTATICOS = `sisaves-estaticos-${VERSAO}`;
 const RECURSO_OFFLINE = "/offline";
