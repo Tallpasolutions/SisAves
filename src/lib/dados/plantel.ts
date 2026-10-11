@@ -1,5 +1,8 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { Sexo } from "@/components/ui";
+// Rótulos ficam num módulo puro: componentes de cliente precisam deles, e este
+// arquivo carrega o cliente de servidor.
+export { descreverEspecie, descreverSituacao, ROTULO_SITUACAO } from "./situacao";
 
 export type FiltroPlantel = "todas" | "machos" | "femeas" | "sem-anilha";
 
@@ -225,23 +228,197 @@ function converterResumo(bruto: unknown): ResumoAve | null {
   };
 }
 
-const ROTULO_SITUACAO: Record<string, { texto: string; tom: "ok" | "neutro" | "critico" }> = {
-  ativo: { texto: "Plantel ativo", tom: "ok" },
-  vendido: { texto: "Vendido", tom: "neutro" },
-  doado: { texto: "Doado", tom: "neutro" },
-  emprestado: { texto: "Emprestado", tom: "neutro" },
-  morto: { texto: "Óbito", tom: "critico" },
-  perdido: { texto: "Perdido", tom: "critico" },
-};
 
-export function descreverSituacao(situacao: string) {
-  return ROTULO_SITUACAO[situacao] ?? { texto: situacao, tom: "neutro" as const };
+/* ===========================================================================
+ * C2 — Plantel em tabela (prancha 4b)
+ *
+ * O desktop pede o que o celular não comporta: dez colunas, filtros por
+ * faceta com contagem, ordenação e paginação. Tudo passa pela URL, como a
+ * busca da B5 — compartilhar um filtro é compartilhar um link, e a tela
+ * funciona antes de a hidratação chegar.
+ * ======================================================================== */
+
+export interface FiltrosTabela {
+  busca?: string;
+  /** Ids de espécie. Vazio = todas. */
+  especies?: string[];
+  sexo?: Sexo | "todos";
+  /** Valores de `situacao_ave`. Vazio = todas. */
+  situacoes?: string[];
+  anoAnilha?: number;
+  /** A pílula "Sem anilha" da B5: ave que ainda não foi anilhada. */
+  semAnilha?: boolean;
+  ordem?: "anilha" | "nome" | "nascimento";
+  direcao?: "asc" | "desc";
+  pagina?: number;
 }
 
-/** "Curió · Lutino" — sem separador sobrando quando falta um dos dois. */
-export function descreverEspecie(
-  especie: string | null,
-  mutacao: string | null,
-): string {
-  return [especie, mutacao].filter(Boolean).join(" · ") || "Espécie não informada";
+export interface Faceta {
+  valor: string;
+  rotulo: string;
+  contagem: number;
+}
+
+export interface AveNaTabela extends AveListada {
+  mutacaoNome: string | null;
+  casalNumero: number | null;
+  casalId: string | null;
+}
+
+export interface PlantelEmTabela {
+  aves: AveNaTabela[];
+  total: number;
+  pagina: number;
+  paginas: number;
+  facetas: {
+    especies: Faceta[];
+    situacoes: Faceta[];
+    anos: number[];
+  };
+}
+
+export const POR_PAGINA = 50;
+
+const ROTULO_FACETA_SITUACAO: Record<string, string> = {
+  ativo: "Plantel ativo",
+  vendido: "Vendido",
+  doado: "Doado",
+  emprestado: "Emprestado",
+  morto: "Óbito",
+  perdido: "Perdido",
+};
+
+export async function listarPlantelEmTabela(
+  filtros: FiltrosTabela = {},
+): Promise<PlantelEmTabela> {
+  const supabase = await criarClienteServidor();
+  const pagina = Math.max(1, filtros.pagina ?? 1);
+
+  /*
+   * As facetas contam sobre o plantel INTEIRO, não sobre o resultado filtrado.
+   * Uma contagem que muda quando você clica nela não serve para navegar: o
+   * criador precisa saber quantos curiós existem para decidir filtrar por
+   * curió. Mesma regra das pílulas da tela de Ovos.
+   */
+  const { data: todas } = await supabase
+    .from("passaros")
+    .select("id, situacao, anilha_ano, especie:especies(id, nome)")
+    .is("deleted_at", null);
+
+  const universo = (todas ?? []) as unknown as Array<{
+    id: string;
+    situacao: string;
+    anilha_ano: number | null;
+    especie: { id: string; nome: string } | { id: string; nome: string }[] | null;
+  }>;
+
+  const porEspecie = new Map<string, { rotulo: string; contagem: number }>();
+  const porSituacao = new Map<string, number>();
+  const anos = new Set<number>();
+
+  for (const a of universo) {
+    const especie = primeiro(a.especie);
+    if (especie) {
+      const atual = porEspecie.get(especie.id);
+      porEspecie.set(especie.id, {
+        rotulo: especie.nome,
+        contagem: (atual?.contagem ?? 0) + 1,
+      });
+    }
+    porSituacao.set(a.situacao, (porSituacao.get(a.situacao) ?? 0) + 1);
+    if (a.anilha_ano) anos.add(a.anilha_ano);
+  }
+
+  let consulta = supabase
+    .from("passaros")
+    .select(// A constraint chama-se `passaros_postura_fk`, não o `_id_fkey` que o
+    // PostgREST usaria por convenção — errar o nome dá PGRST200.
+    `${CAMPOS_AVE}, casal_origem:posturas!passaros_postura_fk(casal:casais(id, numero))`, {
+      count: "exact",
+    })
+    .is("deleted_at", null);
+
+  if (filtros.especies?.length) consulta = consulta.in("especie_id", filtros.especies);
+  if (filtros.situacoes?.length) consulta = consulta.in("situacao", filtros.situacoes);
+  if (filtros.sexo && filtros.sexo !== "todos") consulta = consulta.eq("sexo", filtros.sexo);
+  if (filtros.anoAnilha) consulta = consulta.eq("anilha_ano", filtros.anoAnilha);
+  if (filtros.semAnilha) consulta = consulta.is("anilha_numero", null);
+
+  const termo = filtros.busca?.trim();
+  if (termo) {
+    const somenteDigitos = termo.replace(/\D/g, "");
+    const condicoes = [`nome.ilike.%${termo}%`];
+    if (somenteDigitos) condicoes.push(`anilha_numero.eq.${Number(somenteDigitos)}`);
+    consulta = consulta.or(condicoes.join(","));
+  }
+
+  const ascendente = filtros.direcao !== "desc";
+  if (filtros.ordem === "nome") {
+    consulta = consulta.order("nome", { ascending: ascendente, nullsFirst: false });
+  } else if (filtros.ordem === "nascimento") {
+    consulta = consulta.order("dt_nascimento", { ascending: ascendente, nullsFirst: false });
+  } else {
+    // Padrão: pela anilha, que é como o criador procura a ave.
+    consulta = consulta
+      .order("anilha_ano", { ascending: ascendente, nullsFirst: false })
+      .order("anilha_numero", { ascending: ascendente, nullsFirst: false });
+  }
+
+  const de = (pagina - 1) * POR_PAGINA;
+  const { data, count, error } = await consulta.range(de, de + POR_PAGINA - 1);
+
+  if (error) {
+    console.error("listarPlantelEmTabela:", error.message);
+  }
+
+  const aves = ((data ?? []) as unknown as Array<LinhaAve & Record<string, unknown>>).map(
+    (a) => {
+      const postura = primeiro(
+        a.casal_origem as { casal: { id: string; numero: number } | null } | null,
+      );
+      const casal = postura ? primeiro(postura.casal) : null;
+
+      return {
+        id: a.id,
+        nome: a.nome,
+        sexo: a.sexo,
+        situacao: a.situacao,
+        dtNascimento: a.dt_nascimento,
+        fotoUrl: a.foto_url,
+        especie: primeiro(a.especie)?.nome ?? null,
+        mutacao: primeiro(a.mutacao)?.nome ?? null,
+        mutacaoNome: primeiro(a.mutacao)?.nome ?? null,
+        casalId: casal?.id ?? null,
+        casalNumero: casal?.numero ?? null,
+        anilha: {
+          sigla: a.anilha_sigla,
+          criador: a.anilha_criador,
+          ano: a.anilha_ano,
+          numero: a.anilha_numero,
+        },
+      };
+    },
+  );
+
+  const total = count ?? aves.length;
+
+  return {
+    aves,
+    total,
+    pagina,
+    paginas: Math.max(1, Math.ceil(total / POR_PAGINA)),
+    facetas: {
+      especies: [...porEspecie.entries()]
+        .map(([valor, { rotulo, contagem }]) => ({ valor, rotulo, contagem }))
+        .sort((a, b) => b.contagem - a.contagem || a.rotulo.localeCompare(b.rotulo)),
+      situacoes: [...porSituacao.entries()]
+        .map(([valor, contagem]) => ({
+          valor,
+          rotulo: ROTULO_FACETA_SITUACAO[valor] ?? valor,
+          contagem,
+        }))
+        .sort((a, b) => b.contagem - a.contagem),
+      anos: [...anos].sort((a, b) => b - a),
+    },
+  };
 }

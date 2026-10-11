@@ -1,0 +1,349 @@
+/* C2 Plantel em tabela — prancha 4b.
+
+   Módulo próprio, e não o do plantel: a lista do celular e a tabela do
+   computador têm linha, miniatura e faixa cada uma — nomes genéricos no mesmo
+   módulo colidem, e a regra que vem depois no arquivo vence. Foi exatamente
+   assim que a lista do celular quebrou. */
+
+/* --- Filtros laterais -------------------------------------------------------- */
+.filtros {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.filtrosTopo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.filtrosTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.limpar {
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.limpar:hover { text-decoration: underline; }
+
+.grupoFiltro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.grupoFiltro:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.grupoTitulo {
+  font: var(--type-label);
+  color: var(--text-heading);
+}
+
+/* --- Opção com caixa --------------------------------------------------------- */
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 28px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--radius-xs);
+}
+
+.opcao:hover .opcaoRotulo { color: var(--text-brand); }
+
+.opcao:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.caixa {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-xs);
+  background: var(--surface-card);
+  color: #FFFFFF;
+}
+
+.caixaMarcada {
+  background: var(--sis-petroleo-700);
+  border-color: var(--sis-petroleo-700);
+}
+
+.opcaoRotulo {
+  flex: 1;
+  min-width: 0;
+  font: var(--type-body);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.opcaoContagem {
+  flex: none;
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+/* --- Segmentado de sexo ------------------------------------------------------ */
+.segmentado {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.segmento {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  height: 36px;
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.segmento:hover { border-color: var(--border-brand); }
+
+.segmentoAtivo {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+  font-weight: var(--weight-semibold);
+  color: var(--text-brand);
+}
+
+/* --- Anos -------------------------------------------------------------------- */
+.anos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.ano {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.ano:hover { border-color: var(--border-brand); }
+
+.anoAtivo {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+  font-weight: var(--weight-semibold);
+  color: var(--text-brand);
+}
+
+/* --- Tabela ------------------------------------------------------------------ */
+.painelTabela {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.rolagem { overflow-x: auto; }
+
+/* Sem `min-width: max-content`: a prancha deixa a coluna Espécie encolher
+   (`minmax(0,1fr)`) para a tabela caber. O que não pode encolher é anilha,
+   data e situação — essas têm largura fixa. A rolagem fica como rede de
+   segurança para janelas estreitas. */
+.grade { min-width: 0; }
+
+.cabecalhoTabela,
+.linha {
+  display: grid;
+  grid-template-columns:
+    var(--border-width-marker) 36px 172px 34px minmax(0, 1fr)
+    104px 44px 92px 112px 106px;
+  align-items: center;
+  gap: var(--space-2);
+  padding-right: var(--space-5);
+}
+
+.cabecalhoTabela {
+  height: 36px;
+  background: var(--surface-sunken);
+  border-bottom: var(--border-width) solid var(--border-default);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.linha {
+  height: 44px;
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.linha:last-child { border-bottom: none; }
+
+.linha:hover { background: var(--surface-hover); }
+
+.linhaMarcada { background: var(--surface-selected); }
+
+.faixa {
+  width: var(--border-width-marker);
+  height: 100%;
+}
+
+.faixa_neutro  { background: transparent; }
+.faixa_critico { background: var(--sis-tijolo-600); }
+
+.ordenar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: inherit;
+  text-decoration: none;
+}
+
+.ordenar:hover { color: var(--text-brand); }
+
+.ordenarAtiva { color: var(--text-brand); }
+
+.celulaMarca {
+  display: grid;
+  place-items: center;
+}
+
+/* O alvo tem 36px, não os 16px do desenho da caixa: a caixa é o visual, o
+   label é o alvo. */
+.caixaAlvo {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.caixaEntrada {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.caixaAlvo:has(.caixaEntrada:focus-visible) .caixa {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.celulaFoto {
+  display: grid;
+  place-items: center;
+}
+
+.miniatura {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+}
+
+.miniaturaVazia {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  background: var(--surface-brand-soft);
+  color: var(--text-brand);
+  border-radius: var(--radius-xs);
+}
+
+.celulaTexto {
+  font: var(--type-body);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.celulaData {
+  font: var(--type-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.elo {
+  color: inherit;
+  text-decoration: none;
+}
+
+.elo:hover { color: var(--text-brand); }
+
+.vazio {
+  font-family: var(--font-numeric);
+  color: var(--text-secondary);
+}
+
+/* --- Barra de seleção --------------------------------------------------------- */
+.barraSelecao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 52px;
+  padding: 0 var(--space-5);
+  background: var(--surface-selected);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.selecaoContagem {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-brand);
+  white-space: nowrap;
+}
+
+.divisor {
+  width: 1px;
+  height: 20px;
+  flex: none;
+  background: var(--border-default);
+}
+
+.espaco { flex: 1; }
+

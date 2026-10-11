@@ -32,7 +32,11 @@
    tema. Com o valor cru, o "F" desaparecia sobre a superfície escura. */
 .macho       .glifo { color: var(--text-brand); }
 .femea       .glifo { color: var(--text-heading); }
-.indefinido  .glifo { color: var(--text-muted); }
+/* --text-secondary e não --text-muted: o glifo é O sinal do sexo, e o contrato
+   trata sexo como dado essencial. Muted dá 3,68:1; secondary dá 5,57:1. O
+   handoff diz "muted" aqui, mas 04-acessibilidade.md reserva o muted a texto
+   não essencial — vale o documento escrito. */
+.indefinido  .glifo { color: var(--text-secondary); }
 
 /* Compacta: só o glifo, para linhas densas onde "Sexo indefinido" não cabe.
    O sinal não visual continua sendo a LETRA e o aria-label, nunca a cor. */

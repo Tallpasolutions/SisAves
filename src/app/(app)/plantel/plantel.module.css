@@ -197,9 +197,107 @@
   flex: none;
 }
 
+/* A idade é dado da ave, não enfeite: --text-muted dá 3,68:1 em 12px. */
 .idade {
   font-family: var(--font-numeric);
   font-size: var(--text-xs);
   font-variant-numeric: tabular-nums;
-  color: var(--text-muted);
+  color: var(--text-secondary);
+}
+
+/* ===========================================================================
+ * Desktop — C2, prancha 4b
+ *
+ * A mesma rota serve os dois contextos. O que troca não é só o arranjo: no
+ * celular a unidade é a AVE (uma linha por bicho, tocável); no computador é a
+ * TABELA (dez colunas comparáveis entre si). Por isso são duas marcações, e
+ * não uma espremida — cada uma é a resposta certa do seu contexto.
+ * ======================================================================== */
+
+.barraDesktop,
+.lateralFiltros,
+.tabelaDesktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  /* O cabeçalho com título e contagem já vem da top bar. */
+  .cabecalho,
+  .busca,
+  .filtrosPilula,
+  .lista {
+    display: none;
+  }
+
+  .barraDesktop,
+  .tabelaDesktop {
+    display: block;
+  }
+
+  .tela {
+    gap: var(--space-4);
+  }
+
+  .barraDesktop {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .buscaDesktop {
+    position: relative;
+    flex: none;
+    width: 300px;
+  }
+
+  .buscaDesktop .buscaEntrada {
+    height: var(--control-h-md);
+    padding-left: var(--space-9);
+  }
+
+  .contagemDesktop {
+    font-family: var(--font-numeric);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .espacador { flex: 1; }
+
+  .corpo {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .lateralFiltros { display: block; }
+
+  .resultado {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+}
+
+/* --- Paginação ---------------------------------------------------------------- */
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+}
+
+.paginaAtual {
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 1024px) {
+  .acaoMobile { display: none; }
 }
