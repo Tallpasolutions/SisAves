@@ -2,7 +2,7 @@
 
 > **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
 > que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **05/10/2026**, com a Fase 6 verificada em navegador real.
+> Atualizado em **11/10/2026**, com duas das três telas da Faixa C prontas.
 
 ## O produto em uma frase
 
@@ -14,22 +14,32 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Fase 7 — desktop (Faixa C).** Painel (`4a`), plantel em tabela (`4b`) e
-editor de CRO (`4c`).
+**C3 — editor de CRO — junto com a Fase 8**, não antes.
 
-Até aqui o produto é inteiro mobile. A Faixa C é o outro contexto de uso do
-contrato: *sentado no computador*, onde densidade de dados é requisito, não
-descuido. Sidebar de 248px, top bar de 56px.
+A C3 (prancha `4c`) é painel de 340px com 3 modelos, cor de destaque, 5
+interruptores, logotipo e redes; à direita, prévia A4 paisagem com genealogia
+de 3 gerações, endogamia, QR Code e linha de assinatura.
 
-Três pontos de atenção registrados no handoff:
+A prévia é construível hoje — `montar_snapshot_certificado()` e
+`arvore_genealogica()` já existem, e a 0015 pôs o `caminho` no snapshot
+justamente para o certificado poder dizer de que lado veio cada avô. Mas
+**editor sem emissão é uma tela que não faz nada**: falta gravar em
+`certificados`, gerar o hash, o QR e a página pública de validação — que é a
+Fase 8 inteira. Separá-los obrigaria a mexer duas vezes na mesma tela.
 
-- **Gráficos são SVG à mão, não biblioteca.** O design proíbe escala
-  multicolorida e usa só petróleo-200, petróleo-700 e tijolo vazado. Meses
-  futuros em cinza.
-- A grade do `4b` vem corrigida no handoff: fixos 703px + 9 gaps de 10px +
-  20px de padding. Linhas de 44px, seleção múltipla com 4 ações em lote.
-- O `4c` é painel de 340px + prévia A4 paisagem em tempo real — ele encosta na
-  Fase 8 (CRO), mas a prévia pode vir antes da emissão.
+Ordem sugerida:
+
+1. Emissão: Server Action que grava `certificados` com o snapshot, o `hash`
+   e o `sequencial`.
+2. QR real (lib `qrcode`) apontando para `/v/<hash>-<sequencial>`.
+3. D2, a página pública de validação — anônima, ISR, lendo o snapshot pela
+   função `validar_certificado`, **sem contato do criador**.
+4. Então a C3, que passa a configurar algo que existe.
+5. E o CRO A4 impresso (D1), em pt/mm, gerado pela impressão do navegador.
+
+Quando a emissão existir, duas coisas já construídas deixam de ser promessa: o
+botão "Emitir CRO" da barra de seleção do plantel e o item "Certificados" da
+sidebar.
 
 ## Onde está tudo
 
@@ -95,7 +105,7 @@ abriria brecha para cor fora da paleta.
 | 4 · Núcleo mobile (Faixa B) | **concluída**, incluídas as três telas de escrita (`7d4f435`, `f885075`, `f514dc5`) |
 | 5 · Genealogia (B6) | **concluída** (`10c0800`) |
 | 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
-| 7 · Desktop (Faixa C) | não iniciada |
+| 7 · Desktop (Faixa C) | **C1 e C2 concluídas** (`f2d3598`, `6224a60`); C3 fica para a Fase 8 |
 | 8 · CRO, QR e validação pública | banco pronto; interface não iniciada |
 | 9 · Financeiro e saúde | banco pronto; interface não iniciada |
 | 10 · Assinatura (Mercado Pago) | banco pronto; integração não iniciada |
@@ -124,6 +134,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0013_perfil_automatico` | trigger que cria `perfis` junto com `auth.users` |
 | `0014_anilhamento` | `anilhar_filhotes()`; `ninhada_id` em `vw_tarefas_hoje` |
 | `0015_arvore_com_caminho` | `caminho` em `arvore_genealogica()` e no snapshot do CRO |
+| `0016_movimentacoes` | `vw_movimentacoes`: o histórico derivado dos fatos |
 
 ### Funções do domínio
 
@@ -186,7 +197,7 @@ Cada um abre transação e termina em `rollback`. Toda linha deve sair com
 
 ---
 
-## Interface — 15 componentes em `src/components/ui/`
+## Interface — 16 componentes em `src/components/ui/`
 
 | Componente | Observação de contrato |
 |---|---|
@@ -204,6 +215,7 @@ Cada um abre transação e termina em `rollback`. Toda linha deve sair com
 | `EmptyState` | Alinhado à esquerda, sem ilustração, sem emoji. |
 | `SyncStatus` | Nunca sugere perda: "Offline — salvo no aparelho". |
 | `NotificationBadge` | `pointer-events: none` — o alvo é o botão de 44px embaixo. |
+| `StatCard` | Indicador do painel desktop, 104px. A tendência nunca é só a seta: o rótulo nomeia o período ("+2 vs. setembro"). Variante `brand` é bloco de petróleo cheio — no máximo um por tela. Vem da prancha `4a`, não de `02-componentes.md`. |
 | `PedigreeNode` | Nó da árvore. Faixa de sexo de 3px à esquerda: o **segundo** dos dois únicos lugares com barra colorida à esquerda. `desconhecido` nomeia a posição vazia; `repetido` ganha contorno âmbar. Não está em `02-componentes.md`, só na prancha `3c`. |
 
 Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
@@ -255,6 +267,8 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 |---|---|---|
 | `/` | B1 Hoje | tarefas agrupadas por ninhada, sobre `vw_tarefas_hoje`; traz o estado `2h` (sem conexão) e a lista de pendentes |
 | `/offline` | recurso do service worker | estática e pública: a tela pedida nunca foi visitada neste aparelho |
+| `/painel` | C1 Painel do criatório | **só desktop**; 4 indicadores, nascimentos por mês, tarefas e movimentações |
+| `/plantel` (≥1024px) | C2 Plantel em tabela | mesma rota da B5; filtros laterais, 10 colunas, ordenação, seleção em lote |
 | `/ovos` | B2 Ovos | pipeline com pílulas de estado; ninhada herda o estado mais urgente dos seus ovos |
 | `/plantel` | B5 Plantel | busca por anilha ou nome (GET, sem JavaScript) e 4 filtros |
 | `/plantel/[id]` | B3 Ficha da ave | anilha em destaque, filiação clicável, 3 atalhos |
@@ -286,6 +300,42 @@ vigência anterior ao nascimento, anilha repetida dentro do mesmo envio.
 Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
 navegação.
+
+## As duas faixas, uma rota só
+
+O contrato descreve dois contextos: *em pé no galpão, no celular* e *sentado no
+computador*. Eles são a **mesma rota**, trocada por media query em **1024px** —
+o ponto onde a sidebar de 248px cabe sem comer o conteúdo.
+
+Rotas separadas duplicariam cada tela e deixariam as duas versões divergirem
+com o tempo; e quem gira o celular não deveria ver outro produto.
+
+| | Abaixo de 1024px | A partir de 1024px |
+|---|---|---|
+| Navegação | tab bar de 5 destinos | sidebar de 248px, 3 grupos |
+| Cabeçalho | título dentro da tela | top bar de 56px, com busca e sync |
+| Largura | 560px | toda a janela |
+
+A `TabBar` e a `Sidebar` se escondem sozinhas por media query; o título da top
+bar é derivado da rota (`TITULOS` em `TopBar.tsx`), para que nenhuma tela nova
+possa esquecer de pôr o seu.
+
+Na sidebar, destino ainda não construído aparece desabilitado com "em breve".
+Escondê-lo faria a navegação mentir sobre o tamanho do produto; mandar para
+404 seria pior.
+
+**O painel (C1) só existe no desktop.** O equivalente no celular é a tela Hoje,
+e a diferença não é de tamanho: Hoje responde *o que eu faço agora*, o painel
+responde *como está o criatório*. `/painel` não está na tab bar, mas degrada em
+tela estreita porque um link compartilhado chega lá.
+
+### Quando a mesma rota tem duas marcações
+
+`/plantel` é o caso: lista no celular, tabela no computador. **Cada marcação
+precisa do seu próprio módulo CSS.** Nomes genéricos — `.linha`, `.miniatura`,
+`.faixa`, `.cabecalho` — existem nas duas, e num módulo só a regra que vem
+depois no arquivo vence. Foi assim que a lista do celular quebrou, com nome
+truncado e miniatura por cima da anilha.
 
 ## Offline
 
@@ -478,6 +528,14 @@ tela "Hoje". É idempotente: apaga o que semeou antes e recria.
   parece defeito de cor. Esperar, ou conferir o valor computado.
 - Peso e qualquer decimal chegam com vírgula do teclado pt-BR. `z.coerce.number()`
   lê `NaN` — normalizar antes de validar.
+- **Dois componentes no mesmo módulo CSS colidem em nomes genéricos**
+  (`.linha`, `.cabecalho`, `.miniatura`), e a regra posterior vence — inclusive
+  anulando um `display: none` de media query. Um módulo por componente.
+- **Função não atravessa a fronteira Server → Client Component.** Passe o
+  resultado, não o cálculo: os links de ordenação da tabela vão como dados.
+- **Nome de constraint não segue sempre a convenção do PostgREST.** O FK de
+  `passaros.postura_id` chama-se `passaros_postura_fk`, não `_id_fkey`; errar a
+  dica dá `PGRST200`. Conferir em `pg_constraint` antes de escrever o embed.
 - `npx prettier` sem configuração no projeto reformata o arquivo inteiro com os
   padrões dele (80 colunas) e enterra a mudança real no ruído. **Não há
   `.prettierrc` aqui** — editar à mão e deixar o `eslint` julgar.
