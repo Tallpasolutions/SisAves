@@ -1,0 +1,133 @@
+/* Navegação do desktop — prancha 4a: 248px, três grupos, altura total.
+   Sobre azul profundo, que o contrato reserva a títulos, sidebar e contraste
+   máximo. É superfície de marca, não o "um bloco de petróleo cheio" da tela —
+   esse continua disponível para o conteúdo. */
+
+.barra {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 248px;
+  flex: none;
+  height: 100dvh;
+  position: sticky;
+  top: 0;
+  padding: var(--space-5) var(--space-3);
+  background: var(--sis-azul-profundo);
+  overflow-y: auto;
+}
+
+/* --- Marca ------------------------------------------------------------------ */
+.marca {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 var(--space-2);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Sobre azul profundo a assinatura vai na versão branca; o "Aves" mantém o
+   contraste de marca sem sumir. */
+.logoSis  { color: #FFFFFF; }
+.logoAves { color: var(--sis-petroleo-200); }
+
+.criatorio {
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Grupos ----------------------------------------------------------------- */
+.grupos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.grupoTitulo {
+  padding: 0 var(--space-2) var(--space-1);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.56);
+}
+
+/* --- Item ------------------------------------------------------------------- */
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  transition: var(--transition-control);
+}
+
+.item svg { flex: none; }
+
+.itemRotulo {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover escurece/clareia a superfície — nunca opacidade. */
+a.item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+a.item:focus-visible {
+  outline: var(--border-width-strong) solid var(--sis-petroleo-200);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+.itemAtivo {
+  background: var(--sis-petroleo-700);
+  color: #FFFFFF;
+  font-weight: var(--weight-semibold);
+}
+
+a.itemAtivo:hover { background: var(--sis-petroleo-600); }
+
+/* Desenhado no handoff, ainda não construído. Não é link e não recebe foco. */
+.itemInativo {
+  color: rgba(255, 255, 255, 0.40);
+  cursor: not-allowed;
+}
+
+.contagem {
+  flex: none;
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.emBreve {
+  flex: none;
+  font-family: var(--font-ui);
+  font-size: var(--text-2xs);
+  color: rgba(255, 255, 255, 0.40);
+}

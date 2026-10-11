@@ -37,6 +37,9 @@ export type { EmptyStateProps } from "./EmptyState";
 export { SyncStatus } from "./SyncStatus";
 export type { SyncStatusProps, EstadoSync } from "./SyncStatus";
 
+export { StatCard } from "./StatCard";
+export type { StatCardProps } from "./StatCard";
+
 export { PedigreeNode } from "./PedigreeNode";
 export type { PedigreeNodeProps } from "./PedigreeNode";
 

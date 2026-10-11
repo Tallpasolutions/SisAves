@@ -49,3 +49,12 @@
 .ativo .rotulo { font-weight: var(--weight-semibold); }
 
 .icone { display: inline-flex; position: relative; }
+
+/* No desktop quem navega é a sidebar. A barra e o espaçador dela somem juntos:
+   deixar o espaçador deixaria 60px de rodapé vazio em toda tela. */
+@media (min-width: 1024px) {
+  .espaco,
+  .barra {
+    display: none;
+  }
+}

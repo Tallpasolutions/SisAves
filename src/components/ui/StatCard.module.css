@@ -1,0 +1,66 @@
+/* Indicador do painel desktop — prancha 4a, 104px de altura. */
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-height: 104px;
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.rotulo {
+  font: var(--type-label);
+  color: var(--text-secondary);
+}
+
+.icone {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-muted);
+}
+
+/* O número é o conteúdo do cartão: tabular, como todo dado do produto. */
+.valor {
+  font: var(--type-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-heading);
+}
+
+.ajuda,
+.tendencia {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.tendencia {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.tendencia svg { flex: none; }
+
+/* Variante de marca — bloco de petróleo cheio. No máximo um por tela. */
+.brand {
+  background: var(--sis-petroleo-700);
+  border-color: var(--sis-petroleo-700);
+}
+
+.brand .rotulo { color: var(--sis-petroleo-100); }
+.brand .icone  { color: var(--sis-petroleo-200); }
+/* Branco nos dois temas: o fundo é petróleo fixo, e --text-inverse vira
+   grafite no escuro. Mesmo motivo do botão primário. */
+.brand .valor  { color: var(--text-on-brand); }
+.brand .ajuda,
+.brand .tendencia { color: var(--sis-petroleo-100); }

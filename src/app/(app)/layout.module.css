@@ -1,12 +1,47 @@
 .app {
   min-height: 100dvh;
   background: var(--surface-page);
-  /* O espaço da barra fixa é reservado pela própria TabBar, que sabe quando se
-     esconde. Aqui ele deixaria rodapé vazio nas telas sem barra. */
+}
+
+/* Sidebar e top bar não existem no mobile: o galpão é uma coluna só. */
+.lateral,
+.superior {
+  display: none;
 }
 
 .conteudo {
   max-width: 560px;
   margin: 0 auto;
   padding: var(--space-5) var(--space-4) 0;
+}
+
+/* --- Desktop ----------------------------------------------------------------
+   1024px porque é onde a sidebar de 248px cabe sem comer o conteúdo: sobram
+   776px, perto dos 1192px da prancha e já suficientes para a tabela de 10
+   colunas da C2. */
+@media (min-width: 1024px) {
+  .app {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .lateral { display: block; }
+
+  .coluna {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  .superior { display: block; }
+
+  .conteudo {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    padding: var(--space-5);
+  }
 }

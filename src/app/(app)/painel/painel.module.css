@@ -1,0 +1,337 @@
+/* C1 Painel do criatório — prancha 4a.
+
+   Só existe no desktop: no celular o equivalente é a tela Hoje, que responde
+   "o que eu faço agora" em vez de "como está o criatório". */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* --- Indicadores ------------------------------------------------------------ */
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+@media (max-width: 1280px) {
+  .indicadores { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* O painel é tela de desktop e não está na tab bar — mas um link compartilhado
+   chega ao celular, e lá ele precisa ficar legível em vez de quebrado. */
+@media (max-width: 560px) {
+  .indicadores { grid-template-columns: 1fr; }
+}
+
+/* --- Meio: gráfico + tarefas ------------------------------------------------ */
+.meio {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+@media (max-width: 1280px) {
+  .meio { grid-template-columns: 1fr; }
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+.cartaoCabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.cartaoTitulo {
+  margin: 0;
+  font: var(--type-h4);
+  color: var(--text-heading);
+}
+
+.cartaoResumo {
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+/* --- Gráfico de nascimentos -------------------------------------------------
+   SVG à mão seria exagero para 12 barras: divs com altura percentual fazem o
+   mesmo e escalam com o cartão. O que o design proíbe é escala multicolorida,
+   não a técnica. Petróleo-200 em tudo, petróleo-700 só no mês corrente. */
+.grafico {
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+.coluna {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.valor {
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.valorAtual {
+  font-weight: var(--weight-semibold);
+  color: var(--text-brand);
+}
+
+.trilho {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.barra {
+  width: 100%;
+  background: var(--sis-petroleo-200);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  /* Anima só a largura/altura da barra, em duração base — o contrato permite
+     isso e proíbe número contando. */
+  transition: height var(--duration-base) var(--ease-standard);
+}
+
+.barraAtual { background: var(--sis-petroleo-700); }
+
+/* Mês que ainda não chegou não é zero: é desconhecido. */
+.barraFutura { background: var(--surface-sunken); }
+
+.mes {
+  font-family: var(--font-ui);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.mesAtual {
+  font-weight: var(--weight-semibold);
+  color: var(--text-brand);
+}
+
+/* --- Tarefas ----------------------------------------------------------------- */
+.tarefas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tarefa {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.tarefaUrgente {
+  background: var(--surface-accent-soft);
+  border-color: var(--border-accent);
+}
+
+.tarefaIcone {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  background: var(--status-neutro-bg);
+  color: var(--status-neutro-fg);
+  border-radius: var(--radius-xs);
+}
+
+.tarefaIconeUrgente {
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+}
+
+.tarefaTextos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tarefaTitulo {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-heading);
+}
+
+.tarefaDetalhe {
+  font: var(--type-small);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.semTarefa {
+  flex: 1;
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.rodapeCartao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.rodapeRotulo {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.rodapeValor {
+  font: var(--type-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-brand);
+}
+
+/* --- Movimentações ----------------------------------------------------------- */
+.movimentacoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.secaoCabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.secaoTitulo {
+  margin: 0;
+  font: var(--type-h4);
+  color: var(--text-heading);
+}
+
+.verTudo {
+  font: var(--type-small);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.verTudo:hover { text-decoration: underline; }
+
+.tabela {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  /* Rola na horizontal em vez de espremer as colunas: a anilha e a data são
+     identificação, e encolher qualquer uma das duas as torna inúteis. */
+  overflow-x: auto;
+}
+
+.cabecalhoLinha,
+.linha {
+  display: grid;
+  grid-template-columns: var(--border-width-marker) 110px minmax(220px, 1fr) 200px 150px 130px;
+  align-items: center;
+  gap: var(--space-3);
+  padding-right: var(--space-4);
+  min-width: max-content;
+}
+
+.cabecalhoLinha {
+  height: 36px;
+  background: var(--surface-sunken);
+  border-bottom: var(--border-width) solid var(--border-default);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.linha {
+  height: 44px;
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.linha:last-child { border-bottom: none; }
+
+.linhaCritica { background: var(--surface-danger-soft); }
+
+/* Faixa de gravidade de 3px, altura total da linha. */
+.faixa {
+  width: var(--border-width-marker);
+  height: 100%;
+}
+
+.faixa_neutro   { background: transparent; }
+.faixa_ok       { background: var(--status-ok-fg); }
+.faixa_atencao  { background: var(--sis-ambar); }
+.faixa_critico  { background: var(--sis-tijolo-600); }
+
+.celulaData {
+  font: var(--type-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.celulaEvento {
+  font: var(--type-body);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.celulaCasal {
+  font: var(--type-body);
+  color: var(--text-secondary);
+}
+
+.elo {
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.elo:hover { text-decoration: underline; }
+
+/* O travessão diz "não se aplica" — é dado, não enfeite. --text-muted dá
+   3,68:1 e o contrato o reserva a texto não essencial. */
+.vazio {
+  font-family: var(--font-numeric);
+  color: var(--text-secondary);
+}
