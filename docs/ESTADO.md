@@ -2,7 +2,7 @@
 
 > **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
 > que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **11/10/2026**, com duas das três telas da Faixa C prontas.
+> Atualizado em **11/10/2026**, com o inventário completo do que falta.
 
 ## O produto em uma frase
 
@@ -14,32 +14,37 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**C3 — editor de CRO — junto com a Fase 8**, não antes.
+**Fechar o buraco no meio do ciclo do ovo.** Vem antes da Fase 8 e de qualquer
+outra coisa, porque sem isso o produto não serve para o uso diário.
 
-A C3 (prancha `4c`) é painel de 340px com 3 modelos, cor de destaque, 5
-interruptores, logotipo e redes; à direita, prévia A4 paisagem com genealogia
-de 3 gerações, endogamia, QR Code e linha de assinatura.
+O estado do ovo é derivado das datas observadas — essa é a decisão central do
+sistema e está certa. O problema é que **a interface só sabe escrever duas das
+seis datas**:
 
-A prévia é construível hoje — `montar_snapshot_certificado()` e
-`arvore_genealogica()` já existem, e a 0015 pôs o `caminho` no snapshot
-justamente para o certificado poder dizer de que lado veio cada avô. Mas
-**editor sem emissão é uma tela que não faz nada**: falta gravar em
-`certificados`, gerar o hash, o QR e a página pública de validação — que é a
-Fase 8 inteira. Separá-los obrigaria a mexer duas vezes na mesma tela.
+| Marco | Coluna | Tela que escreve |
+|---|---|---|
+| Postura | `data_postura` | ✅ B9 |
+| Ovoscopia | `ovoscopia_em`, `fertil` | ❌ **não existe** |
+| Eclosão | `data_eclosao` | ❌ **não existe** |
+| Anilhamento | `data_anilhamento` | ✅ Anilhar filhote |
+| Separação | `data_separacao` | ❌ **não existe** |
+| Perda / ovo claro | `desfecho` | ❌ **não existe** |
 
-Ordem sugerida:
+Na prática: o criador registra a postura e os ovos ficam em "chocando" →
+"ovoscopia" → "nascendo" para sempre, porque nada consegue dizer que eles
+eclodiram. E **a tela de anilhamento só enxerga ovo que já tem
+`data_eclosao`** — ou seja, hoje ela só funciona sobre o que a semente de
+desenvolvimento preencheu.
 
-1. Emissão: Server Action que grava `certificados` com o snapshot, o `hash`
-   e o `sequencial`.
-2. QR real (lib `qrcode`) apontando para `/v/<hash>-<sequencial>`.
-3. D2, a página pública de validação — anônima, ISR, lendo o snapshot pela
-   função `validar_certificado`, **sem contato do criador**.
-4. Então a C3, que passa a configurar algo que existe.
-5. E o CRO A4 impresso (D1), em pt/mm, gerado pela impressão do navegador.
+> **Correção de registro.** Versões anteriores deste arquivo e da memória
+> diziam que "o ciclo fecha pela interface". Não fecha. Ele fecha no banco de
+> desenvolvimento porque a semente grava `data_eclosao` direto.
 
-Quando a emissão existir, duas coisas já construídas deixam de ser promessa: o
-botão "Emitir CRO" da barra de seleção do plantel e o item "Certificados" da
-sidebar.
+As quatro escritas que faltam são pequenas e parecidas entre si — todas marcam
+uma data numa postura já existente. A da eclosão é a que destrava as demais.
+
+Depois disso, **Fase 8 (CRO, QR e validação) junto com a tela C3** — ver
+"O que falta" adiante.
 
 ## Onde está tudo
 
@@ -102,7 +107,7 @@ abriria brecha para cor fora da paleta.
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | **concluída**, incluídas as três telas de escrita (`7d4f435`, `f885075`, `f514dc5`) |
+| 4 · Núcleo mobile (Faixa B) | telas **concluídas**, mas faltam 4 escritas do ciclo — ver "Próximo passo" |
 | 5 · Genealogia (B6) | **concluída** (`10c0800`) |
 | 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
 | 7 · Desktop (Faixa C) | **C1 e C2 concluídas** (`f2d3598`, `6224a60`); C3 fica para a Fase 8 |
@@ -301,6 +306,95 @@ Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
 navegação.
 
+**São quatro escritas, e faltam quatro do próprio ciclo** — ovoscopia,
+eclosão, separação e perda. Ver "Próximo passo" e "O que falta".
+
+## O que falta — inventário completo
+
+Organizado por quanto bloqueia o uso real, não pela ordem do plano.
+
+### 1 · O ciclo do ovo, que não fecha (bloqueia tudo)
+
+Quatro escritas, descritas em "Próximo passo": **ovoscopia**, **eclosão**,
+**separação** e **perda / ovo claro**. Todas marcam uma data numa postura que
+já existe, e todas seguem o padrão das quatro telas de escrita que já há.
+
+### 2 · Escritas que faltam fora do ciclo
+
+Nenhuma bloqueia o ciclo, mas sem elas o registro do criatório envelhece
+errado — a ave vendida continua "no plantel ativo" para sempre.
+
+| O que falta | Onde o dado já existe |
+|---|---|
+| Editar ave | `passaros` |
+| Registrar óbito, venda, doação, empréstimo | `passaros.situacao`, `dt_obito` |
+| Pesagem avulsa (hoje só o anilhamento cria pesagem) | `pesagens` |
+| Encerrar casal | `casais.vigencia_fim` |
+| Editar casal (gaiola, observações) | `casais` |
+| Transferir postura entre casais | `postura_transferencias` |
+| Etiquetar casal | `casal_tags`, `casal_tag_vinculo` |
+
+### 3 · Fases do plano ainda não iniciadas
+
+| Fase | O que entrega | Banco |
+|---|---|---|
+| 8 · CRO, QR e validação (+ tela C3) | emissão, QR, página pública, impressão A4 | **pronto** (`certificados`, `validar_certificado`, snapshot com `caminho`) |
+| 9 · Financeiro e saúde | lançamentos, categorias; medicamentos, doenças, sintomas, tratamentos | **pronto**, sem nenhuma tela |
+| 10 · Assinatura (Mercado Pago) | checkout PIX/cartão, webhook, bloqueio suave | **pronto** (`assinaturas`, `assinatura_pagamentos`); credenciais vazias no `.env` |
+| 11 · Landing e lançamento | D3, SEO, domínio, migração do legado | — |
+
+### 4 · Telas que o handoff não desenhou e ninguém construiu
+
+O `MANIFEST.md` do handoff declara essas ausências. Construir na linguagem das
+telas existentes.
+
+- **Espécies e prazos** — hoje só dá para adotar espécie no onboarding; não há
+  como adicionar, editar prazo nem desativar depois.
+- **Relatórios** — o item existe na sidebar, desabilitado.
+- **Lista de certificados** — idem.
+- **Configurações e perfil** — não há como mudar nome do criatório, logotipo,
+  registro IBAMA nem dados do clube depois do onboarding.
+- **Saúde do plantel** — tabelas prontas, nenhuma tela.
+- **Membros do criatório** — `criatorio_membros` e a RLS já suportam mais de
+  uma pessoa por criatório; não há convite nem gestão.
+- **Notificações** — `notificacoes` e `push_subscriptions` existem; não há
+  envio nem tela. É o que faria o prazo do anilhamento chegar ao criador sem
+  ele abrir o app.
+- **Tema escuro das pranchas B3–B11 e C1–C3** — os tokens existem e **todas as
+  telas construídas já foram conferidas nos dois temas**; o que falta são os
+  desenhos, não a implementação.
+
+### 5 · Qualidade e lançamento
+
+- **Não há nenhum teste de interface.** O banco tem 63 asserções; o front,
+  zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
+  fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
+- **Nunca foi publicado.** Sem `.vercel`, sem domínio apontado, sem variáveis
+  de produção.
+- **As chaves do Supabase passaram pelo chat e seguem sem rotação.** A
+  `service_role` ignora RLS. Rotacionar em Settings → API antes de qualquer
+  deploy.
+- **`/ds` sai antes do lançamento** — é a referência visual do artboard A3.
+- **Node 20**, e `@supabase/supabase-js` já exige 22.
+- **Migração do legado** — mapear as 18 entidades do dossiê, preservando a
+  validade dos certificados e QR já emitidos.
+
+### 6 · Pendências que dependem do cliente
+
+Repetidas aqui porque bloqueiam coisas concretas; detalhe em "Pendências do
+cliente".
+
+1. **`dias_choco` de 32 das 60 espécies** — sem isso a espécie não pode ser
+   adotada, porque é o prazo que move o ciclo inteiro.
+2. **Prazo de anilhamento por porte** — os 3 dias vieram como valor único.
+3. **Formato da anilha** — dois formatos no handoff; modelado de forma
+   flexível, sem travar a decisão.
+4. **O regime legal das espécies** — 60 passeriformes silvestres
+   (SISPASS/IBAMA), clubes de canaricultura e telas desenhadas com Agapornis.
+   Três regimes diferentes; muda conteúdo de tela e talvez validação de anilha.
+
+---
+
 ## As duas faixas, uma rota só
 
 O contrato descreve dois contextos: *em pé no galpão, no celular* e *sentado no
@@ -439,14 +533,11 @@ risco.
 
 ## O que o handoff de design não cobre
 
-Saúde do plantel, Espécies e prazos, Relatórios, lista de Certificados,
-Configurações, Perfil, onboarding de criatório, e o tema escuro das telas B3–B11
-e C1–C3. Os tokens escuros existem; as pranchas não. Construir na linguagem das
-telas existentes.
+O `MANIFEST.md` do handoff declara as ausências; a lista está em
+**"O que falta", item 4**. Construir na linguagem das telas existentes.
 
-**O tema escuro não ficou de fora por falta de prancha.** Toda tela construída
-até aqui foi conferida nos dois temas, com varredura de contraste sobre o CSS
-computado. O que falta são os desenhos, não a implementação.
+Duas que já foram feitas assim e servem de referência: o onboarding de
+criatório (`/comecar`) e as quatro telas de escrita.
 
 ## Semente de desenvolvimento
 
@@ -457,6 +548,10 @@ node scripts/sql.mjs -f supabase/seeds/desenvolvimento.sql
 ```
 
 Cria 11 aves com genealogia, 3 casais e ninhadas em **cada** estado do ciclo.
+
+**É a semente que grava `data_eclosao`** — e por isso a tela de anilhamento
+tem o que anilhar no desenvolvimento. Nenhuma tela escreve essa data ainda; ver
+"Próximo passo".
 
 O banco de desenvolvimento tem também o que foi criado à mão ao verificar as
 telas de escrita: a ninhada 06 do Casal 03 (B9), a ave Carijó `0090`, o Casal 13

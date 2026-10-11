@@ -4,9 +4,12 @@ Sistema de gestão de criatórios de aves ornamentais: plantel, casais, ciclo do
 ovo, genealogia com coeficiente de endogamia, financeiro, saúde do plantel e
 emissão de CRO com validação por QR Code.
 
-Em construção. O estado detalhado — fases, o que está verificado, pendências e
-armadilhas — fica em **[`docs/ESTADO.md`](docs/ESTADO.md)**, que é o primeiro
-arquivo a ler.
+Em construção. O estado detalhado — fases, o que está verificado, **o
+inventário completo do que falta**, pendências e armadilhas — fica em
+**[`docs/ESTADO.md`](docs/ESTADO.md)**, que é o primeiro arquivo a ler.
+
+O ciclo do ovo ainda não fecha pela interface: das seis datas que o sistema
+deriva, só postura e anilhamento têm tela que as escreve. É o próximo passo.
 
 ## Começando
 
@@ -41,11 +44,15 @@ ciclo do ovo, com datas relativas a hoje — então sempre há o que ver na tela
 | `/casais/[id]/postura` | registrar postura |
 | `/ovos` | ciclo do ovo, por estado |
 | `/ovos/[ninhada]/anilhar` | anilhar filhotes |
+| `/painel` | painel do criatório (só no desktop) |
 | `/entrar` · `/cadastrar` · `/comecar` | autenticação e onboarding |
 | `/ds` | biblioteca de componentes, para conferência visual |
 
 As subrotas `/plantel/[id]/certificado` e `/pesagens` ainda são vazios honestos,
 para os atalhos da ficha não darem 404 antes das fases 8 e 9.
+
+Acima de 1024px as mesmas rotas servem a Faixa C: sidebar, top bar, e o plantel
+em tabela com filtros laterais e seleção em lote.
 
 ## Stack
 
@@ -57,7 +64,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · CSS Modules · Supabase
 ```
 src/
   app/              rotas
-  components/ui/    os 15 componentes da biblioteca
+  components/ui/    os 16 componentes da biblioteca
   lib/dados/        camada de leitura, por área do domínio
   lib/              formatação pt-BR e utilitários
   styles/tokens/    tokens de design, portados sem edição do handoff
@@ -78,7 +85,7 @@ O runner conecta pelo **pooler**: o host direto `db.<ref>.supabase.co` só
 resolve em IPv6 e devolve `ENOTFOUND` em máquina sem rota IPv6.
 
 ```bash
-node scripts/sql.mjs -f supabase/migrations/0015_arvore_com_caminho.sql
+node scripts/sql.mjs -f supabase/migrations/0016_movimentacoes.sql
 node scripts/sql.mjs "select 1"                        # consulta avulsa
 ```
 
