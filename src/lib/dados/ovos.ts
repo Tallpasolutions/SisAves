@@ -1,28 +1,20 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import {
+  ESTADOS_ATIVOS,
+  ESTADOS_OVO,
+  ROTULO_ESTADO,
+  TOM_ESTADO,
+  type EstadoOvo,
+} from "@/lib/dados/estados-do-ovo";
 
-/** Os nove estados possíveis de uma postura, na ordem do ciclo. */
-export const ESTADOS_OVO = [
-  "chocando",
-  "verificar",
-  "nascendo",
-  "nascido",
-  "anilhar",
-  "separar",
-  "separado",
-  "infertil",
-  "perdido",
-] as const;
-
-export type EstadoOvo = (typeof ESTADOS_OVO)[number];
-
-/** Só estes aparecem como filtro: os terminais ficam fora da operação do dia. */
-export const ESTADOS_ATIVOS: EstadoOvo[] = [
-  "verificar",
-  "chocando",
-  "nascendo",
-  "anilhar",
-  "separar",
-];
+// Reexportado para as telas de servidor continuarem importando de um lugar só.
+export {
+  ESTADOS_ATIVOS,
+  ESTADOS_OVO,
+  ROTULO_ESTADO,
+  TOM_ESTADO,
+  type EstadoOvo,
+};
 
 export interface Ninhada {
   chave: string;
@@ -167,27 +159,3 @@ function diasDesde(data: string): number {
   hoje.setHours(0, 0, 0, 0);
   return Math.max(0, Math.round((hoje.getTime() - d.getTime()) / 86_400_000));
 }
-
-export const ROTULO_ESTADO: Record<EstadoOvo, string> = {
-  chocando: "Chocando",
-  verificar: "Ovoscopia",
-  nascendo: "Nascendo",
-  nascido: "Nascido",
-  anilhar: "Anilhar",
-  separar: "Separar",
-  separado: "Separado",
-  infertil: "Infértil",
-  perdido: "Perda",
-};
-
-export const TOM_ESTADO: Record<EstadoOvo, "info" | "neutro" | "ok" | "acao" | "critico"> = {
-  chocando: "info",
-  verificar: "neutro",
-  nascendo: "ok",
-  nascido: "ok",
-  anilhar: "acao",
-  separar: "neutro",
-  separado: "neutro",
-  infertil: "critico",
-  perdido: "critico",
-};

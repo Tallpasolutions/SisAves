@@ -14,6 +14,7 @@ import { cadastrarAve } from "@/app/(app)/plantel/nova/acoes";
 import { formarCasal } from "@/app/(app)/casais/novo/acoes";
 import { registrarPostura } from "@/app/(app)/casais/[id]/postura/acoes";
 import { anilharFilhotes } from "@/app/(app)/ovos/[ninhada]/anilhar/acoes";
+import { registrarConferencia } from "@/app/(app)/ovos/[ninhada]/acoes";
 import {
   contar,
   descreverItem,
@@ -32,6 +33,7 @@ import { sincronizar, type Executor } from "@/lib/offline/sincronizar";
  */
 const EXECUTORES: Record<TipoEscrita, Executor> = {
   postura: (d) => registrarPostura({}, d),
+  marcos: (d) => registrarConferencia({}, d),
   anilhamento: (d) => anilharFilhotes({}, d),
   ave: (d) => cadastrarAve({}, d),
   casal: (d) => formarCasal({}, d),

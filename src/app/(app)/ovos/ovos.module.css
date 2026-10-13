@@ -184,4 +184,6 @@
 /* Ação dentro do cartão da ninhada, acima do rodapé de prazos. */
 .acao {
   display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }

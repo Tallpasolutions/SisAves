@@ -20,7 +20,9 @@ export interface MesDeNascimentos {
 
 export type TipoMovimentacao =
   | "postura"
+  | "ovoscopia"
   | "eclosao"
+  | "separacao"
   | "anilhamento"
   | "perda"
   | "infertil"
@@ -291,10 +293,14 @@ export function descreverMovimentacao(m: Movimentacao): string {
   switch (m.tipo) {
     case "postura":
       return `Postura registrada · ${n} ${n === 1 ? "ovo" : "ovos"}`;
+    case "ovoscopia":
+      return `Ovoscopia · ${n} ${n === 1 ? "ovo fértil" : "ovos férteis"}`;
     case "eclosao":
       return `Eclosão · ${n} ${n === 1 ? "filhote" : "filhotes"}`;
     case "anilhamento":
       return "Anilhamento";
+    case "separacao":
+      return `Separação · ${n} ${n === 1 ? "filhote" : "filhotes"}`;
     case "perda":
       return `Perda registrada · ${n} ${n === 1 ? "ovo" : "ovos"}`;
     case "infertil":
@@ -312,7 +318,9 @@ export const GRAVIDADE_MOVIMENTACAO: Record<
   "neutro" | "atencao" | "critico" | "ok"
 > = {
   postura: "neutro",
+  ovoscopia: "neutro",
   eclosao: "ok",
+  separacao: "ok",
   anilhamento: "ok",
   perda: "critico",
   infertil: "critico",
@@ -322,7 +330,9 @@ export const GRAVIDADE_MOVIMENTACAO: Record<
 
 export const ROTULO_MOVIMENTACAO: Record<TipoMovimentacao, string> = {
   postura: "Chocando",
+  ovoscopia: "Fértil",
   eclosao: "Nascido",
+  separacao: "Separado",
   anilhamento: "Anilhado",
   perda: "Perda",
   infertil: "Infértil",

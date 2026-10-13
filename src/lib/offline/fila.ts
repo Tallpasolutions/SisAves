@@ -16,7 +16,12 @@ const BANCO = "sisaves-offline";
 const DEPOSITO = "fila";
 const VERSAO = 1;
 
-export type TipoEscrita = "postura" | "anilhamento" | "ave" | "casal";
+export type TipoEscrita =
+  | "postura"
+  | "marcos"
+  | "anilhamento"
+  | "ave"
+  | "casal";
 
 export interface ItemFila {
   /**

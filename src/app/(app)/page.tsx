@@ -94,10 +94,11 @@ export default async function Hoje() {
 }
 
 /**
- * A tarefa de anilhar abre o anilhamento; as outras ainda não têm para onde ir.
+ * Toda tarefa abre onde ela se resolve.
  *
- * É a única acionável hoje, e também a única com prazo que fecha — fazer dela
- * um link é o caminho mais curto entre ver a pendência e resolvê-la.
+ * Anilhar vai para a tela do anilhamento, que pede o número do anel. As outras
+ * três — ovoscopia, eclosão e separação — vão para a ninhada, onde o criador
+ * marca ovo por ovo o que encontrou no ninho.
  */
 function LinhaTarefa({ tarefa: t }: { tarefa: Tarefa }) {
   const conteudo = (
@@ -119,13 +120,18 @@ function LinhaTarefa({ tarefa: t }: { tarefa: Tarefa }) {
 
   const classe = `${styles.tarefa} ${t.situacao === "anilhar" ? styles.tarefaUrgente : ""}`;
 
-  if (t.situacao === "anilhar" && t.ninhadaId) {
+  if (t.ninhadaId) {
+    const destino =
+      t.situacao === "anilhar"
+        ? `/ovos/${t.ninhadaId}/anilhar`
+        : `/ovos/${t.ninhadaId}`;
     return (
-      <Link href={`/ovos/${t.ninhadaId}/anilhar`} className={classe}>
+      <Link href={destino} className={classe}>
         {conteudo}
       </Link>
     );
   }
+  // Postura antiga, registrada sem ninhada: não há para onde ir.
   return <article className={classe}>{conteudo}</article>;
 }
 

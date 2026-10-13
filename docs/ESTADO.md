@@ -14,37 +14,30 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Fechar o buraco no meio do ciclo do ovo.** Vem antes da Fase 8 e de qualquer
-outra coisa, porque sem isso o produto não serve para o uso diário.
+**Fase 8 — CRO, QR e validação pública, junto com a tela C3.** O banco está
+pronto desde a Fase 1: `certificados` com snapshot `jsonb`, `validar_certificado`
+e a árvore com `caminho`. Falta só a interface.
 
-O estado do ovo é derivado das datas observadas — essa é a decisão central do
-sistema e está certa. O problema é que **a interface só sabe escrever duas das
-seis datas**:
+O ciclo do ovo **fecha pela interface desde 13/10/2026** (`0017_marcos_do_ciclo`).
+As seis datas que o estado do ovo deriva têm agora quem as escreva:
 
 | Marco | Coluna | Tela que escreve |
 |---|---|---|
-| Postura | `data_postura` | ✅ B9 |
-| Ovoscopia | `ovoscopia_em`, `fertil` | ❌ **não existe** |
-| Eclosão | `data_eclosao` | ❌ **não existe** |
-| Anilhamento | `data_anilhamento` | ✅ Anilhar filhote |
-| Separação | `data_separacao` | ❌ **não existe** |
-| Perda / ovo claro | `desfecho` | ❌ **não existe** |
+| Postura | `data_postura` | B9 Registrar postura |
+| Ovoscopia | `ovoscopia_em`, `fertil` | Ninhada · "Fértil" / "Ovo claro" |
+| Eclosão | `data_eclosao` | Ninhada · "Nasceu" |
+| Anilhamento | `data_anilhamento` | Anilhar filhote |
+| Separação | `data_separacao` | Ninhada · "Separado" |
+| Perda / ovo claro | `desfecho`, `desfecho_em` | Ninhada · "Perdido" / "Ovo claro" |
 
-Na prática: o criador registra a postura e os ovos ficam em "chocando" →
-"ovoscopia" → "nascendo" para sempre, porque nada consegue dizer que eles
-eclodiram. E **a tela de anilhamento só enxerga ovo que já tem
-`data_eclosao`** — ou seja, hoje ela só funciona sobre o que a semente de
-desenvolvimento preencheu.
+> **Correção de registro, mantida.** Entre as fases 4 e 7 este arquivo e a
+> memória afirmavam que o ciclo já fechava pela interface. Não fechava: fechava
+> no banco de desenvolvimento porque a semente grava `data_eclosao` direto. A
+> semente escondeu a falta por três fases. Está resolvido, e a lição fica.
 
-> **Correção de registro.** Versões anteriores deste arquivo e da memória
-> diziam que "o ciclo fecha pela interface". Não fecha. Ele fecha no banco de
-> desenvolvimento porque a semente grava `data_eclosao` direto.
-
-As quatro escritas que faltam são pequenas e parecidas entre si — todas marcam
-uma data numa postura já existente. A da eclosão é a que destrava as demais.
-
-Depois disso, **Fase 8 (CRO, QR e validação) junto com a tela C3** — ver
-"O que falta" adiante.
+Antes da Fase 8, vale considerar as escritas fora do ciclo (item 2 de
+"O que falta"): sem elas a ave vendida segue "no plantel ativo" para sempre, e o
+CRO sairia sobre um plantel que envelhece errado.
 
 ## Onde está tudo
 
@@ -107,7 +100,7 @@ abriria brecha para cor fora da paleta.
 | 1 · Banco de dados | **concluída** (`fcfe6ae`, `bb462e2`, `0a074f3`, `3c06a4d`) |
 | 2 · Auth e onboarding | **concluída** |
 | 3 · Biblioteca de componentes | **concluída** (`e19354d`, `c932765`) |
-| 4 · Núcleo mobile (Faixa B) | telas **concluídas**, mas faltam 4 escritas do ciclo — ver "Próximo passo" |
+| 4 · Núcleo mobile (Faixa B) | **concluída**; o ciclo do ovo passou a fechar pela interface em `0017` |
 | 5 · Genealogia (B6) | **concluída** (`10c0800`) |
 | 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
 | 7 · Desktop (Faixa C) | **C1 e C2 concluídas** (`f2d3598`, `6224a60`); C3 fica para a Fase 8 |
@@ -140,15 +133,16 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0014_anilhamento` | `anilhar_filhotes()`; `ninhada_id` em `vw_tarefas_hoje` |
 | `0015_arvore_com_caminho` | `caminho` em `arvore_genealogica()` e no snapshot do CRO |
 | `0016_movimentacoes` | `vw_movimentacoes`: o histórico derivado dos fatos |
+| `0017_marcos_do_ciclo` | `registrar_marcos()`; `posturas.desfecho_em`; ovoscopia e separação no histórico |
 
 ### Funções do domínio
 
 `situacao_postura` · `ancestrais` · `ancestrais_comuns` · `arvore_genealogica` ·
 `coeficiente_endogamia` · `faixa_endogamia` · `montar_snapshot_certificado` ·
 `validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
-`casal_ativo` · `anilhar_filhotes`
+`casal_ativo` · `anilhar_filhotes` · `registrar_marcos`
 
-### Testes de banco — 63 asserções, todas passando
+### Testes de banco — 87 asserções, todas passando
 
 ```bash
 for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
@@ -163,12 +157,18 @@ for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
 | `05_perfil_automatico` | 7 |
 | `06_anilhamento` | 12 |
 | `07_arvore_genealogica` | 11 |
+| `08_marcos_do_ciclo` | 24 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
 
 Cada um abre transação e termina em `rollback`. Toda linha deve sair com
-`resultado = ok`. **Rodar os sete depois de qualquer migration.**
+`resultado = ok`. **Rodar os oito depois de qualquer migration.**
+
+Armadilha que já custou meia hora: num mesmo `INSERT ... VALUES (a), (b)`,
+todas as linhas enxergam o snapshot do início do comando. Se `(a)` chama a
+função que escreve e `(b)` lê o resultado, `(b)` lê o estado anterior e o teste
+acusa falha onde não há. Chamada que escreve vai em comando próprio.
 
 ### Conceitos do banco que não são óbvios
 
@@ -259,6 +259,16 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 - **O mockup não vence o contrato de acessibilidade.** A prancha `3c` usa
   `--text-muted` na legenda da árvore (3,68:1); `04-acessibilidade.md` reserva
   o muted a rótulo ≥24px ou texto não essencial. Vale o documento escrito.
+- **Rótulo de módulo puro não pode morar ao lado do cliente do Supabase.**
+  `ROTULO_ESTADO` e `TOM_ESTADO` saíram de `dados/ovos.ts` para
+  `dados/estados-do-ovo.ts` quando o formulário da ninhada — componente de
+  cliente — precisou deles: importá-los do módulo de leitura arrastaria
+  `next/headers` para o pacote do navegador. É o terceiro módulo puro criado
+  pelo mesmo motivo (`situacao.ts`, `marcos.ts`, `estados-do-ovo.ts`).
+- **A regra de domínio mora num lugar só.** Quais marcos cada ovo aceita é
+  decidido em `obterNinhada` e consumido pela tela; a função do banco verifica
+  as mesmas condições. Reimplementar a regra em TSX é como as duas versões
+  divergem sem ninguém perceber.
 - **`--text-inverse` não serve para texto sobre preenchimento fixo.** No tema
   escuro ele vira grafite ("inverso" lá quer dizer escuro sobre claro), e o
   rótulo do botão primário saía 2,06:1 sobre petróleo. Use `--text-on-brand` e
@@ -282,6 +292,7 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/casais/[id]/postura` | B9 Registrar postura | **primeira tela de escrita**: Server Action + Zod, previsões ao vivo, tab bar escondida |
 | `/plantel/nova` | Cadastrar ave | não desenhada; sugestão de anilha como botão, filiação só quando a ave nasceu no criatório |
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
+| `/ovos/[ninhada]` | Ninhada | não desenhada; **fecha o ciclo**: uma data e um marco por ovo (fértil, ovo claro, nasceu, separado, perdido) numa conferência só |
 | `/ovos/[ninhada]/anilhar` | Anilhar filhote | não desenhada; um bloco por filhote, numeração em sequência por botão, anilhamento parcial permitido |
 | `/plantel/[id]/genealogia` | B6 Árvore genealógica | três gerações em rolagem horizontal; aviso de ancestral repetido no topo; cabeçalho petróleo de borda a borda e legenda fixa no rodapé |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
@@ -306,23 +317,44 @@ Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
 navegação.
 
-**São quatro escritas, e faltam quatro do próprio ciclo** — ovoscopia,
-eclosão, separação e perda. Ver "Próximo passo" e "O que falta".
+**São cinco telas de escrita.** A quinta, a conferência da ninhada, fecha o
+ciclo do ovo. O formato dela vem do galpão e não do plano: o criador abre o
+ninho UMA vez e encontra tudo junto — dois filhotes nascidos, um ovo claro, um
+quebrado, um ainda chocando. Quatro telas, uma por marco, o obrigariam a quatro
+passagens pela mesma ninhada. Daí uma data no topo ("Conferido em") e um marco
+por ovo, tudo numa transação.
 
 ## O que falta — inventário completo
 
 Organizado por quanto bloqueia o uso real, não pela ordem do plano.
 
-### 1 · O ciclo do ovo, que não fecha (bloqueia tudo)
+### 1 · O ciclo do ovo — resolvido em 13/10/2026
 
-Quatro escritas, descritas em "Próximo passo": **ovoscopia**, **eclosão**,
-**separação** e **perda / ovo claro**. Todas marcam uma data numa postura que
-já existe, e todas seguem o padrão das quatro telas de escrita que já há.
+Era o item que bloqueava tudo. A tela `/ovos/[ninhada]` e a função
+`registrar_marcos` cobrem as quatro escritas que faltavam. Fica registrado o que
+a solução recusa de propósito:
+
+- **Separar filhote não anilhado é barrado.** `separado` é terminal e vence a
+  janela de anilha em `situacao_postura`: o filhote sairia da fila de tarefas
+  sem nunca ter virado ave no plantel. Não é beco sem saída — a tela de
+  anilhamento aceita filhote com a janela vencida, avisando do atraso.
+- **Corrigir marco já gravado não é conferência, é edição**, e edição é outra
+  tela (item 2). O marco repetido é ignorado em silêncio; o marco que conflita
+  com um desfecho já declarado é recusado com o dado exato.
+- **Ovo que eclodiu ganha `fertil = true` e `ovoscopia_em` continua nulo.** A
+  dedução é segura; a data da observação seria inventada.
+- **Perda de filhote já anilhado também mata a ave no plantel**
+  (`situacao = 'morto'`, `dt_obito`). Marcar só a postura deixaria a ave viva na
+  listagem, contada no plantel ativo e disponível para formar casal.
 
 ### 2 · Escritas que faltam fora do ciclo
 
-Nenhuma bloqueia o ciclo, mas sem elas o registro do criatório envelhece
-errado — a ave vendida continua "no plantel ativo" para sempre.
+Com o ciclo fechado, este é o item que mais pesa. Nenhuma bloqueia o ciclo, mas
+sem elas o registro do criatório envelhece errado — a ave vendida continua "no
+plantel ativo" para sempre.
+
+A perda de filhote anilhado já marca `situacao = 'morto'` e `dt_obito` (ver item
+1), mas é o único caminho que existe hoje para tirar uma ave do plantel ativo.
 
 | O que falta | Onde o dado já existe |
 |---|---|
@@ -366,7 +398,7 @@ telas existentes.
 
 ### 5 · Qualidade e lançamento
 
-- **Não há nenhum teste de interface.** O banco tem 63 asserções; o front,
+- **Não há nenhum teste de interface.** O banco tem 87 asserções; o front,
   zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
   fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
 - **Nunca foi publicado.** Sem `.vercel`, sem domínio apontado, sem variáveis
@@ -445,6 +477,12 @@ A interface vive em `src/components/offline/`: `ProvedorSincronizacao` (no
 layout, para sobreviver à troca de aba), `IndicadorSync` (o chip do cabeçalho
 da Hoje), `PainelPendentes` (o estado `2h`) e `useEnvioOffline` (o gancho que
 cada formulário usa).
+
+Cinco tipos de escrita entram na fila (`TipoEscrita` em `fila.ts`): `postura`,
+`marcos`, `anilhamento`, `ave` e `casal`. **Cada tipo novo precisa de três
+coisas**: entrar no union, ganhar executor em `EXECUTORES` (`Sincronizacao.tsx`)
+e provar a própria idempotência — ou por chave gerada no cliente, ou porque a
+função do banco reconhece o que já está gravado.
 
 ### Decisões que não são óbvias
 
@@ -549,14 +587,18 @@ node scripts/sql.mjs -f supabase/seeds/desenvolvimento.sql
 
 Cria 11 aves com genealogia, 3 casais e ninhadas em **cada** estado do ciclo.
 
-**É a semente que grava `data_eclosao`** — e por isso a tela de anilhamento
-tem o que anilhar no desenvolvimento. Nenhuma tela escreve essa data ainda; ver
-"Próximo passo".
+A semente grava `data_eclosao` direto, e é por isso que a tela de anilhamento
+sempre teve o que anilhar no desenvolvimento. **Foi essa conveniência que
+escondeu, por três fases, o fato de nenhuma tela escrever a data** — ver a
+correção de registro em "Próximo passo". Hoje a conferência da ninhada escreve,
+e a semente apenas poupa a digitação.
 
 O banco de desenvolvimento tem também o que foi criado à mão ao verificar as
 telas de escrita: a ninhada 06 do Casal 03 (B9), a ave Carijó `0090`, o Casal 13
-(Tibiriçá × Iracema) e os filhotes anilhados `0091` Guaratuba e `0092`. Rodar a
-semente de novo limpa e recria tudo.
+(Tibiriçá × Iracema) e os filhotes anilhados `0091` Guaratuba e `0092`. A
+ninhada 06 também traz a primeira conferência registrada pela interface: dois
+ovos nascidos, um claro e um perdido com motivo. Rodar a semente de novo limpa e
+recria tudo.
 
 **Guaratuba `0091` é o melhor caso para conferir a B6:** Jacundá aparece como
 avô paterno e avô materno (ancestral repetido, 12,50%) e a avó materna é

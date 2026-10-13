@@ -178,13 +178,18 @@ function CartaoNinhada({ ninhada: n }: { ninhada: Ninhada }) {
         ))}
       </div>
 
-      {/* A ação fica no cartão porque é ali que o criador vê o prazo. Variante
-          secundária: o âmbar da tela já é o do estado, e o contrato admite um
-          só elemento âmbar de ação por tela. */}
-      {urgente && n.ninhadaId ? (
+      {/* As ações ficam no cartão porque é ali que o criador vê o prazo.
+          Variante secundária: o âmbar da tela já é o do estado, e o contrato
+          admite um só elemento âmbar de ação por tela. */}
+      {n.ninhadaId ? (
         <div className={styles.acao}>
-          <Button href={`/ovos/${n.ninhadaId}/anilhar`} variant="secondary" size="md">
-            Anilhar filhotes
+          {urgente ? (
+            <Button href={`/ovos/${n.ninhadaId}/anilhar`} variant="secondary" size="md">
+              Anilhar filhotes
+            </Button>
+          ) : null}
+          <Button href={`/ovos/${n.ninhadaId}`} variant="ghost" size="md">
+            Conferir ninhada
           </Button>
         </div>
       ) : null}

@@ -231,7 +231,13 @@ function PainelTarefas({
                     Anilhar
                   </Button>
                 ) : (
-                  <Button href="/ovos" variant="secondary" size="sm">
+                  // As demais abrem a ninhada, onde a marca é registrada.
+                  // Postura antiga, sem ninhada, cai na lista de ovos.
+                  <Button
+                    href={t.ninhadaId ? `/ovos/${t.ninhadaId}` : "/ovos"}
+                    variant="secondary"
+                    size="sm"
+                  >
                     Abrir
                   </Button>
                 )}
