@@ -9,8 +9,9 @@ import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
 import type { OpcoesCadastroAve } from "@/lib/dados/cadastro";
 import { descreverAve } from "@/lib/formato";
 import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
-import { cadastrarAve, type EstadoCadastroAve } from "./acoes";
-import styles from "./nova.module.css";
+import { cadastrarAve, type EstadoCadastroAve } from "@/app/(app)/plantel/nova/acoes";
+import { editarAve } from "@/app/(app)/plantel/[id]/editar/acoes";
+import styles from "./FormularioAve.module.css";
 
 const SEXOS = [
   { valor: "macho", rotulo: "Macho" },
@@ -27,9 +28,43 @@ const ORIGENS = [
 
 type Campos = Record<string, string>;
 
-export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
+/** Os mesmos nomes de campo que a Server Action lê do FormData. */
+export type ValoresAve = Campos;
+
+export interface TravasAve {
+  /**
+   * Por que o nascimento e a origem não se editam nesta ave. Preenchido quando
+   * ela veio de uma postura: a data é a da eclosão registrada, e mudá-la aqui
+   * faria a ficha divergir do ovo que a originou.
+   */
+  nascimento?: string;
+}
+
+/**
+ * Cadastro e edição no mesmo formulário.
+ *
+ * São os mesmos quinze campos, as mesmas regras e os mesmos erros por campo.
+ * Manter duas cópias era garantir que uma validação nova entrasse só numa — e
+ * é o formulário mais longo do produto.
+ */
+export function FormularioAve({
+  opcoes,
+  modo = "cadastro",
+  aveId,
+  inicial,
+  travas,
+}: {
+  opcoes: OpcoesCadastroAve;
+  modo?: "cadastro" | "edicao";
+  /** Na edição, o id da ave; no cadastro, a chave vem do gancho offline. */
+  aveId?: string;
+  inicial?: ValoresAve;
+  travas?: TravasAve;
+}) {
+  const edicao = modo === "edicao";
+
   const [estado, acao, enviando] = useActionState<EstadoCadastroAve, FormData>(
-    cadastrarAve,
+    edicao ? editarAve : cadastrarAve,
     {},
   );
 
@@ -39,7 +74,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
    * erro. Com campos soltos, quem errasse o número da anilha perderia os outros
    * doze dados e teria de digitar tudo de novo, em pé no galpão.
    */
-  const [campos, setCampos] = useState<Campos>(() => ({
+  const [campos, setCampos] = useState<Campos>(() => inicial ?? {
     nome: "",
     especie_id: opcoes.especies.length === 1 ? opcoes.especies[0].id : "",
     mutacao_id: "",
@@ -54,15 +89,17 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
     pai_id: "",
     mae_id: "",
     observacoes: "",
-  }));
+  });
 
   const { erro, marcar, enviar } = useErrosQueEnvelhecem(estado.campos);
 
   const nomeDaAve = () => campos.nome?.trim() || "Ave sem nome";
   const { id, aoEnviar, salvoNoAparelho, online } = useEnvioOffline({
-    tipo: "ave",
+    // A edição é idempotente por natureza: gravar os mesmos valores duas vezes
+    // dá o mesmo resultado, então ela não precisa de chave própria.
+    tipo: edicao ? "edicao-ave" : "ave",
     resumo: () =>
-      `Cadastro de ave · ${nomeDaAve()}${
+      `${edicao ? "Edição de ave" : "Cadastro de ave"} · ${nomeDaAve()}${
         campos.anilha_numero
           ? ` · ${String(campos.anilha_numero).padStart(4, "0")}`
           : ""
@@ -92,10 +129,18 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
   if (salvoNoAparelho) {
     return (
       <SalvoNoAparelho
-        titulo={`Ave salva no aparelho · ${nomeDaAve()}`}
-        consequencia="Ela entra no plantel assim que o registro subir, e só então pode formar casal."
-        voltarPara="/plantel"
-        rotuloVoltar="Voltar para o plantel"
+        titulo={
+          edicao
+            ? `Alterações salvas no aparelho · ${nomeDaAve()}`
+            : `Ave salva no aparelho · ${nomeDaAve()}`
+        }
+        consequencia={
+          edicao
+            ? "A ficha passa a mostrar os dados novos assim que o registro subir."
+            : "Ela entra no plantel assim que o registro subir, e só então pode formar casal."
+        }
+        voltarPara={edicao && aveId ? `/plantel/${aveId}` : "/plantel"}
+        rotuloVoltar={edicao ? "Voltar para a ficha" : "Voltar para o plantel"}
       />
     );
   }
@@ -109,8 +154,9 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
       }}
       className={styles.formulario}
     >
-      {/* Chave da ave gerada aqui: idempotência do reenvio da fila. */}
-      <input type="hidden" name="ave_id" value={id} />
+      {/* No cadastro a chave nasce aqui, e é ela que torna o reenvio da fila
+          idempotente. Na edição o id é o da ave que está sendo corrigida. */}
+      <input type="hidden" name="ave_id" value={edicao ? (aveId ?? "") : id} />
       {estado.erro ? (
         <p className={styles.alerta} role="alert">
           <span className={styles.alertaIcone}>
@@ -206,7 +252,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
 
         <Field
           label="Nascimento"
-          hint="Opcional. A idade na ficha vem desta data."
+          hint={travas?.nascimento ?? "Opcional. A idade na ficha vem desta data."}
           error={erro("dt_nascimento")}
         >
           {({ id, descritoPor, invalido }) => (
@@ -219,13 +265,18 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
               max={hoje}
               value={campos.dt_nascimento}
               onChange={mudar("dt_nascimento")}
+              disabled={Boolean(travas?.nascimento)}
               aria-describedby={descritoPor}
               invalid={invalido}
             />
           )}
         </Field>
 
-        <Field label="Origem" error={erro("origem")}>
+        <Field
+          label="Origem"
+          hint={travas?.nascimento ? "Vem da ninhada e não se edita aqui." : undefined}
+          error={erro("origem")}
+        >
           {({ id, descritoPor, invalido }) => (
             <Select
               id={id}
@@ -233,6 +284,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
               size="lg"
               value={campos.origem}
               onChange={mudar("origem")}
+              disabled={Boolean(travas?.nascimento)}
               aria-describedby={descritoPor}
               invalid={invalido}
             >
@@ -324,7 +376,7 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
 
         {/* A sugestão é um BOTÃO, nunca preenchimento silencioso: o anel está
             na perna da ave e só o criador sabe qual pegou da cartela. */}
-        {sugestao !== null ? (
+        {sugestao !== null && !edicao ? (
           <div className={styles.sugestao}>
             <Button
               variant="secondary"
@@ -367,7 +419,8 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
           <legend className={styles.grupoTitulo}>Filiação</legend>
           <p className={styles.grupoNota}>
             Pai e mãe alimentam a árvore genealógica e o coeficiente de
-            endogamia. Só aves no plantel ativo aparecem na lista.
+            endogamia. Só aves no plantel ativo aparecem na lista
+            {edicao ? ", mais o pai e a mãe já registrados desta ave" : ""}.
           </p>
 
           <Field label="Pai" error={erro("pai_id")}>
@@ -437,7 +490,13 @@ export function FormularioAve({ opcoes }: { opcoes: OpcoesCadastroAve }) {
       <div className={styles.acaoFixa}>
         <div className={styles.acaoFixaInterno}>
           <Button type="submit" size="lg" bloco disabled={enviando}>
-            {enviando ? "Cadastrando…" : "Cadastrar ave"}
+            {enviando
+              ? edicao
+                ? "Salvando…"
+                : "Cadastrando…"
+              : edicao
+                ? "Salvar alterações"
+                : "Cadastrar ave"}
           </Button>
           {!online ? (
             <span className={styles.aviso}>

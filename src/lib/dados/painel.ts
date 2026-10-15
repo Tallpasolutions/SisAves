@@ -93,6 +93,7 @@ export async function obterIndicadoresPainel(): Promise<IndicadorPainel[]> {
     supabase
       .from("casais")
       .select("id", { count: "exact", head: true })
+      // Ativo é "ainda não encerrado" — a mesma definição da lista e da ficha.
       .is("vigencia_fim", null)
       .is("deleted_at", null),
     // Em choco: o ovo e a ninhada dele, para dizer "23 ovos em 6 ninhadas".

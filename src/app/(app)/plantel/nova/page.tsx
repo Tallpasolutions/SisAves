@@ -3,8 +3,8 @@ import { ChevronLeft, Feather } from "lucide-react";
 import Link from "next/link";
 import { Button, EmptyState } from "@/components/ui";
 import { opcoesCadastroAve } from "@/lib/dados/cadastro";
-import { FormularioAve } from "./formulario";
-import styles from "./nova.module.css";
+import { FormularioAve } from "@/components/plantel/FormularioAve";
+import styles from "@/components/plantel/FormularioAve.module.css";
 
 export const metadata: Metadata = { title: "Cadastrar ave" };
 

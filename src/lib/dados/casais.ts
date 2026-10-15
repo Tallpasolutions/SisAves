@@ -144,7 +144,10 @@ export async function listarCasais(): Promise<CasalListado[]> {
       id: c.id,
       numero: c.numero,
       gaiola: c.gaiola,
-      ativo: c.vigencia_fim === null || c.vigencia_fim >= hoje(),
+      // Ativo é "ainda não encerrado". A data de fim significa que o criador
+      // desfez o par; que uma postura DAQUELE dia ainda caiba no casal é outra
+      // regra, e ela vive na validação da postura.
+      ativo: c.vigencia_fim === null,
       vigenciaInicio: c.vigencia_inicio,
       vigenciaFim: c.vigencia_fim,
       endogamiaPct: c.endogamia_pct !== null ? Number(c.endogamia_pct) : null,
@@ -223,7 +226,7 @@ export async function obterCasal(id: string): Promise<CasalDetalhe | null> {
     id: data.id,
     numero: data.numero,
     gaiola: data.gaiola,
-    ativo: data.vigencia_fim === null || data.vigencia_fim >= hoje(),
+    ativo: data.vigencia_fim === null,
     vigenciaInicio: data.vigencia_inicio,
     vigenciaFim: data.vigencia_fim,
     endogamiaPct: data.endogamia_pct !== null ? Number(data.endogamia_pct) : null,
@@ -352,6 +355,3 @@ async function listarNinhadasDoCasal(casalId: string): Promise<NinhadaResumo[]> 
   });
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}

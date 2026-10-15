@@ -18,6 +18,8 @@ const ROTAS_SEM_BARRA = [
   /^\/ovos\/[^/]+\/anilhar$/,
   /^\/ovos\/[^/]+$/,
   /^\/plantel\/[^/]+\/saida$/,
+  /^\/plantel\/[^/]+\/editar$/,
+  /^\/casais\/[^/]+\/editar$/,
   // A B6 traz a própria barra inferior (a legenda da árvore); empilhar as duas
   // deixaria o rodapé com 120px de barra.
   /^\/plantel\/[^/]+\/genealogia$/,

@@ -10,7 +10,8 @@ inventário completo do que falta**, pendências e armadilhas — fica em
 
 O ciclo do ovo fecha pela interface — postura, ovoscopia, eclosão, anilhamento,
 separação e perda — e a ave sai do plantel por venda, doação, empréstimo, óbito
-ou fuga. O próximo passo é a Fase 8: CRO, QR e validação pública.
+ou fuga. Ave e casal se editam, e o casal se encerra. O próximo passo é a
+Fase 8: CRO, QR e validação pública.
 
 ## Começando
 
@@ -39,10 +40,12 @@ ciclo do ovo, com datas relativas a hoje — então sempre há o que ver na tela
 | `/` | Hoje — as tarefas do galpão, agrupadas por ninhada |
 | `/plantel` · `/plantel/[id]` | lista e ficha da ave |
 | `/plantel/nova` | cadastrar ave |
+| `/plantel/[id]/editar` | corrigir os dados da ave |
 | `/plantel/[id]/saida` | registrar venda, doação, empréstimo, óbito ou fuga |
 | `/plantel/[id]/genealogia` | árvore de três gerações |
 | `/casais` · `/casais/[id]` | lista e ficha do casal, com endogamia |
 | `/casais/novo` | formar casal |
+| `/casais/[id]/editar` | corrigir o casal e encerrá-lo |
 | `/casais/[id]/postura` | registrar postura |
 | `/ovos` | ciclo do ovo, por estado |
 | `/ovos/[ninhada]` | a ninhada ovo por ovo — conferir o ninho e marcar o que mudou |
@@ -88,11 +91,11 @@ O runner conecta pelo **pooler**: o host direto `db.<ref>.supabase.co` só
 resolve em IPv6 e devolve `ENOTFOUND` em máquina sem rota IPv6.
 
 ```bash
-node scripts/sql.mjs -f supabase/migrations/0019_saida_no_historico.sql
+node scripts/sql.mjs -f supabase/migrations/0021_casal_ativo_alinhado.sql
 node scripts/sql.mjs "select 1"                        # consulta avulsa
 ```
 
-Depois de qualquer migration, rodar os nove testes — toda linha deve sair com
+Depois de qualquer migration, rodar os dez testes — toda linha deve sair com
 `resultado = ok`:
 
 ```bash

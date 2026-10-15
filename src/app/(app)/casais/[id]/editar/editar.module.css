@@ -1,0 +1,160 @@
+/* Editar casal — gaiola, observações, vigência, e o encerramento do par.
+
+   Não foi desenhada no handoff; segue a linguagem das demais telas de escrita.
+   O par aparece em texto, sem controle: trocar uma das aves deixaria as
+   ninhadas já registradas penduradas num casal que nunca as gerou. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-height: 100dvh;
+  padding-bottom: var(--space-11);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.formulario { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-danger-soft);
+  color: var(--text-danger);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.alertaIcone { display: inline-flex; flex: none; margin-top: 1px; }
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* O fieldset nasce com min-inline-size: min-content e ignora a largura do
+     pai: sem isto a grade vaza para fora da tela. */
+  min-inline-size: 0;
+}
+
+.grupoTitulo {
+  padding: 0;
+  /* O legend fica fora do fluxo flex, então o gap do grupo não vale para ele. */
+  margin-bottom: var(--space-2);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.erroGrupo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.par {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--surface-sunken);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.parLinha {
+  margin: 0;
+  font: var(--type-body-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.grupoNota {
+  margin: var(--space-1) 0 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* O que vai acontecer junto, dito antes de confirmar. Âmbar: é o único
+   elemento de atenção da tela. */
+.consequencia {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-accent-soft);
+  color: var(--text-accent);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.consequencia svg { flex: none; margin-top: 1px; }
+
+.campos { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.acaoFixa {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 20;
+  padding: var(--space-3) var(--space-4);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: var(--surface-card);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.acaoFixaInterno {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

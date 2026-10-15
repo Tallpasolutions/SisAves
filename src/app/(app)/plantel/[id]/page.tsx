@@ -83,6 +83,14 @@ export default async function Ficha({
         />
       ) : null}
 
+      {consulta.editada === "1" ? (
+        <Toast
+          tone="ok"
+          title="Alterações salvas"
+          description="Os certificados já emitidos não mudam: cada um guarda a genealogia do dia da emissão."
+        />
+      ) : null}
+
       {consulta.voltou === "1" ? (
         <Toast
           tone="ok"
@@ -171,16 +179,22 @@ export default async function Ficha({
             <BotaoRetorno passaroId={ave.id} nome={ave.nome} />
           ) : null}
         </section>
-      ) : (
-        /* Ação consequente fica fora dos atalhos: aqueles navegam, este muda
-           o plantel. Variante secundária — o petróleo cheio da tela já é a
-           anilha. */
-        <div className={styles.acaoSaida}>
+      ) : null}
+
+      {/* Ações consequentes ficam fora dos atalhos: aqueles navegam, estas
+          mudam o registro. Variante secundária — o petróleo cheio da tela já é
+          a anilha. Editar segue disponível na ave que saiu: corrigir o nome de
+          uma ave vendida é legítimo, e é só lá que o erro costuma aparecer. */}
+      <div className={styles.acoes}>
+        <Button href={`/plantel/${ave.id}/editar`} variant="secondary" size="md">
+          Editar ave
+        </Button>
+        {ativa ? (
           <Button href={`/plantel/${ave.id}/saida`} variant="secondary" size="md">
             Registrar saída
           </Button>
-        </div>
-      )}
+        ) : null}
+      </div>
     </div>
   );
 }

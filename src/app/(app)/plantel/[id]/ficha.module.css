@@ -295,4 +295,8 @@
   color: var(--text-secondary);
 }
 
-.acaoSaida { display: flex; }
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

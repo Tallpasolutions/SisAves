@@ -21,7 +21,9 @@ export type TipoEscrita =
   | "marcos"
   | "anilhamento"
   | "ave"
+  | "edicao-ave"
   | "casal"
+  | "edicao-casal"
   | "saida"
   | "retorno";
 

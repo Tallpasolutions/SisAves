@@ -82,6 +82,22 @@ export default async function FichaCasal({
           />
         ) : null}
 
+        {consulta.editado === "1" ? (
+          <Toast
+            tone="ok"
+            title={`Casal ${numero} atualizado`}
+            description="A vigência decide quais posturas cabem neste casal."
+          />
+        ) : null}
+
+        {consulta.encerrado === "1" ? (
+          <Toast
+            tone="ok"
+            title={`Casal ${numero} encerrado · ${formatarData(casal.vigenciaFim)}`}
+            description="Ele não aceita mais postura. As ninhadas registradas ficam no histórico, e as aves seguem no plantel."
+          />
+        ) : null}
+
         <header className={styles.cabecalho}>
           <h1 className={styles.titulo}>Casal {numero}</h1>
           <p className={styles.contexto}>
@@ -154,6 +170,15 @@ export default async function FichaCasal({
             <p className={styles.contexto}>{casal.observacoes}</p>
           </section>
         ) : null}
+
+        {/* Ação consequente fora da base: lá fica a postura, que é a ação
+            principal da tela. Editar segue valendo em casal encerrado — é
+            onde o erro de vigência costuma aparecer. */}
+        <div className={styles.acoes}>
+          <Button href={`/casais/${id}/editar`} variant="secondary" size="md">
+            Editar casal
+          </Button>
+        </div>
       </div>
 
       {/* Ação fixa na base: a tela de detalhe troca a tab bar por ela.

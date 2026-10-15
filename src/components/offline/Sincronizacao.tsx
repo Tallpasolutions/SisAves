@@ -16,6 +16,8 @@ import { registrarPostura } from "@/app/(app)/casais/[id]/postura/acoes";
 import { anilharFilhotes } from "@/app/(app)/ovos/[ninhada]/anilhar/acoes";
 import { registrarConferencia } from "@/app/(app)/ovos/[ninhada]/acoes";
 import { reativarAve, registrarSaida } from "@/app/(app)/plantel/[id]/saida/acoes";
+import { editarAve } from "@/app/(app)/plantel/[id]/editar/acoes";
+import { editarCasal } from "@/app/(app)/casais/[id]/editar/acoes";
 import {
   contar,
   descreverItem,
@@ -37,7 +39,9 @@ const EXECUTORES: Record<TipoEscrita, Executor> = {
   marcos: (d) => registrarConferencia({}, d),
   anilhamento: (d) => anilharFilhotes({}, d),
   ave: (d) => cadastrarAve({}, d),
+  "edicao-ave": (d) => editarAve({}, d),
   casal: (d) => formarCasal({}, d),
+  "edicao-casal": (d) => editarCasal({}, d),
   saida: (d) => registrarSaida({}, d),
   retorno: (d) => reativarAve({}, d),
 };
