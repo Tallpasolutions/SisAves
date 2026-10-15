@@ -51,7 +51,9 @@
 .fotoVazia {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
-  color: var(--text-muted);
+  /* --text-muted dá 3,21:1 neste fundo. O contrato reserva o muted a rótulo
+     ≥24px ou texto não essencial, e isto é 12px que o criador lê. */
+  color: var(--text-secondary);
 }
 
 .identidadeTextos {
@@ -209,7 +211,9 @@
 /* Ancestral desconhecido é estado de primeira classe, não falha. */
 .progenitorDesconhecido {
   font: var(--type-body);
-  color: var(--text-muted);
+  /* "Desconhecido" é um fato da genealogia, não decoração: vai em
+     --text-secondary (5,57:1). O muted dava 3,68:1. */
+  color: var(--text-secondary);
 }
 
 /* --- Atalhos --------------------------------------------------------------- */
@@ -245,3 +249,50 @@
   outline: var(--border-width-strong) solid var(--border-focus);
   outline-offset: var(--focus-ring-offset);
 }
+
+/* --- Saída do plantel -------------------------------------------------------
+   Fato registrado, não alarme: perda e óbito são eventos normais do criatório
+   e o contrato manda registrá-los sem dramatizar. Daí a superfície recuada e
+   nenhuma cor de gravidade — quem comunica a situação é o badge do cabeçalho. */
+.saida {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-sunken);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.saidaMotivo {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.saidaAcao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.saidaErro {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.saidaNota {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.acaoSaida { display: flex; }

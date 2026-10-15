@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Bird, Plus, Search } from "lucide-react";
 import Link from "next/link";
-import { Anilha, Button, EmptyState, SexChip } from "@/components/ui";
+import { Anilha, Badge, Button, EmptyState, SexChip } from "@/components/ui";
 import {
   descreverEspecie,
+  descreverSituacao,
   listarPlantelEmTabela,
   POR_PAGINA,
   type AveNaTabela,
@@ -266,6 +267,11 @@ export default async function Plantel({ searchParams }: PageProps<"/plantel">) {
 }
 
 function LinhaMobile({ ave }: { ave: AveNaTabela }) {
+  // A ave que saiu continua na lista — o criatório precisa do histórico —, mas
+  // precisa vir marcada. Sem a marca, a vendida fica igual à que está no
+  // galpão, que é justamente a mentira que a tela de saída veio desfazer.
+  const situacao = ave.situacao === "ativo" ? null : descreverSituacao(ave.situacao);
+
   return (
     <Link href={`/plantel/${ave.id}`} className={styles.linha}>
       <span className={styles.miniatura}>
@@ -285,6 +291,11 @@ function LinhaMobile({ ave }: { ave: AveNaTabela }) {
         <span className={styles.especie}>
           {descreverEspecie(ave.especie, ave.mutacao)}
         </span>
+        {situacao ? (
+          <Badge tone={situacao.tom} size="sm" dot>
+            {situacao.texto}
+          </Badge>
+        ) : null}
       </span>
 
       <span className={styles.lateral}>

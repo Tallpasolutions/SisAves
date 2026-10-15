@@ -18,26 +18,35 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 pronto desde a Fase 1: `certificados` com snapshot `jsonb`, `validar_certificado`
 e a árvore com `caminho`. Falta só a interface.
 
-O ciclo do ovo **fecha pela interface desde 13/10/2026** (`0017_marcos_do_ciclo`).
-As seis datas que o estado do ovo deriva têm agora quem as escreva:
+Duas coisas foram resolvidas antes dela, nesta ordem, porque o CRO afirma um
+plantel e precisava de um plantel verdadeiro:
 
-| Marco | Coluna | Tela que escreve |
-|---|---|---|
-| Postura | `data_postura` | B9 Registrar postura |
-| Ovoscopia | `ovoscopia_em`, `fertil` | Ninhada · "Fértil" / "Ovo claro" |
-| Eclosão | `data_eclosao` | Ninhada · "Nasceu" |
-| Anilhamento | `data_anilhamento` | Anilhar filhote |
-| Separação | `data_separacao` | Ninhada · "Separado" |
-| Perda / ovo claro | `desfecho`, `desfecho_em` | Ninhada · "Perdido" / "Ovo claro" |
+1. **O ciclo do ovo fecha pela interface** desde 13/10/2026
+   (`0017_marcos_do_ciclo`). As seis datas que o estado do ovo deriva têm quem
+   as escreva:
+
+   | Marco | Coluna | Tela que escreve |
+   |---|---|---|
+   | Postura | `data_postura` | B9 Registrar postura |
+   | Ovoscopia | `ovoscopia_em`, `fertil` | Ninhada · "Fértil" / "Ovo claro" |
+   | Eclosão | `data_eclosao` | Ninhada · "Nasceu" |
+   | Anilhamento | `data_anilhamento` | Anilhar filhote |
+   | Separação | `data_separacao` | Ninhada · "Separado" |
+   | Perda / ovo claro | `desfecho`, `desfecho_em` | Ninhada · "Perdido" / "Ovo claro" |
+
+2. **A ave sai do plantel** desde 15/10/2026 (`0018_saida_do_plantel`).
+   `passaros.situacao` tinha seis valores e a interface escrevia um: toda ave
+   ficava 'ativo' para sempre, e a vendida seguia contada no plantel e
+   disponível para formar casal.
 
 > **Correção de registro, mantida.** Entre as fases 4 e 7 este arquivo e a
 > memória afirmavam que o ciclo já fechava pela interface. Não fechava: fechava
 > no banco de desenvolvimento porque a semente grava `data_eclosao` direto. A
 > semente escondeu a falta por três fases. Está resolvido, e a lição fica.
 
-Antes da Fase 8, vale considerar as escritas fora do ciclo (item 2 de
-"O que falta"): sem elas a ave vendida segue "no plantel ativo" para sempre, e o
-CRO sairia sobre um plantel que envelhece errado.
+Segue aberto, e é o que mais pesa depois da Fase 8: **editar ave e editar
+casal**. Hoje nada corrige um dado errado — nem um nome, nem uma filiação, nem
+um desfecho declarado por engano.
 
 ## Onde está tudo
 
@@ -134,15 +143,18 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0015_arvore_com_caminho` | `caminho` em `arvore_genealogica()` e no snapshot do CRO |
 | `0016_movimentacoes` | `vw_movimentacoes`: o histórico derivado dos fatos |
 | `0017_marcos_do_ciclo` | `registrar_marcos()`; `posturas.desfecho_em`; ovoscopia e separação no histórico |
+| `0018_saida_do_plantel` | `registrar_saida()`, `reativar_ave()`; `passaros.saida_em` e `saida_motivo` |
+| `0019_saida_no_historico` | a saída da ave entra em `vw_movimentacoes` |
 
 ### Funções do domínio
 
 `situacao_postura` · `ancestrais` · `ancestrais_comuns` · `arvore_genealogica` ·
 `coeficiente_endogamia` · `faixa_endogamia` · `montar_snapshot_certificado` ·
 `validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
-`casal_ativo` · `anilhar_filhotes` · `registrar_marcos`
+`casal_ativo` · `anilhar_filhotes` · `registrar_marcos` · `registrar_saida` ·
+`reativar_ave`
 
-### Testes de banco — 87 asserções, todas passando
+### Testes de banco — 110 asserções, todas passando
 
 ```bash
 for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
@@ -158,12 +170,13 @@ for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
 | `06_anilhamento` | 12 |
 | `07_arvore_genealogica` | 11 |
 | `08_marcos_do_ciclo` | 24 |
+| `09_saida_do_plantel` | 23 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
 
 Cada um abre transação e termina em `rollback`. Toda linha deve sair com
-`resultado = ok`. **Rodar os oito depois de qualquer migration.**
+`resultado = ok`. **Rodar os nove depois de qualquer migration.**
 
 Armadilha que já custou meia hora: num mesmo `INSERT ... VALUES (a), (b)`,
 todas as linhas enxergam o snapshot do início do comando. Se `(a)` chama a
@@ -265,6 +278,13 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   cliente — precisou deles: importá-los do módulo de leitura arrastaria
   `next/headers` para o pacote do navegador. É o terceiro módulo puro criado
   pelo mesmo motivo (`situacao.ts`, `marcos.ts`, `estados-do-ovo.ts`).
+- **Efeito em outra entidade se avisa antes, não só depois.** `registrar_saida`
+  encerra o casal vigente da ave. A tela diz qual casal e em que dia enquanto o
+  criador ainda pode desistir; dizer só na confirmação seria contar o que já
+  foi feito.
+- **Frase de confirmação se escreve inteira, não se compõe.** "{rótulo}
+  registrada" dava "Empréstimo registrada" e "Óbito registrada" em dois dos
+  cinco motivos de saída. Cada um carrega a própria frase.
 - **A regra de domínio mora num lugar só.** Quais marcos cada ovo aceita é
   decidido em `obterNinhada` e consumido pela tela; a função do banco verifica
   as mesmas condições. Reimplementar a regra em TSX é como as duas versões
@@ -294,6 +314,7 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
 | `/ovos/[ninhada]` | Ninhada | não desenhada; **fecha o ciclo**: uma data e um marco por ovo (fértil, ovo claro, nasceu, separado, perdido) numa conferência só |
 | `/ovos/[ninhada]/anilhar` | Anilhar filhote | não desenhada; um bloco por filhote, numeração em sequência por botão, anilhamento parcial permitido |
+| `/plantel/[id]/saida` | Registrar saída | não desenhada; venda, doação, empréstimo, óbito e fuga — os campos mudam com o motivo e o casal vigente é encerrado junto |
 | `/plantel/[id]/genealogia` | B6 Árvore genealógica | três gerações em rolagem horizontal; aviso de ancestral repetido no topo; cabeçalho petróleo de borda a borda e legenda fixa no rodapé |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
 | `/comecar`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais |
@@ -317,12 +338,18 @@ Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
 navegação.
 
-**São cinco telas de escrita.** A quinta, a conferência da ninhada, fecha o
+**São seis telas de escrita.** A quinta, a conferência da ninhada, fecha o
 ciclo do ovo. O formato dela vem do galpão e não do plano: o criador abre o
 ninho UMA vez e encontra tudo junto — dois filhotes nascidos, um ovo claro, um
 quebrado, um ainda chocando. Quatro telas, uma por marco, o obrigariam a quatro
 passagens pela mesma ninhada. Daí uma data no topo ("Conferido em") e um marco
 por ovo, tudo numa transação.
+
+A sexta é a saída da ave. Ela mostra o que mais vai acontecer **antes** de
+confirmar, não só na confirmação: `registrar_saida` encerra o casal vigente, e
+efeito que o criador não viu chegar é efeito escondido. A venda com valor lança
+a receita na categoria de sistema `venda_passaro` — é o primeiro dado que o
+financeiro da Fase 9 vai encontrar pronto.
 
 ## O que falta — inventário completo
 
@@ -349,22 +376,32 @@ a solução recusa de propósito:
 
 ### 2 · Escritas que faltam fora do ciclo
 
-Com o ciclo fechado, este é o item que mais pesa. Nenhuma bloqueia o ciclo, mas
-sem elas o registro do criatório envelhece errado — a ave vendida continua "no
-plantel ativo" para sempre.
+A saída da ave foi resolvida em 15/10/2026 (`/plantel/[id]/saida`), com a volta
+ao plantel para quem pode voltar. O que ela decide, de propósito:
 
-A perda de filhote anilhado já marca `situacao = 'morto'` e `dt_obito` (ver item
-1), mas é o único caminho que existe hoje para tirar uma ave do plantel ativo.
+- **Venda e doação não voltam por reativação.** A ave recomprada entra como
+  aquisição nova, com origem e anilha próprias. Só empréstimo e fuga voltam.
+- **O casal encerrado não reabre.** Ele teve fim, e o histórico de ninhadas
+  pertence àquele período. Formar o par de novo é formar um casal novo.
+- **Não há tabela de histórico de saídas.** A ave emprestada que volta perde o
+  registro de quando saiu — a reativação limpa a data, porque ave ativa não
+  guarda saída em aberto. É a escolha consistente com o resto do sistema (não
+  há tabela de eventos; o estado é um só), e o custo está anotado aqui.
+
+O que continua faltando:
 
 | O que falta | Onde o dado já existe |
 |---|---|
-| Editar ave | `passaros` |
-| Registrar óbito, venda, doação, empréstimo | `passaros.situacao`, `dt_obito` |
+| **Editar ave** — nome, sexo, espécie, mutação, filiação, observações | `passaros` |
+| **Editar casal** — gaiola, observações, corrigir vigência | `casais` |
+| Encerrar casal por decisão do criador (hoje só encerra junto com a saída de uma das aves) | `casais.vigencia_fim` |
 | Pesagem avulsa (hoje só o anilhamento cria pesagem) | `pesagens` |
-| Encerrar casal | `casais.vigencia_fim` |
-| Editar casal (gaiola, observações) | `casais` |
 | Transferir postura entre casais | `postura_transferencias` |
 | Etiquetar casal | `casal_tags`, `casal_tag_vinculo` |
+
+As duas primeiras são as que mais pesam: **nada no produto corrige um dado
+errado**. Um nome trocado, uma filiação invertida ou um desfecho declarado por
+engano ficam lá.
 
 ### 3 · Fases do plano ainda não iniciadas
 
@@ -398,7 +435,7 @@ telas existentes.
 
 ### 5 · Qualidade e lançamento
 
-- **Não há nenhum teste de interface.** O banco tem 87 asserções; o front,
+- **Não há nenhum teste de interface.** O banco tem 110 asserções; o front,
   zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
   fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
 - **Nunca foi publicado.** Sem `.vercel`, sem domínio apontado, sem variáveis
@@ -478,8 +515,8 @@ layout, para sobreviver à troca de aba), `IndicadorSync` (o chip do cabeçalho
 da Hoje), `PainelPendentes` (o estado `2h`) e `useEnvioOffline` (o gancho que
 cada formulário usa).
 
-Cinco tipos de escrita entram na fila (`TipoEscrita` em `fila.ts`): `postura`,
-`marcos`, `anilhamento`, `ave` e `casal`. **Cada tipo novo precisa de três
+Sete tipos de escrita entram na fila (`TipoEscrita` em `fila.ts`): `postura`,
+`marcos`, `anilhamento`, `ave`, `casal`, `saida` e `retorno`. **Cada tipo novo precisa de três
 coisas**: entrar no union, ganhar executor em `EXECUTORES` (`Sincronizacao.tsx`)
 e provar a própria idempotência — ou por chave gerada no cliente, ou porque a
 função do banco reconhece o que já está gravado.
@@ -598,7 +635,8 @@ telas de escrita: a ninhada 06 do Casal 03 (B9), a ave Carijó `0090`, o Casal 1
 (Tibiriçá × Iracema) e os filhotes anilhados `0091` Guaratuba e `0092`. A
 ninhada 06 também traz a primeira conferência registrada pela interface: dois
 ovos nascidos, um claro e um perdido com motivo. Rodar a semente de novo limpa e
-recria tudo.
+recria tudo. A ave Aratu `0012` está **vendida**, com o casal 07 encerrado e a
+receita lançada — é o exemplo da tela de saída.
 
 **Guaratuba `0091` é o melhor caso para conferir a B6:** Jacundá aparece como
 avô paterno e avô materno (ancestral repetido, 12,50%) e a avó materna é

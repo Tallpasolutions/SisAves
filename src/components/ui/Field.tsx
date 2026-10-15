@@ -66,6 +66,8 @@ export interface InputProps extends Omit<ComponentPropsWithoutRef<"input">, "siz
   numeric?: boolean;
   /** Unidade à direita, ex.: "g". */
   suffix?: string;
+  /** Unidade à esquerda, ex.: "R$" — moeda vem antes do número em pt-BR. */
+  prefix?: string;
   iconLeft?: ReactNode;
   invalid?: boolean;
   size?: "md" | "lg";
@@ -78,6 +80,7 @@ export interface InputProps extends Omit<ComponentPropsWithoutRef<"input">, "siz
 export function Input({
   numeric = false,
   suffix,
+  prefix,
   iconLeft,
   invalid = false,
   size = "md",
@@ -100,6 +103,13 @@ export function Input({
       {iconLeft ? (
         <span className={styles.adorno} aria-hidden="true">
           {iconLeft}
+        </span>
+      ) : null}
+      {/* aria-hidden: a unidade já está no rótulo ou na dica do campo, e o
+          leitor de tela anunciaria "R$" solto antes do valor. */}
+      {prefix ? (
+        <span className={styles.prefixo} aria-hidden="true">
+          {prefix}
         </span>
       ) : null}
       <input

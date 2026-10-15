@@ -3,7 +3,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 export interface IndicadorPainel {
   rotulo: string;
   valor: number;
-  /** A linha de baixo: "102 ativas · 26 arquivadas". */
+  /** A linha de baixo: "26 saíram · 128 cadastradas". */
   ajuda: string;
 }
 
@@ -27,7 +27,12 @@ export type TipoMovimentacao =
   | "perda"
   | "infertil"
   | "pesagem"
-  | "certificado";
+  | "certificado"
+  | "venda"
+  | "doacao"
+  | "emprestimo"
+  | "obito"
+  | "fuga";
 
 export interface Movimentacao {
   chave: string;
@@ -69,7 +74,7 @@ export async function obterIndicadoresPainel(): Promise<IndicadorPainel[]> {
 
   const [
     { count: ativas },
-    { count: arquivadas },
+    { count: fora },
     { count: casaisAtivos },
     { data: posturasAtivas },
     { count: nascimentosNoMes },
@@ -128,10 +133,14 @@ export async function obterIndicadoresPainel(): Promise<IndicadorPainel[]> {
   return [
     {
       rotulo: "Aves no plantel",
-      valor: (ativas ?? 0) + (arquivadas ?? 0),
-      ajuda: `${ativas ?? 0} ${ativas === 1 ? "ativa" : "ativas"} · ${arquivadas ?? 0} ${
-        arquivadas === 1 ? "arquivada" : "arquivadas"
-      }`,
+      // Conta só quem está no galpão. Somar as que saíram dava um número certo
+      // enquanto nenhuma ave saía; com a saída registrável, passaria a chamar
+      // de "no plantel" a ave que foi vendida mês passado.
+      valor: ativas ?? 0,
+      ajuda:
+        (fora ?? 0) === 0
+          ? "nenhuma saiu do plantel"
+          : `${fora} ${fora === 1 ? "saiu" : "saíram"} · ${(ativas ?? 0) + (fora ?? 0)} cadastradas`,
     },
     {
       rotulo: "Casais ativos",
@@ -309,6 +318,16 @@ export function descreverMovimentacao(m: Movimentacao): string {
       return `Pesagem · ${n} g`;
     case "certificado":
       return "CRO emitido";
+    case "venda":
+      return "Venda registrada";
+    case "doacao":
+      return "Doação registrada";
+    case "emprestimo":
+      return "Empréstimo registrado";
+    case "obito":
+      return "Óbito registrado";
+    case "fuga":
+      return "Fuga registrada";
   }
 }
 
@@ -326,6 +345,11 @@ export const GRAVIDADE_MOVIMENTACAO: Record<
   infertil: "critico",
   pesagem: "neutro",
   certificado: "ok",
+  venda: "ok",
+  doacao: "neutro",
+  emprestimo: "neutro",
+  obito: "critico",
+  fuga: "critico",
 };
 
 export const ROTULO_MOVIMENTACAO: Record<TipoMovimentacao, string> = {
@@ -338,4 +362,9 @@ export const ROTULO_MOVIMENTACAO: Record<TipoMovimentacao, string> = {
   infertil: "Infértil",
   pesagem: "Pesado",
   certificado: "Emitido",
+  venda: "Vendido",
+  doacao: "Doado",
+  emprestimo: "Emprestado",
+  obito: "Óbito",
+  fuga: "Fuga",
 };

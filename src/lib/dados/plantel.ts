@@ -25,7 +25,8 @@ export interface AveListada {
 
 /** Colunas da ave usadas na listagem e na ficha. */
 const CAMPOS_AVE = `
-  id, nome, sexo, situacao, dt_nascimento, foto_url, observacoes, portador, origem, dt_obito,
+  id, nome, sexo, situacao, dt_nascimento, foto_url, observacoes, portador, origem,
+  dt_obito, saida_em, saida_motivo,
   anilha_sigla, anilha_criador, anilha_ano, anilha_numero, codigo_alternativo, pai_id, mae_id,
   especie:especies(id, nome), mutacao:mutacoes(id, nome)
 `;
@@ -114,6 +115,11 @@ export interface AveDetalhe extends AveListada {
   portador: string | null;
   origem: string;
   dtObito: string | null;
+  /** Data da saída que não é óbito. Ver 0018: as duas nunca convivem. */
+  saidaEm: string | null;
+  saidaMotivo: string | null;
+  /** O casal que esta ave forma hoje — acaba junto se ela sair. */
+  casalVigente: { id: string; numero: number } | null;
   codigoAlternativo: string | null;
   pai: ResumoAve | null;
   mae: ResumoAve | null;
@@ -154,7 +160,8 @@ export async function obterAve(id: string): Promise<AveDetalhe | null> {
   // Buscar por id é explícito e não depende do cache de relacionamentos.
   const idsProgenitores = [paiId, maeId].filter((v): v is string => Boolean(v));
 
-  const [{ data: progenitores }, { data: pesagem }, { count: ninhadas }] = await Promise.all([
+  const [{ data: progenitores }, { data: pesagem }, { count: ninhadas }, { data: vigente }] =
+    await Promise.all([
     idsProgenitores.length
       ? supabase.from("passaros").select(CAMPOS_RESUMO).in("id", idsProgenitores)
       : Promise.resolve({ data: [] as unknown[] }),
@@ -171,6 +178,17 @@ export async function obterAve(id: string): Promise<AveDetalhe | null> {
       .select("id", { count: "exact", head: true })
       .or(`macho_id.eq.${id},femea_id.eq.${id}`)
       .is("deleted_at", null),
+    // O casal em curso, para a tela de saída avisar ANTES que ele será
+    // encerrado junto — `registrar_saida` encerra, e efeito que o criador não
+    // viu chegar é efeito escondido.
+    supabase
+      .from("casais")
+      .select("id, numero")
+      .or(`macho_id.eq.${id},femea_id.eq.${id}`)
+      .is("vigencia_fim", null)
+      .is("deleted_at", null)
+      .limit(1)
+      .maybeSingle(),
   ]);
 
   const porId = new Map(
@@ -196,6 +214,9 @@ export async function obterAve(id: string): Promise<AveDetalhe | null> {
     portador: (a.portador as string | null) ?? null,
     origem: (a.origem as string) ?? "nascimento_proprio",
     dtObito: (a.dt_obito as string | null) ?? null,
+    saidaEm: (a.saida_em as string | null) ?? null,
+    saidaMotivo: (a.saida_motivo as string | null) ?? null,
+    casalVigente: vigente ? { id: vigente.id, numero: vigente.numero } : null,
     codigoAlternativo: (a.codigo_alternativo as string | null) ?? null,
     pai: converterResumo(paiId ? porId.get(paiId) : null),
     mae: converterResumo(maeId ? porId.get(maeId) : null),

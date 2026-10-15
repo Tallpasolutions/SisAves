@@ -8,8 +8,9 @@ Em construção. O estado detalhado — fases, o que está verificado, **o
 inventário completo do que falta**, pendências e armadilhas — fica em
 **[`docs/ESTADO.md`](docs/ESTADO.md)**, que é o primeiro arquivo a ler.
 
-O ciclo do ovo fecha pela interface: postura, ovoscopia, eclosão, anilhamento,
-separação e perda. O próximo passo é a Fase 8 — CRO, QR e validação pública.
+O ciclo do ovo fecha pela interface — postura, ovoscopia, eclosão, anilhamento,
+separação e perda — e a ave sai do plantel por venda, doação, empréstimo, óbito
+ou fuga. O próximo passo é a Fase 8: CRO, QR e validação pública.
 
 ## Começando
 
@@ -38,6 +39,7 @@ ciclo do ovo, com datas relativas a hoje — então sempre há o que ver na tela
 | `/` | Hoje — as tarefas do galpão, agrupadas por ninhada |
 | `/plantel` · `/plantel/[id]` | lista e ficha da ave |
 | `/plantel/nova` | cadastrar ave |
+| `/plantel/[id]/saida` | registrar venda, doação, empréstimo, óbito ou fuga |
 | `/plantel/[id]/genealogia` | árvore de três gerações |
 | `/casais` · `/casais/[id]` | lista e ficha do casal, com endogamia |
 | `/casais/novo` | formar casal |
@@ -86,11 +88,11 @@ O runner conecta pelo **pooler**: o host direto `db.<ref>.supabase.co` só
 resolve em IPv6 e devolve `ENOTFOUND` em máquina sem rota IPv6.
 
 ```bash
-node scripts/sql.mjs -f supabase/migrations/0017_marcos_do_ciclo.sql
+node scripts/sql.mjs -f supabase/migrations/0019_saida_no_historico.sql
 node scripts/sql.mjs "select 1"                        # consulta avulsa
 ```
 
-Depois de qualquer migration, rodar os oito testes — toda linha deve sair com
+Depois de qualquer migration, rodar os nove testes — toda linha deve sair com
 `resultado = ok`:
 
 ```bash

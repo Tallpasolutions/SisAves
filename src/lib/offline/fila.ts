@@ -21,7 +21,9 @@ export type TipoEscrita =
   | "marcos"
   | "anilhamento"
   | "ave"
-  | "casal";
+  | "casal"
+  | "saida"
+  | "retorno";
 
 export interface ItemFila {
   /**

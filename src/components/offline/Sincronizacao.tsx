@@ -15,6 +15,7 @@ import { formarCasal } from "@/app/(app)/casais/novo/acoes";
 import { registrarPostura } from "@/app/(app)/casais/[id]/postura/acoes";
 import { anilharFilhotes } from "@/app/(app)/ovos/[ninhada]/anilhar/acoes";
 import { registrarConferencia } from "@/app/(app)/ovos/[ninhada]/acoes";
+import { reativarAve, registrarSaida } from "@/app/(app)/plantel/[id]/saida/acoes";
 import {
   contar,
   descreverItem,
@@ -37,6 +38,8 @@ const EXECUTORES: Record<TipoEscrita, Executor> = {
   anilhamento: (d) => anilharFilhotes({}, d),
   ave: (d) => cadastrarAve({}, d),
   casal: (d) => formarCasal({}, d),
+  saida: (d) => registrarSaida({}, d),
+  retorno: (d) => reativarAve({}, d),
 };
 
 export interface EstadoSincronizacao {

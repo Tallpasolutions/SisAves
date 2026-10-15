@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import { Award, ChevronLeft, Dna, Scale } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Anilha, Badge, SexChip, Toast } from "@/components/ui";
+import { Anilha, Badge, Button, SexChip, Toast } from "@/components/ui";
 import {
   descreverEspecie,
   descreverSituacao,
   obterAve,
   type ResumoAve,
 } from "@/lib/dados/plantel";
+import { descreverSaida } from "@/lib/dados/situacao";
 import { descreverAve, formatarData, formatarIdade, formatarPeso } from "@/lib/formato";
+import { BotaoRetorno } from "./BotaoRetorno";
 import styles from "./ficha.module.css";
 
 export async function generateMetadata({
@@ -39,6 +41,12 @@ export default async function Ficha({
   const situacao = descreverSituacao(ave.situacao);
   const recemCadastrada = consulta.cadastrada === "1";
 
+  const ativa = ave.situacao === "ativo";
+  const saida = ativa ? null : descreverSaida(ave.situacao);
+  // Óbito data em `dt_obito`; o resto, em `saida_em`. As duas nunca convivem.
+  const saiuEm = ave.dtObito ?? ave.saidaEm;
+  const saiuAgora = descreverSaida(String(consulta.saiu ?? ""));
+
   return (
     <div className={styles.tela}>
       <Link href="/plantel" className={styles.voltar}>
@@ -57,6 +65,29 @@ export default async function Ficha({
               ? "Defina o sexo para que ela possa entrar num casal."
               : "Já pode entrar num casal e aparecer na genealogia dos filhotes."
           }
+        />
+      ) : null}
+
+      {/* Fato + consequência: a ave saiu, e o que isso mudou no criatório. */}
+      {saiuAgora ? (
+        <Toast
+          tone="ok"
+          title={`${saiuAgora.confirmacao}${saiuEm ? ` · ${formatarData(saiuEm)}` : ""}`}
+          description={
+            ave.situacao === "vendido" || ave.situacao === "doado"
+              ? "A ave saiu do plantel ativo e não entra mais em casal novo."
+              : ave.situacao === "morto"
+                ? "A ave saiu do plantel ativo. A genealogia dos filhotes continua intacta."
+                : "A ave saiu do plantel ativo. Quando voltar, registre a volta nesta ficha."
+          }
+        />
+      ) : null}
+
+      {consulta.voltou === "1" ? (
+        <Toast
+          tone="ok"
+          title="Ave de volta ao plantel"
+          description="Já pode entrar num casal novo. O casal anterior segue encerrado."
         />
       ) : null}
 
@@ -121,6 +152,35 @@ export default async function Ficha({
           <p className={styles.observacoes}>{ave.observacoes}</p>
         </section>
       ) : null}
+
+      {saida ? (
+        <section className={styles.saida}>
+          <h2 className={styles.secaoTitulo}>Saída do plantel</h2>
+          <dl className={styles.dados}>
+            <Dado rotulo={saida.data} valor={formatarData(saiuEm)} />
+            {saida.destino ? (
+              <Dado rotulo={saida.destino} valor={ave.portador ?? "—"} />
+            ) : null}
+          </dl>
+          {ave.saidaMotivo ? (
+            <p className={styles.saidaMotivo}>
+              {saida.motivo}: {ave.saidaMotivo}
+            </p>
+          ) : null}
+          {saida.reversivel ? (
+            <BotaoRetorno passaroId={ave.id} nome={ave.nome} />
+          ) : null}
+        </section>
+      ) : (
+        /* Ação consequente fica fora dos atalhos: aqueles navegam, este muda
+           o plantel. Variante secundária — o petróleo cheio da tela já é a
+           anilha. */
+        <div className={styles.acaoSaida}>
+          <Button href={`/plantel/${ave.id}/saida`} variant="secondary" size="md">
+            Registrar saída
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -100,7 +100,8 @@
   color: var(--text-muted);
 }
 
-.sufixo {
+.sufixo,
+.prefixo {
   flex: none;
   font-family: var(--font-ui);
   font-size: var(--text-sm);

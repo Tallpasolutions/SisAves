@@ -28,6 +28,7 @@ Toda linha deve sair com `resultado = ok`.
 | `06_anilhamento.sql` | O anilhamento cria a ave com filiação do casal, recusa ovo não eclodido e filhote já anilhado, e um lote que falha no último não deixa os anteriores criados. |
 | `07_arvore_genealogica.sql` | A árvore devolve `caminho` (`pp`, `pm`, `mp`, `mm`), distinguindo avô paterno de avô materno. |
 | `08_marcos_do_ciclo.sql` | Uma conferência grava marcos diferentes no mesmo lote; o reenvio aplica zero; separar filhote não anilhado é barrado; perda de filhote anilhado mata a ave no plantel; lote que falha no fim não grava o começo. |
+| `09_saida_do_plantel.sql` | A venda tira a ave do ativo, encerra o casal vigente e lança a receita numa transação; o reenvio não duplica o lançamento; só empréstimo e fuga voltam ao plantel; as constraints barram ave ativa com data de saída e óbito convivendo com saída. |
 
 ## Regra dos fixtures
 
