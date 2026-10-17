@@ -13,8 +13,10 @@ separação e perda — e a ave sai do plantel por venda, doação, empréstimo,
 ou fuga. Ave e casal se editam, o casal se encerra, o ovo passa para outro
 casal chocar, e o que entrou errado se corrige ou se apaga. Espécies, prazos,
 configurações do criatório, membros, relatórios e notificações também já têm
-tela, e o CRO se emite com QR real e página pública de validação. O próximo
-passo é a Fase 9: financeiro e saúde.
+tela, e o CRO se emite com QR real e página pública de validação. O
+financeiro lança receita e despesa com saldo por mês, e a saúde registra
+tratamentos com carência calculada do fim da aplicação. O próximo passo é a
+Fase 10: assinatura com Mercado Pago.
 
 ## Começando
 

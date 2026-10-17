@@ -93,11 +93,10 @@ const GRUPOS: Array<{ titulo: string; destinos: Destino[] }> = [
         Icone: Wallet,
       },
       {
-        href: "#",
+        href: "/saude",
         rotulo: "Saúde",
         resumo: "Medicamentos, doenças, tratamentos",
         Icone: Syringe,
-        emBreve: true,
       },
     ],
   },

@@ -44,7 +44,16 @@ export type TipoEscrita =
   | "edicao-lancamento"
   | "exclusao-lancamento"
   | "categoria-financeira"
-  | "exclusao-categoria";
+  | "exclusao-categoria"
+  | "tratamento"
+  | "edicao-tratamento"
+  | "exclusao-tratamento"
+  | "medicamento"
+  | "exclusao-medicamento"
+  | "doenca"
+  | "exclusao-doenca"
+  | "sintoma"
+  | "exclusao-sintoma";
 
 export interface ItemFila {
   /**

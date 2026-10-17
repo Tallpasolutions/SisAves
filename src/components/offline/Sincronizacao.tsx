@@ -53,6 +53,17 @@ import {
   salvarCategoria,
 } from "@/app/(app)/financeiro/acoes";
 import {
+  editarTratamento,
+  excluirDoenca,
+  excluirMedicamento,
+  excluirSintoma,
+  excluirTratamento,
+  registrarTratamento,
+  salvarDoenca,
+  salvarMedicamento,
+  salvarSintoma,
+} from "@/app/(app)/saude/acoes";
+import {
   contar,
   descreverItem,
   enfileirar,
@@ -101,6 +112,17 @@ const EXECUTORES: Record<TipoEscrita, Executor> = {
   // FormData diz qual é qual, como em `especie`.
   "categoria-financeira": (d) => salvarCategoria({}, d),
   "exclusao-categoria": (d) => excluirCategoria({}, d),
+  tratamento: (d) => registrarTratamento({}, d),
+  "edicao-tratamento": (d) => editarTratamento({}, d),
+  "exclusao-tratamento": (d) => excluirTratamento({}, d),
+  // Os três catálogos criam e corrigem na mesma ação: a presença do id no
+  // FormData diz qual é qual, como em `especie` e `categoria-financeira`.
+  medicamento: (d) => salvarMedicamento({}, d),
+  "exclusao-medicamento": (d) => excluirMedicamento({}, d),
+  doenca: (d) => salvarDoenca({}, d),
+  "exclusao-doenca": (d) => excluirDoenca({}, d),
+  sintoma: (d) => salvarSintoma({}, d),
+  "exclusao-sintoma": (d) => excluirSintoma({}, d),
 };
 
 export interface EstadoSincronizacao {

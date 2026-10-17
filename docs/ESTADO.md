@@ -14,10 +14,18 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Fase 9, parte 2 — saúde.** O financeiro entrou em 17/10/2026 (B10, lançamento,
-correção, exclusão e catálogo de categorias). Faltam `medicamentos`, `doencas`,
-`sintomas` e `tratamentos`, que seguem sem nenhuma tela — a saúde é a última
-das telas que o handoff declarou não ter desenhado.
+**Fase 10 — assinatura (Mercado Pago).** A Fase 9 fechou em 17/10/2026:
+financeiro (B10, lançamento, correção, exclusão e catálogo de categorias) e
+saúde (tratamentos com carência, medicamentos, doenças e sintomas). O banco da
+assinatura está pronto desde a Fase 1 (`assinaturas`,
+`assinatura_pagamentos`); faltam as credenciais do Mercado Pago, o checkout, o
+webhook e o bloqueio suave ao expirar.
+
+Depois dela, a Fase 11 (landing D3, SEO, domínio, migração do legado).
+
+**Com a saúde, acabou a lista de telas que o handoff declarou não ter
+desenhado** — menos a genealogia do plantel inteiro, que não é ausência de
+desenho e sim de função (a árvore é sempre de UMA ave).
 
 Depois dela: Fase 10 (Mercado Pago) e Fase 11 (landing, SEO, migração do
 legado).
@@ -98,7 +106,7 @@ abriria brecha para cor fora da paleta.
 | 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
 | 7 · Desktop (Faixa C) | **concluída**; C3 entrou com a Fase 8 |
 | 8 · CRO, QR e validação pública | **concluída** — emissão, folha A4, QR real, página pública e C3 |
-| 9 · Financeiro e saúde | **financeiro concluído**; saúde não iniciada |
+| 9 · Financeiro e saúde | **concluída** — B10, catálogo de categorias, tratamentos com carência |
 | 10 · Assinatura (Mercado Pago) | banco pronto; integração não iniciada |
 | 11 · Landing e lançamento | não iniciada |
 
@@ -142,6 +150,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0030_emitir_certificado` | `emitir_certificado()`, `revogar_certificado()`; motivo na validação |
 | `0031_previa_do_cro` | grant de `montar_snapshot_certificado` para a prévia da C3 |
 | `0032_financeiro_na_tela` | `vw_financeiro_mensal`; `public.hoje()` nos DEFAULT de data que a 0022 não alcançou |
+| `0033_saude_na_tela` | `vw_tratamentos` (em curso e carência), `definir_sintomas_da_doenca`, `definir_doencas_do_medicamento`, catálogo de sintomas e doenças |
 
 ### Funções do domínio
 
@@ -152,9 +161,10 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `reativar_ave` · `tg_sexo_coerente` · `hoje` · `desfazer_marco` ·
 `transferir_posturas` · `devolver_postura` · `corrigir_data_marco` ·
 `aceitar_convites` · `gerar_notificacoes` · `emitir_certificado` ·
-`revogar_certificado`
+`revogar_certificado` · `definir_sintomas_da_doenca` ·
+`definir_doencas_do_medicamento`
 
-### Testes de banco — 192 asserções, todas passando
+### Testes de banco — 214 asserções, todas passando
 
 ```bash
 node scripts/testar.mjs
@@ -183,6 +193,7 @@ falha, e sai com código 1.
 | `14_corrigir_data_marco` | 12 |
 | `15_certificado_emissao` | 17 |
 | `16_financeiro` | 11 |
+| `17_saude` | 22 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
@@ -342,6 +353,16 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   decidido em `obterNinhada` e consumido pela tela; a função do banco verifica
   as mesmas condições. Reimplementar a regra em TSX é como as duas versões
   divergem sem ninguém perceber.
+- **Corrigir o fuso nas funções não corrige os DEFAULT das colunas.** A 0022
+  trocou `current_date` por `public.hoje()` em funções e views e deixou seis
+  colunas `date` com o padrão em UTC. Nenhum registro errado existiu porque
+  toda escrita manda a data junto — mas o padrão é exatamente o que a próxima
+  escrita vai usar quando alguém esquecer. Corrigido na 0032.
+- **Item de grade não encolhe abaixo do conteúdo.** `grid-template-columns:
+  1fr 1fr` com `min-width: auto` (o padrão) empurrou o segundo StatCard para
+  fora da tela assim que o valor virou "R$ 1.850,00". Precisa de
+  `min-width: 0` — e o número do cartão precisou de um tamanho menor, que
+  virou a variante `size="md"` do `StatCard`.
 - **`--text-inverse` não serve para texto sobre preenchimento fixo.** No tema
   escuro ele vira grafite ("inverso" lá quer dizer escuro sobre claro), e o
   rótulo do botão primário saía 2,06:1 sobre petróleo. Use `--text-on-brand` e
@@ -374,6 +395,9 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/financeiro` | B10 Financeiro | mês navegável, três indicadores, saldo de 6 meses e os lançamentos do mês |
 | `/financeiro/novo` · `/financeiro/[id]/editar` | Lançamento | o mesmo formulário em dois modos; exclusão lógica em dois toques |
 | `/financeiro/categorias` | Categorias | não desenhada; as de sistema ficam à parte e não se editam |
+| `/saude` | Saúde | não desenhada; tratamentos em curso, em carência e encerrados. `?ave=` a transforma no histórico sanitário de uma ave |
+| `/saude/novo` · `/saude/[id]/editar` | Tratamento | alvo é ave OU casal; terminar é preencher o fim, e é dele que a carência conta |
+| `/saude/medicamentos` · `/saude/doencas` · `/saude/sintomas` | Catálogos da saúde | não desenhados; os itens compartilhados ficam à parte e não se editam |
 | `/casais/etiquetas` | Etiquetas | não desenhada; renomear, recolorir e excluir — as etiquetas NASCEM na edição do casal |
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
 | `/ovos/[ninhada]` | Ninhada | não desenhada; **fecha o ciclo**: uma data e um marco por ovo (fértil, ovo claro, nasceu, separado, perdido) numa conferência só |
@@ -522,7 +546,7 @@ e a lista coberta para confirmar o que já está escrito ali.
 
 | Fase | O que entrega | Banco |
 |---|---|---|
-| 9 · Financeiro e saúde | **lançamentos e categorias feitos**; faltam medicamentos, doenças, sintomas, tratamentos | **pronto**; saúde sem tela |
+| ~~9 · Financeiro e saúde~~ | concluída em 17/10/2026 | — |
 | 10 · Assinatura (Mercado Pago) | checkout PIX/cartão, webhook, bloqueio suave | **pronto** (`assinaturas`, `assinatura_pagamentos`); credenciais vazias no `.env` |
 | 11 · Landing e lançamento | D3, SEO, domínio, migração do legado | — |
 
@@ -550,7 +574,6 @@ função. Construídas na linguagem das telas existentes, em 17/10/2026:
 
 O que **continua** faltando desta lista:
 
-- **Saúde do plantel** — é o que resta da Fase 9.
 - **Genealogia do plantel inteiro** — a árvore é sempre de UMA ave; a sidebar
   lista o destino desabilitado porque o handoff o lista.
 - **Tema escuro das pranchas B3–B11 e C1–C3** — os tokens existem e todas as
@@ -632,6 +655,55 @@ Decisões que valem registro:
 - **Os rótulos dos bisavós precisam de mais que o lado.** `ppp` e `pmp` são
   ambos "paternos"; cada bisavô é nomeado pelo avô de quem é — "Pai do avô
   paterno".
+
+## O dinheiro e a saúde
+
+As duas frentes da Fase 9 compartilham a forma — lista do criatório, catálogo
+próprio ao lado de um catálogo compartilhado, escrita em dois modos no mesmo
+formulário — e cada uma tem um número que o sistema calcula e o criador não
+calcularia de cabeça.
+
+**O financeiro.** O saldo por mês sai de `vw_financeiro_mensal` porque o
+PostgREST não agrupa, e mês sem lançamento não tem linha: a lacuna é
+preenchida pela tela, que sabe quais seis meses está mostrando. O valor é
+sempre positivo e o sinal vem do tipo (0007); o saldo é o único número que
+pode sair negativo. A **categoria tem tipo próprio e ele precisa bater com o
+do lançamento** — "Ração" com uma receita dentro somaria no lado errado —, e a
+guarda é na Server Action porque uma constraint cruzada entre duas tabelas
+exigiria trigger. As categorias de sistema não se editam: `registrar_saida`
+procura `venda_passaro` pela chave.
+
+Duas diferenças deliberadas da prancha `3g`: o cabeçalho **não** é bloco de
+petróleo (a prancha tem dois blocos cheios na mesma tela, e o contrato permite
+um — fica com o saldo), e as barras do gráfico **não trazem número escrito**
+(a prancha arredonda valor financeiro, que o contrato proíbe em exibição, e
+"R$ 1.240,00" não cabe em um sexto de 390px). Cada barra é link para o seu mês
+e o rótulo acessível carrega o valor inteiro.
+
+**A saúde.** O número é a **carência**, e ela conta do FIM da aplicação. Por
+isso `vw_tratamentos` só devolve `carencia_ate` quando o tratamento já
+terminou: num tratamento em curso a data seria um alvo móvel — "libera amanhã"
+todo dia —, então a tela mostra os dias do medicamento e diz a partir de
+quando eles contam. É o único âmbar da tela, e com prazo de verdade: enquanto
+a carência corre, a ave não deveria ser vendida nem exposta.
+
+- **Os vínculos N:N são gravados inteiros**, por função do banco
+  (`definir_sintomas_da_doenca`, `definir_doencas_do_medicamento`). Soltos na
+  aplicação seriam delete + insert sem transação, e a falha no meio deixaria a
+  doença sem sintoma nenhum. Gravar o conjunto inteiro é também o que torna a
+  escrita idempotente — por isso ela entra na fila offline sem chave própria.
+- **Sintomas e doenças vêm semeados; medicamentos, não.** Nome comercial, dose
+  e carência saem da bula e da prescrição, variam por marca e por país, e uma
+  lista pronta no produto seria lida como recomendação. O catálogo de
+  medicamentos é o que está na prateleira do criador.
+- **Item do catálogo compartilhado não recebe vínculo.** A RLS recusa, e está
+  certo: os sintomas de uma doença são os que AQUELE criatório observou.
+  Prendê-los a uma linha de todos seria afirmar pelos outros.
+- **O alvo é ave OU casal.** Trata-se o casal inteiro quando a aplicação vai na
+  água ou na ração do viveiro, que é como vermífugo e antibiótico costumam ir.
+- **`/saude?ave=` é o histórico sanitário de uma ave**, e é o quarto atalho da
+  ficha. Rota própria seria uma segunda lista de tratamentos para manter, com
+  as mesmas regras de carência.
 
 ## As duas faixas, uma rota só
 

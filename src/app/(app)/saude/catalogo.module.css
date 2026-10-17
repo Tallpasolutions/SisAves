@@ -1,0 +1,248 @@
+/* Catálogos da saúde — medicamentos, doenças e sintomas.
+
+   Um módulo para as três telas: elas são a mesma mecânica, e três cópias
+   divergiriam no primeiro ajuste. Mesma linguagem do catálogo de etiquetas e
+   do de categorias — uma linha por item, editável onde o item está, exclusão
+   em dois toques. Os itens do catálogo compartilhado ficam numa lista à
+   parte, sem controle: são de todos. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.explicacao {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.bloco { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.blocoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.lista,
+.listaFixa {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listaFixa { gap: 0; }
+
+/* --- Linha editável ---------------------------------------------------------- */
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.formulario { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.alerta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-danger-soft);
+  color: var(--text-danger);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.linhaDupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.linhaDupla > * { min-width: 0; }
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* O fieldset ignora a largura do pai sem isto, e a grade vaza da tela. */
+  min-inline-size: 0;
+}
+
+.legenda {
+  padding: 0;
+  /* O legend fica fora do fluxo flex: o gap do grupo não vale para ele. */
+  margin-bottom: var(--space-1);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.marcacoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip,
+.marcacao {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.chip:hover,
+.marcacao:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-brand);
+}
+
+/* Selecionado soma fundo, borda e peso — nunca só a cor. */
+.chipMarcado,
+.marcacaoMarcada {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+  color: var(--text-brand);
+}
+
+.chipMarcado .chipRotulo,
+.marcacaoMarcada .marcacaoRotulo { font: var(--type-body-strong); }
+
+.chip:focus-within,
+.marcacao:focus-within {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.caixa {
+  /* A caixa continua na árvore de acessibilidade: escondê-la com opacity e
+     pointer-events a tiraria de lá. O estado vai no fundo, na borda e no peso
+     do rótulo — nunca só na cor. */
+  position: absolute;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+}
+
+.chipRotulo,
+.marcacaoRotulo { font: var(--type-body); }
+
+.acao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.confirmacao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pergunta { font: var(--type-small); color: var(--text-primary); }
+
+.erro { margin: 0; font: var(--type-small); color: var(--text-danger); }
+
+.nota {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Itens do catálogo compartilhado ----------------------------------------- */
+.listaFixa {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.listaFixa > li + li { border-top: var(--border-width) solid var(--border-subtle); }
+
+.fixa {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3);
+}
+
+.fixaIcone {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.fixaTextos { display: flex; flex-direction: column; gap: 2px; }
+
+.fixaNome { font: var(--type-body-strong); }
+
+.fixaDetalhe {
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}

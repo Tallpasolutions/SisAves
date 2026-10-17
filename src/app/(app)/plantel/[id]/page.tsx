@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Award, ChevronLeft, Dna, Scale } from "lucide-react";
+import { Award, ChevronLeft, Dna, Scale, Syringe } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Anilha, Badge, Button, SexChip, Toast } from "@/components/ui";
@@ -152,6 +152,10 @@ export default async function Ficha({
         <Atalho href={`/plantel/${ave.id}/genealogia`} Icone={Dna} rotulo="Genealogia" />
         <Atalho href={`/plantel/${ave.id}/certificado`} Icone={Award} rotulo="Emitir CRO" />
         <Atalho href={`/plantel/${ave.id}/pesagens`} Icone={Scale} rotulo="Pesagens" />
+        {/* O quarto atalho não estava na prancha `2c` porque a saúde não
+            existia quando ela foi desenhada. Leva ao histórico sanitário
+            desta ave — a mesma tela da saúde, filtrada. */}
+        <Atalho href={`/saude?ave=${ave.id}`} Icone={Syringe} rotulo="Saúde" />
       </nav>
 
       {ave.observacoes ? (

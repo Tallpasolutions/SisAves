@@ -63,7 +63,7 @@ const GRUPOS: Grupo[] = [
   {
     titulo: "Gestão",
     destinos: [
-      { href: "#", rotulo: "Saúde", Icone: Syringe, emBreve: true },
+      { href: "/saude", rotulo: "Saúde", Icone: Syringe },
       { href: "/financeiro", rotulo: "Financeiro", Icone: Wallet },
       { href: "/certificados", rotulo: "Certificados", Icone: Award },
       { href: "/relatorios", rotulo: "Relatórios", Icone: ChartColumn },

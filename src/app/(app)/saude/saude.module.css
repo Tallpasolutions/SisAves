@@ -1,0 +1,187 @@
+/* Saúde do plantel — não desenhada no handoff.
+
+   Construída na linguagem das telas existentes: cabeçalho à esquerda, uma ação
+   principal, listas de cartões clicáveis. O único elemento âmbar é a carência,
+   que é prazo correndo de verdade — enquanto ela não vence, a ave não deveria
+   ser vendida nem exposta. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cabecalhoTextos { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+@media (min-width: 560px) {
+  .cabecalho {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.elo { font: var(--type-small); color: var(--text-link); }
+
+.bloco { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.blocoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.nota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* Único âmbar da tela. Texto em azul profundo sobre o fundo claro de âmbar —
+   âmbar nunca é cor de texto sobre branco. */
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-accent-soft);
+  color: var(--text-accent);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.aviso svg { flex: none; margin-top: 1px; }
+
+/* --- Lista de tratamentos ---------------------------------------------------- */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tratamento {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+}
+
+.tratamento:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-brand);
+}
+
+.tratamentoTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.tratamentoAlvo {
+  font: var(--type-body-strong);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tratamentoDetalhe { font: var(--type-body); }
+
+.tratamentoDatas {
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+/* --- Catálogos --------------------------------------------------------------- */
+.catalogos {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.catalogos > li + li { border-top: var(--border-width) solid var(--border-subtle); }
+
+.catalogo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding: var(--space-2) var(--space-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.catalogo:hover { background: var(--surface-hover); }
+
+.catalogoIcone {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-brand-soft);
+  color: var(--text-brand);
+}
+
+.catalogoTextos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.catalogoRotulo { font: var(--type-body-strong); }
+
+.catalogoResumo {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.seta { flex: none; color: var(--text-muted); }

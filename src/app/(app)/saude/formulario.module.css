@@ -1,0 +1,204 @@
+/* Tratamento — não desenhado no handoff.
+
+   Mesma linguagem das outras telas de escrita: cartão único, campos de 48px,
+   ação principal em bloco na base, exclusão em dois toques. Módulo próprio,
+   separado de `saude.module.css`: `.lista`, `.acao` e `.aviso` existem nos
+   dois, e num módulo só a regra posterior venceria. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-6);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h2); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-danger-soft);
+  color: var(--text-danger);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.alertaIcone { display: inline-flex; flex: none; margin-top: 1px; }
+
+.linhaDupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.linhaDupla > * { min-width: 0; }
+
+/* --- Tipo: receita ou despesa ------------------------------------------------ */
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* O fieldset nasce com min-inline-size: min-content e ignora a largura do
+     pai: sem isto a grade vaza para fora da tela. */
+  min-inline-size: 0;
+}
+
+.legenda {
+  padding: 0;
+  /* O legend fica fora do fluxo flex: o gap do grupo não vale para ele. */
+  margin-bottom: var(--space-2);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-h-lg);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.chip:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+/* Selecionado soma três sinais — fundo, borda e peso —, nunca só a cor. */
+.chipMarcado {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+}
+
+.chipMarcado .chipRotulo { font: var(--type-body-strong); color: var(--text-brand); }
+
+.chip:focus-within {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.radio {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--sis-petroleo-700);
+  cursor: pointer;
+}
+
+.chipRotulo { font: var(--type-body); min-width: 0; }
+
+/* --- Ações ------------------------------------------------------------------- */
+.acao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.cancelar {
+  align-self: center;
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  font: var(--type-label);
+  color: var(--text-link);
+}
+
+.cancelar:hover { color: var(--text-link-hover); text-decoration: underline; }
+
+.cancelar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+/* --- Exclusão, em dois toques ------------------------------------------------ */
+.exclusao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.exclusaoNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.confirmacao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pergunta {
+  font: var(--type-small);
+  color: var(--text-primary);
+}
+
+.erroLinha {
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.notaLinha {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

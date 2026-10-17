@@ -1,6 +1,15 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { deslocarMes, rotuloCurto, type TipoLancamento } from "./financeiro-rotulos";
 
+/*
+ * A lista de aves para escolha mora em `aves-escolha.ts`: o lançamento
+ * financeiro e o tratamento sanitário precisam da MESMA lista, com a mesma
+ * decisão sobre ave fora do plantel. Duas cópias divergiriam na primeira
+ * correção.
+ */
+export { opcoesDeAve } from "./aves-escolha";
+export type { OpcaoAve as OpcaoAveLancamento } from "./aves-escolha";
+
 export interface CategoriaFinanceira {
   id: string;
   nome: string;
@@ -270,52 +279,4 @@ export async function listarCategorias(
   }
 
   return categorias.map((c) => ({ ...c, usos: contagem.get(c.id) ?? 0 }));
-}
-
-export interface OpcaoAveLancamento {
-  id: string;
-  nome: string | null;
-  anilha: {
-    sigla: string | null;
-    criador: string | null;
-    ano: number | null;
-    numero: number | null;
-  };
-  /** Ave que já saiu do plantel. A lista diz isso em vez de esconder. */
-  fora: boolean;
-}
-
-/**
- * As aves que um lançamento pode citar.
- *
- * Inclui as que já saíram do plantel, de propósito: a receita da venda cita
- * justamente a ave vendida, e a despesa do veterinário pode ser de uma ave que
- * morreu. Oferecer só o plantel ativo faria a lista esconder metade dos casos
- * em que o vínculo importa.
- */
-export async function opcoesDeAve(): Promise<OpcaoAveLancamento[]> {
-  const supabase = await criarClienteServidor();
-
-  const { data, error } = await supabase
-    .from("passaros")
-    .select("id, nome, situacao, anilha_sigla, anilha_criador, anilha_ano, anilha_numero")
-    .is("deleted_at", null)
-    .order("anilha_numero", { ascending: true, nullsFirst: false });
-
-  if (error) {
-    console.error("opcoesDeAve:", error.message);
-    return [];
-  }
-
-  return ((data ?? []) as Array<LinhaAve & { situacao: string }>).map((a) => ({
-    id: a.id,
-    nome: a.nome,
-    anilha: {
-      sigla: a.anilha_sigla,
-      criador: a.anilha_criador,
-      ano: a.anilha_ano,
-      numero: a.anilha_numero,
-    },
-    fora: a.situacao !== "ativo",
-  }));
 }
