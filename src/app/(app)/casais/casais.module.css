@@ -182,3 +182,25 @@
   flex-wrap: wrap;
   gap: var(--space-1);
 }
+
+/* --- Manutenção ------------------------------------------------------------- */
+.manutencao {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.elo {
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  font: var(--type-label);
+  color: var(--text-link);
+}
+
+.elo:hover { color: var(--text-link-hover); text-decoration: underline; }
+
+.elo:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}

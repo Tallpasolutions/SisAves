@@ -15,7 +15,10 @@ import { formarCasal } from "@/app/(app)/casais/novo/acoes";
 import { registrarPostura } from "@/app/(app)/casais/[id]/postura/acoes";
 import { anilharFilhotes } from "@/app/(app)/ovos/[ninhada]/anilhar/acoes";
 import { registrarConferencia } from "@/app/(app)/ovos/[ninhada]/acoes";
-import { desfazerMarco } from "@/app/(app)/ovos/[ninhada]/corrigir/acoes";
+import {
+  corrigirDataMarco,
+  desfazerMarco,
+} from "@/app/(app)/ovos/[ninhada]/corrigir/acoes";
 import {
   devolverPostura,
   transferirPosturas,
@@ -23,7 +26,15 @@ import {
 import { reativarAve, registrarSaida } from "@/app/(app)/plantel/[id]/saida/acoes";
 import { editarAve } from "@/app/(app)/plantel/[id]/editar/acoes";
 import { editarCasal } from "@/app/(app)/casais/[id]/editar/acoes";
-import { registrarPesagem } from "@/app/(app)/plantel/[id]/pesagens/acoes";
+import {
+  excluirEtiqueta,
+  renomearEtiqueta,
+} from "@/app/(app)/casais/etiquetas/acoes";
+import {
+  editarPesagem,
+  excluirPesagem,
+  registrarPesagem,
+} from "@/app/(app)/plantel/[id]/pesagens/acoes";
 import {
   contar,
   descreverItem,
@@ -44,14 +55,19 @@ const EXECUTORES: Record<TipoEscrita, Executor> = {
   postura: (d) => registrarPostura({}, d),
   marcos: (d) => registrarConferencia({}, d),
   "desfazer-marco": (d) => desfazerMarco({}, d),
+  "redatar-marco": (d) => corrigirDataMarco({}, d),
   transferencia: (d) => transferirPosturas({}, d),
   devolucao: (d) => devolverPostura({}, d),
   anilhamento: (d) => anilharFilhotes({}, d),
   ave: (d) => cadastrarAve({}, d),
   "edicao-ave": (d) => editarAve({}, d),
   pesagem: (d) => registrarPesagem({}, d),
+  "edicao-pesagem": (d) => editarPesagem({}, d),
+  "exclusao-pesagem": (d) => excluirPesagem({}, d),
   casal: (d) => formarCasal({}, d),
   "edicao-casal": (d) => editarCasal({}, d),
+  etiqueta: (d) => renomearEtiqueta({}, d),
+  "exclusao-etiqueta": (d) => excluirEtiqueta({}, d),
   saida: (d) => registrarSaida({}, d),
   retorno: (d) => reativarAve({}, d),
 };

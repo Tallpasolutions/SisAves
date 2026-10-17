@@ -88,8 +88,19 @@
 .botoes {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
   margin-top: var(--space-1);
+}
+
+/* As duas correções do mesmo marco, agrupadas: trocar a data e apagar. São
+   dois formulários irmãos, nunca aninhados. */
+.correcao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
 }
 
 .acao {

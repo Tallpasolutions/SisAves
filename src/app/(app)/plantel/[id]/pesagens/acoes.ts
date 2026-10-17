@@ -14,6 +14,15 @@ export interface EstadoPesagem {
 
 const CONTEXTOS = CONTEXTOS_PESAGEM.map((c) => c.valor) as [string, ...string[]];
 
+/**
+ * A correção aceita também `anilhamento`, que o formulário não oferece.
+ *
+ * Quem o grava é `anilhar_filhotes`, no momento em que o anel entra. Recusá-lo
+ * aqui obrigaria quem corrige um peso digitado errado a trocar o contexto
+ * junto — e o peso ao anilhamento deixaria de ser o primeiro ponto da curva.
+ */
+const CONTEXTOS_EDICAO = [...CONTEXTOS, "anilhamento"] as [string, ...string[]];
+
 const EsquemaPesagem = z.object({
   data: z
     // A mensagem no tipo base: campo vazio falha antes do regex e devolveria
@@ -126,4 +135,119 @@ export async function registrarPesagem(
 function formatarBR(iso: string): string {
   const [a, m, d] = iso.split("-");
   return `${d}/${m}/${a}`;
+}
+
+/**
+ * Corrige uma pesagem lançada errada.
+ *
+ * Mesmas regras do lançamento: a balança não muda de opinião sobre o que é um
+ * peso possível só porque o registro já existe.
+ */
+export async function editarPesagem(
+  _anterior: EstadoPesagem,
+  dados: FormData,
+): Promise<EstadoPesagem> {
+  const pesagemId = String(dados.get("pesagem_id") ?? "");
+  const aveId = String(dados.get("passaro_id") ?? "");
+  if (!pesagemId || !aveId) return { erro: "Pesagem não identificada." };
+
+  const reenvio = dados.get("reenvio") === "1";
+
+  const opcional = (v: FormDataEntryValue | null) => {
+    const t = String(v ?? "").trim();
+    return t === "" ? undefined : t;
+  };
+  const bruto = opcional(dados.get("peso_gramas"));
+  const peso = bruto?.replace(/\./g, "").replace(",", ".");
+
+  const resultado = EsquemaPesagem.extend({
+    contexto: z.enum(CONTEXTOS_EDICAO, { error: "Escolha o contexto da pesagem." }),
+  }).safeParse({
+    data: dados.get("data"),
+    peso_gramas: peso,
+    contexto: opcional(dados.get("contexto")),
+    observacoes: opcional(dados.get("observacoes")),
+  });
+
+  if (!resultado.success) {
+    const campos: Record<string, string> = {};
+    for (const problema of resultado.error.issues) {
+      const campo = String(problema.path[0] ?? "");
+      if (campo && !campos[campo]) campos[campo] = problema.message;
+    }
+    return { campos };
+  }
+
+  const supabase = await criarClienteServidor();
+
+  const { data: ave } = await supabase
+    .from("passaros")
+    .select("id, nome, dt_nascimento")
+    .eq("id", aveId)
+    .is("deleted_at", null)
+    .maybeSingle();
+
+  if (!ave) return { erro: "Ave não encontrada ou fora do seu criatório." };
+
+  if (ave.dt_nascimento && resultado.data.data < ave.dt_nascimento) {
+    return {
+      campos: {
+        data: `${ave.nome ?? "Esta ave"} nasceu em ${formatarBR(ave.dt_nascimento)}.`,
+      },
+    };
+  }
+
+  const { error } = await supabase
+    .from("pesagens")
+    .update({
+      data: resultado.data.data,
+      peso_gramas: resultado.data.peso_gramas,
+      contexto: resultado.data.contexto,
+      observacoes: resultado.data.observacoes ?? null,
+    })
+    .eq("id", pesagemId)
+    .is("deleted_at", null);
+
+  if (error) {
+    console.error("editarPesagem:", error.message);
+    return { erro: "Não foi possível salvar a pesagem. Tente de novo." };
+  }
+
+  revalidatePath("/", "layout");
+  if (reenvio) return {};
+  redirect(`/plantel/${aveId}/pesagens?corrigida=1`);
+}
+
+/**
+ * Apaga uma pesagem.
+ *
+ * Exclusão lógica: a coluna `deleted_at` existe, e peso é série histórica —
+ * apagar de verdade tiraria do banco um ponto que já pode ter alimentado um
+ * relatório. O criador vê sumir; o registro fica.
+ */
+export async function excluirPesagem(
+  _anterior: EstadoPesagem,
+  dados: FormData,
+): Promise<EstadoPesagem> {
+  const pesagemId = String(dados.get("pesagem_id") ?? "");
+  const aveId = String(dados.get("passaro_id") ?? "");
+  if (!pesagemId || !aveId) return { erro: "Pesagem não identificada." };
+
+  const reenvio = dados.get("reenvio") === "1";
+  const supabase = await criarClienteServidor();
+
+  const { error } = await supabase
+    .from("pesagens")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", pesagemId)
+    .is("deleted_at", null);
+
+  if (error) {
+    console.error("excluirPesagem:", error.message);
+    return { erro: "Não foi possível excluir a pesagem. Tente de novo." };
+  }
+
+  revalidatePath("/", "layout");
+  if (reenvio) return {};
+  redirect(`/plantel/${aveId}/pesagens?excluida=1`);
 }

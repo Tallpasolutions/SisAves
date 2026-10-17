@@ -51,7 +51,8 @@ plantel e precisava de um plantel verdadeiro:
 
 4. **O que ficava fora das fases** entrou em 16/10/2026: pesagem avulsa,
    desfazer um marco do ciclo, transferir postura entre casais e etiquetar
-   casal.
+   casal — com as correções que faltavam nelas: catálogo de etiquetas,
+   data de um marco em um passo, e editar ou excluir uma pesagem.
 
 Com isso, a Fase 8 é a próxima sem nada na frente.
 
@@ -165,6 +166,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0023_desfazer_marco` | `desfazer_marco()`: apaga um marco do ciclo e devolve o ovo |
 | `0024_transferir_postura` | `posturas.casal_chocador_id`, `transferir_posturas()`, `devolver_postura()` |
 | `0025_chocador_nas_telas` | quem está chocando entra em `vw_posturas` e `vw_tarefas_hoje` |
+| `0026_corrigir_data_marco` | `corrigir_data_marco()`: troca a data sem tirar o marco |
 
 ### Funções do domínio
 
@@ -173,9 +175,9 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
 `casal_ativo` · `anilhar_filhotes` · `registrar_marcos` · `registrar_saida` ·
 `reativar_ave` · `tg_sexo_coerente` · `hoje` · `desfazer_marco` ·
-`transferir_posturas` · `devolver_postura`
+`transferir_posturas` · `devolver_postura` · `corrigir_data_marco`
 
-### Testes de banco — 152 asserções, todas passando
+### Testes de banco — 164 asserções, todas passando
 
 ```bash
 node scripts/testar.mjs
@@ -201,6 +203,7 @@ falha, e sai com código 1.
 | `11_hoje_do_criatorio` | 4 |
 | `12_desfazer_marco` | 12 |
 | `13_transferir_postura` | 17 |
+| `14_corrigir_data_marco` | 12 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
@@ -325,7 +328,11 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   devolvia `[]` ao falhar, então a seção de etiquetas aparecia vazia e parecia
   certa; quem acusou foi o console do navegador. Toda leitura que devolve lista
   vazia em caso de erro precisa de uma passada no console antes de "funciona".
-- **Lista de escolha na edição precisa conter o que já está gravado.** As
+- **Lista de escolha na edição precisa conter o que já está gravado** — e o
+  erro repetiu. Depois de corrigi-lo nos progenitores, a correção de pesagem
+  nasceu com o mesmo buraco: o contexto `anilhamento` é escrito pelo sistema e
+  não aparece no formulário, então o `<select>` caía vazio e salvar trocaria o
+  contexto em silêncio. Todo `<select>` filtrado numa tela de edição tem isto. As
   opções de pai e mãe só trazem ave no plantel ativo; na edição, um pai vendido
   sumiria do `<select>`, o campo cairia para "Desconhecido" e salvar outro dado
   apagaria a filiação sem avisar. Toda tela de edição com `<select>` filtrado
@@ -369,6 +376,7 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/casais/[id]` | B8 Ficha do casal | `InbreedingMeter` com explicação vinda de `ancestrais_comuns`, histórico de ninhadas |
 | `/casais/[id]/postura` | B9 Registrar postura | **primeira tela de escrita**: Server Action + Zod, previsões ao vivo, tab bar escondida |
 | `/plantel/nova` | Cadastrar ave | não desenhada; sugestão de anilha como botão, filiação só quando a ave nasceu no criatório |
+| `/casais/etiquetas` | Etiquetas | não desenhada; renomear, recolorir e excluir — as etiquetas NASCEM na edição do casal |
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
 | `/ovos/[ninhada]` | Ninhada | não desenhada; **fecha o ciclo**: uma data e um marco por ovo (fértil, ovo claro, nasceu, separado, perdido) numa conferência só |
 | `/ovos/[ninhada]/corrigir` | Corrigir registros | não desenhada; desfaz um marco do ciclo registrado por engano |
@@ -401,7 +409,7 @@ Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
 navegação.
 
-**São doze telas de escrita.** A quinta, a conferência da ninhada, fecha o
+**São treze telas de escrita.** A quinta, a conferência da ninhada, fecha o
 ciclo do ovo. O formato dela vem do galpão e não do plano: o criador abre o
 ninho UMA vez e encontra tudo junto — dois filhotes nascidos, um ovo claro, um
 quebrado, um ainda chocando. Quatro telas, uma por marco, o obrigariam a quatro
@@ -489,13 +497,24 @@ Decisões dessas quatro que vale conhecer:
   os casais, não para apagá-la — gerir o catálogo (renomear, excluir) é a
   pendência que sobrou desse item.
 
-O que continua faltando nesta frente é pequeno:
+Nada falta mais nesta frente. As três correções que tinham ficado para trás
+entraram em 16/10/2026:
 
-| O que falta | Onde o dado já existe |
-|---|---|
-| Renomear ou excluir uma etiqueta do catálogo | `casal_tags` |
-| Corrigir a DATA de um marco em um passo (hoje é desfazer e registrar) | `posturas` |
-| Editar ou apagar uma pesagem lançada errada | `pesagens` |
+- **Catálogo de etiquetas** (`/casais/etiquetas`) — renomear, recolorir e
+  excluir. As etiquetas **nascem** na edição do casal, onde o criador está
+  quando pensa nelas; duas portas de entrada para a mesma coisa é como se criam
+  duas etiquetas com o mesmo nome e grafias diferentes.
+- **Data de um marco em um passo** — `corrigir_data_marco` desfaz e registra na
+  mesma transação, chamando `desfazer_marco` e `registrar_marcos` em vez de
+  repetir as guardas delas. Data nova recusada deixa a anterior valendo, que é
+  o ponto de ser uma transação só.
+- **Editar e excluir pesagem** — no mesmo formulário do lançamento, em dois
+  modos. A exclusão é lógica: peso é série histórica, e o ponto apagado pode já
+  ter alimentado um relatório.
+
+Excluir pede **dois toques na própria linha**, não um diálogo modal: a
+consequência cabe no lugar onde ela acontece, e o modal custaria um foco preso
+e a lista coberta para confirmar o que já está escrito ali.
 
 ### 3 · Fases do plano ainda não iniciadas
 
@@ -529,7 +548,7 @@ telas existentes.
 
 ### 5 · Qualidade e lançamento
 
-- **Não há nenhum teste de interface.** O banco tem 152 asserções; o front,
+- **Não há nenhum teste de interface.** O banco tem 164 asserções; o front,
   zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
   fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
 - **Nunca foi publicado.** Sem `.vercel`, sem domínio apontado, sem variáveis
@@ -609,9 +628,11 @@ layout, para sobreviver à troca de aba), `IndicadorSync` (o chip do cabeçalho
 da Hoje), `PainelPendentes` (o estado `2h`) e `useEnvioOffline` (o gancho que
 cada formulário usa).
 
-Treze tipos de escrita entram na fila (`TipoEscrita` em `fila.ts`): `postura`,
-`marcos`, `desfazer-marco`, `anilhamento`, `ave`, `edicao-ave`, `pesagem`,
-`casal`, `edicao-casal`, `saida`, `retorno`, `transferencia` e `devolucao`.
+Dezoito tipos de escrita entram na fila (`TipoEscrita` em `fila.ts`):
+`postura`, `marcos`, `desfazer-marco`, `redatar-marco`, `anilhamento`, `ave`,
+`edicao-ave`, `pesagem`, `edicao-pesagem`, `exclusao-pesagem`, `casal`,
+`edicao-casal`, `etiqueta`, `exclusao-etiqueta`, `saida`, `retorno`,
+`transferencia` e `devolucao`.
 As de edição e as de desfazer não precisam de chave própria: gravar os mesmos
 valores duas vezes dá o mesmo resultado, e as funções do banco ignoram em
 silêncio o que já está aplicado. **Cada tipo novo precisa de três

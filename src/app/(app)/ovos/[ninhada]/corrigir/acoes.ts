@@ -3,10 +3,12 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { hojeNoCriatorio } from "@/lib/data";
 import { MARCOS_DESFAZIVEIS, type MarcoDesfazivel } from "@/lib/dados/marcos";
 
 export interface EstadoCorrecao {
   erro?: string;
+  campos?: Record<string, string>;
   /** O que acabou de ser desfeito, para a tela confirmar com o fato. */
   desfeito?: string;
 }
@@ -62,3 +64,54 @@ export async function desfazerMarco(
 }
 
 export type { MarcoDesfazivel };
+
+/**
+ * Troca a data de um marco já gravado.
+ *
+ * Um passo só, e não "desfaça e registre de novo": entre os dois toques o ovo
+ * ficava sem o registro, e o criador que parasse no meio perdia o fato. A
+ * função do banco faz os dois movimentos na mesma transação — data nova
+ * recusada deixa a anterior valendo.
+ */
+export async function corrigirDataMarco(
+  _anterior: EstadoCorrecao,
+  dados: FormData,
+): Promise<EstadoCorrecao> {
+  const posturaId = String(dados.get("postura_id") ?? "");
+  const marco = String(dados.get("marco") ?? "");
+  const ninhadaId = String(dados.get("ninhada_id") ?? "");
+  const data = String(dados.get("data") ?? "");
+  const reenvio = dados.get("reenvio") === "1";
+
+  if (!posturaId) return { erro: "Ovo não identificado." };
+  if (!MARCOS_DESFAZIVEIS.some((m) => m.valor === marco)) {
+    return { erro: "Marca desconhecida. Recarregue a tela." };
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+    return { campos: { data: "Informe a data no formato dd/mm/aaaa." } };
+  }
+  if (data > hojeNoCriatorio()) {
+    return { campos: { data: "A data não pode ser no futuro." } };
+  }
+
+  const supabase = await criarClienteServidor();
+
+  const { error } = await supabase.rpc("corrigir_data_marco", {
+    p_postura_id: posturaId,
+    p_marco: marco,
+    p_data: data,
+  });
+
+  if (error) {
+    // As mensagens da função já falam a língua do domínio; repassar é melhor
+    // que traduzir de novo.
+    if (error.code === "P0001") return { campos: { data: error.message } };
+    console.error("corrigirDataMarco:", error.message);
+    return { erro: "Não foi possível mudar a data. Tente de novo." };
+  }
+
+  revalidatePath("/", "layout");
+  if (reenvio || !ninhadaId) return {};
+
+  redirect(`/ovos/${ninhadaId}/corrigir?redatado=${marco}`);
+}

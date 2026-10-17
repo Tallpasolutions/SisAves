@@ -1,0 +1,199 @@
+/* Etiquetas — o catálogo do criatório.
+
+   As etiquetas NASCEM na edição de um casal, onde o criador está quando pensa
+   nelas. Esta tela é para arrumar e apagar, e por isso não tem campo de
+   criação: duas portas de entrada para a mesma coisa é como se criam duas
+   etiquetas com o mesmo nome e grafias diferentes. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.explicacao {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.etiqueta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.alerta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+/* --- Cores ------------------------------------------------------------------
+   Lista fechada: a paleta do produto é fechada por contrato, e um seletor de
+   cor livre acaba num criatório com etiquetas em rosa e verde-limão. */
+.cores {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-inline-size: 0;
+}
+
+.coresTitulo {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  font: var(--type-label);
+  color: var(--text-secondary);
+}
+
+.coresOpcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cor {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-h-lg);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.cor:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+.corMarcada {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+}
+
+.corMarcada .corRotulo { font: var(--type-body-strong); color: var(--text-brand); }
+
+.cor:focus-within {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.marca {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--sis-petroleo-700);
+  cursor: pointer;
+}
+
+/* O ponto sai de classe, nunca de style inline com o hex do banco. */
+.ponto {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.petroleo { background: var(--sis-petroleo-700); }
+.azul     { background: var(--sis-azul-profundo); }
+.ambar    { background: var(--sis-ambar); }
+.tijolo   { background: var(--sis-tijolo-600); }
+
+.corRotulo { font: var(--type-body); }
+
+/* --- Ações ------------------------------------------------------------------ */
+.acao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.confirmacao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.pergunta {
+  flex: 1;
+  min-width: 0;
+  font: var(--type-small);
+  color: var(--text-primary);
+}
+
+.erro {
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.nota {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

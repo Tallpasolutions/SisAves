@@ -37,6 +37,7 @@ Toda linha deve sair com `resultado = ok`.
 | `11_hoje_do_criatorio.sql` | `public.hoje()` segue o fuso de São Paulo, e a máquina de estados usa o dia do criatório por padrão sem deixar de aceitar um dia informado — que é como o cálculo roda offline. |
 | `12_desfazer_marco.sql` | Desfazer devolve o ovo ao ciclo; a perda de filhote anilhado desfaz o óbito junto, mas só quando foi ela que o gravou; eclosão de filhote anilhado não se desfaz. |
 | `13_transferir_postura.sql` | Transferir muda quem choca e não de quem é o ovo — o filhote criado pela babá e anilhado lá continua filho do casal que o pôs; devolver mantém a passagem no histórico. |
+| `14_corrigir_data_marco.sql` | Trocar a data de um marco mantém o registro e o motivo; data recusada deixa a anterior valendo; as guardas de `desfazer_marco` continuam valendo, inclusive a do filhote anilhado. |
 
 ## Regra dos fixtures
 

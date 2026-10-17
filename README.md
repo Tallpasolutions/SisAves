@@ -11,8 +11,8 @@ inventário completo do que falta**, pendências e armadilhas — fica em
 O ciclo do ovo fecha pela interface — postura, ovoscopia, eclosão, anilhamento,
 separação e perda — e a ave sai do plantel por venda, doação, empréstimo, óbito
 ou fuga. Ave e casal se editam, o casal se encerra, o ovo passa para outro
-casal chocar e um marco registrado por engano se desfaz. O próximo passo é a
-Fase 8: CRO, QR e validação pública.
+casal chocar, e o que entrou errado se corrige ou se apaga. O próximo passo é
+a Fase 8: CRO, QR e validação pública.
 
 ## Começando
 
@@ -47,12 +47,13 @@ ciclo do ovo, com datas relativas a hoje — então sempre há o que ver na tela
 | `/plantel/[id]/genealogia` | árvore de três gerações |
 | `/casais` · `/casais/[id]` | lista e ficha do casal, com endogamia |
 | `/casais/novo` | formar casal |
+| `/casais/etiquetas` | catálogo de etiquetas |
 | `/casais/[id]/editar` | corrigir o casal e encerrá-lo |
 | `/casais/[id]/postura` | registrar postura |
 | `/ovos` | ciclo do ovo, por estado |
 | `/ovos/[ninhada]` | a ninhada ovo por ovo — conferir o ninho e marcar o que mudou |
 | `/ovos/[ninhada]/transferir` | passar ovos para outro casal chocar |
-| `/ovos/[ninhada]/corrigir` | desfazer um marco do ciclo |
+| `/ovos/[ninhada]/corrigir` | mudar a data de um marco, ou desfazê-lo |
 | `/ovos/[ninhada]/anilhar` | anilhar filhotes |
 | `/painel` | painel do criatório (só no desktop) |
 | `/entrar` · `/cadastrar` · `/comecar` | autenticação e onboarding |
@@ -96,7 +97,7 @@ O runner conecta pelo **pooler**: o host direto `db.<ref>.supabase.co` só
 resolve em IPv6 e devolve `ENOTFOUND` em máquina sem rota IPv6.
 
 ```bash
-node scripts/sql.mjs -f supabase/migrations/0025_chocador_nas_telas.sql
+node scripts/sql.mjs -f supabase/migrations/0026_corrigir_data_marco.sql
 node scripts/sql.mjs "select 1"                        # consulta avulsa
 ```
 

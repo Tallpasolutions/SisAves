@@ -28,8 +28,11 @@ export interface OvoDaNinhada {
   chocadorNumero: number | null;
   /** Os marcos que fazem sentido para este ovo hoje. Vazio = fora do ciclo. */
   marcos: Marco[];
-  /** O que já foi registrado e ainda pode ser desfeito, se tiver sido engano. */
-  desfaziveis: MarcoDesfazivel[];
+  /**
+   * O que já foi registrado e ainda pode ser desfeito ou redatado, com a data
+   * que está gravada hoje — é ela que o campo de correção precisa mostrar.
+   */
+  desfaziveis: Array<{ marco: MarcoDesfazivel; data: string | null }>;
 }
 
 export interface NinhadaCompleta {
@@ -156,20 +159,24 @@ function paraOvo(l: Linha): OvoDaNinhada {
  * garantia; isto é o que a tela oferece, e as duas precisam concordar — botão
  * que existe para ser recusado é botão que ensina a desconfiar da tela.
  */
-function marcosDesfaziveis(l: Linha): MarcoDesfazivel[] {
-  const desfaziveis: MarcoDesfazivel[] = [];
+function marcosDesfaziveis(
+  l: Linha,
+): Array<{ marco: MarcoDesfazivel; data: string | null }> {
+  const desfaziveis: Array<{ marco: MarcoDesfazivel; data: string | null }> = [];
 
-  if (l.desfecho !== null) desfaziveis.push("desfecho");
-  if (l.data_separacao !== null) desfaziveis.push("separacao");
+  if (l.desfecho !== null) desfaziveis.push({ marco: "desfecho", data: l.desfecho_em });
+  if (l.data_separacao !== null) {
+    desfaziveis.push({ marco: "separacao", data: l.data_separacao });
+  }
 
   // Anilhado, o filhote virou ave no plantel e a eclosão é o fato que o criou.
   if (l.data_eclosao !== null && l.data_anilhamento === null && l.data_separacao === null) {
-    desfaziveis.push("eclosao");
+    desfaziveis.push({ marco: "eclosao", data: l.data_eclosao });
   }
 
   // Ovo claro desfaz-se pelo desfecho, que devolve a ovoscopia junto.
   if (l.ovoscopia_em !== null && l.desfecho !== "infertil" && l.data_eclosao === null) {
-    desfaziveis.push("ovoscopia");
+    desfaziveis.push({ marco: "ovoscopia", data: l.ovoscopia_em });
   }
 
   return desfaziveis;

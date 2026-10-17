@@ -1,14 +1,20 @@
 "use client";
 
 import { CircleAlert, Undo2, WifiOff } from "lucide-react";
-import { useActionState } from "react";
-import { Badge, Button } from "@/components/ui";
+import { useActionState, useState } from "react";
+import { Badge, Button, Field, Input } from "@/components/ui";
 import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
 import { ROTULO_ESTADO, TOM_ESTADO } from "@/lib/dados/estados-do-ovo";
 import { MARCOS_DESFAZIVEIS, type MarcoDesfazivel } from "@/lib/dados/marcos";
 import type { OvoDaNinhada } from "@/lib/dados/ninhada";
 import { formatarDataCurta } from "@/lib/formato";
-import { desfazerMarco, type EstadoCorrecao } from "./acoes";
+import { hojeNoAparelho } from "@/lib/data";
+import { useErrosQueEnvelhecem } from "@/lib/formulario";
+import {
+  corrigirDataMarco,
+  desfazerMarco,
+  type EstadoCorrecao,
+} from "./acoes";
 import styles from "./corrigir.module.css";
 
 export function LinhaCorrecao({
@@ -32,17 +38,148 @@ export function LinhaCorrecao({
       <span className={styles.ovoContexto}>{registrado(ovo)}</span>
 
       <div className={styles.botoes}>
-        {ovo.desfaziveis.map((marco) => (
-          <BotaoDesfazer
+        {ovo.desfaziveis.map(({ marco, data }) => (
+          <Correcao
             key={marco}
             posturaId={ovo.posturaId}
             ninhadaId={ninhadaId}
             marco={marco}
+            data={data}
             nome={nome}
           />
         ))}
       </div>
     </div>
+  );
+}
+
+/**
+ * As duas correções de um marco, lado a lado: trocar a data e apagar.
+ *
+ * Dois formulários irmãos, nunca aninhados — <form> dentro de <form> é HTML
+ * inválido e o navegador descarta o de dentro em silêncio.
+ */
+function Correcao({
+  posturaId,
+  ninhadaId,
+  marco,
+  data,
+  nome,
+}: {
+  posturaId: string;
+  ninhadaId: string;
+  marco: MarcoDesfazivel;
+  data: string | null;
+  nome: string;
+}) {
+  return (
+    <div className={styles.correcao}>
+      {data ? (
+        <FormularioData
+          posturaId={posturaId}
+          ninhadaId={ninhadaId}
+          marco={marco}
+          data={data}
+          nome={nome}
+        />
+      ) : null}
+      <BotaoDesfazer
+        posturaId={posturaId}
+        ninhadaId={ninhadaId}
+        marco={marco}
+        nome={nome}
+      />
+    </div>
+  );
+}
+
+/** Troca a data sem tirar o marco: um passo, numa transação. */
+function FormularioData({
+  posturaId,
+  ninhadaId,
+  marco,
+  data,
+  nome,
+}: {
+  posturaId: string;
+  ninhadaId: string;
+  marco: MarcoDesfazivel;
+  data: string;
+  nome: string;
+}) {
+  const [estado, acao, enviando] = useActionState<EstadoCorrecao, FormData>(
+    corrigirDataMarco,
+    {},
+  );
+  const [valor, setValor] = useState(data);
+  const { erro, marcar, enviar } = useErrosQueEnvelhecem(estado.campos);
+
+  const definicao = MARCOS_DESFAZIVEIS.find((m) => m.valor === marco)!;
+
+  const { aoEnviar, salvoNoAparelho, online } = useEnvioOffline({
+    tipo: "redatar-marco",
+    resumo: () => `${definicao.rotuloData} · ${nome}`,
+  });
+
+  if (salvoNoAparelho) {
+    return (
+      <span className={styles.nota}>
+        <WifiOff size={14} aria-hidden="true" />
+        Salvo no aparelho. Sobe quando o sinal voltar.
+      </span>
+    );
+  }
+
+  return (
+    <form
+      action={acao}
+      onSubmit={(evento) => {
+        enviar();
+        aoEnviar(evento);
+      }}
+      className={styles.acao}
+    >
+      <input type="hidden" name="postura_id" value={posturaId} />
+      <input type="hidden" name="ninhada_id" value={ninhadaId} />
+      <input type="hidden" name="marco" value={marco} />
+
+      <Field label={definicao.rotuloData} error={erro("data")}>
+        {({ id, descritoPor, invalido }) => (
+          <Input
+            id={id}
+            name="data"
+            type="date"
+            size="lg"
+            numeric
+            max={hojeNoAparelho()}
+            value={valor}
+            onChange={(e) => {
+              setValor(e.target.value);
+              marcar("data");
+            }}
+            aria-describedby={descritoPor}
+            invalid={invalido}
+            required
+          />
+        )}
+      </Field>
+
+      <Button
+        type="submit"
+        variant="secondary"
+        size="md"
+        disabled={enviando || valor === data}
+      >
+        {enviando ? "Mudando…" : "Mudar a data"}
+      </Button>
+
+      {!online ? (
+        <span className={styles.nota}>
+          <WifiOff size={14} aria-hidden="true" />
+          Offline — será salvo no aparelho
+        </span>
+      ) : null}
+    </form>
   );
 }
 

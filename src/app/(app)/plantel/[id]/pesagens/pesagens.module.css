@@ -117,8 +117,9 @@
 .linha {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-2) var(--space-3);
   min-height: var(--touch-min);
   padding: var(--space-3) var(--space-4);
   background: var(--surface-card);
@@ -156,4 +157,56 @@
   font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
   color: var(--text-secondary);
+}
+
+/* --- Correção de uma linha --------------------------------------------------
+   Excluir pede dois toques: o primeiro troca o botão pela pergunta. Não é
+   diálogo modal — a lista é longa, o criador está de pé, e um modal aqui custa
+   um foco preso e a tela coberta para confirmar o que já está escrito na
+   linha. */
+.linhaAcoes {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
+.confirmacao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pergunta {
+  font: var(--type-small);
+  color: var(--text-primary);
+}
+
+.erroLinha {
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.notaLinha {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.cancelar {
+  align-self: center;
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  font: var(--type-label);
+  color: var(--text-link);
+}
+
+.cancelar:hover { color: var(--text-link-hover); text-decoration: underline; }
+
+.cancelar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
 }

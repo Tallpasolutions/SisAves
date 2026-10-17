@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { ChevronLeft, Scale } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Badge, EmptyState, Toast } from "@/components/ui";
+import { Badge, Button, EmptyState, Toast } from "@/components/ui";
 import {
   obterHistoricoPeso,
   ROTULO_CONTEXTO,
   type Pesagem,
 } from "@/lib/dados/pesagens";
 import { formatarData, formatarPeso } from "@/lib/formato";
-import { FormularioPesagem } from "./formulario";
+import { BotaoExcluirPesagem, FormularioPesagem } from "./formulario";
 import styles from "./pesagens.module.css";
 
 export const metadata: Metadata = { title: "Pesagens" };
@@ -23,6 +23,7 @@ export default async function Pesagens({
   if (!historico) notFound();
 
   const atual = historico.pesagens[0] ?? null;
+  const emEdicao = historico.pesagens.find((p) => p.id === consulta.editar);
 
   return (
     <div className={styles.tela}>
@@ -30,6 +31,22 @@ export default async function Pesagens({
         <ChevronLeft size={18} aria-hidden="true" />
         {historico.nome ?? "Ficha da ave"}
       </Link>
+
+      {consulta.corrigida === "1" ? (
+        <Toast
+          tone="ok"
+          title="Pesagem corrigida"
+          description="O histórico e a variação passam a contar com o valor novo."
+        />
+      ) : null}
+
+      {consulta.excluida === "1" ? (
+        <Toast
+          tone="ok"
+          title="Pesagem excluída"
+          description="Ela sai do histórico e da variação. A curva volta a ser a dos pontos que restaram."
+        />
+      ) : null}
 
       {consulta.registrada === "1" && atual ? (
         <Toast
@@ -53,8 +70,18 @@ export default async function Pesagens({
       </header>
 
       <section className={styles.bloco}>
-        <h2 className={styles.blocoTitulo}>Nova pesagem</h2>
-        <FormularioPesagem aveId={id} nome={historico.nome} />
+        <h2 className={styles.blocoTitulo}>
+          {emEdicao ? "Corrigir pesagem" : "Nova pesagem"}
+        </h2>
+        <FormularioPesagem
+          /* A chave troca o formulário inteiro ao mudar de alvo: sem ela o
+             React reaproveita o estado e a correção abre com o peso da
+             pesagem anterior. */
+          key={emEdicao?.id ?? "nova"}
+          aveId={id}
+          nome={historico.nome}
+          emEdicao={emEdicao}
+        />
       </section>
 
       <section className={styles.bloco}>
@@ -90,6 +117,21 @@ export default async function Pesagens({
                   {p.variacao !== null ? (
                     <span className={styles.variacao}>{formatarVariacao(p.variacao)}</span>
                   ) : null}
+                </span>
+
+                <span className={styles.linhaAcoes}>
+                  <Button
+                    href={`/plantel/${id}/pesagens?editar=${p.id}`}
+                    variant="ghost"
+                    size="sm"
+                  >
+                    Editar
+                  </Button>
+                  <BotaoExcluirPesagem
+                    pesagemId={p.id}
+                    aveId={id}
+                    descricao={`${formatarPeso(p.pesoGramas)} · ${formatarData(p.data)}`}
+                  />
                 </span>
               </li>
             ))}

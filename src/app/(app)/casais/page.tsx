@@ -30,6 +30,16 @@ export default async function Casais() {
         </Button>
       </header>
 
+      {/* Elo discreto: o catálogo é manutenção, e a ação da tela é formar
+          casal. Só aparece quando há o que arrumar. */}
+      {casais.some((c) => c.etiquetas.length > 0) ? (
+        <div className={styles.manutencao}>
+          <Link href="/casais/etiquetas" className={styles.elo}>
+            Arrumar as etiquetas
+          </Link>
+        </div>
+      ) : null}
+
       {casais.length === 0 ? (
         <EmptyState
           icon={<Users size={28} />}

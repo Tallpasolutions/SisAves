@@ -22,6 +22,7 @@ export default async function Corrigir({
   const numero = String(ninhada.ninhadaNumero ?? 0).padStart(2, "0");
   const comRegistro = ninhada.ovos.filter((o) => o.desfaziveis.length > 0);
   const desfeito = MARCOS_DESFAZIVEIS.find((m) => m.valor === consulta.desfeito);
+  const redatado = MARCOS_DESFAZIVEIS.find((m) => m.valor === consulta.redatado);
 
   return (
     <div className={styles.tela}>
@@ -38,6 +39,14 @@ export default async function Corrigir({
         />
       ) : null}
 
+      {redatado ? (
+        <Toast
+          tone="ok"
+          title={`${redatado.redatado} · Ninhada ${numero}`}
+          description="O marco continua registrado; só a data mudou, e os prazos passam a contar dela."
+        />
+      ) : null}
+
       <header className={styles.cabecalho}>
         <h1 className={styles.titulo}>Corrigir registros</h1>
         <p className={styles.contexto}>
@@ -48,8 +57,8 @@ export default async function Corrigir({
           )}
         </p>
         <p className={styles.explicacao}>
-          Desfazer apaga o que foi registrado e devolve o ovo ao ciclo. Para
-          trocar a data de uma marca, desfaça e registre de novo na conferência.
+          Mudar a data mantém o registro e recalcula os prazos a partir dela.
+          Desfazer apaga o que foi registrado e devolve o ovo ao ciclo.
         </p>
       </header>
 
