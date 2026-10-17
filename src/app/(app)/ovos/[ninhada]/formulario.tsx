@@ -12,6 +12,7 @@ import { formatarDataCurta } from "@/lib/formato";
 import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
 import { registrarConferencia, type EstadoConferencia } from "./acoes";
 import styles from "./ninhada.module.css";
+import { hojeNoAparelho } from "@/lib/data";
 
 /** Vazio quer dizer "segue igual" — o ovo não mudou de estado. */
 type Escolha = "" | Marco;
@@ -23,7 +24,7 @@ export function FormularioConferencia({ ninhada }: { ninhada: NinhadaCompleta })
   );
   const { erro, marcar, enviar } = useErrosQueEnvelhecem(estado.campos);
 
-  const [data, setData] = useState(() => new Date().toISOString().slice(0, 10));
+  const [data, setData] = useState(() => hojeNoAparelho());
   const [escolhas, setEscolhas] = useState<Record<string, Escolha>>({});
   const [motivos, setMotivos] = useState<Record<string, string>>({});
 
@@ -85,7 +86,7 @@ export function FormularioConferencia({ ninhada }: { ninhada: NinhadaCompleta })
               type="date"
               size="lg"
               numeric
-              max={new Date().toISOString().slice(0, 10)}
+              max={hojeNoAparelho()}
               value={data}
               onChange={(e) => {
                 setData(e.target.value);

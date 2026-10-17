@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { SAIDAS, type MotivoSaida } from "@/lib/dados/situacao";
+import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoSaida {
   erro?: string;
@@ -20,7 +21,7 @@ const EsquemaSaida = z.object({
     // o texto cru do Zod, em inglês.
     .string({ error: "Informe o dia da saída." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-    .refine((d) => d <= hoje(), "A saída não pode ser no futuro."),
+    .refine((d) => d <= hojeNoCriatorio(), "A saída não pode ser no futuro."),
   destino: z.string().trim().max(160).optional(),
   motivo: z.string().trim().max(400).optional(),
   valor: z.coerce
@@ -131,6 +132,3 @@ export async function reativarAve(
   redirect(`/plantel/${passaroId}?voltou=1`);
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}

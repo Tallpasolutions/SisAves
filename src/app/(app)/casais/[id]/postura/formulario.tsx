@@ -7,6 +7,7 @@ import { SalvoNoAparelho } from "@/components/offline/SalvoNoAparelho";
 import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
 import { registrarPostura, type EstadoPostura } from "./acoes";
 import styles from "./postura.module.css";
+import { hojeNoAparelho } from "@/lib/data";
 
 export interface Prazos {
   nome: string;
@@ -35,7 +36,7 @@ export function FormularioPostura({
     {},
   );
   const [quantidade, setQuantidade] = useState(1);
-  const [data, setData] = useState(() => new Date().toISOString().slice(0, 10));
+  const [data, setData] = useState(() => hojeNoAparelho());
   // Controlado porque o React 19 reseta o formulário quando a ação termina,
   // inclusive em erro: solto, o campo se esvaziaria junto com a mensagem.
   const [observacoes, setObservacoes] = useState("");
@@ -90,7 +91,7 @@ export function FormularioPostura({
             numeric
             value={data}
             onChange={(e) => setData(e.target.value)}
-            max={new Date().toISOString().slice(0, 10)}
+            max={hojeNoAparelho()}
             aria-describedby={descritoPor}
             invalid={invalido}
             required

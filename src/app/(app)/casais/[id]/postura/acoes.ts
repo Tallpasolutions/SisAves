@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoPostura {
   erro?: string;
@@ -23,7 +24,7 @@ const EsquemaPostura = z.object({
     // inglês ("Invalid input: expected string, received null").
     .string({ error: "Informe a data da postura." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-    .refine((d) => d <= hoje(), "A postura não pode ser no futuro."),
+    .refine((d) => d <= hojeNoCriatorio(), "A postura não pode ser no futuro."),
   quantidade: z.coerce
     .number({ error: "Informe quantos ovos a ninhada tem." })
     .int("Informe um número inteiro de ovos.")
@@ -160,9 +161,6 @@ export async function registrarPostura(
   redirect(`/casais/${casalId}?registrada=${numero}&ovos=${quantidade}`);
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 function formatarBR(iso: string): string {
   const [a, m, d] = iso.split("-");

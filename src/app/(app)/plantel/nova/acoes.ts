@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
+import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoCadastroAve {
   erro?: string;
@@ -38,7 +39,7 @@ const EsquemaAve = z
     dt_nascimento: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-      .refine((d) => d <= hoje(), "O nascimento não pode ser no futuro.")
+      .refine((d) => d <= hojeNoCriatorio(), "O nascimento não pode ser no futuro.")
       .optional(),
     anilha_sigla: z.string().trim().max(12, "A sigla do clube tem no máximo 12 caracteres.").optional(),
     anilha_criador: z.string().trim().max(20, "A matrícula do criador tem no máximo 20 caracteres.").optional(),
@@ -229,9 +230,6 @@ export async function cadastrarAve(
   redirect(`/plantel/${criada.id}?cadastrada=1`);
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 function formatarBR(iso: string): string {
   const [a, m, d] = iso.split("-");

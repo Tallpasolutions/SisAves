@@ -22,6 +22,7 @@ export type TipoEscrita =
   | "anilhamento"
   | "ave"
   | "edicao-ave"
+  | "pesagem"
   | "casal"
   | "edicao-casal"
   | "saida"

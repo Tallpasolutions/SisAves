@@ -1,4 +1,5 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { paraISO } from "@/lib/data";
 
 /** Os quatro estados que exigem ação, na ordem em que a tela os apresenta. */
 export type SituacaoTarefa = "anilhar" | "verificar" | "nascendo" | "separar";
@@ -112,7 +113,7 @@ export async function obterIndicadores(): Promise<IndicadoresPlantel> {
   const supabase = await criarClienteServidor();
   const primeiroDoMes = new Date();
   primeiroDoMes.setDate(1);
-  const desde = primeiroDoMes.toISOString().slice(0, 10);
+  const desde = paraISO(primeiroDoMes);
 
   const [aves, casais, choco, nascimentos] = await Promise.all([
     supabase

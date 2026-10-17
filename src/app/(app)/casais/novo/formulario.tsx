@@ -22,6 +22,7 @@ import {
   type LeituraEndogamia,
 } from "./acoes";
 import styles from "./novo.module.css";
+import { hojeNoAparelho } from "@/lib/data";
 
 export function FormularioCasal({ opcoes }: { opcoes: OpcoesFormarCasal }) {
   const [estado, acao, enviando] = useActionState<EstadoFormarCasal, FormData>(
@@ -34,7 +35,7 @@ export function FormularioCasal({ opcoes }: { opcoes: OpcoesFormarCasal }) {
   const [machoId, setMachoId] = useState("");
   const [femeaId, setFemeaId] = useState("");
   const [gaiola, setGaiola] = useState("");
-  const [inicio, setInicio] = useState(() => new Date().toISOString().slice(0, 10));
+  const [inicio, setInicio] = useState(() => hojeNoAparelho());
   const [observacoes, setObservacoes] = useState("");
 
   const macho = useMemo(
@@ -216,7 +217,7 @@ export function FormularioCasal({ opcoes }: { opcoes: OpcoesFormarCasal }) {
               type="date"
               size="lg"
               numeric
-              max={new Date().toISOString().slice(0, 10)}
+              max={hojeNoAparelho()}
               value={inicio}
               onChange={mudar("vigencia_inicio", setInicio)}
               aria-describedby={descritoPor}

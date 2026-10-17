@@ -10,6 +10,7 @@ import { formatarData } from "@/lib/formato";
 import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
 import { anilharFilhotes, type EstadoAnilhamento } from "./acoes";
 import styles from "./anilhar.module.css";
+import { hojeNoAparelho } from "@/lib/data";
 
 interface DadosFilhote {
   marcado: boolean;
@@ -28,7 +29,7 @@ export function FormularioAnilhamento({ ninhada }: { ninhada: NinhadaParaAnilhar
   const [sigla, setSigla] = useState(ninhada.anilha.sigla ?? "");
   const [criador, setCriador] = useState(ninhada.anilha.criador ?? "");
   const [ano, setAno] = useState(String(ninhada.anilha.ano));
-  const [data, setData] = useState(() => new Date().toISOString().slice(0, 10));
+  const [data, setData] = useState(() => hojeNoAparelho());
 
   const [filhotes, setFilhotes] = useState<Record<string, DadosFilhote>>(() =>
     Object.fromEntries(
@@ -189,7 +190,7 @@ export function FormularioAnilhamento({ ninhada }: { ninhada: NinhadaParaAnilhar
               type="date"
               size="lg"
               numeric
-              max={new Date().toISOString().slice(0, 10)}
+              max={hojeNoAparelho()}
               value={data}
               onChange={(e) => {
                 setData(e.target.value);

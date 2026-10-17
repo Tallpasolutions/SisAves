@@ -18,28 +18,28 @@ insert into public.passaros (id, criatorio_id, nome, sexo, especie_id) values
 
 insert into public.casais (id, criatorio_id, numero, macho_id, femea_id, vigencia_inicio)
 values ('fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-1111-1111-1111-111111111111',1,
-        'fdfdfdfd-aaaa-aaaa-aaaa-aaaaaaaaaaa1','fdfdfdfd-aaaa-aaaa-aaaa-aaaaaaaaaaa2', current_date - 60);
+        'fdfdfdfd-aaaa-aaaa-aaaa-aaaaaaaaaaa1','fdfdfdfd-aaaa-aaaa-aaaa-aaaaaaaaaaa2', public.hoje() - 60);
 
 insert into public.ninhadas (id, criatorio_id, casal_id, numero, iniciada_em) values
-  ('fdfdfdfd-dddd-dddd-dddd-dddddddddd01','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc', 1, current_date - 8),
-  ('fdfdfdfd-dddd-dddd-dddd-dddddddddd02','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc', 2, current_date - 18);
+  ('fdfdfdfd-dddd-dddd-dddd-dddddddddd01','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc', 1, public.hoje() - 8),
+  ('fdfdfdfd-dddd-dddd-dddd-dddddddddd02','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc', 2, public.hoje() - 18);
 
 -- Ninhada 1: posta há 8 dias. Passou da janela de ovoscopia (6 dias) e ainda
 -- está longe da eclosão (14) — exatamente o estado em que o criador abre o
 -- ninho com a lanterna.
 insert into public.posturas (id, criatorio_id, casal_id, ninhada_id, numero_ovo, data_postura) values
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000101','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',1, current_date - 8),
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000102','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',2, current_date - 8),
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000103','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',3, current_date - 8),
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000104','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',4, current_date - 8);
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000101','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',1, public.hoje() - 8),
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000102','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',2, public.hoje() - 8),
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000103','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',3, public.hoje() - 8),
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000104','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd01',4, public.hoje() - 8);
 
 -- Ninhada 2: posta há 18 dias. Três filhotes já eclodidos e um ovo que ainda
 -- não nasceu.
 insert into public.posturas (id, criatorio_id, casal_id, ninhada_id, numero_ovo, data_postura, data_eclosao) values
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000201','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',1, current_date - 18, current_date - 5),
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000202','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',2, current_date - 18, current_date - 5),
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000203','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',3, current_date - 18, null),
-  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000204','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',4, current_date - 18, current_date - 5);
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000201','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',1, public.hoje() - 18, public.hoje() - 5),
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000202','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',2, public.hoje() - 18, public.hoje() - 5),
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000203','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',3, public.hoje() - 18, null),
+  ('fdfdfdfd-0f0f-0f0f-0f0f-000000000204','fdfdfdfd-1111-1111-1111-111111111111','fdfdfdfd-cccc-cccc-cccc-cccccccccccc','fdfdfdfd-dddd-dddd-dddd-dddddddddd02',4, public.hoje() - 18, public.hoje() - 5);
 
 create temp table veredito (cenario text, esperado text, obtido text);
 
@@ -52,7 +52,7 @@ insert into veredito values
 -- É o caso real: o criador abre o ninho uma vez e encontra tudo junto.
 insert into veredito values
   ('conferência grava os três marcos', '3',
-   (select public.registrar_marcos(current_date, jsonb_build_array(
+   (select public.registrar_marcos(public.hoje(), jsonb_build_array(
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000101','marco','fertil'),
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000102','marco','infertil'),
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000103','marco','perdido','motivo','ovo quebrado')
@@ -63,14 +63,14 @@ insert into veredito values
    (select situacao::text from public.vw_posturas where id = 'fdfdfdfd-0f0f-0f0f-0f0f-000000000101')),
 
   ('ovoscopia ficou datada de hoje', 'ok',
-   (select case when ovoscopia_em = current_date and fertil then 'ok' else 'FALTOU' end
+   (select case when ovoscopia_em = public.hoje() and fertil then 'ok' else 'FALTOU' end
       from public.posturas where id = 'fdfdfdfd-0f0f-0f0f-0f0f-000000000101')),
 
   ('ovo claro vira infértil', 'infertil',
    (select situacao::text from public.vw_posturas where id = 'fdfdfdfd-0f0f-0f0f-0f0f-000000000102')),
 
   ('ovo quebrado vira perda, com data e motivo', 'ok',
-   (select case when desfecho = 'perdido' and desfecho_em = current_date
+   (select case when desfecho = 'perdido' and desfecho_em = public.hoje()
                  and desfecho_motivo = 'ovo quebrado' then 'ok' else 'FALTOU' end
       from public.posturas where id = 'fdfdfdfd-0f0f-0f0f-0f0f-000000000103')),
 
@@ -82,7 +82,7 @@ insert into veredito values
 -- perdeu. O fato já está lá, e aplicar outra vez duplicaria o histórico.
 insert into veredito values
   ('reenvio da mesma conferência aplica zero', '0',
-   (select public.registrar_marcos(current_date, jsonb_build_array(
+   (select public.registrar_marcos(public.hoje(), jsonb_build_array(
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000101','marco','fertil'),
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000102','marco','infertil'),
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000103','marco','perdido')
@@ -94,7 +94,7 @@ insert into veredito values
 -- outra linha dele.
 insert into veredito values
   ('eclosão registrada', '1',
-   (select public.registrar_marcos(current_date, jsonb_build_array(
+   (select public.registrar_marcos(public.hoje(), jsonb_build_array(
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000203','marco','eclodiu')
     ))::text));
 
@@ -113,7 +113,7 @@ insert into veredito values
 -- tarefas sem nunca ter virado ave no plantel.
 do $$
 begin
-  perform public.registrar_marcos(current_date, jsonb_build_array(
+  perform public.registrar_marcos(public.hoje(), jsonb_build_array(
     jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000202','marco','separado')));
   insert into veredito values ('separar filhote não anilhado é barrado', 'barrado', 'PASSOU');
 exception when others then
@@ -121,7 +121,7 @@ exception when others then
 end $$;
 
 -- ---- Separação depois do anilhamento -----------------------------------------
-select public.anilhar_filhotes(current_date, jsonb_build_array(
+select public.anilhar_filhotes(public.hoje(), jsonb_build_array(
   jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000201',
     'anilha_sigla','COF','anilha_criador','9999','anilha_ano',2026,'anilha_numero',801,'nome','Primeiro'),
   jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000204',
@@ -130,7 +130,7 @@ select public.anilhar_filhotes(current_date, jsonb_build_array(
 
 insert into veredito values
   ('separação registrada', '1',
-   (select public.registrar_marcos(current_date, jsonb_build_array(
+   (select public.registrar_marcos(public.hoje(), jsonb_build_array(
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000204','marco','separado')
     ))::text));
 
@@ -143,13 +143,13 @@ insert into veredito values
 -- e disponível para formar casal.
 insert into veredito values
   ('perda de filhote anilhado registrada', '1',
-   (select public.registrar_marcos(current_date, jsonb_build_array(
+   (select public.registrar_marcos(public.hoje(), jsonb_build_array(
       jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000201','marco','perdido','motivo','não vingou')
     ))::text));
 
 insert into veredito values
   ('a ave do filhote perdido consta como morta', 'ok',
-   (select case when situacao = 'morto' and dt_obito = current_date then 'ok' else 'FALTOU' end
+   (select case when situacao = 'morto' and dt_obito = public.hoje() then 'ok' else 'FALTOU' end
       from public.passaros where anilha_numero = 801)),
 
   ('plantel ativo não conta a ave perdida', '1',
@@ -160,7 +160,7 @@ insert into veredito values
 -- ---- Guardas -----------------------------------------------------------------
 do $$
 begin
-  perform public.registrar_marcos(current_date + 1, jsonb_build_array(
+  perform public.registrar_marcos(public.hoje() + 1, jsonb_build_array(
     jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000104','marco','fertil')));
   insert into veredito values ('conferência no futuro é barrada', 'barrado', 'PASSOU');
 exception when others then
@@ -169,7 +169,7 @@ end $$;
 
 do $$
 begin
-  perform public.registrar_marcos(current_date - 30, jsonb_build_array(
+  perform public.registrar_marcos(public.hoje() - 30, jsonb_build_array(
     jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000104','marco','fertil')));
   insert into veredito values ('conferência antes da postura é barrada', 'barrado', 'PASSOU');
 exception when others then
@@ -178,7 +178,7 @@ end $$;
 
 do $$
 begin
-  perform public.registrar_marcos(current_date, jsonb_build_array(
+  perform public.registrar_marcos(public.hoje(), jsonb_build_array(
     jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000102','marco','eclodiu')));
   insert into veredito values ('eclodir ovo já declarado claro é barrado', 'barrado', 'PASSOU');
 exception when others then
@@ -189,7 +189,7 @@ end $$;
 -- voltaria à tela sem saber o que entrou.
 do $$
 begin
-  perform public.registrar_marcos(current_date, jsonb_build_array(
+  perform public.registrar_marcos(public.hoje(), jsonb_build_array(
     jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000104','marco','fertil'),
     jsonb_build_object('postura_id','fdfdfdfd-0f0f-0f0f-0f0f-000000000104','marco','chocou')));
 exception when others then null;
@@ -205,17 +205,17 @@ insert into veredito values
   ('ovoscopia entra nas movimentações', '1',
    (select count(*)::text from public.vw_movimentacoes
      where criatorio_id = 'fdfdfdfd-1111-1111-1111-111111111111'
-       and tipo = 'ovoscopia' and data = current_date)),
+       and tipo = 'ovoscopia' and data = public.hoje())),
 
   ('separação entra nas movimentações', '1',
    (select count(*)::text from public.vw_movimentacoes
      where criatorio_id = 'fdfdfdfd-1111-1111-1111-111111111111'
-       and tipo = 'separacao' and data = current_date)),
+       and tipo = 'separacao' and data = public.hoje())),
 
   ('perda é datada pelo desfecho, não pelo registro', '2',
    (select coalesce(sum(quantidade),0)::text from public.vw_movimentacoes
      where criatorio_id = 'fdfdfdfd-1111-1111-1111-111111111111'
-       and tipo = 'perda' and data = current_date));
+       and tipo = 'perda' and data = public.hoje()));
 
 select cenario, esperado, obtido,
        case when esperado = obtido then 'ok' else 'FALHOU' end as resultado

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoEdicaoCasal {
   erro?: string;
@@ -22,11 +23,11 @@ const EsquemaCasal = z
     vigencia_inicio: z
       .string({ error: "Informe quando o casal foi formado." })
       .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-      .refine((d) => d <= hoje(), "O casal não pode ter sido formado no futuro."),
+      .refine((d) => d <= hojeNoCriatorio(), "O casal não pode ter sido formado no futuro."),
     vigencia_fim: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-      .refine((d) => d <= hoje(), "O encerramento não pode ser no futuro.")
+      .refine((d) => d <= hojeNoCriatorio(), "O encerramento não pode ser no futuro.")
       .optional(),
   })
   .refine((d) => !d.vigencia_fim || d.vigencia_fim >= d.vigencia_inicio, {
@@ -159,9 +160,6 @@ export async function editarCasal(
   redirect(`/casais/${casalId}?${encerrou ? "encerrado=1" : "editado=1"}`);
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 function formatarBR(iso: string): string {
   const [a, m, d] = iso.split("-");

@@ -1,4 +1,5 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { paraISO } from "@/lib/data";
 
 export interface IndicadorPainel {
   rotulo: string;
@@ -69,8 +70,8 @@ export async function obterIndicadoresPainel(): Promise<IndicadorPainel[]> {
   const ano = agora.getFullYear();
   const mes = agora.getMonth();
 
-  const inicioDoMes = new Date(ano, mes, 1).toISOString().slice(0, 10);
-  const inicioDoMesAnterior = new Date(ano, mes - 1, 1).toISOString().slice(0, 10);
+  const inicioDoMes = paraISO(new Date(ano, mes, 1));
+  const inicioDoMesAnterior = paraISO(new Date(ano, mes - 1, 1));
 
   const [
     { count: ativas },

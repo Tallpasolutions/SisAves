@@ -18,6 +18,7 @@ import { registrarConferencia } from "@/app/(app)/ovos/[ninhada]/acoes";
 import { reativarAve, registrarSaida } from "@/app/(app)/plantel/[id]/saida/acoes";
 import { editarAve } from "@/app/(app)/plantel/[id]/editar/acoes";
 import { editarCasal } from "@/app/(app)/casais/[id]/editar/acoes";
+import { registrarPesagem } from "@/app/(app)/plantel/[id]/pesagens/acoes";
 import {
   contar,
   descreverItem,
@@ -40,6 +41,7 @@ const EXECUTORES: Record<TipoEscrita, Executor> = {
   anilhamento: (d) => anilharFilhotes({}, d),
   ave: (d) => cadastrarAve({}, d),
   "edicao-ave": (d) => editarAve({}, d),
+  pesagem: (d) => registrarPesagem({}, d),
   casal: (d) => formarCasal({}, d),
   "edicao-casal": (d) => editarCasal({}, d),
   saida: (d) => registrarSaida({}, d),

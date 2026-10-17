@@ -22,13 +22,13 @@ values ('cccccccc-cccc-cccc-cccc-cccccccccccc','cccccccc-1111-1111-1111-11111111
 
 insert into public.ninhadas (id, criatorio_id, casal_id, numero, iniciada_em)
 values ('cccccccc-dddd-dddd-dddd-dddddddddddd','cccccccc-1111-1111-1111-111111111111',
-        'cccccccc-cccc-cccc-cccc-cccccccccccc', 1, current_date - 18);
+        'cccccccc-cccc-cccc-cccc-cccccccccccc', 1, public.hoje() - 18);
 
 insert into public.posturas (id, criatorio_id, casal_id, ninhada_id, numero_ovo, data_postura, data_eclosao) values
-  ('cccccccc-0f0f-0f0f-0f0f-000000000001','cccccccc-1111-1111-1111-111111111111','cccccccc-cccc-cccc-cccc-cccccccccccc','cccccccc-dddd-dddd-dddd-dddddddddddd',1, current_date - 18, current_date - 4),
-  ('cccccccc-0f0f-0f0f-0f0f-000000000002','cccccccc-1111-1111-1111-111111111111','cccccccc-cccc-cccc-cccc-cccccccccccc','cccccccc-dddd-dddd-dddd-dddddddddddd',2, current_date - 18, current_date - 4),
+  ('cccccccc-0f0f-0f0f-0f0f-000000000001','cccccccc-1111-1111-1111-111111111111','cccccccc-cccc-cccc-cccc-cccccccccccc','cccccccc-dddd-dddd-dddd-dddddddddddd',1, public.hoje() - 18, public.hoje() - 4),
+  ('cccccccc-0f0f-0f0f-0f0f-000000000002','cccccccc-1111-1111-1111-111111111111','cccccccc-cccc-cccc-cccc-cccccccccccc','cccccccc-dddd-dddd-dddd-dddddddddddd',2, public.hoje() - 18, public.hoje() - 4),
   -- Este ainda não eclodiu: não pode ser anilhado.
-  ('cccccccc-0f0f-0f0f-0f0f-000000000003','cccccccc-1111-1111-1111-111111111111','cccccccc-cccc-cccc-cccc-cccccccccccc','cccccccc-dddd-dddd-dddd-dddddddddddd',3, current_date - 18, null);
+  ('cccccccc-0f0f-0f0f-0f0f-000000000003','cccccccc-1111-1111-1111-111111111111','cccccccc-cccc-cccc-cccc-cccccccccccc','cccccccc-dddd-dddd-dddd-dddddddddddd',3, public.hoje() - 18, null);
 
 create temp table veredito (cenario text, esperado text, obtido text);
 
@@ -39,7 +39,7 @@ insert into veredito values
      where ninhada_id = 'cccccccc-dddd-dddd-dddd-dddddddddddd' and situacao = 'anilhar'));
 
 -- ---- Anilhamento dos dois de uma vez ----------------------------------------
-select public.anilhar_filhotes(current_date, jsonb_build_array(
+select public.anilhar_filhotes(public.hoje(), jsonb_build_array(
   jsonb_build_object('postura_id','cccccccc-0f0f-0f0f-0f0f-000000000001',
     'anilha_sigla','COF','anilha_criador','1234','anilha_ano',2026,'anilha_numero',501,
     'nome','Primeiro','peso_gramas','12.5'),
@@ -61,7 +61,7 @@ insert into veredito values
 
   ('nascimento veio da eclosão', 'ok',
    (select case when count(*) = 2 then 'ok' else 'FALTOU' end from public.passaros
-     where anilha_numero in (501,502) and dt_nascimento = current_date - 4)),
+     where anilha_numero in (501,502) and dt_nascimento = public.hoje() - 4)),
 
   ('espécie veio do casal', 'ok',
    (select case when count(*) = 2 then 'ok' else 'FALTOU' end from public.passaros
@@ -90,7 +90,7 @@ insert into veredito values
 -- Anilhar de novo o mesmo filhote.
 do $$
 begin
-  perform public.anilhar_filhotes(current_date, jsonb_build_array(
+  perform public.anilhar_filhotes(public.hoje(), jsonb_build_array(
     jsonb_build_object('postura_id','cccccccc-0f0f-0f0f-0f0f-000000000001',
       'anilha_sigla','COF','anilha_criador','1234','anilha_ano',2026,'anilha_numero',503)));
   insert into veredito values ('anilhar duas vezes é barrado', 'barrado', 'PASSOU');
@@ -101,7 +101,7 @@ end $$;
 -- Anilhar ovo que ainda não eclodiu.
 do $$
 begin
-  perform public.anilhar_filhotes(current_date, jsonb_build_array(
+  perform public.anilhar_filhotes(public.hoje(), jsonb_build_array(
     jsonb_build_object('postura_id','cccccccc-0f0f-0f0f-0f0f-000000000003',
       'anilha_sigla','COF','anilha_criador','1234','anilha_ano',2026,'anilha_numero',504)));
   insert into veredito values ('anilhar ovo não eclodido é barrado', 'barrado', 'PASSOU');
@@ -112,7 +112,7 @@ end $$;
 -- Anilha repetida no SEGUNDO filhote não pode deixar o primeiro criado.
 do $$
 begin
-  perform public.anilhar_filhotes(current_date, jsonb_build_array(
+  perform public.anilhar_filhotes(public.hoje(), jsonb_build_array(
     jsonb_build_object('postura_id','cccccccc-0f0f-0f0f-0f0f-000000000003',
       'anilha_sigla','COF','anilha_criador','1234','anilha_ano',2026,'anilha_numero',601),
     jsonb_build_object('postura_id','cccccccc-0f0f-0f0f-0f0f-000000000003',

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { calcularEndogamia, explicarEndogamia } from "@/lib/dados/casais";
+import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoFormarCasal {
   erro?: string;
@@ -50,7 +51,7 @@ const EsquemaCasal = z.object({
   vigencia_inicio: z
     .string({ error: "Informe a data em que o casal foi formado." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-    .refine((d) => d <= hoje(), "A formação do casal não pode ser no futuro."),
+    .refine((d) => d <= hojeNoCriatorio(), "A formação do casal não pode ser no futuro."),
   observacoes: z.string().trim().max(500, "As observações não passam de 500 caracteres.").optional(),
 });
 
@@ -207,9 +208,6 @@ export async function formarCasal(
   redirect(`/casais/${criado.id}?formado=${numero}`);
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 function formatarBR(iso: string): string {
   const [a, m, d] = iso.split("-");

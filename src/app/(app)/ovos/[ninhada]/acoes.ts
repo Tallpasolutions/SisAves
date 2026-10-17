@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { MARCOS, type Marco } from "@/lib/dados/marcos";
+import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoConferencia {
   erro?: string;
@@ -18,7 +19,7 @@ const EsquemaConferencia = z.object({
     // antes do regex e devolveria o texto cru do Zod, em inglês.
     .string({ error: "Informe o dia da conferência." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-    .refine((d) => d <= hoje(), "A conferência não pode ser no futuro."),
+    .refine((d) => d <= hojeNoCriatorio(), "A conferência não pode ser no futuro."),
 });
 
 /**
@@ -103,6 +104,3 @@ export async function registrarConferencia(
   redirect(`/ovos/${ninhadaId}?conferidos=${aplicados}`);
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}

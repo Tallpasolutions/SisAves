@@ -10,6 +10,7 @@ import { descreverAve, formatarData } from "@/lib/formato";
 import { useErrosQueEnvelhecem } from "@/lib/formulario";
 import { editarCasal, type EstadoEdicaoCasal } from "./acoes";
 import styles from "./editar.module.css";
+import { hojeNoAparelho } from "@/lib/data";
 
 export function FormularioCasal({ casal }: { casal: CasalDetalhe }) {
   const [estado, acao, enviando] = useActionState<EstadoEdicaoCasal, FormData>(
@@ -137,7 +138,7 @@ export function FormularioCasal({ casal }: { casal: CasalDetalhe }) {
               type="date"
               size="lg"
               numeric
-              max={new Date().toISOString().slice(0, 10)}
+              max={hojeNoAparelho()}
               value={inicio}
               onChange={(e) => {
                 setInicio(e.target.value);
@@ -163,7 +164,7 @@ export function FormularioCasal({ casal }: { casal: CasalDetalhe }) {
               size="lg"
               numeric
               min={inicio || undefined}
-              max={new Date().toISOString().slice(0, 10)}
+              max={hojeNoAparelho()}
               value={fim}
               onChange={(e) => {
                 setFim(e.target.value);

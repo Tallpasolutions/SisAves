@@ -12,6 +12,7 @@ import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
 import { cadastrarAve, type EstadoCadastroAve } from "@/app/(app)/plantel/nova/acoes";
 import { editarAve } from "@/app/(app)/plantel/[id]/editar/acoes";
 import styles from "./FormularioAve.module.css";
+import { hojeNoAparelho } from "@/lib/data";
 
 const SEXOS = [
   { valor: "macho", rotulo: "Macho" },
@@ -124,7 +125,7 @@ export function FormularioAve({
   const mostrarFiliacao = campos.origem === "nascimento_proprio";
 
   const sugestao = opcoes.anilha.sugestao;
-  const hoje = new Date().toISOString().slice(0, 10);
+  const hoje = hojeNoAparelho();
 
   if (salvoNoAparelho) {
     return (

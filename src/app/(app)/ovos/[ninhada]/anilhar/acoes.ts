@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoAnilhamento {
   erro?: string;
@@ -30,7 +31,7 @@ const EsquemaAnilhamento = z.object({
   data_anilhamento: z
     .string({ error: "Informe a data do anilhamento." })
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Informe a data no formato dd/mm/aaaa.")
-    .refine((d) => d <= hoje(), "O anilhamento não pode ser no futuro."),
+    .refine((d) => d <= hojeNoCriatorio(), "O anilhamento não pode ser no futuro."),
   anilha_sigla: z.string().trim().max(12).optional(),
   anilha_criador: z.string().trim().max(20).optional(),
   anilha_ano: z.coerce
@@ -159,6 +160,3 @@ export async function anilharFilhotes(
   redirect(`/ovos?anilhados=${filhotes.length}&ninhada=${ninhadaId}`);
 }
 
-function hoje(): string {
-  return new Date().toISOString().slice(0, 10);
-}

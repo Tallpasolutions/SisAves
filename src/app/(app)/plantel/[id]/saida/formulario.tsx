@@ -11,6 +11,7 @@ import { formatarData } from "@/lib/formato";
 import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
 import { registrarSaida, type EstadoSaida } from "./acoes";
 import styles from "./saida.module.css";
+import { hojeNoAparelho } from "@/lib/data";
 
 export function FormularioSaida({ ave }: { ave: AveDetalhe }) {
   const [estado, acao, enviando] = useActionState<EstadoSaida, FormData>(
@@ -20,7 +21,7 @@ export function FormularioSaida({ ave }: { ave: AveDetalhe }) {
   const { erro, marcar, enviar } = useErrosQueEnvelhecem(estado.campos);
 
   const [motivo, setMotivo] = useState<MotivoSaida | "">("");
-  const [data, setData] = useState(() => new Date().toISOString().slice(0, 10));
+  const [data, setData] = useState(() => hojeNoAparelho());
   const [destino, setDestino] = useState("");
   const [valor, setValor] = useState("");
   const [observacao, setObservacao] = useState("");
@@ -116,7 +117,7 @@ export function FormularioSaida({ ave }: { ave: AveDetalhe }) {
                 type="date"
                 size="lg"
                 numeric
-                max={new Date().toISOString().slice(0, 10)}
+                max={hojeNoAparelho()}
                 value={data}
                 onChange={(e) => {
                   setData(e.target.value);

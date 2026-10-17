@@ -12,20 +12,20 @@ values ('ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee','ed17ed17-1111-1111-1111-11111111
         16::smallint, 4::smallint, 42::smallint, 7::smallint, 2::smallint);
 
 insert into public.passaros (id, criatorio_id, nome, sexo, especie_id, dt_nascimento) values
-  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa1','ed17ed17-1111-1111-1111-111111111111','Pai do plantel','macho','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', current_date - 800),
-  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa2','ed17ed17-1111-1111-1111-111111111111','Mãe do plantel','femea','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', current_date - 800),
-  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa3','ed17ed17-1111-1111-1111-111111111111','Macho solto','macho','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', current_date - 700);
+  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa1','ed17ed17-1111-1111-1111-111111111111','Pai do plantel','macho','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', public.hoje() - 800),
+  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa2','ed17ed17-1111-1111-1111-111111111111','Mãe do plantel','femea','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', public.hoje() - 800),
+  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa3','ed17ed17-1111-1111-1111-111111111111','Macho solto','macho','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', public.hoje() - 700);
 
 -- Dois filhotes do par, para o pai ter filiação registrada.
 insert into public.passaros (id, criatorio_id, nome, sexo, especie_id, dt_nascimento, pai_id, mae_id) values
-  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaf1','ed17ed17-1111-1111-1111-111111111111','Filho 1','indefinido','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', current_date - 100,
+  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaf1','ed17ed17-1111-1111-1111-111111111111','Filho 1','indefinido','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', public.hoje() - 100,
    'ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa1','ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa2'),
-  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaf2','ed17ed17-1111-1111-1111-111111111111','Filho 2','indefinido','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', current_date - 100,
+  ('ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaf2','ed17ed17-1111-1111-1111-111111111111','Filho 2','indefinido','ed17ed17-eeee-eeee-eeee-eeeeeeeeeeee', public.hoje() - 100,
    'ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa1','ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa2');
 
 insert into public.casais (id, criatorio_id, numero, macho_id, femea_id, vigencia_inicio)
 values ('ed17ed17-cccc-cccc-cccc-cccccccccc01','ed17ed17-1111-1111-1111-111111111111',1,
-        'ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa1','ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa2', current_date - 200);
+        'ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa1','ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa2', public.hoje() - 200);
 
 create temp table veredito (cenario text, esperado text, obtido text);
 
@@ -59,7 +59,7 @@ end $$;
 -- O macho solto não tem filhote; o que o impede é o casal.
 insert into public.casais (id, criatorio_id, numero, macho_id, femea_id, vigencia_inicio)
 values ('ed17ed17-cccc-cccc-cccc-cccccccccc02','ed17ed17-1111-1111-1111-111111111111',2,
-        'ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa3', null, current_date - 150);
+        'ed17ed17-aaaa-aaaa-aaaa-aaaaaaaaaaa3', null, public.hoje() - 150);
 
 do $$
 begin
@@ -72,7 +72,7 @@ end $$;
 
 -- Encerrado o casal, a correção passa: a guarda protege o vínculo vivo, não
 -- congela o dado para sempre.
-update public.casais set vigencia_fim = current_date
+update public.casais set vigencia_fim = public.hoje()
  where id = 'ed17ed17-cccc-cccc-cccc-cccccccccc02';
 
 update public.passaros set sexo = 'femea'
