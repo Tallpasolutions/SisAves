@@ -81,11 +81,10 @@ const GRUPOS: Array<{ titulo: string; destinos: Destino[] }> = [
         Icone: Bell,
       },
       {
-        href: "#",
+        href: "/certificados",
         rotulo: "Certificados",
         resumo: "CRO emitido e validação por QR",
         Icone: Award,
-        emBreve: true,
       },
       {
         href: "#",

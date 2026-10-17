@@ -14,57 +14,25 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Fase 8 — CRO, QR e validação pública, junto com a tela C3.** O banco está
-pronto desde a Fase 1: `certificados` com snapshot `jsonb`, `validar_certificado`
-e a árvore com `caminho`. Falta só a interface.
+**Fase 9 — financeiro e saúde.** O banco está pronto desde a Fase 1 e não tem
+nenhuma tela: `financeiro_lancamentos` já recebe a receita da venda de ave
+(0018), e `medicamentos`, `doencas`, `sintomas` e `tratamentos` esperam
+interface. A tela de saúde é uma das duas que o handoff declarou não ter
+desenhado e ainda não existem — a outra, a lista de certificados, entrou com a
+Fase 8.
 
-Duas coisas foram resolvidas antes dela, nesta ordem, porque o CRO afirma um
-plantel e precisava de um plantel verdadeiro:
+Depois dela: Fase 10 (Mercado Pago) e Fase 11 (landing, SEO, migração do
+legado).
 
-1. **O ciclo do ovo fecha pela interface** desde 13/10/2026
-   (`0017_marcos_do_ciclo`). As seis datas que o estado do ovo deriva têm quem
-   as escreva:
-
-   | Marco | Coluna | Tela que escreve |
-   |---|---|---|
-   | Postura | `data_postura` | B9 Registrar postura |
-   | Ovoscopia | `ovoscopia_em`, `fertil` | Ninhada · "Fértil" / "Ovo claro" |
-   | Eclosão | `data_eclosao` | Ninhada · "Nasceu" |
-   | Anilhamento | `data_anilhamento` | Anilhar filhote |
-   | Separação | `data_separacao` | Ninhada · "Separado" |
-   | Perda / ovo claro | `desfecho`, `desfecho_em` | Ninhada · "Perdido" / "Ovo claro" |
-
-2. **A ave sai do plantel** desde 15/10/2026 (`0018_saida_do_plantel`).
-   `passaros.situacao` tinha seis valores e a interface escrevia um: toda ave
-   ficava 'ativo' para sempre, e a vendida seguia contada no plantel e
-   disponível para formar casal.
+**O que mais pesa fora das fases** está no item 5 de "O que falta": nenhum
+teste de interface, nunca publicado, as chaves do Supabase sem rotação, e o
+push das notificações, que depende de deploy.
 
 > **Correção de registro, mantida.** Entre as fases 4 e 7 este arquivo e a
-> memória afirmavam que o ciclo já fechava pela interface. Não fechava: fechava
-> no banco de desenvolvimento porque a semente grava `data_eclosao` direto. A
-> semente escondeu a falta por três fases. Está resolvido, e a lição fica.
-
-3. **O registro se corrige** desde 15/10/2026 (`0020_coerencia_ao_editar`).
-   Editar ave e editar casal — inclusive encerrar o casal por decisão do
-   criador, sem precisar vender uma das aves. Até aqui nada no produto
-   corrigia um dado errado.
-
-4. **O que ficava fora das fases** entrou em 16/10/2026: pesagem avulsa,
-   desfazer um marco do ciclo, transferir postura entre casais e etiquetar
-   casal — com as correções que faltavam nelas: catálogo de etiquetas,
-   data de um marco em um passo, e editar ou excluir uma pesagem.
-5. **As telas que o handoff não desenhou** entraram em 17/10/2026: espécies e
-   prazos, configurações, perfil, membros, relatórios, notificações e a quinta
-   aba do celular. Ver o item 4 de "O que falta".
-
-Com isso, a Fase 8 é a próxima sem nada na frente.
-
-> **Dois acertos de base vieram junto.** `current_date` e `toISOString()` são
-> UTC, e o criatório é brasileiro: das 21h à meia-noite o dia já tinha virado,
-> na exata janela em que o criador trabalha. E a checagem dos testes era
-> `grep -c FALHOU`, que devolve zero tanto quando tudo passa quanto quando o
-> script morre antes do veredito — dois arquivos ficaram quebrados por isso.
-> Ver `public.hoje()` (0022), `src/lib/data.ts` e `scripts/testar.mjs`.
+> memória afirmavam que o ciclo do ovo já fechava pela interface. Não fechava:
+> fechava no banco de desenvolvimento porque a semente grava `data_eclosao`
+> direto. A semente escondeu a falta por três fases. Está resolvido desde
+> 13/10/2026, e a lição fica.
 
 ## Onde está tudo
 
@@ -130,8 +98,8 @@ abriria brecha para cor fora da paleta.
 | 4 · Núcleo mobile (Faixa B) | **concluída**; o ciclo do ovo passou a fechar pela interface em `0017` |
 | 5 · Genealogia (B6) | **concluída** (`10c0800`) |
 | 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
-| 7 · Desktop (Faixa C) | **C1 e C2 concluídas** (`f2d3598`, `6224a60`); C3 fica para a Fase 8 |
-| 8 · CRO, QR e validação pública | banco pronto; interface não iniciada |
+| 7 · Desktop (Faixa C) | **concluída**; C3 entrou com a Fase 8 |
+| 8 · CRO, QR e validação pública | **concluída** — emissão, folha A4, QR real, página pública e C3 |
 | 9 · Financeiro e saúde | banco pronto; interface não iniciada |
 | 10 · Assinatura (Mercado Pago) | banco pronto; integração não iniciada |
 | 11 · Landing e lançamento | não iniciada |
@@ -173,6 +141,8 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0027_convites_de_membro` | `criatorio_convites`, `aceitar_convites()`, `vw_membros` |
 | `0028_gerar_notificacoes` | `gerar_notificacoes()`; `notificacoes.referencia_id` e `referencia_dia` |
 | `0029_notificacao_por_ninhada` | um aviso por ninhada, com a contagem na frase |
+| `0030_emitir_certificado` | `emitir_certificado()`, `revogar_certificado()`; motivo na validação |
+| `0031_previa_do_cro` | grant de `montar_snapshot_certificado` para a prévia da C3 |
 
 ### Funções do domínio
 
@@ -182,9 +152,10 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `casal_ativo` · `anilhar_filhotes` · `registrar_marcos` · `registrar_saida` ·
 `reativar_ave` · `tg_sexo_coerente` · `hoje` · `desfazer_marco` ·
 `transferir_posturas` · `devolver_postura` · `corrigir_data_marco` ·
-`aceitar_convites` · `gerar_notificacoes`
+`aceitar_convites` · `gerar_notificacoes` · `emitir_certificado` ·
+`revogar_certificado`
 
-### Testes de banco — 164 asserções, todas passando
+### Testes de banco — 181 asserções, todas passando
 
 ```bash
 node scripts/testar.mjs
@@ -211,6 +182,7 @@ falha, e sai com código 1.
 | `12_desfazer_marco` | 12 |
 | `13_transferir_postura` | 17 |
 | `14_corrigir_data_marco` | 12 |
+| `15_certificado_emissao` | 17 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
@@ -408,14 +380,18 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/plantel/[id]/editar` | Editar ave | não desenhada; **o mesmo componente do cadastro**, em modo de edição |
 | `/casais/[id]/editar` | Editar casal | não desenhada; gaiola, observações, vigência — e é aqui que o casal se encerra |
 | `/plantel/[id]/saida` | Registrar saída | não desenhada; venda, doação, empréstimo, óbito e fuga — os campos mudam com o motivo e o casal vigente é encerrado junto |
+| `/certificados` · `/certificados/novo` | Certificados e **C3** | a C3 é a única tela exclusiva do desktop: a folha tem 210 mm e não há redução dela legível no telefone |
+| `/cro/[id]` · `/cro/publico/[codigo]` | **D1** · a folha A4 | fora do grupo `(app)`: sem sidebar, sem tab bar, nada que saia no papel |
+| `/v/[codigo]` | **D2** · validação pública | anônima; o que abre ao escanear o QR |
+| `/plantel/[id]/certificado` | Emitir CRO da ave | não desenhada; D1 é a FOLHA, não esta tela |
 | `/plantel/[id]/pesagens` | Pesagens | não desenhada; registro e histórico com a variação escrita por extenso |
 | `/plantel/[id]/genealogia` | B6 Árvore genealógica | três gerações em rolagem horizontal; aviso de ancestral repetido no topo; cabeçalho petróleo de borda a borda e legenda fixa no rodapé |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
 | `/comecar`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais |
 | `/ds` | biblioteca | referência do artboard A3; sai antes do lançamento |
 
-A subrota `/plantel/[id]/certificado` ainda existe como vazio honesto, para o
-atalho da ficha não dar 404 antes da Fase 8.
+Não há mais vazio honesto no produto: todas as rotas que existem fazem alguma
+coisa.
 
 **O padrão de escrita**, estabelecido na B9 e repetido nas três telas novas:
 Server Action com esquema Zod espelhando as constraints, erro por campo citando
@@ -543,7 +519,6 @@ e a lista coberta para confirmar o que já está escrito ali.
 
 | Fase | O que entrega | Banco |
 |---|---|---|
-| 8 · CRO, QR e validação (+ tela C3) | emissão, QR, página pública, impressão A4 | **pronto** (`certificados`, `validar_certificado`, snapshot com `caminho`) |
 | 9 · Financeiro e saúde | lançamentos, categorias; medicamentos, doenças, sintomas, tratamentos | **pronto**, sem nenhuma tela |
 | 10 · Assinatura (Mercado Pago) | checkout PIX/cartão, webhook, bloqueio suave | **pronto** (`assinaturas`, `assinatura_pagamentos`); credenciais vazias no `.env` |
 | 11 · Landing e lançamento | D3, SEO, domínio, migração do legado | — |
@@ -572,7 +547,6 @@ função. Construídas na linguagem das telas existentes, em 17/10/2026:
 
 O que **continua** faltando desta lista:
 
-- **Lista de certificados** — vem com a Fase 8.
 - **Saúde do plantel** — vem com a Fase 9.
 - **Genealogia do plantel inteiro** — a árvore é sempre de UMA ave; a sidebar
   lista o destino desabilitado porque o handoff o lista.
@@ -582,7 +556,7 @@ O que **continua** faltando desta lista:
 
 ### 5 · Qualidade e lançamento
 
-- **Não há nenhum teste de interface.** O banco tem 164 asserções; o front,
+- **Não há nenhum teste de interface.** O banco tem 181 asserções; o front,
   zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
   fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
 - **O push das notificações não existe.** Os avisos se materializam quando o
@@ -616,6 +590,45 @@ cliente".
    Três regimes diferentes; muda conteúdo de tela e talvez validação de anilha.
 
 ---
+
+## O CRO
+
+Três peças, e cada uma responde a uma pergunta diferente.
+
+**A emissão** (`emitir_certificado`) não é um insert. O **sequencial** é por
+criatório, calculado sob trava da linha do criatório — é o número impresso no
+papel, e dois CRO com o mesmo número é o pior defeito possível. O **snapshot**
+congela a genealogia do dia: a árvore muda quando o criador corrige uma
+filiação, e um CRO de 2026 precisa continuar provando o que era verdade em
+2026. O **hash** torna a URL imprevisível; sem ele bastaria incrementar o
+sequencial para varrer os certificados de todos os criatórios.
+
+**A folha** (`/cro/[id]`, componente `CertificadoA4`) segue D1: medidas em mm e
+pt, nunca px, porque é um documento físico. As cores saem **literais** e a
+folha é clara nos dois temas — papel não tem tema escuro, e `var(--surface-card)`
+seguiria o tema do navegador na hora de imprimir. O PDF nasce da impressão do
+navegador: a peça já foi desenhada para sair pronta, e gerar PDF no servidor
+exigiria Chrome headless em função serverless para ganhar nada.
+
+**A validação** (`/v/[codigo]`) passa por `validar_certificado`, que é
+`security definer` e devolve só o snapshot. Nenhum id interno, nenhum contato
+do criador: a página prova a ave, não apresenta o vendedor. Verificada sem
+cookie nenhum — responde 200, sem redirecionar para o login.
+
+Decisões que valem registro:
+
+- **Ave sem anilha não recebe CRO.** O documento afirma a anilha oficial.
+- **Revogar nunca apaga.** O papel foi impresso e entregue; sumir do banco
+  faria o QR dizer "não encontrado", que é ambíguo. Revogado, a página pública
+  diz o que aconteceu, com data e motivo.
+- **A mesma ave pode receber várias vias**, cada uma com número próprio. A
+  primeira se perde, a ave é revendida.
+- **A prévia da C3 usa a MESMA função** que a emissão congela. Montar o retrato
+  em TypeScript para a prévia faria a tela divergir do papel na primeira
+  mudança de uma das duas.
+- **Os rótulos dos bisavós precisam de mais que o lado.** `ppp` e `pmp` são
+  ambos "paternos"; cada bisavô é nomeado pelo avô de quem é — "Pai do avô
+  paterno".
 
 ## As duas faixas, uma rota só
 

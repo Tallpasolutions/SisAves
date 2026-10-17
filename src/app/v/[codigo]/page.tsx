@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CircleAlert, CircleCheck, Download } from "lucide-react";
 import { notFound } from "next/navigation";
-import { Anilha, Badge, SexChip } from "@/components/ui";
+import { Anilha, SexChip } from "@/components/ui";
 import {
   lerCodigo,
   porCaminho,

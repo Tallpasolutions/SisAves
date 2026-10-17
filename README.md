@@ -13,7 +13,8 @@ separação e perda — e a ave sai do plantel por venda, doação, empréstimo,
 ou fuga. Ave e casal se editam, o casal se encerra, o ovo passa para outro
 casal chocar, e o que entrou errado se corrige ou se apaga. Espécies, prazos,
 configurações do criatório, membros, relatórios e notificações também já têm
-tela. O próximo passo é a Fase 8: CRO, QR e validação pública.
+tela, e o CRO se emite com QR real e página pública de validação. O próximo
+passo é a Fase 9: financeiro e saúde.
 
 ## Começando
 
@@ -60,6 +61,9 @@ ciclo do ovo, com datas relativas a hoje — então sempre há o que ver na tela
 | `/configuracoes` · `/configuracoes/membros` · `/perfil` | criatório, membros e você |
 | `/relatorios` | temporadas e desempenho por casal |
 | `/notificacoes` | os avisos do galpão |
+| `/certificados` · `/certificados/novo` | CRO emitidos, e o editor com prévia A4 |
+| `/cro/[id]` | a folha A4, pronta para imprimir |
+| `/v/<codigo>` | validação pública do certificado (anônima) |
 | `/mais` | o menu do celular |
 | `/painel` | painel do criatório (só no desktop) |
 | `/entrar` · `/cadastrar` · `/comecar` | autenticação e onboarding |
@@ -103,7 +107,7 @@ O runner conecta pelo **pooler**: o host direto `db.<ref>.supabase.co` só
 resolve em IPv6 e devolve `ENOTFOUND` em máquina sem rota IPv6.
 
 ```bash
-node scripts/sql.mjs -f supabase/migrations/0029_notificacao_por_ninhada.sql
+node scripts/sql.mjs -f supabase/migrations/0031_previa_do_cro.sql
 node scripts/sql.mjs "select 1"                        # consulta avulsa
 ```
 

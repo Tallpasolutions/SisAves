@@ -1,0 +1,255 @@
+/* Certificados — a lista e a C3.
+
+   A C3 é a única tela do produto que é EXCLUSIVA do desktop: a folha A4 tem
+   210 mm e não existe redução dela que continue legível num telefone. No
+   celular a tela vira a lista, e a emissão acontece pela ficha da ave, que já
+   tem a sua própria tela de certificado. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.cabecalhoTextos { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-control);
+}
+
+.linha:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+.linha:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.numero {
+  flex: none;
+  font: var(--type-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-brand);
+}
+
+.textos { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+
+.nome { font: var(--type-body-strong); }
+
+.contextoLinha {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- C3 · editor -------------------------------------------------------------- */
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.painelCabecalho { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.painelTitulo { font: var(--type-h2); }
+
+.painelNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.painelCorpo { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 46vh;
+  overflow-y: auto;
+}
+
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h-lg);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.opcao:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+/* Selecionado soma fundo, borda e peso — nunca só a cor. */
+.opcaoMarcada {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+}
+
+.opcaoMarcada .opcaoNome { font: var(--type-body-strong); color: var(--text-brand); }
+
+.opcao:focus-within {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.radio {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--sis-petroleo-700);
+  cursor: pointer;
+}
+
+.opcaoTextos { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+
+.opcaoNome { font: var(--type-body); }
+
+.opcaoContexto {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.emissao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-danger-soft);
+  color: var(--text-danger);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.alerta svg { flex: none; margin-top: 1px; }
+
+/* --- Prévia -------------------------------------------------------------------- */
+.prevía {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.avisoPrevia {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* A folha tem 210 mm fixos. Reduzir com `scale` mantém as proporções do papel
+   — mudar as medidas para caber faria a prévia mentir sobre a impressão. */
+.folhaReduzida {
+  background: var(--sis-neutro-100);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow: auto;
+}
+
+@media (min-width: 1024px) {
+  .editor {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  /* O painel acompanha a rolagem da folha: a escolha é o que muda, e a folha
+     é longa. */
+  .painel {
+    position: sticky;
+    top: var(--space-4);
+  }
+
+  .folhaReduzida > * {
+    transform: scale(0.62);
+    transform-origin: top left;
+    margin-bottom: -38%;
+  }
+}
+
+@media (min-width: 1500px) {
+  .folhaReduzida > * {
+    transform: scale(0.82);
+    margin-bottom: -18%;
+  }
+}

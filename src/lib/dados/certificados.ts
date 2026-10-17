@@ -241,3 +241,86 @@ export function rotuloDoCaminho(caminho: string): string {
   const artigo = avo.startsWith("Avó") ? "da" : "do";
   return `${femea ? "Mãe" : "Pai"} ${artigo} ${avo.toLowerCase()}`;
 }
+
+/**
+ * O retrato que a emissão vai congelar, sem emitir nada.
+ *
+ * Mesma função do banco que `emitir_certificado` chama: a prévia da C3 não
+ * pode ser uma montagem paralela, ou divergiria do papel na primeira mudança
+ * de uma das duas.
+ */
+export async function previaDoCertificado(
+  aveId: string,
+): Promise<SnapshotCertificado | null> {
+  const supabase = await criarClienteServidor();
+
+  const { data, error } = await supabase.rpc("montar_snapshot_certificado", {
+    p_passaro_id: aveId,
+  });
+
+  if (error || !data) {
+    if (error) console.error("previaDoCertificado:", error.message);
+    return null;
+  }
+
+  return data as SnapshotCertificado;
+}
+
+/** As aves que podem receber CRO: só as anilhadas. */
+export async function avesCertificaveis(): Promise<
+  Array<{
+    id: string;
+    nome: string | null;
+    especie: string | null;
+    anilha: SnapshotCertificado["ave"]["anilha"];
+    emitidos: number;
+  }>
+> {
+  const supabase = await criarClienteServidor();
+
+  const [{ data: aves, error }, { data: emitidos }] = await Promise.all([
+    supabase
+      .from("passaros")
+      .select(
+        "id, nome, anilha_sigla, anilha_criador, anilha_ano, anilha_numero, especie:especies(nome)",
+      )
+      .is("deleted_at", null)
+      .not("anilha_numero", "is", null)
+      .order("anilha_numero", { ascending: false }),
+    supabase.from("certificados").select("passaro_id").is("revogado_em", null),
+  ]);
+
+  if (error) {
+    console.error("avesCertificaveis:", error.message);
+    return [];
+  }
+
+  const porAve = new Map<string, number>();
+  for (const c of (emitidos ?? []) as Array<{ passaro_id: string }>) {
+    porAve.set(c.passaro_id, (porAve.get(c.passaro_id) ?? 0) + 1);
+  }
+
+  return ((aves ?? []) as Array<{
+    id: string;
+    nome: string | null;
+    anilha_sigla: string | null;
+    anilha_criador: string | null;
+    anilha_ano: number | null;
+    anilha_numero: number | null;
+    especie: { nome: string } | { nome: string }[] | null;
+  }>).map((a) => {
+    const especie = Array.isArray(a.especie) ? a.especie[0] : a.especie;
+    return {
+      id: a.id,
+      nome: a.nome,
+      especie: especie?.nome ?? null,
+      anilha: {
+        sigla: a.anilha_sigla,
+        criador: a.anilha_criador,
+        ano: a.anilha_ano,
+        numero: a.anilha_numero,
+      },
+      emitidos: porAve.get(a.id) ?? 0,
+    };
+  });
+}
