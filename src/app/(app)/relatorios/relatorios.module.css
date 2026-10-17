@@ -1,0 +1,155 @@
+/* Relatórios — os números que decidem o plantel da temporada seguinte.
+
+   Não foi desenhada no handoff. Tabela de verdade no desktop e rolagem
+   horizontal no celular: o contrato pede densidade de dados sentado ao
+   computador, e abreviar coluna para caber no telefone esconderia justamente
+   o que se vem conferir. Todo número em tabular-nums. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.explicacao {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.blocoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.blocoNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Tabela ------------------------------------------------------------------ */
+.rolagem {
+  overflow-x: auto;
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabela th,
+.tabela td {
+  padding: var(--space-3) var(--space-4);
+  text-align: right;
+  white-space: nowrap;
+  font: var(--type-small);
+}
+
+.tabela thead th {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+/* Cabeçalho e primeira coluna alinham à esquerda; o resto é número. */
+.tabela thead th:first-child,
+.ano { text-align: left; }
+
+.tabela tbody tr + tr td,
+.tabela tbody tr + tr th { border-top: var(--border-width) solid var(--border-subtle); }
+
+.ano {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: var(--type-body-strong);
+}
+
+.taxa { font: var(--type-data); }
+
+/* --- Casais ------------------------------------------------------------------ */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.casal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-control);
+}
+
+.casal:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+.casal:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.casalTextos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.casalNome { font: var(--type-body-strong); }
+
+.casalContexto {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.casalBase {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.casalTaxa {
+  flex: none;
+  font: var(--type-data-lg);
+  font-variant-numeric: tabular-nums;
+}

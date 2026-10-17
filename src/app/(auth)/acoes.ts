@@ -51,8 +51,25 @@ export async function entrar(
 
   if (error) return { erro: traduzirErro(error.message) };
 
+  await aceitarConvitesPendentes(supabase);
+
   revalidatePath("/", "layout");
   redirect(destino);
+}
+
+/**
+ * Transforma em acesso os convites endereçados a este e-mail.
+ *
+ * Roda no login e não a cada navegação: o convite é raro, e uma chamada por
+ * tela renderizada seria um custo permanente para um evento que acontece uma
+ * vez. Falha em silêncio de propósito — quem acabou de acertar a senha não
+ * pode ser barrado porque um convite não pôde ser lido.
+ */
+async function aceitarConvitesPendentes(
+  supabase: Awaited<ReturnType<typeof criarClienteServidor>>,
+): Promise<void> {
+  const { error } = await supabase.rpc("aceitar_convites");
+  if (error) console.error("aceitar_convites:", error.message);
 }
 
 export async function cadastrar(

@@ -53,6 +53,9 @@ plantel e precisava de um plantel verdadeiro:
    desfazer um marco do ciclo, transferir postura entre casais e etiquetar
    casal — com as correções que faltavam nelas: catálogo de etiquetas,
    data de um marco em um passo, e editar ou excluir uma pesagem.
+5. **As telas que o handoff não desenhou** entraram em 17/10/2026: espécies e
+   prazos, configurações, perfil, membros, relatórios, notificações e a quinta
+   aba do celular. Ver o item 4 de "O que falta".
 
 Com isso, a Fase 8 é a próxima sem nada na frente.
 
@@ -167,6 +170,9 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0024_transferir_postura` | `posturas.casal_chocador_id`, `transferir_posturas()`, `devolver_postura()` |
 | `0025_chocador_nas_telas` | quem está chocando entra em `vw_posturas` e `vw_tarefas_hoje` |
 | `0026_corrigir_data_marco` | `corrigir_data_marco()`: troca a data sem tirar o marco |
+| `0027_convites_de_membro` | `criatorio_convites`, `aceitar_convites()`, `vw_membros` |
+| `0028_gerar_notificacoes` | `gerar_notificacoes()`; `notificacoes.referencia_id` e `referencia_dia` |
+| `0029_notificacao_por_ninhada` | um aviso por ninhada, com a contagem na frase |
 
 ### Funções do domínio
 
@@ -175,7 +181,8 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `validar_certificado` · `meus_criatorios` · `criatorio_com_acesso` ·
 `casal_ativo` · `anilhar_filhotes` · `registrar_marcos` · `registrar_saida` ·
 `reativar_ave` · `tg_sexo_coerente` · `hoje` · `desfazer_marco` ·
-`transferir_posturas` · `devolver_postura` · `corrigir_data_marco`
+`transferir_posturas` · `devolver_postura` · `corrigir_data_marco` ·
+`aceitar_convites` · `gerar_notificacoes`
 
 ### Testes de banco — 164 asserções, todas passando
 
@@ -311,6 +318,15 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   cliente — precisou deles: importá-los do módulo de leitura arrastaria
   `next/headers` para o pacote do navegador. É o terceiro módulo puro criado
   pelo mesmo motivo (`situacao.ts`, `marcos.ts`, `estados-do-ovo.ts`).
+- **Aviso derivado de linha vira aviso repetido.** `vw_tarefas_hoje` devolve
+  uma linha por OVO, e a primeira versão de `gerar_notificacoes` criou uma
+  notificação para cada: a ninhada com dois filhotes na janela produzia dois
+  avisos idênticos. A unidade do aviso é a ninhada, e a quantidade entra na
+  frase — como a tela "Hoje" já fazia.
+- **Taxa sem denominador engana.** "100%" ao lado de "5 ovos" era literalmente
+  correto (1 ovo decidido, 1 nascido) e ilegível como informação. Toda taxa do
+  relatório mostra agora sobre quantos ovos ela foi feita, e quantos seguem em
+  curso.
 - **`current_date` e `toISOString()` são UTC, e o criatório é brasileiro.**
   Das 21h à meia-noite o dia já virou — a janela em que o criador trabalha,
   porque eclosão acontece de madrugada. A tela oferecia amanhã como data
@@ -376,6 +392,13 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/casais/[id]` | B8 Ficha do casal | `InbreedingMeter` com explicação vinda de `ancestrais_comuns`, histórico de ninhadas |
 | `/casais/[id]/postura` | B9 Registrar postura | **primeira tela de escrita**: Server Action + Zod, previsões ao vivo, tab bar escondida |
 | `/plantel/nova` | Cadastrar ave | não desenhada; sugestão de anilha como botão, filiação só quando a ave nasceu no criatório |
+| `/especies` · `/especies/[id]` · `/especies/adotar` | Espécies e prazos | não desenhada; os prazos movem a máquina de estados inteira, e a tela diz isso |
+| `/configuracoes` | Configurações | não desenhada; nome, clube, matrícula e IBAMA — o cabeçalho do CRO |
+| `/configuracoes/membros` | Membros | não desenhada; convite por e-mail que vira acesso no login |
+| `/perfil` | Perfil | não desenhada; nome e telefone. O e-mail é credencial, não perfil |
+| `/relatorios` | Relatórios | não desenhada; temporada e casal, com o denominador ao lado de cada taxa |
+| `/notificacoes` | Notificações | não desenhada; avisos derivados dos prazos, materializados na abertura |
+| `/mais` | Mais | a quinta aba do celular; era um placeholder |
 | `/casais/etiquetas` | Etiquetas | não desenhada; renomear, recolorir e excluir — as etiquetas NASCEM na edição do casal |
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
 | `/ovos/[ninhada]` | Ninhada | não desenhada; **fecha o ciclo**: uma data e um marco por ovo (fértil, ovo claro, nasceu, separado, perdido) numa conferência só |
@@ -409,7 +432,7 @@ Telas de formulário escondem a tab bar (`ROTAS_SEM_BARRA` em `TabBar.tsx`):
 o spec manda substituir, não empilhar — senão o botão de salvar fica atrás da
 navegação.
 
-**São treze telas de escrita.** A quinta, a conferência da ninhada, fecha o
+**São dezenove telas de escrita.** A quinta, a conferência da ninhada, fecha o
 ciclo do ovo. O formato dela vem do galpão e não do plano: o criador abre o
 ninho UMA vez e encontra tudo junto — dois filhotes nascidos, um ovo claro, um
 quebrado, um ainda chocando. Quatro telas, uma por marco, o obrigariam a quatro
@@ -525,25 +548,36 @@ e a lista coberta para confirmar o que já está escrito ali.
 | 10 · Assinatura (Mercado Pago) | checkout PIX/cartão, webhook, bloqueio suave | **pronto** (`assinaturas`, `assinatura_pagamentos`); credenciais vazias no `.env` |
 | 11 · Landing e lançamento | D3, SEO, domínio, migração do legado | — |
 
-### 4 · Telas que o handoff não desenhou e ninguém construiu
+### 4 · Telas que o handoff não desenhou
 
-O `MANIFEST.md` do handoff declara essas ausências. Construir na linguagem das
-telas existentes.
+O `MANIFEST.md` do handoff declara essas ausências — falta o DESENHO, não a
+função. Construídas na linguagem das telas existentes, em 17/10/2026:
 
-- **Espécies e prazos** — hoje só dá para adotar espécie no onboarding; não há
-  como adicionar, editar prazo nem desativar depois.
-- **Relatórios** — o item existe na sidebar, desabilitado.
-- **Lista de certificados** — idem.
-- **Configurações e perfil** — não há como mudar nome do criatório, logotipo,
-  registro IBAMA nem dados do clube depois do onboarding.
-- **Saúde do plantel** — tabelas prontas, nenhuma tela.
-- **Membros do criatório** — `criatorio_membros` e a RLS já suportam mais de
-  uma pessoa por criatório; não há convite nem gestão.
-- **Notificações** — `notificacoes` e `push_subscriptions` existem; não há
-  envio nem tela. É o que faria o prazo do anilhamento chegar ao criador sem
-  ele abrir o app.
-- **Tema escuro das pranchas B3–B11 e C1–C3** — os tokens existem e **todas as
-  telas construídas já foram conferidas nos dois temas**; o que falta são os
+- **Espécies e prazos** (`/especies`) — adotar do catálogo, corrigir prazos,
+  tirar de uso, excluir. Era o maior buraco: só dava para adotar espécie no
+  onboarding, e sem espécie não há prazo, sem prazo não há ciclo.
+- **Configurações** (`/configuracoes`) — nome, cidade, clube, matrícula e
+  registro IBAMA, que saem impressos no cabeçalho do CRO. O **slug não se
+  edita**: é o endereço público do certificado, e mudá-lo quebraria o QR de
+  toda peça já impressa.
+- **Perfil** (`/perfil`) — nome e telefone. O e-mail é credencial, não perfil.
+- **Membros** (`/configuracoes/membros`) — convite por e-mail. Precisou de
+  `criatorio_convites` (0027): o e-mail vive em `auth.users`, que o cliente não
+  lê, então não havia como virar membro na hora. `aceitar_convites()` faz a
+  virada no login.
+- **Relatórios** (`/relatorios`) — temporada e casal.
+- **Notificações** (`/notificacoes`) — ver o item 5 sobre o que ainda falta.
+- **Mais** (`/mais`) — a quinta aba do celular era um placeholder, e sem ela o
+  celular não tinha porta nenhuma para nada disso.
+
+O que **continua** faltando desta lista:
+
+- **Lista de certificados** — vem com a Fase 8.
+- **Saúde do plantel** — vem com a Fase 9.
+- **Genealogia do plantel inteiro** — a árvore é sempre de UMA ave; a sidebar
+  lista o destino desabilitado porque o handoff o lista.
+- **Tema escuro das pranchas B3–B11 e C1–C3** — os tokens existem e todas as
+  telas construídas já foram conferidas nos dois temas; o que falta são os
   desenhos, não a implementação.
 
 ### 5 · Qualidade e lançamento
@@ -551,6 +585,12 @@ telas existentes.
 - **Não há nenhum teste de interface.** O banco tem 164 asserções; o front,
   zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
   fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
+- **O push das notificações não existe.** Os avisos se materializam quando o
+  criador abre o aplicativo (`gerar_notificacoes`), o que é o oposto do ponto:
+  o prazo de anilhamento dura dois dias e deveria chegar sem ele abrir nada.
+  Faltam duas coisas, e as duas dependem de deploy: a chave **VAPID** e um
+  **agendador** (cron da Vercel) que rode a geração e dispare o envio. A tela
+  diz isso em vez de oferecer um botão que não ativa nada.
 - **Nunca foi publicado.** Sem `.vercel`, sem domínio apontado, sem variáveis
   de produção.
 - **As chaves do Supabase passaram pelo chat e seguem sem rotação.** A
@@ -628,11 +668,11 @@ layout, para sobreviver à troca de aba), `IndicadorSync` (o chip do cabeçalho
 da Hoje), `PainelPendentes` (o estado `2h`) e `useEnvioOffline` (o gancho que
 cada formulário usa).
 
-Dezoito tipos de escrita entram na fila (`TipoEscrita` em `fila.ts`):
-`postura`, `marcos`, `desfazer-marco`, `redatar-marco`, `anilhamento`, `ave`,
-`edicao-ave`, `pesagem`, `edicao-pesagem`, `exclusao-pesagem`, `casal`,
-`edicao-casal`, `etiqueta`, `exclusao-etiqueta`, `saida`, `retorno`,
-`transferencia` e `devolucao`.
+Vinte e quatro tipos de escrita entram na fila (`TipoEscrita` em `fila.ts`),
+das posturas às configurações do criatório. Três escritas ficam **de fora** de
+propósito: convidar membro, cancelar convite e remover membro — dependem de o
+servidor conhecer o e-mail, e guardá-las no aparelho só adiaria a descoberta de
+que ele está errado. São também as únicas que não acontecem no galpão.
 As de edição e as de desfazer não precisam de chave própria: gravar os mesmos
 valores duas vezes dá o mesmo resultado, e as funções do banco ignoram em
 silêncio o que já está aplicado. **Cada tipo novo precisa de três

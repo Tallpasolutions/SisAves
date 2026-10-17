@@ -27,6 +27,16 @@ import { reativarAve, registrarSaida } from "@/app/(app)/plantel/[id]/saida/acoe
 import { editarAve } from "@/app/(app)/plantel/[id]/editar/acoes";
 import { editarCasal } from "@/app/(app)/casais/[id]/editar/acoes";
 import {
+  salvarCriatorio,
+  salvarPerfil,
+} from "@/app/(app)/configuracoes/acoes";
+import {
+  adotarDoCatalogo,
+  alternarEspecie,
+  excluirEspecie,
+  salvarPrazos,
+} from "@/app/(app)/especies/acoes";
+import {
   excluirEtiqueta,
   renomearEtiqueta,
 } from "@/app/(app)/casais/etiquetas/acoes";
@@ -66,6 +76,13 @@ const EXECUTORES: Record<TipoEscrita, Executor> = {
   "exclusao-pesagem": (d) => excluirPesagem({}, d),
   casal: (d) => formarCasal({}, d),
   "edicao-casal": (d) => editarCasal({}, d),
+  // `especie` cobre salvar prazos e ativar/desativar: ambas escrevem na
+  // mesma linha, e a presença de `ativar` no FormData diz qual é qual.
+  especie: (d) => (d.get("ativar") === null ? salvarPrazos({}, d) : alternarEspecie({}, d)),
+  "exclusao-especie": (d) => excluirEspecie({}, d),
+  "adocao-especie": (d) => adotarDoCatalogo({}, d),
+  criatorio: (d) => salvarCriatorio({}, d),
+  perfil: (d) => salvarPerfil({}, d),
   etiqueta: (d) => renomearEtiqueta({}, d),
   "exclusao-etiqueta": (d) => excluirEtiqueta({}, d),
   saida: (d) => registrarSaida({}, d),

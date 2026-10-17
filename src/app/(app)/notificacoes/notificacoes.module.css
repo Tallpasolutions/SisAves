@@ -1,0 +1,121 @@
+/* Notificações — o aviso que espera o criador.
+
+   Não foi desenhada no handoff. Hoje os avisos se materializam quando o app
+   abre: enquanto não houver agendador no servidor, é o uso que os produz, e a
+   tela diz isso em vez de prometer push. Aviso lido continua na lista, só sai
+   da contagem — o criador volta aqui para conferir o que já fez. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.cabecalhoTextos { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.explicacao {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aviso {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+/* Lido fica recuado por fundo e borda, nunca por opacidade. */
+.avisoLido {
+  background: var(--surface-sunken);
+  border-color: var(--border-subtle);
+}
+
+.avisoTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.avisoTitulo { font: var(--type-body-strong); }
+
+.avisoCorpo {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.avisoAcoes {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.acaoLinha {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.elo {
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  font: var(--type-label);
+  color: var(--text-link);
+}
+
+.elo:hover { color: var(--text-link-hover); text-decoration: underline; }
+
+.elo:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.lido {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.erro {
+  font: var(--type-small);
+  color: var(--text-danger);
+}

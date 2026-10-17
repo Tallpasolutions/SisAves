@@ -3,10 +3,12 @@
 import {
   Award,
   Bird,
+  Bell,
   ChartColumn,
   Dna,
   Egg,
   Feather,
+  Settings,
   Sun,
   Syringe,
   Users,
@@ -56,7 +58,6 @@ const GRUPOS: Grupo[] = [
       // próprio. Fica aqui porque o handoff a lista, e desabilitada porque não
       // existe tela de genealogia do plantel inteiro.
       { href: "#", rotulo: "Genealogia", Icone: Dna, emBreve: true },
-      { href: "#", rotulo: "Espécies", Icone: Feather, emBreve: true },
     ],
   },
   {
@@ -65,7 +66,15 @@ const GRUPOS: Grupo[] = [
       { href: "#", rotulo: "Saúde", Icone: Syringe, emBreve: true },
       { href: "#", rotulo: "Financeiro", Icone: Wallet, emBreve: true },
       { href: "#", rotulo: "Certificados", Icone: Award, emBreve: true },
-      { href: "#", rotulo: "Relatórios", Icone: ChartColumn, emBreve: true },
+      { href: "/relatorios", rotulo: "Relatórios", Icone: ChartColumn },
+    ],
+  },
+  {
+    titulo: "Criatório",
+    destinos: [
+      { href: "/notificacoes", rotulo: "Notificações", Icone: Bell },
+      { href: "/especies", rotulo: "Espécies", Icone: Feather },
+      { href: "/configuracoes", rotulo: "Configurações", Icone: Settings },
     ],
   },
 ];

@@ -1,0 +1,120 @@
+/* Mais — a quinta aba do celular.
+
+   No desktop estes destinos vivem na sidebar; no celular não havia porta
+   nenhuma para eles, e a tela era um placeholder. O que ainda não existe
+   aparece como "em breve" e sem alvo: item que leva a lugar nenhum ensina a
+   desconfiar do menu inteiro. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.grupoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h-lg);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-control);
+}
+
+.item:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+.item:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Desabilitado por borda e fundo, nunca por opacidade. */
+.itemInativo {
+  background: var(--surface-disabled);
+  border-color: var(--border-subtle);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.itemInativo:hover {
+  background: var(--surface-disabled);
+  border-color: var(--border-subtle);
+}
+
+.icone {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-brand);
+}
+
+.itemInativo .icone { color: var(--text-disabled); }
+
+.textos {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.rotulo { font: var(--type-body-strong); }
+
+.resumo {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.itemInativo .resumo { color: var(--text-disabled); }
+
+.seta { flex: none; color: var(--text-secondary); }
+
+.emBreve {
+  flex: none;
+  font: var(--type-small);
+  color: var(--text-disabled);
+}
+
+/* Separado dos destinos: é a única ação aqui que tira o criador do produto. */
+.sair {
+  display: flex;
+  margin-top: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--border-subtle);
+}

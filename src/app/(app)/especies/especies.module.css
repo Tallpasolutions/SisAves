@@ -1,0 +1,376 @@
+/* Espécies e prazos — a tela que move todas as outras.
+
+   Não foi desenhada no handoff. Os prazos daqui dirigem a máquina de estados
+   do ovo inteira: mudar "dias de choco" reclassifica toda ninhada da espécie
+   na abertura seguinte, porque a situação é derivada e nunca guardada. Daí o
+   bloco explicando isso logo no topo, e o aviso antes de salvar quando há ave
+   da espécie no plantel. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.cabecalhoTextos { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.explicacao {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Lista ------------------------------------------------------------------ */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.especie {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-control);
+}
+
+.especie:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+.especie:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.especieTextos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1;
+}
+
+.especieTopo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.especieNome { font: var(--type-body-strong); }
+
+.especieUso {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.seta { flex: none; color: var(--text-secondary); }
+
+/* Os quatro prazos em linha: é o que o criador vem conferir. */
+.prazos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.prazo { display: flex; flex-direction: column; gap: 1px; }
+
+.prazoValor {
+  font: var(--type-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.prazoRotulo {
+  font: var(--type-small);
+  /* Rótulo curto de dado essencial: --text-muted daria 3,68:1. */
+  color: var(--text-secondary);
+}
+
+/* --- Blocos ----------------------------------------------------------------- */
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.blocoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.blocoNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Formulário -------------------------------------------------------------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-danger-soft);
+  color: var(--text-danger);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.alerta svg { flex: none; margin-top: 1px; }
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* O fieldset nasce com min-inline-size: min-content e ignora a largura do
+     pai: sem isto a grade de duas colunas vaza para fora da tela. */
+  min-inline-size: 0;
+}
+
+.grupoTitulo {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.grupoNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.linhaDupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.linhaDupla > * { min-width: 0; }
+
+/* O alcance da mudança, dito antes de confirmar. Âmbar: único elemento de
+   atenção da tela. */
+.consequencia {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-accent-soft);
+  color: var(--text-accent);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.consequencia svg { flex: none; margin-top: 1px; }
+
+/* --- Ações ------------------------------------------------------------------- */
+.acao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.acaoLinha {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pergunta {
+  font: var(--type-small);
+  color: var(--text-primary);
+}
+
+.erroLinha {
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.nota {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Catálogo ----------------------------------------------------------------- */
+.grupoCatalogo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.catalogo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h-lg);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.opcao:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+.opcaoMarcada {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+}
+
+.opcaoMarcada .opcaoNome { color: var(--text-brand); }
+
+.opcao:focus-within {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Já adotada: fica visível para o criador saber que está lá, sem alvo. */
+.opcaoAdotada {
+  background: var(--surface-sunken);
+  border-color: var(--border-subtle);
+  cursor: default;
+}
+
+.marca {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  accent-color: var(--sis-petroleo-700);
+  cursor: pointer;
+}
+
+.opcaoTextos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.opcaoNome { font: var(--type-body-strong); }
+
+.opcaoContexto {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.opcaoChoco { max-width: 180px; }
+
+.acaoFixa {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 20;
+  padding: var(--space-3) var(--space-4);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: var(--surface-card);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+.acaoFixaInterno {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.busca { max-width: 420px; }

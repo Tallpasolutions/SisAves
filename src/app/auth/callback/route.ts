@@ -12,7 +12,14 @@ export async function GET(request: NextRequest) {
   if (code) {
     const supabase = await criarClienteServidor();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(`${origin}${destino}`);
+    if (!error) {
+      // Convite pendente para este e-mail vira acesso agora. Falha em silêncio:
+      // quem acabou de autenticar não pode ser barrado por causa disso.
+      const { error: erroConvite } = await supabase.rpc("aceitar_convites");
+      if (erroConvite) console.error("aceitar_convites:", erroConvite.message);
+
+      return NextResponse.redirect(`${origin}${destino}`);
+    }
   }
 
   return NextResponse.redirect(`${origin}/entrar?erro=callback`);
