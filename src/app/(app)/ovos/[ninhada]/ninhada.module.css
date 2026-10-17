@@ -271,7 +271,20 @@
 .corrigir {
   display: flex;
   justify-content: center;
-  padding-bottom: var(--space-11);
+}
+
+/* O último elo da página fica acima da ação fixa, que cobre o rodapé. */
+.corrigir:last-of-type { padding-bottom: var(--space-11); }
+
+/* Onde o ovo está, quando não é onde ele nasceu. */
+.chocador {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-brand-soft);
+  border: var(--border-width) solid var(--border-brand);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-brand);
 }
 
 .elo {

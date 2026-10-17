@@ -283,6 +283,12 @@ function ChipMarco({
  */
 function contar(o: OvoDaNinhada): string {
   const partes: string[] = [`postura ${formatarDataCurta(o.dataPostura)}`];
+
+  // Onde o ovo ESTÁ vem primeiro entre os fatos: é a informação que decide em
+  // qual gaiola o criador vai procurar.
+  if (o.chocadorNumero !== null) {
+    partes.push(`chocando com o Casal ${String(o.chocadorNumero).padStart(2, "0")}`);
+  }
   const fora = o.desfechoEm !== null || o.marcos.length === 0;
 
   if (o.ovoscopiaEm) {

@@ -20,6 +20,8 @@ export type TipoEscrita =
   | "postura"
   | "marcos"
   | "desfazer-marco"
+  | "transferencia"
+  | "devolucao"
   | "anilhamento"
   | "ave"
   | "edicao-ave"

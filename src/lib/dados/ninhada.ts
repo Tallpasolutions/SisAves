@@ -23,6 +23,9 @@ export interface OvoDaNinhada {
   anilhamentoVencido: boolean;
   /** Preenchido quando o filhote já foi anilhado e virou ave no plantel. */
   passaroId: string | null;
+  /** Casal que está chocando, quando não é o que pôs. */
+  chocadorId: string | null;
+  chocadorNumero: number | null;
   /** Os marcos que fazem sentido para este ovo hoje. Vazio = fora do ciclo. */
   marcos: Marco[];
   /** O que já foi registrado e ainda pode ser desfeito, se tiver sido engano. */
@@ -41,6 +44,8 @@ export interface NinhadaCompleta {
   paraAnilhar: number;
   /** Ovos que ainda aceitam alguma marca. */
   emCurso: number;
+  /** Ovos que outro casal está chocando. */
+  transferidos: number;
 }
 
 interface Linha {
@@ -59,6 +64,8 @@ interface Linha {
   desfecho_em: string | null;
   desfecho_motivo: string | null;
   passaro_id: string | null;
+  casal_chocador_id: string | null;
+  casal_chocador_numero: number | null;
   especie_nome: string | null;
   situacao: EstadoOvo;
   previsao_ovoscopia: string | null;
@@ -86,7 +93,7 @@ export async function obterNinhada(
     // Literal numa linha só: o cliente do Supabase deriva o tipo do retorno
     // da própria string, e concatenar apaga essa inferência.
     .select(
-      "id, casal_id, casal_numero, ninhada_numero, numero_ovo, data_postura, ovoscopia_em, fertil, data_eclosao, data_anilhamento, data_separacao, desfecho, desfecho_em, desfecho_motivo, passaro_id, especie_nome, situacao, previsao_ovoscopia, previsao_eclosao, previsao_anilhamento, previsao_separacao, limite_anilhamento, anilhamento_vencido",
+      "id, casal_id, casal_numero, ninhada_numero, numero_ovo, data_postura, ovoscopia_em, fertil, data_eclosao, data_anilhamento, data_separacao, desfecho, desfecho_em, desfecho_motivo, passaro_id, casal_chocador_id, casal_chocador_numero, especie_nome, situacao, previsao_ovoscopia, previsao_eclosao, previsao_anilhamento, previsao_separacao, limite_anilhamento, anilhamento_vencido",
     )
     .eq("ninhada_id", ninhadaId)
     .order("numero_ovo", { ascending: true, nullsFirst: false });
@@ -111,6 +118,7 @@ export async function obterNinhada(
     ovos,
     paraAnilhar: ovos.filter((o) => o.estado === "anilhar").length,
     emCurso: ovos.filter((o) => o.marcos.length > 0).length,
+    transferidos: ovos.filter((o) => o.chocadorId !== null).length,
   };
 }
 
@@ -134,6 +142,8 @@ function paraOvo(l: Linha): OvoDaNinhada {
     limiteAnilhamento: l.limite_anilhamento,
     anilhamentoVencido: l.anilhamento_vencido,
     passaroId: l.passaro_id,
+    chocadorId: l.casal_chocador_id,
+    chocadorNumero: l.casal_chocador_numero,
     marcos: marcosDisponiveis(l),
     desfaziveis: marcosDesfaziveis(l),
   };
@@ -242,4 +252,52 @@ export function proximoPasso(n: NinhadaCompleta): string | null {
   if (prazos.length === 0) return null;
   prazos.sort((a, b) => a.data.localeCompare(b.data));
   return prazos[0].frase;
+}
+
+export interface CasalBaba {
+  id: string;
+  numero: number;
+  gaiola: string | null;
+  especie: string | null;
+}
+
+/**
+ * Os casais que podem receber um ovo para chocar.
+ *
+ * Só casal vigente, e nunca o que pôs a ninhada — o banco recusaria, e
+ * oferecer a opção é convidar ao erro.
+ */
+export async function casaisQuePodemChocar(
+  exceto: string,
+): Promise<CasalBaba[]> {
+  const supabase = await criarClienteServidor();
+
+  const { data, error } = await supabase
+    .from("casais")
+    .select("id, numero, gaiola, macho:passaros!casais_macho_id_fkey(especie:especies(nome))")
+    .is("vigencia_fim", null)
+    .is("deleted_at", null)
+    .neq("id", exceto)
+    .order("numero");
+
+  if (error) {
+    console.error("casaisQuePodemChocar:", error.message);
+    return [];
+  }
+
+  return ((data ?? []) as Array<{
+    id: string;
+    numero: number;
+    gaiola: string | null;
+    macho: { especie: { nome: string } | { nome: string }[] | null } | Array<{ especie: { nome: string } | { nome: string }[] | null }> | null;
+  }>).map((c) => {
+    const macho = Array.isArray(c.macho) ? c.macho[0] : c.macho;
+    const especie = Array.isArray(macho?.especie) ? macho?.especie[0] : macho?.especie;
+    return {
+      id: c.id,
+      numero: c.numero,
+      gaiola: c.gaiola,
+      especie: especie?.nome ?? null,
+    };
+  });
 }

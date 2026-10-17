@@ -29,6 +29,7 @@ export default async function Ninhada({
   const passo = proximoPasso(ninhada);
 
   // Confirmação da conferência que acabou de ser gravada.
+  const transferidos = Number(busca.transferidos);
   const bruto = Number(busca.conferidos);
   const conferidos = Number.isFinite(bruto) && busca.conferidos !== undefined
     ? bruto
@@ -57,6 +58,14 @@ export default async function Ninhada({
             description={passo ?? "O ciclo desta ninhada está encerrado."}
           />
         )
+      ) : null}
+
+      {Number.isFinite(transferidos) && transferidos > 0 ? (
+        <Toast
+          tone="ok"
+          title={`${transferidos} ${transferidos === 1 ? "ovo transferido" : "ovos transferidos"}`}
+          description="Eles passam a aparecer no casal que está chocando. A filiação dos filhotes continua sendo a deste casal."
+        />
       ) : null}
 
       <header className={styles.cabecalho}>
@@ -101,11 +110,31 @@ export default async function Ninhada({
         />
       ) : null}
 
+      {/* Onde o ovo ESTÁ, que pode não ser onde ele nasceu. Sem isto o criador
+          procura na gaiola errada — que é o problema que a transferência
+          existe para resolver. */}
+      {ninhada.transferidos > 0 ? (
+        <p className={styles.chocador}>
+          {ninhada.transferidos === 1
+            ? "1 ovo desta ninhada está sendo chocado por outro casal."
+            : `${ninhada.transferidos} ovos desta ninhada estão sendo chocados por outro casal.`}{" "}
+          A filiação dos filhotes continua sendo a deste casal.
+        </p>
+      ) : null}
+
       <FormularioConferencia ninhada={ninhada} />
 
       {/* Fora do formulário de propósito: <form> dentro de <form> é inválido,
           e o gesto é outro — ali se registra o que se viu, aqui se apaga o que
           não aconteceu. */}
+      {ninhada.emCurso > 0 ? (
+        <div className={styles.corrigir}>
+          <Link href={`/ovos/${ninhada.ninhadaId}/transferir`} className={styles.elo}>
+            Passar ovos para outro casal chocar
+          </Link>
+        </div>
+      ) : null}
+
       {ninhada.ovos.some((o) => o.desfaziveis.length > 0) ? (
         <div className={styles.corrigir}>
           <Link href={`/ovos/${ninhada.ninhadaId}/corrigir`} className={styles.elo}>
