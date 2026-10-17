@@ -17,6 +17,7 @@ const ROTAS_SEM_BARRA = [
   /^\/casais\/novo$/,
   /^\/ovos\/[^/]+\/anilhar$/,
   /^\/ovos\/[^/]+$/,
+  /^\/ovos\/[^/]+\/corrigir$/,
   /^\/plantel\/[^/]+\/saida$/,
   /^\/plantel\/[^/]+\/editar$/,
   /^\/casais\/[^/]+\/editar$/,

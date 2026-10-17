@@ -1,0 +1,126 @@
+/* Corrigir registros — apagar um marco do ciclo que entrou por engano.
+
+   Tela própria, e não um botão dentro da conferência: a conferência é um
+   formulário só, e um <form> dentro de outro é HTML inválido. Além disso o
+   gesto é outro — ali se registra o que se viu no ninho, aqui se apaga o que
+   não aconteceu. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  min-height: var(--touch-min);
+  font: var(--type-label);
+  color: var(--text-brand);
+  text-decoration: none;
+}
+
+.voltar:hover { text-decoration: underline; }
+
+.voltar:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.explicacao {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.ovos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ovo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.ovoTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.ovoNome { font: var(--type-body-strong); }
+
+.ovoContexto {
+  font: var(--type-small);
+  /* Carrega as datas do ovo: texto essencial, vai em --text-secondary. */
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.botoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+.acao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.erro {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+.erro svg { flex: none; margin-top: 2px; }
+
+.feito {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font: var(--type-small);
+  color: var(--text-brand);
+}
+
+.nota {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

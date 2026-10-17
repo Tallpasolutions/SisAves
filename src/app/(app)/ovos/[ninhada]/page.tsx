@@ -102,6 +102,17 @@ export default async function Ninhada({
       ) : null}
 
       <FormularioConferencia ninhada={ninhada} />
+
+      {/* Fora do formulário de propósito: <form> dentro de <form> é inválido,
+          e o gesto é outro — ali se registra o que se viu, aqui se apaga o que
+          não aconteceu. */}
+      {ninhada.ovos.some((o) => o.desfaziveis.length > 0) ? (
+        <div className={styles.corrigir}>
+          <Link href={`/ovos/${ninhada.ninhadaId}/corrigir`} className={styles.elo}>
+            Corrigir um registro desta ninhada
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 }

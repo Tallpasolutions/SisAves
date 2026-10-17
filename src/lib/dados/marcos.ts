@@ -30,3 +30,25 @@ export const ROTULO_MARCO: Record<Marco, string> = {
 export function ehPerda(marco: Marco): boolean {
   return marco === "infertil" || marco === "perdido";
 }
+
+/**
+ * Os marcos que se desfazem, quando foram registrados por engano.
+ *
+ * Corrigir a DATA de um marco é desfazer e registrar de novo — dois toques, e
+ * evita uma segunda função no banco repetindo todas as guardas de
+ * `desfazer_marco`.
+ */
+export type MarcoDesfazivel = "ovoscopia" | "eclosao" | "separacao" | "desfecho";
+
+export const MARCOS_DESFAZIVEIS: Array<{
+  valor: MarcoDesfazivel;
+  /** O botão: verbo e o que ele apaga. */
+  rotulo: string;
+  /** A confirmação, depois de feito. */
+  desfeito: string;
+}> = [
+  { valor: "ovoscopia", rotulo: "Desfazer a ovoscopia", desfeito: "Ovoscopia desfeita" },
+  { valor: "eclosao", rotulo: "Desfazer a eclosão", desfeito: "Eclosão desfeita" },
+  { valor: "separacao", rotulo: "Desfazer a separação", desfeito: "Separação desfeita" },
+  { valor: "desfecho", rotulo: "Desfazer o desfecho", desfeito: "Desfecho desfeito" },
+];

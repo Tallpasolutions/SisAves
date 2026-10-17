@@ -15,6 +15,7 @@ import { formarCasal } from "@/app/(app)/casais/novo/acoes";
 import { registrarPostura } from "@/app/(app)/casais/[id]/postura/acoes";
 import { anilharFilhotes } from "@/app/(app)/ovos/[ninhada]/anilhar/acoes";
 import { registrarConferencia } from "@/app/(app)/ovos/[ninhada]/acoes";
+import { desfazerMarco } from "@/app/(app)/ovos/[ninhada]/corrigir/acoes";
 import { reativarAve, registrarSaida } from "@/app/(app)/plantel/[id]/saida/acoes";
 import { editarAve } from "@/app/(app)/plantel/[id]/editar/acoes";
 import { editarCasal } from "@/app/(app)/casais/[id]/editar/acoes";
@@ -38,6 +39,7 @@ import { sincronizar, type Executor } from "@/lib/offline/sincronizar";
 const EXECUTORES: Record<TipoEscrita, Executor> = {
   postura: (d) => registrarPostura({}, d),
   marcos: (d) => registrarConferencia({}, d),
+  "desfazer-marco": (d) => desfazerMarco({}, d),
   anilhamento: (d) => anilharFilhotes({}, d),
   ave: (d) => cadastrarAve({}, d),
   "edicao-ave": (d) => editarAve({}, d),

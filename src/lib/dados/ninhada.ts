@@ -1,5 +1,5 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
-import type { Marco } from "@/lib/dados/marcos";
+import type { Marco, MarcoDesfazivel } from "@/lib/dados/marcos";
 import type { EstadoOvo } from "@/lib/dados/estados-do-ovo";
 import { formatarData } from "@/lib/formato";
 
@@ -25,6 +25,8 @@ export interface OvoDaNinhada {
   passaroId: string | null;
   /** Os marcos que fazem sentido para este ovo hoje. Vazio = fora do ciclo. */
   marcos: Marco[];
+  /** O que já foi registrado e ainda pode ser desfeito, se tiver sido engano. */
+  desfaziveis: MarcoDesfazivel[];
 }
 
 export interface NinhadaCompleta {
@@ -133,7 +135,34 @@ function paraOvo(l: Linha): OvoDaNinhada {
     anilhamentoVencido: l.anilhamento_vencido,
     passaroId: l.passaro_id,
     marcos: marcosDisponiveis(l),
+    desfaziveis: marcosDesfaziveis(l),
   };
+}
+
+/**
+ * O que dá para desfazer neste ovo.
+ *
+ * Espelha as guardas de `desfazer_marco` (0023). A função do banco é a
+ * garantia; isto é o que a tela oferece, e as duas precisam concordar — botão
+ * que existe para ser recusado é botão que ensina a desconfiar da tela.
+ */
+function marcosDesfaziveis(l: Linha): MarcoDesfazivel[] {
+  const desfaziveis: MarcoDesfazivel[] = [];
+
+  if (l.desfecho !== null) desfaziveis.push("desfecho");
+  if (l.data_separacao !== null) desfaziveis.push("separacao");
+
+  // Anilhado, o filhote virou ave no plantel e a eclosão é o fato que o criou.
+  if (l.data_eclosao !== null && l.data_anilhamento === null && l.data_separacao === null) {
+    desfaziveis.push("eclosao");
+  }
+
+  // Ovo claro desfaz-se pelo desfecho, que devolve a ovoscopia junto.
+  if (l.ovoscopia_em !== null && l.desfecho !== "infertil" && l.data_eclosao === null) {
+    desfaziveis.push("ovoscopia");
+  }
+
+  return desfaziveis;
 }
 
 /**

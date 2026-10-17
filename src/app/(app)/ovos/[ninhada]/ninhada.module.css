@@ -263,3 +263,29 @@
   font: var(--type-small);
   color: var(--text-secondary);
 }
+
+/* --- Correção ---------------------------------------------------------------
+   Discreto de propósito: desfazer é a exceção, e um botão do mesmo peso da
+   conferência convidaria a apagar em vez de registrar. A ação fixa na base
+   cobre o fim da página, então o elo precisa de folga abaixo. */
+.corrigir {
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--space-11);
+}
+
+.elo {
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  font: var(--type-label);
+  color: var(--text-link);
+}
+
+.elo:hover { color: var(--text-link-hover); text-decoration: underline; }
+
+.elo:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-xs);
+}

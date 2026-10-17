@@ -19,6 +19,7 @@ const VERSAO = 1;
 export type TipoEscrita =
   | "postura"
   | "marcos"
+  | "desfazer-marco"
   | "anilhamento"
   | "ave"
   | "edicao-ave"
