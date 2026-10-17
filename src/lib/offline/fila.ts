@@ -39,7 +39,12 @@ export type TipoEscrita =
   | "etiqueta"
   | "exclusao-etiqueta"
   | "saida"
-  | "retorno";
+  | "retorno"
+  | "lancamento"
+  | "edicao-lancamento"
+  | "exclusao-lancamento"
+  | "categoria-financeira"
+  | "exclusao-categoria";
 
 export interface ItemFila {
   /**

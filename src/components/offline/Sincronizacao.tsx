@@ -46,6 +46,13 @@ import {
   registrarPesagem,
 } from "@/app/(app)/plantel/[id]/pesagens/acoes";
 import {
+  editarLancamento,
+  excluirCategoria,
+  excluirLancamento,
+  registrarLancamento,
+  salvarCategoria,
+} from "@/app/(app)/financeiro/acoes";
+import {
   contar,
   descreverItem,
   enfileirar,
@@ -87,6 +94,13 @@ const EXECUTORES: Record<TipoEscrita, Executor> = {
   "exclusao-etiqueta": (d) => excluirEtiqueta({}, d),
   saida: (d) => registrarSaida({}, d),
   retorno: (d) => reativarAve({}, d),
+  lancamento: (d) => registrarLancamento({}, d),
+  "edicao-lancamento": (d) => editarLancamento({}, d),
+  "exclusao-lancamento": (d) => excluirLancamento({}, d),
+  // `salvarCategoria` cria e renomeia: a presença de `categoria_id` no
+  // FormData diz qual é qual, como em `especie`.
+  "categoria-financeira": (d) => salvarCategoria({}, d),
+  "exclusao-categoria": (d) => excluirCategoria({}, d),
 };
 
 export interface EstadoSincronizacao {

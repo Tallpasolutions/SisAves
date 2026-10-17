@@ -87,11 +87,10 @@ const GRUPOS: Array<{ titulo: string; destinos: Destino[] }> = [
         Icone: Award,
       },
       {
-        href: "#",
+        href: "/financeiro",
         rotulo: "Financeiro",
         resumo: "Receitas e despesas do criatório",
         Icone: Wallet,
-        emBreve: true,
       },
       {
         href: "#",

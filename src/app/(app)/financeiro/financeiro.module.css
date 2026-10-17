@@ -1,0 +1,270 @@
+/* B10 Financeiro — prancha `3g`.
+
+   Duas diferenças do mockup, ambas por contrato:
+
+   1. O cabeçalho NÃO é um bloco de petróleo. A prancha tem cabeçalho em
+      petróleo cheio e o StatCard de saldo em petróleo cheio; são dois blocos
+      na mesma tela, e o contrato permite um. O bloco fica com o saldo, que é
+      o número pelo qual a tela existe.
+   2. As barras não trazem número escrito. A prancha arredonda valor financeiro
+      ("640", "1.020"), que o contrato proíbe em exibição — e "R$ 1.240,00" não
+      cabe em um sexto da largura do telefone.
+
+   Todo valor em tabular-nums. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-6);
+}
+
+/* --- Cabeçalho --------------------------------------------------------------- */
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cabecalhoTextos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+@media (min-width: 560px) {
+  .cabecalho {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+/* --- Navegação de mês -------------------------------------------------------- */
+.meses {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.mesEloAnterior,
+.mesEloSeguinte,
+.mesEloInativo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Alvo de 44px: a tela se usa de pé, com uma ave na mão. */
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--surface-card);
+  font: var(--type-small);
+  text-decoration: none;
+  color: var(--text-link);
+}
+
+.mesEloAnterior:hover,
+.mesEloSeguinte:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-brand);
+}
+
+.mesEloInativo {
+  color: var(--text-disabled);
+  background: var(--surface-disabled);
+  cursor: not-allowed;
+}
+
+/* --- Indicadores ------------------------------------------------------------- */
+.indicadores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+/* Item de grade nasce com min-width: auto e não encolhe abaixo do conteúdo:
+   sem isto, "R$ 1.850,00" empurra o segundo cartão para fora da tela. */
+.indicadores > * { min-width: 0; }
+
+/* --- Blocos ------------------------------------------------------------------ */
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.blocoCabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.blocoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.elo {
+  font: var(--type-small);
+  color: var(--text-link);
+}
+
+/* --- Gráfico de saldo -------------------------------------------------------- */
+.grafico {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+  height: 150px;
+  padding: var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.coluna {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+.coluna:hover { background: var(--surface-hover); }
+
+.colunaAtiva { background: var(--surface-selected); }
+
+.trilho {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.barra {
+  width: 100%;
+  background: var(--sis-petroleo-200);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  /* Largura e altura de barra o contrato permite animar. */
+  transition: height var(--duration-base) var(--ease-standard);
+}
+
+.barraAtiva { background: var(--sis-petroleo-700); }
+
+/* Mês negativo vazado em tijolo, como na prancha. A cor não está sozinha: o
+   rótulo acessível da coluna diz "saldo negativo de R$ …". */
+.barraNegativa {
+  background: var(--sis-tijolo-100);
+  border: var(--border-width) solid var(--sis-tijolo-600);
+}
+
+.mes {
+  font-family: var(--font-ui);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.mesAtivo {
+  font-weight: var(--weight-semibold);
+  color: var(--text-brand);
+}
+
+/* --- Lista de lançamentos ---------------------------------------------------- */
+.lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.lista > li + li { border-top: var(--border-width) solid var(--border-subtle); }
+
+.lancamento {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.lancamento:hover { background: var(--surface-hover); }
+
+.lancamentoIcone {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.iconeReceita {
+  background: var(--surface-brand-soft);
+  color: var(--text-brand);
+}
+
+.lancamentoTextos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lancamentoNome {
+  font: var(--type-body-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lancamentoDetalhe {
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.lancamentoAve {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.lancamentoValor {
+  flex: none;
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.valorReceita { color: var(--status-ok-fg); }
+.valorDespesa { color: var(--text-danger); }

@@ -37,6 +37,10 @@
   color: var(--text-heading);
 }
 
+/* Valor financeiro em meia tela de celular: 30px numéricos no lugar dos 48px
+   do display, que não deixam dois cartões caberem lado a lado. */
+.md .valor { font: var(--type-data-lg); }
+
 .ajuda,
 .tendencia {
   font: var(--type-small);

@@ -22,6 +22,10 @@ const TITULOS: Array<[RegExp, string]> = [
   [/^\/casais$/, "Casais"],
   [/^\/ovos\/[^/]+\/anilhar$/, "Anilhar filhote"],
   [/^\/ovos$/, "Ninhadas"],
+  [/^\/financeiro\/novo$/, "Novo lançamento"],
+  [/^\/financeiro\/categorias$/, "Categorias"],
+  [/^\/financeiro\/[^/]+\/editar$/, "Corrigir lançamento"],
+  [/^\/financeiro$/, "Financeiro"],
   [/^\/$/, "Hoje"],
 ];
 

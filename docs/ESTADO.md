@@ -14,12 +14,10 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 
 ## Próximo passo
 
-**Fase 9 — financeiro e saúde.** O banco está pronto desde a Fase 1 e não tem
-nenhuma tela: `financeiro_lancamentos` já recebe a receita da venda de ave
-(0018), e `medicamentos`, `doencas`, `sintomas` e `tratamentos` esperam
-interface. A tela de saúde é uma das duas que o handoff declarou não ter
-desenhado e ainda não existem — a outra, a lista de certificados, entrou com a
-Fase 8.
+**Fase 9, parte 2 — saúde.** O financeiro entrou em 17/10/2026 (B10, lançamento,
+correção, exclusão e catálogo de categorias). Faltam `medicamentos`, `doencas`,
+`sintomas` e `tratamentos`, que seguem sem nenhuma tela — a saúde é a última
+das telas que o handoff declarou não ter desenhado.
 
 Depois dela: Fase 10 (Mercado Pago) e Fase 11 (landing, SEO, migração do
 legado).
@@ -100,7 +98,7 @@ abriria brecha para cor fora da paleta.
 | 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
 | 7 · Desktop (Faixa C) | **concluída**; C3 entrou com a Fase 8 |
 | 8 · CRO, QR e validação pública | **concluída** — emissão, folha A4, QR real, página pública e C3 |
-| 9 · Financeiro e saúde | banco pronto; interface não iniciada |
+| 9 · Financeiro e saúde | **financeiro concluído**; saúde não iniciada |
 | 10 · Assinatura (Mercado Pago) | banco pronto; integração não iniciada |
 | 11 · Landing e lançamento | não iniciada |
 
@@ -143,6 +141,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0029_notificacao_por_ninhada` | um aviso por ninhada, com a contagem na frase |
 | `0030_emitir_certificado` | `emitir_certificado()`, `revogar_certificado()`; motivo na validação |
 | `0031_previa_do_cro` | grant de `montar_snapshot_certificado` para a prévia da C3 |
+| `0032_financeiro_na_tela` | `vw_financeiro_mensal`; `public.hoje()` nos DEFAULT de data que a 0022 não alcançou |
 
 ### Funções do domínio
 
@@ -155,7 +154,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `aceitar_convites` · `gerar_notificacoes` · `emitir_certificado` ·
 `revogar_certificado`
 
-### Testes de banco — 181 asserções, todas passando
+### Testes de banco — 192 asserções, todas passando
 
 ```bash
 node scripts/testar.mjs
@@ -183,6 +182,7 @@ falha, e sai com código 1.
 | `13_transferir_postura` | 17 |
 | `14_corrigir_data_marco` | 12 |
 | `15_certificado_emissao` | 17 |
+| `16_financeiro` | 11 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
@@ -371,6 +371,9 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/relatorios` | Relatórios | não desenhada; temporada e casal, com o denominador ao lado de cada taxa |
 | `/notificacoes` | Notificações | não desenhada; avisos derivados dos prazos, materializados na abertura |
 | `/mais` | Mais | a quinta aba do celular; era um placeholder |
+| `/financeiro` | B10 Financeiro | mês navegável, três indicadores, saldo de 6 meses e os lançamentos do mês |
+| `/financeiro/novo` · `/financeiro/[id]/editar` | Lançamento | o mesmo formulário em dois modos; exclusão lógica em dois toques |
+| `/financeiro/categorias` | Categorias | não desenhada; as de sistema ficam à parte e não se editam |
 | `/casais/etiquetas` | Etiquetas | não desenhada; renomear, recolorir e excluir — as etiquetas NASCEM na edição do casal |
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
 | `/ovos/[ninhada]` | Ninhada | não desenhada; **fecha o ciclo**: uma data e um marco por ovo (fértil, ovo claro, nasceu, separado, perdido) numa conferência só |
@@ -519,7 +522,7 @@ e a lista coberta para confirmar o que já está escrito ali.
 
 | Fase | O que entrega | Banco |
 |---|---|---|
-| 9 · Financeiro e saúde | lançamentos, categorias; medicamentos, doenças, sintomas, tratamentos | **pronto**, sem nenhuma tela |
+| 9 · Financeiro e saúde | **lançamentos e categorias feitos**; faltam medicamentos, doenças, sintomas, tratamentos | **pronto**; saúde sem tela |
 | 10 · Assinatura (Mercado Pago) | checkout PIX/cartão, webhook, bloqueio suave | **pronto** (`assinaturas`, `assinatura_pagamentos`); credenciais vazias no `.env` |
 | 11 · Landing e lançamento | D3, SEO, domínio, migração do legado | — |
 
@@ -547,7 +550,7 @@ função. Construídas na linguagem das telas existentes, em 17/10/2026:
 
 O que **continua** faltando desta lista:
 
-- **Saúde do plantel** — vem com a Fase 9.
+- **Saúde do plantel** — é o que resta da Fase 9.
 - **Genealogia do plantel inteiro** — a árvore é sempre de UMA ave; a sidebar
   lista o destino desabilitado porque o handoff o lista.
 - **Tema escuro das pranchas B3–B11 e C1–C3** — os tokens existem e todas as

@@ -11,6 +11,12 @@ export interface StatCardProps {
   hint?: string;
   /** Destaque de marca. No máximo um por tela — é um bloco de petróleo cheio. */
   tone?: "neutro" | "brand";
+  /**
+   * Tamanho do número. `lg` é o da prancha `4a`, onde o cartão ocupa um quarto
+   * de 1440px. `md` existe para valor financeiro em meia tela de celular:
+   * "R$ 1.850,00" em 48px empurra o segundo cartão da grade para fora.
+   */
+  size?: "lg" | "md";
   trend?: "up" | "down";
   /** "+2 vs. agosto" — a comparação, sempre com o período nomeado. */
   trendLabel?: string;
@@ -30,6 +36,7 @@ export function StatCard({
   icon,
   hint,
   tone = "neutro",
+  size = "lg",
   trend,
   trendLabel,
   className,
@@ -37,7 +44,11 @@ export function StatCard({
   const Seta = trend === "down" ? TrendingDown : TrendingUp;
 
   return (
-    <div className={[styles.cartao, styles[tone], className].filter(Boolean).join(" ")}>
+    <div
+      className={[styles.cartao, styles[tone], styles[size], className]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className={styles.topo}>
         <span className={styles.rotulo}>{label}</span>
         {icon ? (
