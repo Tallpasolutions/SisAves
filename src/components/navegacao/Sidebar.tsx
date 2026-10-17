@@ -54,10 +54,10 @@ const GRUPOS: Grupo[] = [
   {
     titulo: "Genética",
     destinos: [
-      // A genealogia é sempre de UMA ave: entra pela ficha, não por destino
-      // próprio. Fica aqui porque o handoff a lista, e desabilitada porque não
-      // existe tela de genealogia do plantel inteiro.
-      { href: "#", rotulo: "Genealogia", Icone: Dna, emBreve: true },
+      // A ÁRVORE é sempre de uma ave e entra pela ficha. Este destino é a
+      // pergunta inversa — de onde vem o plantel — mais o simulador de
+      // cruzamento, que é onde o coeficiente muda uma decisão.
+      { href: "/genealogia", rotulo: "Genealogia", Icone: Dna },
     ],
   },
   {

@@ -195,3 +195,146 @@ export function descreverProfundidade(arvore: Arvore): string {
     ? "1 geração registrada"
     : `${arvore.geracoesRegistradas} gerações registradas`;
 }
+
+// -----------------------------------------------------------------------------
+// A genealogia do plantel inteiro
+// -----------------------------------------------------------------------------
+
+export interface Linhagem {
+  id: string;
+  nome: string | null;
+  sexo: Sexo;
+  especie: string | null;
+  anilha: {
+    sigla: string | null;
+    criador: string | null;
+    ano: number | null;
+    numero: number | null;
+  };
+  /** Ave que já saiu do plantel — a linhagem dela continua valendo. */
+  fora: boolean;
+  descendentes: number;
+  geracoes: number;
+}
+
+/**
+ * As linhagens do criatório: cada fundador com descendência registrada.
+ *
+ * Fundador é a ave sem pai nem mãe NO SISTEMA — quase sempre a que o criador
+ * comprou ou recebeu. O pedigree dela existe no papel do vendedor, e é por
+ * isso que a árvore de qualquer descendente para ali.
+ */
+export async function listarLinhagens(): Promise<Linhagem[]> {
+  const supabase = await criarClienteServidor();
+
+  const { data, error } = await supabase
+    .from("vw_linhagens")
+    .select(
+      "passaro_id, nome, sexo, situacao, especie_nome, anilha_sigla, anilha_criador, anilha_ano, anilha_numero, descendentes, geracoes",
+    )
+    .order("descendentes", { ascending: false })
+    .order("anilha_numero", { ascending: true, nullsFirst: false });
+
+  if (error) {
+    console.error("listarLinhagens:", error.message);
+    return [];
+  }
+
+  return ((data ?? []) as Array<{
+    passaro_id: string;
+    nome: string | null;
+    sexo: Sexo;
+    situacao: string;
+    especie_nome: string | null;
+    anilha_sigla: string | null;
+    anilha_criador: string | null;
+    anilha_ano: number | null;
+    anilha_numero: number | null;
+    descendentes: number;
+    geracoes: number;
+  }>).map((l) => ({
+    id: l.passaro_id,
+    nome: l.nome,
+    sexo: l.sexo,
+    especie: l.especie_nome,
+    anilha: {
+      sigla: l.anilha_sigla,
+      criador: l.anilha_criador,
+      ano: l.anilha_ano,
+      numero: l.anilha_numero,
+    },
+    fora: l.situacao !== "ativo",
+    descendentes: l.descendentes,
+    geracoes: l.geracoes,
+  }));
+}
+
+export interface CoberturaGenealogica {
+  /** Aves no plantel ativo. */
+  ativas: number;
+  /** Quantas têm pai e mãe registrados — as que a árvore descreve inteiras. */
+  comParCompleto: number;
+  /** Com um progenitor só: a árvore abre de um lado e para do outro. */
+  comUmProgenitor: number;
+  /** Sem nenhum: ou é fundadora, ou é um buraco no registro. */
+  semProgenitor: number;
+  /** Das sem progenitor, quantas nasceram aqui — essas são buraco, não origem. */
+  nascidasAquiSemFiliacao: number;
+}
+
+/**
+ * Quanto do plantel a genealogia realmente cobre.
+ *
+ * O número que importa é o último: ave **nascida no criatório** sem filiação
+ * registrada é um buraco, não uma origem. Ave comprada sem progenitor é
+ * normal — a linhagem dela começa aqui, e dizer o contrário seria inventar.
+ */
+export async function obterCobertura(): Promise<CoberturaGenealogica> {
+  const supabase = await criarClienteServidor();
+
+  const { data, error } = await supabase
+    .from("passaros")
+    .select("pai_id, mae_id, origem")
+    .is("deleted_at", null)
+    .eq("situacao", "ativo");
+
+  if (error) {
+    console.error("obterCobertura:", error.message);
+    return {
+      ativas: 0,
+      comParCompleto: 0,
+      comUmProgenitor: 0,
+      semProgenitor: 0,
+      nascidasAquiSemFiliacao: 0,
+    };
+  }
+
+  const aves = (data ?? []) as Array<{
+    pai_id: string | null;
+    mae_id: string | null;
+    origem: string | null;
+  }>;
+
+  let comParCompleto = 0;
+  let comUmProgenitor = 0;
+  let semProgenitor = 0;
+  let nascidasAquiSemFiliacao = 0;
+
+  for (const a of aves) {
+    const quantos = (a.pai_id ? 1 : 0) + (a.mae_id ? 1 : 0);
+    if (quantos === 2) comParCompleto += 1;
+    else if (quantos === 1) comUmProgenitor += 1;
+    else {
+      semProgenitor += 1;
+      if (a.origem === "nascimento_proprio") nascidasAquiSemFiliacao += 1;
+    }
+  }
+
+  return {
+    ativas: aves.length,
+    comParCompleto,
+    comUmProgenitor,
+    semProgenitor,
+    nascidasAquiSemFiliacao,
+  };
+}

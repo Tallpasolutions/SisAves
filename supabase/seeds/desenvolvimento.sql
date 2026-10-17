@@ -53,14 +53,18 @@ begin
 
   -- ---- Aves -----------------------------------------------------------------
   -- Avós, para o casal 03 sair com endogamia de meios-irmãos.
+  -- As seis aves sem pai nem mãe são as FUNDADORAS do plantel: vieram de
+  -- fora, e o pedigree delas está no papel de quem vendeu. Sem `origem`, a
+  -- coluna cai no default 'nascimento_proprio' e a tela de genealogia passa a
+  -- acusar seis registros incompletos que não existem.
   insert into public.passaros (criatorio_id, nome, sexo, especie_id, dt_nascimento,
-                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero)
-  values (v_criatorio, 'Jacundá', 'macho', v_curio, current_date - 1100, 'COF','1234', 2023, 1)
+                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero, origem)
+  values (v_criatorio, 'Jacundá', 'macho', v_curio, current_date - 1100, 'COF','1234', 2023, 1, 'compra')
   returning id into avo;
 
   insert into public.passaros (criatorio_id, nome, sexo, especie_id, dt_nascimento,
-                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero)
-  values (v_criatorio, 'Guaraci', 'femea', v_curio, current_date - 1090, 'COF','1234', 2023, 2)
+                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero, origem)
+  values (v_criatorio, 'Guaraci', 'femea', v_curio, current_date - 1090, 'COF','1234', 2023, 2, 'compra')
   returning id into avoa;
 
   insert into public.passaros (criatorio_id, nome, sexo, especie_id, dt_nascimento, pai_id, mae_id,
@@ -74,23 +78,23 @@ begin
   returning id into f1;
 
   insert into public.passaros (criatorio_id, nome, sexo, especie_id, dt_nascimento,
-                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero)
-  values (v_criatorio, 'Aratu', 'macho', v_curio, current_date - 640, 'COF','1234', 2024, 12)
+                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero, origem)
+  values (v_criatorio, 'Aratu', 'macho', v_curio, current_date - 640, 'COF','1234', 2024, 12, 'compra')
   returning id into m2;
 
   insert into public.passaros (criatorio_id, nome, sexo, especie_id, dt_nascimento,
-                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero)
-  values (v_criatorio, 'Iracema', 'femea', v_curio, current_date - 620, 'COF','1234', 2024, 13)
+                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero, origem)
+  values (v_criatorio, 'Iracema', 'femea', v_curio, current_date - 620, 'COF','1234', 2024, 13, 'compra')
   returning id into f2;
 
   insert into public.passaros (criatorio_id, nome, sexo, especie_id, dt_nascimento,
-                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero)
-  values (v_criatorio, 'Peitica', 'macho', coalesce(v_sabia, v_curio), current_date - 500, 'COF','1234', 2025, 20)
+                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero, origem)
+  values (v_criatorio, 'Peitica', 'macho', coalesce(v_sabia, v_curio), current_date - 500, 'COF','1234', 2025, 20, 'compra')
   returning id into m3;
 
   insert into public.passaros (criatorio_id, nome, sexo, especie_id, dt_nascimento,
-                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero)
-  values (v_criatorio, 'Sabiá-do-Vale', 'femea', coalesce(v_sabia, v_curio), current_date - 480, 'COF','1234', 2025, 21)
+                               anilha_sigla, anilha_criador, anilha_ano, anilha_numero, origem)
+  values (v_criatorio, 'Sabiá-do-Vale', 'femea', coalesce(v_sabia, v_curio), current_date - 480, 'COF','1234', 2025, 21, 'compra')
   returning id into f3;
 
   -- Filhotes do ano, já anilhados

@@ -4,6 +4,7 @@ import {
   Bell,
   ChartColumn,
   ChevronRight,
+  Dna,
   Feather,
   Settings,
   Syringe,
@@ -68,6 +69,12 @@ const GRUPOS: Array<{ titulo: string; destinos: Destino[] }> = [
   {
     titulo: "Gestão",
     destinos: [
+      {
+        href: "/genealogia",
+        rotulo: "Genealogia",
+        resumo: "Linhagens e simulação de cruzamento",
+        Icone: Dna,
+      },
       {
         href: "/relatorios",
         rotulo: "Relatórios",

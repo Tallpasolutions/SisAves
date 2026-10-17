@@ -23,9 +23,9 @@ webhook e o bloqueio suave ao expirar.
 
 Depois dela, a Fase 11 (landing D3, SEO, domínio, migração do legado).
 
-**Com a saúde, acabou a lista de telas que o handoff declarou não ter
-desenhado** — menos a genealogia do plantel inteiro, que não é ausência de
-desenho e sim de função (a árvore é sempre de UMA ave).
+**Acabou a lista de telas que o handoff declarou não ter desenhado.** A última
+era a genealogia do plantel inteiro, que entrou em 17/10/2026 com o simulador
+de cruzamento — nenhum destino da navegação está mais desabilitado.
 
 Depois dela: Fase 10 (Mercado Pago) e Fase 11 (landing, SEO, migração do
 legado).
@@ -151,6 +151,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0031_previa_do_cro` | grant de `montar_snapshot_certificado` para a prévia da C3 |
 | `0032_financeiro_na_tela` | `vw_financeiro_mensal`; `public.hoje()` nos DEFAULT de data que a 0022 não alcançou |
 | `0033_saude_na_tela` | `vw_tratamentos` (em curso e carência), `definir_sintomas_da_doenca`, `definir_doencas_do_medicamento`, catálogo de sintomas e doenças |
+| `0034_genealogia_do_plantel` | `descendentes()` e `vw_linhagens`: os fundadores com o tamanho e a profundidade da linhagem |
 
 ### Funções do domínio
 
@@ -162,9 +163,9 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `transferir_posturas` · `devolver_postura` · `corrigir_data_marco` ·
 `aceitar_convites` · `gerar_notificacoes` · `emitir_certificado` ·
 `revogar_certificado` · `definir_sintomas_da_doenca` ·
-`definir_doencas_do_medicamento`
+`definir_doencas_do_medicamento` · `descendentes`
 
-### Testes de banco — 214 asserções, todas passando
+### Testes de banco — 231 asserções, todas passando
 
 ```bash
 node scripts/testar.mjs
@@ -194,6 +195,7 @@ falha, e sai com código 1.
 | `15_certificado_emissao` | 17 |
 | `16_financeiro` | 11 |
 | `17_saude` | 22 |
+| `18_linhagens` | 17 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
@@ -398,6 +400,7 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/saude` | Saúde | não desenhada; tratamentos em curso, em carência e encerrados. `?ave=` a transforma no histórico sanitário de uma ave |
 | `/saude/novo` · `/saude/[id]/editar` | Tratamento | alvo é ave OU casal; terminar é preencher o fim, e é dele que a carência conta |
 | `/saude/medicamentos` · `/saude/doencas` · `/saude/sintomas` | Catálogos da saúde | não desenhados; os itens compartilhados ficam à parte e não se editam |
+| `/genealogia` | Genealogia do plantel | não desenhada; linhagens, cobertura e o **simulador de cruzamento** — a ÁRVORE de uma ave continua entrando pela ficha |
 | `/casais/etiquetas` | Etiquetas | não desenhada; renomear, recolorir e excluir — as etiquetas NASCEM na edição do casal |
 | `/casais/novo` | Formar casal | não desenhada; endogamia consultada ao completar o par, **antes** de confirmar |
 | `/ovos/[ninhada]` | Ninhada | não desenhada; **fecha o ciclo**: uma data e um marco por ovo (fértil, ovo claro, nasceu, separado, perdido) numa conferência só |
@@ -574,8 +577,6 @@ função. Construídas na linguagem das telas existentes, em 17/10/2026:
 
 O que **continua** faltando desta lista:
 
-- **Genealogia do plantel inteiro** — a árvore é sempre de UMA ave; a sidebar
-  lista o destino desabilitado porque o handoff o lista.
 - **Tema escuro das pranchas B3–B11 e C1–C3** — os tokens existem e todas as
   telas construídas já foram conferidas nos dois temas; o que falta são os
   desenhos, não a implementação.
@@ -705,6 +706,39 @@ a carência corre, a ave não deveria ser vendida nem exposta.
   ficha. Rota própria seria uma segunda lista de tratamentos para manter, com
   as mesmas regras de carência.
 
+## A genealogia tem duas perguntas
+
+A **árvore** (B6, prancha `3c`) responde *de onde vem esta ave* e entra pela
+ficha dela: três gerações para cima, a partir de uma raiz escolhida. É a tela
+que o handoff desenhou.
+
+`/genealogia` responde a pergunta inversa — *de onde vem este plantel* — e foi
+o último destino "em breve" da sidebar. Ela precisa do caminho contrário na
+mesma recursão, e a diferença entre os dois não é de sinal:
+
+- **`ancestrais()` conta CAMINHOS, `descendentes()` conta AVES.** Lá a
+  repetição é o dado que produz endogamia — o mesmo avô pelos dois lados tem
+  de aparecer duas vezes. Aqui ela seria contagem dobrada: a ave que descende
+  do fundador pelo pai e pela mãe continua sendo uma ave no plantel, e
+  contá-la duas vezes inflaria a linhagem justamente nos criatórios mais
+  fechados.
+- **Linhagem é fundador COM descendência.** Fundador é a ave sem pai nem mãe
+  no sistema — quase sempre a comprada, cujo pedigree está no papel do
+  vendedor. Sem o filtro de descendência a lista viraria uma segunda cópia do
+  plantel.
+- **O simulador existe para terminar numa decisão.** O par escolhido vai junto
+  para `/casais/novo`, que passou a aceitá-lo por parâmetro. Acima de 12,5% a
+  tela diz que é desaconselhado e **não impede** — a decisão é do criador, e o
+  botão só troca para a variante secundária.
+- **O par vive na URL, não no estado.** `coeficiente_endogamia` é recursivo
+  sobre a árvore e roda no banco, então o par precisa chegar ao servidor. De
+  quebra, um cruzamento simulado se compartilha e se recarrega.
+- **A cobertura mede o que falta, sem acusar o que não falta.** Ave comprada
+  sem progenitor é origem de linhagem; ave **nascida aqui** sem filiação é
+  registro faltando. Só a segunda é apontada — e a semente de desenvolvimento
+  precisou marcar as fundadoras como `compra`, porque o default da coluna é
+  `nascimento_proprio` e a tela passava a acusar seis buracos inexistentes.
+
 ## As duas faixas, uma rota só
 
 O contrato descreve dois contextos: *em pé no galpão, no celular* e *sentado no
@@ -724,9 +758,10 @@ A `TabBar` e a `Sidebar` se escondem sozinhas por media query; o título da top
 bar é derivado da rota (`TITULOS` em `TopBar.tsx`), para que nenhuma tela nova
 possa esquecer de pôr o seu.
 
-Na sidebar, destino ainda não construído aparece desabilitado com "em breve".
-Escondê-lo faria a navegação mentir sobre o tamanho do produto; mandar para
-404 seria pior.
+Na sidebar, destino ainda não construído aparecia desabilitado com "em breve" —
+escondê-lo faria a navegação mentir sobre o tamanho do produto, e mandar para
+404 seria pior. **Desde 17/10/2026 não há nenhum:** o último era a genealogia
+do plantel, e ela existe.
 
 **O painel (C1) só existe no desktop.** O equivalente no celular é a tela Hoje,
 e a diferença não é de tamanho: Hoje responde *o que eu faço agora*, o painel

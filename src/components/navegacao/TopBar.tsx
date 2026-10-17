@@ -14,6 +14,7 @@ const TITULOS: Array<[RegExp, string]> = [
   [/^\/painel$/, "Painel do criatório"],
   [/^\/plantel\/nova$/, "Cadastrar ave"],
   [/^\/plantel\/[^/]+\/genealogia$/, "Árvore genealógica"],
+  [/^\/genealogia$/, "Genealogia"],
   [/^\/plantel\/[^/]+$/, "Ficha da ave"],
   [/^\/plantel$/, "Plantel"],
   [/^\/casais\/novo$/, "Formar casal"],

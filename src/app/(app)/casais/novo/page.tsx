@@ -8,9 +8,28 @@ import styles from "./novo.module.css";
 
 export const metadata: Metadata = { title: "Formar casal" };
 
-export default async function FormarCasal() {
+export default async function FormarCasal({
+  searchParams,
+}: PageProps<"/casais/novo">) {
+  const consulta = await searchParams;
   const opcoes = await opcoesFormarCasal();
   const faltaPar = opcoes.machos.length === 0 || opcoes.femeas.length === 0;
+
+  /*
+   * O par pode vir do simulador da genealogia, onde o criador já viu o
+   * coeficiente. Id fora da lista é ignorado: a URL é navegação, e um par
+   * inventado não pode chegar ao formulário como se fosse escolha dele.
+   */
+  const machoInicial =
+    typeof consulta.macho === "string" &&
+    opcoes.machos.some((m) => m.id === consulta.macho)
+      ? consulta.macho
+      : "";
+  const femeaInicial =
+    typeof consulta.femea === "string" &&
+    opcoes.femeas.some((f) => f.id === consulta.femea)
+      ? consulta.femea
+      : "";
 
   return (
     <div className={styles.tela}>
@@ -44,7 +63,11 @@ export default async function FormarCasal() {
           compact
         />
       ) : (
-        <FormularioCasal opcoes={opcoes} />
+        <FormularioCasal
+          opcoes={opcoes}
+          machoInicial={machoInicial}
+          femeaInicial={femeaInicial}
+        />
       )}
     </div>
   );

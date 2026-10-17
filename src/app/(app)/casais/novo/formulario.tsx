@@ -24,7 +24,16 @@ import {
 import styles from "./novo.module.css";
 import { hojeNoAparelho } from "@/lib/data";
 
-export function FormularioCasal({ opcoes }: { opcoes: OpcoesFormarCasal }) {
+export function FormularioCasal({
+  opcoes,
+  machoInicial = "",
+  femeaInicial = "",
+}: {
+  opcoes: OpcoesFormarCasal;
+  /** Par já escolhido no simulador da genealogia. */
+  machoInicial?: string;
+  femeaInicial?: string;
+}) {
   const [estado, acao, enviando] = useActionState<EstadoFormarCasal, FormData>(
     formarCasal,
     {},
@@ -32,8 +41,8 @@ export function FormularioCasal({ opcoes }: { opcoes: OpcoesFormarCasal }) {
 
   // Controlados pelo mesmo motivo da tela de cadastro: o React 19 reseta o
   // formulário quando a ação termina, inclusive em erro.
-  const [machoId, setMachoId] = useState("");
-  const [femeaId, setFemeaId] = useState("");
+  const [machoId, setMachoId] = useState(machoInicial);
+  const [femeaId, setFemeaId] = useState(femeaInicial);
   const [gaiola, setGaiola] = useState("");
   const [inicio, setInicio] = useState(() => hojeNoAparelho());
   const [observacoes, setObservacoes] = useState("");

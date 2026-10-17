@@ -1,0 +1,229 @@
+/* Genealogia do plantel — não desenhada no handoff.
+
+   A prancha `4a` lista o destino na sidebar e não desenha a tela; a B6 (`3c`)
+   desenha a árvore de UMA ave, que continua entrando pela ficha. Esta responde
+   a pergunta inversa — de onde vem o plantel — e simula um cruzamento antes
+   de ele existir.
+
+   Sem bloco de petróleo cheio: quem carrega a cor aqui é o medidor de
+   endogamia, e ele muda de faixa. Um bloco fixo disputaria com o número que a
+   tela existe para mostrar. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.titulo { font: var(--type-h1); }
+
+.contexto {
+  margin: 0;
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.explicacao {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.bloco { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.blocoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.blocoNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Simulador --------------------------------------------------------------- */
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.par {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.par > * { min-width: 0; }
+
+@media (min-width: 640px) {
+  .par { grid-template-columns: 1fr 1fr; }
+}
+
+.espera {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* Único âmbar possível da tela, e só quando aparece: espécies diferentes no
+   par escolhido. Texto em âmbar escurecido — âmbar não é cor de texto sobre
+   claro. */
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-accent-soft);
+  color: var(--text-accent);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.aviso svg { flex: none; margin-top: 1px; }
+
+.resultado {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+@media (min-width: 640px) {
+  .resultado { grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+}
+
+.parItem { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.parRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.parElo {
+  font: var(--type-body);
+  color: var(--text-link);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nota {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Linhagens --------------------------------------------------------------- */
+.lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.lista > li + li { border-top: var(--border-width) solid var(--border-subtle); }
+
+.linhagem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 68px;
+  padding: var(--space-2) var(--space-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.linhagem:hover { background: var(--surface-hover); }
+
+.linhagemTextos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.linhagemNome {
+  font: var(--type-body-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.linhagemDetalhe {
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.seta { flex: none; color: var(--text-muted); }
+
+/* --- Cobertura --------------------------------------------------------------- */
+.cobertura {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.numero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.numeroRotulo {
+  font: var(--type-label);
+  color: var(--text-secondary);
+}
+
+.numeroValor {
+  margin: 0;
+  font: var(--type-data-lg);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-heading);
+}
+
+/* Sem barra à esquerda: o contrato permite exatamente dois lugares com ela
+   (linha de tabela e PedigreeNode), e este não é nenhum dos dois. */
+.falta {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
