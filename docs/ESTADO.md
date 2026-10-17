@@ -329,6 +329,22 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   devolvia `[]` ao falhar, então a seção de etiquetas aparecia vazia e parecia
   certa; quem acusou foi o console do navegador. Toda leitura que devolve lista
   vazia em caso de erro precisa de uma passada no console antes de "funciona".
+  **E a segunda vez foi pior:** o `/plantel` passou a dizer "Nenhuma ave no
+  plantel · Cadastre a primeira ave" para um criatório com catorze aves, do
+  dia da 0024 (que criou o segundo caminho de `posturas` para `casais` e
+  tornou o embed ambíguo) até 17/10/2026 — em celular e em computador, porque
+  a mesma consulta alimenta as duas marcações. `listarPlantelEmTabela` agora
+  devolve `falhou`, e a tela diz "Não foi possível carregar o plantel · As
+  aves continuam registradas". **Vazio e falha nunca são a mesma frase**:
+  mandar cadastrar o que já existe é pior que não dizer nada. Outras vinte e
+  quatro leituras ainda caem em `[]` silencioso — cada uma é um candidato ao
+  mesmo defeito.
+- **FK nova torna ambíguo todo embed antigo para aquela tabela.** A 0024
+  acrescentou `posturas.casal_chocador_id` e, a partir dali, qualquer
+  `posturas(...casais(...))` sem dica virou "more than one relationship was
+  found". Migration que cria um segundo caminho entre duas tabelas precisa de
+  uma varredura nos embeds existentes — o PostgREST só reclama em tempo de
+  execução.
 - **Lista de escolha na edição precisa conter o que já está gravado** — e o
   erro repetiu. Depois de corrigi-lo nos progenitores, a correção de pesagem
   nasceu com o mesmo buraco: o contexto `anilhamento` é escrito pelo sistema e

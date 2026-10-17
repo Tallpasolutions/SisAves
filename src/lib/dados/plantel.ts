@@ -288,6 +288,16 @@ export interface AveNaTabela extends AveListada {
 
 export interface PlantelEmTabela {
   aves: AveNaTabela[];
+  /**
+   * A consulta falhou — e isso não é o mesmo que plantel vazio.
+   *
+   * Sem esta distinção, um erro de consulta vira "Nenhuma ave no plantel.
+   * Cadastre a primeira ave" na cara de quem tem cento e vinte aves. Foi
+   * exatamente o que aconteceu: a 0024 criou um segundo caminho de `posturas`
+   * para `casais`, o embed ficou ambíguo e a tela passou a dizer que o
+   * criatório estava vazio.
+   */
+  falhou: boolean;
   total: number;
   pagina: number;
   paginas: number;
@@ -352,11 +362,23 @@ export async function listarPlantelEmTabela(
 
   let consulta = supabase
     .from("passaros")
-    .select(// A constraint chama-se `passaros_postura_fk`, não o `_id_fkey` que o
-    // PostgREST usaria por convenção — errar o nome dá PGRST200.
-    `${CAMPOS_AVE}, casal_origem:posturas!passaros_postura_fk(casal:casais(id, numero))`, {
-      count: "exact",
-    })
+    .select(
+      /*
+       * Dois nomes de constraint precisam ser explícitos aqui, por motivos
+       * diferentes.
+       *
+       * `passaros_postura_fk` porque a constraint NÃO segue a convenção
+       * `_id_fkey` que o PostgREST assume sozinho.
+       *
+       * `posturas_casal_id_fkey` porque a 0024 criou um SEGUNDO caminho de
+       * `posturas` para `casais` (`casal_chocador_id`), e a partir dali o
+       * embed sem dica virou ambíguo — "more than one relationship was
+       * found". O casal que interessa é o DONO da postura, de onde sai a
+       * filiação; quem está chocando é outra coisa.
+       */
+      `${CAMPOS_AVE}, casal_origem:posturas!passaros_postura_fk(casal:casais!posturas_casal_id_fkey(id, numero))`,
+      { count: "exact" },
+    )
     .is("deleted_at", null);
 
   if (filtros.especies?.length) consulta = consulta.in("especie_id", filtros.especies);
@@ -425,6 +447,7 @@ export async function listarPlantelEmTabela(
 
   return {
     aves,
+    falhou: Boolean(error),
     total,
     pagina,
     paginas: Math.max(1, Math.ceil(total / POR_PAGINA)),

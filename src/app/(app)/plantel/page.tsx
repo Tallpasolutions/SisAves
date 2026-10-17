@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bird, Plus, Search } from "lucide-react";
+import { Bird, CircleAlert, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { Anilha, Badge, Button, EmptyState, SexChip } from "@/components/ui";
 import {
@@ -57,7 +57,8 @@ export default async function Plantel({ searchParams }: PageProps<"/plantel">) {
     pagina: params.pagina ? Number(params.pagina) : 1,
   };
 
-  const { aves, total, pagina, paginas, facetas } = await listarPlantelEmTabela(filtros);
+  const { aves, falhou, total, pagina, paginas, facetas } =
+    await listarPlantelEmTabela(filtros);
 
   const estado: EstadoFiltros = {
     busca,
@@ -200,7 +201,18 @@ export default async function Plantel({ searchParams }: PageProps<"/plantel">) {
         </div>
 
         <div className={styles.resultado}>
-          {vazio ? (
+          {falhou ? (
+            /* Consulta que falhou não é plantel vazio. Dizer "cadastre a
+               primeira ave" a quem tem cento e vinte é pior que não dizer
+               nada: manda apagar a dúvida cadastrando de novo o que já
+               existe. */
+            <EmptyState
+              icon={<CircleAlert size={28} />}
+              title="Não foi possível carregar o plantel"
+              description="As aves continuam registradas. Recarregue a página; se persistir, é falha na consulta e não no seu criatório."
+              compact
+            />
+          ) : vazio ? (
             <EmptyState
               icon={<Bird size={28} />}
               title={busca ? "Nenhuma ave encontrada" : "Nenhuma ave no plantel"}
