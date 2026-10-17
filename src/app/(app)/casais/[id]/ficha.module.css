@@ -171,3 +171,31 @@
   flex-wrap: wrap;
   gap: var(--space-2);
 }
+
+/* --- Etiquetas do criador ---------------------------------------------------
+   Chip neutro com ponto de cor, nunca bloco preenchido: a tela já gastou o
+   orçamento de cor, e etiqueta colorida em volume vira confete. A cor sai de
+   classe, não de style inline com o hex do banco. */
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  background: var(--surface-sunken);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.etiquetaPonto {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.petroleo { background: var(--sis-petroleo-700); }
+.azul     { background: var(--sis-azul-profundo); }
+.ambar    { background: var(--sis-ambar); }
+.tijolo   { background: var(--sis-tijolo-600); }

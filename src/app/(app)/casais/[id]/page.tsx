@@ -19,6 +19,7 @@ import {
 import { ROTULO_ESTADO, TOM_ESTADO } from "@/lib/dados/ovos";
 import { encadear, formatarData, formatarPercentual } from "@/lib/formato";
 import styles from "./ficha.module.css";
+import { classeDaCor } from "@/lib/dados/etiquetas";
 
 export async function generateMetadata({
   params,
@@ -116,6 +117,16 @@ export default async function FichaCasal({
                 {ROTULO_ESTADO[casal.estadoMaisUrgente]}
               </Badge>
             ) : null}
+            {/* O nome vem sempre junto do ponto: cor sozinha não comunica. */}
+            {casal.etiquetas.map((e) => (
+              <span key={e.id} className={styles.etiqueta}>
+                <span
+                  className={`${styles.etiquetaPonto} ${styles[classeDaCor(e.cor)]}`}
+                  aria-hidden="true"
+                />
+                {e.nome}
+              </span>
+            ))}
           </div>
         </header>
 

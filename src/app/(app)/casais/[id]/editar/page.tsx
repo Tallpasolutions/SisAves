@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { obterCasal } from "@/lib/dados/casais";
+import { etiquetasDoCasal, listarEtiquetas, obterCasal } from "@/lib/dados/casais";
 import { FormularioCasal } from "./formulario";
 import styles from "./editar.module.css";
 
@@ -12,6 +12,11 @@ export default async function EditarCasal({ params }: PageProps<"/casais/[id]/ed
   const { id } = await params;
   const casal = await obterCasal(id);
   if (!casal) notFound();
+
+  const [etiquetas, aplicadas] = await Promise.all([
+    listarEtiquetas(),
+    etiquetasDoCasal(id),
+  ]);
 
   const numero = String(casal.numero).padStart(2, "0");
 
@@ -30,7 +35,11 @@ export default async function EditarCasal({ params }: PageProps<"/casais/[id]/ed
         </p>
       </header>
 
-      <FormularioCasal casal={casal} />
+      <FormularioCasal
+        casal={casal}
+        etiquetas={etiquetas}
+        aplicadas={aplicadas.map((e) => e.id)}
+      />
     </div>
   );
 }

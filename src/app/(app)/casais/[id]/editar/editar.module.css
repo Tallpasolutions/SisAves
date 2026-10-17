@@ -158,3 +158,100 @@
   font: var(--type-small);
   color: var(--text-secondary);
 }
+
+/* --- Etiquetas ---------------------------------------------------------------
+   Chip neutro com um ponto de cor, nunca bloco preenchido: a tela já tem o seu
+   orçamento de cor gasto, e etiqueta colorida em volume vira confete. O NOME
+   vem sempre junto do ponto — cor sozinha não comunica nada a quem não a
+   distingue. */
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.etiqueta,
+.cor {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-h-lg);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.etiqueta:hover,
+.cor:hover { background: var(--surface-hover); border-color: var(--border-brand); }
+
+.etiquetaMarcada,
+.corMarcada {
+  background: var(--surface-selected);
+  border-color: var(--border-brand);
+}
+
+.etiquetaMarcada .etiquetaNome,
+.corMarcada .corRotulo { font: var(--type-body-strong); color: var(--text-brand); }
+
+.etiqueta:focus-within,
+.cor:focus-within {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.marca {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--sis-petroleo-700);
+  cursor: pointer;
+}
+
+/* O ponto sai de classe, nunca de style inline com o hex do banco: é o que
+   impede uma cor fora da paleta de chegar à tela por outro caminho. */
+.ponto {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.petroleo { background: var(--sis-petroleo-700); }
+.azul     { background: var(--sis-azul-profundo); }
+.ambar    { background: var(--sis-ambar); }
+.tijolo   { background: var(--sis-tijolo-600); }
+
+.etiquetaNome,
+.corRotulo { font: var(--type-body); }
+
+.etiquetaUso {
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.cores {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-inline-size: 0;
+}
+
+.coresTitulo {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  font: var(--type-label);
+  color: var(--text-secondary);
+}
+
+.coresOpcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

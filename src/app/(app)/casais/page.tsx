@@ -7,6 +7,7 @@ import { listarCasais, type CasalListado, type ParceiroCasal } from "@/lib/dados
 import { ROTULO_ESTADO, TOM_ESTADO } from "@/lib/dados/ovos";
 import { formatarPercentual } from "@/lib/formato";
 import styles from "./casais.module.css";
+import { classeDaCor } from "@/lib/dados/etiquetas";
 
 export const metadata: Metadata = { title: "Casais" };
 
@@ -79,6 +80,22 @@ function CartaoCasal({ casal: c }: { casal: CasalListado }) {
           </Badge>
         ) : null}
       </div>
+
+      {/* As etiquetas são do criador, não do sistema: é por elas que ele acha
+          "os casais da segunda temporada" numa lista de quarenta. */}
+      {c.etiquetas.length > 0 ? (
+        <div className={styles.etiquetas}>
+          {c.etiquetas.map((e) => (
+            <span key={e.id} className={styles.etiqueta}>
+              <span
+                className={`${styles.etiquetaPonto} ${styles[classeDaCor(e.cor)]}`}
+                aria-hidden="true"
+              />
+              {e.nome}
+            </span>
+          ))}
+        </div>
+      ) : null}
 
       <div className={styles.par}>
         <Parceiro parceiro={c.macho} papel="macho" />

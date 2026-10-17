@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { CORES_ETIQUETA, COR_PADRAO } from "@/lib/dados/etiquetas";
 import { hojeNoCriatorio } from "@/lib/data";
 
 export interface EstadoEdicaoCasal {
@@ -135,6 +136,12 @@ export async function editarCasal(
 
   if (Object.keys(campos).length) return { campos };
 
+  // --- Etiquetas -------------------------------------------------------------
+  // Vêm no mesmo envio porque é o mesmo gesto: o criador abre a edição do casal
+  // para arrumar tudo que ele sabe sobre aquele par.
+  const erroEtiqueta = await sincronizarEtiquetas(supabase, casalId, dados);
+  if (erroEtiqueta) return { campos: erroEtiqueta };
+
   const { error } = await supabase
     .from("casais")
     .update({
@@ -164,4 +171,79 @@ export async function editarCasal(
 function formatarBR(iso: string): string {
   const [a, m, d] = iso.split("-");
   return `${d}/${m}/${a}`;
+}
+
+/**
+ * Aplica e remove etiquetas, e cria a nova quando o criador digitou um nome.
+ *
+ * Apaga todos os vínculos e regrava os marcados, em vez de calcular a
+ * diferença: são no máximo algumas linhas por casal, a tabela é uma chave
+ * composta sem dado próprio, e a diferença traria um estado intermediário em
+ * que o casal fica com etiqueta a menos se a segunda escrita falhar.
+ */
+async function sincronizarEtiquetas(
+  supabase: Awaited<ReturnType<typeof criarClienteServidor>>,
+  casalId: string,
+  dados: FormData,
+): Promise<Record<string, string> | null> {
+  const escolhidas = dados.getAll("etiqueta_id").map(String).filter(Boolean);
+  const novoNome = String(dados.get("nova_etiqueta") ?? "").trim();
+  const novaCor = String(dados.get("nova_cor") ?? "") || COR_PADRAO;
+
+  if (novoNome !== "") {
+    if (novoNome.length > 40) {
+      return { nova_etiqueta: "O nome da etiqueta tem no máximo 40 caracteres." };
+    }
+    if (!CORES_ETIQUETA.some((c) => c.valor === novaCor)) {
+      return { nova_etiqueta: "Escolha uma das cores da paleta." };
+    }
+
+    const { data: criatorio } = await supabase
+      .from("casais")
+      .select("criatorio_id")
+      .eq("id", casalId)
+      .maybeSingle();
+
+    if (!criatorio) return { nova_etiqueta: "Casal não encontrado." };
+
+    const { data: criada, error } = await supabase
+      .from("casal_tags")
+      .insert({ criatorio_id: criatorio.criatorio_id, nome: novoNome, cor: novaCor })
+      .select("id")
+      .single();
+
+    if (error) {
+      // unique (criatorio_id, nome): a etiqueta já existe, e o criador quis
+      // aplicá-la. Procurar e usar é o que ele esperava, não um erro.
+      if (error.code === "23505") {
+        const { data: existente } = await supabase
+          .from("casal_tags")
+          .select("id")
+          .eq("nome", novoNome)
+          .maybeSingle();
+        if (existente) escolhidas.push(existente.id);
+        else return { nova_etiqueta: `A etiqueta "${novoNome}" já existe.` };
+      } else {
+        console.error("sincronizarEtiquetas/criar:", error.message);
+        return { nova_etiqueta: "Não foi possível criar a etiqueta." };
+      }
+    } else if (criada) {
+      escolhidas.push(criada.id);
+    }
+  }
+
+  await supabase.from("casal_tag_vinculo").delete().eq("casal_id", casalId);
+
+  const unicas = [...new Set(escolhidas)];
+  if (unicas.length) {
+    const { error } = await supabase
+      .from("casal_tag_vinculo")
+      .insert(unicas.map((tagId) => ({ casal_id: casalId, tag_id: tagId })));
+    if (error) {
+      console.error("sincronizarEtiquetas/vincular:", error.message);
+      return { nova_etiqueta: "Não foi possível aplicar as etiquetas." };
+    }
+  }
+
+  return null;
 }

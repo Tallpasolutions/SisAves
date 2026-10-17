@@ -5,14 +5,23 @@ import { useActionState, useState } from "react";
 import { Button, Field, Input } from "@/components/ui";
 import { SalvoNoAparelho } from "@/components/offline/SalvoNoAparelho";
 import { useEnvioOffline } from "@/components/offline/useEnvioOffline";
-import type { CasalDetalhe } from "@/lib/dados/casais";
+import type { CasalDetalhe, EtiquetaDoCriatorio } from "@/lib/dados/casais";
+import { classeDaCor, CORES_ETIQUETA, COR_PADRAO } from "@/lib/dados/etiquetas";
 import { descreverAve, formatarData } from "@/lib/formato";
-import { useErrosQueEnvelhecem } from "@/lib/formulario";
+import { useErrosQueEnvelhecem, useMarcacaoFirme } from "@/lib/formulario";
 import { editarCasal, type EstadoEdicaoCasal } from "./acoes";
 import styles from "./editar.module.css";
 import { hojeNoAparelho } from "@/lib/data";
 
-export function FormularioCasal({ casal }: { casal: CasalDetalhe }) {
+export function FormularioCasal({
+  casal,
+  etiquetas,
+  aplicadas,
+}: {
+  casal: CasalDetalhe;
+  etiquetas: EtiquetaDoCriatorio[];
+  aplicadas: string[];
+}) {
   const [estado, acao, enviando] = useActionState<EstadoEdicaoCasal, FormData>(
     editarCasal,
     {},
@@ -23,6 +32,11 @@ export function FormularioCasal({ casal }: { casal: CasalDetalhe }) {
   const [observacoes, setObservacoes] = useState(casal.observacoes ?? "");
   const [inicio, setInicio] = useState(casal.vigenciaInicio);
   const [fim, setFim] = useState(casal.vigenciaFim ?? "");
+  const [marcadas, setMarcadas] = useState<ReadonlySet<string>>(
+    () => new Set(aplicadas),
+  );
+  const [novaEtiqueta, setNovaEtiqueta] = useState("");
+  const [novaCor, setNovaCor] = useState<string>(COR_PADRAO);
 
   const numero = String(casal.numero).padStart(2, "0");
   const encerrando = fim !== "" && casal.vigenciaFim === null;
@@ -120,6 +134,75 @@ export function FormularioCasal({ casal }: { casal: CasalDetalhe }) {
             />
           )}
         </Field>
+      </fieldset>
+
+      <fieldset className={styles.grupo}>
+        <legend className={styles.grupoTitulo}>Etiquetas</legend>
+        <p className={styles.grupoNota}>
+          Para agrupar casais do seu jeito: “segunda temporada”, “linhagem
+          Tibiriçá”, “gaiola de cima”. A cor sai da paleta do produto.
+        </p>
+
+        {etiquetas.length > 0 ? (
+          <div className={styles.etiquetas}>
+            {etiquetas.map((e) => (
+              <ChipEtiqueta
+                key={e.id}
+                etiqueta={e}
+                marcada={marcadas.has(e.id)}
+                onMarcar={(v) =>
+                  setMarcadas((atual) => {
+                    const novo = new Set(atual);
+                    if (v) novo.add(e.id);
+                    else novo.delete(e.id);
+                    return novo;
+                  })
+                }
+              />
+            ))}
+          </div>
+        ) : null}
+
+        <Field
+          label="Nova etiqueta"
+          hint="Opcional. Fica disponível para os outros casais também."
+          error={erro("nova_etiqueta")}
+        >
+          {({ id, descritoPor, invalido }) => (
+            <Input
+              id={id}
+              name="nova_etiqueta"
+              size="lg"
+              autoComplete="off"
+              placeholder="Ex.: segunda temporada"
+              value={novaEtiqueta}
+              onChange={(e) => {
+                setNovaEtiqueta(e.target.value);
+                marcar("nova_etiqueta");
+              }}
+              aria-describedby={descritoPor}
+              invalid={invalido}
+            />
+          )}
+        </Field>
+
+        {novaEtiqueta.trim() !== "" ? (
+          <fieldset className={styles.cores}>
+            <legend className={styles.coresTitulo}>Cor da nova etiqueta</legend>
+            <div className={styles.coresOpcoes}>
+              {CORES_ETIQUETA.map((c) => (
+                <ChipCor
+                  key={c.valor}
+                  valor={c.valor}
+                  rotulo={c.rotulo}
+                  classe={c.classe}
+                  marcada={novaCor === c.valor}
+                  onEscolher={setNovaCor}
+                />
+              ))}
+            </div>
+          </fieldset>
+        ) : null}
       </fieldset>
 
       <fieldset className={styles.grupo}>
@@ -223,4 +306,69 @@ function historico(ninhadas: number): string {
     return "A ninhada já registrada fica no histórico, e as aves seguem no plantel.";
   }
   return `As ${ninhadas} ninhadas já registradas ficam no histórico, e as aves seguem no plantel.`;
+}
+
+function ChipEtiqueta({
+  etiqueta,
+  marcada,
+  onMarcar,
+}: {
+  etiqueta: EtiquetaDoCriatorio;
+  marcada: boolean;
+  onMarcar: (v: boolean) => void;
+}) {
+  // O reset do React 19 desmarca a caixa sem o React reaplicar.
+  const ref = useMarcacaoFirme(marcada);
+
+  return (
+    <label className={`${styles.etiqueta} ${marcada ? styles.etiquetaMarcada : ""}`}>
+      <input
+        ref={ref}
+        type="checkbox"
+        name="etiqueta_id"
+        value={etiqueta.id}
+        checked={marcada}
+        onChange={(e) => onMarcar(e.target.checked)}
+        className={styles.marca}
+      />
+      {/* O nome vem sempre junto do ponto: cor sozinha não comunica estado. */}
+      <span className={`${styles.ponto} ${styles[classeDaCor(etiqueta.cor)]}`} aria-hidden="true" />
+      <span className={styles.etiquetaNome}>{etiqueta.nome}</span>
+      {etiqueta.casais > 0 ? (
+        <span className={styles.etiquetaUso}>{etiqueta.casais}</span>
+      ) : null}
+    </label>
+  );
+}
+
+function ChipCor({
+  valor,
+  rotulo,
+  classe,
+  marcada,
+  onEscolher,
+}: {
+  valor: string;
+  rotulo: string;
+  classe: string;
+  marcada: boolean;
+  onEscolher: (v: string) => void;
+}) {
+  const ref = useMarcacaoFirme(marcada);
+
+  return (
+    <label className={`${styles.cor} ${marcada ? styles.corMarcada : ""}`}>
+      <input
+        ref={ref}
+        type="radio"
+        name="nova_cor"
+        value={valor}
+        checked={marcada}
+        onChange={() => onEscolher(valor)}
+        className={styles.marca}
+      />
+      <span className={`${styles.ponto} ${styles[classe]}`} aria-hidden="true" />
+      <span className={styles.corRotulo}>{rotulo}</span>
+    </label>
+  );
 }

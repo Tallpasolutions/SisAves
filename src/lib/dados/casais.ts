@@ -1,6 +1,7 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { Sexo } from "@/components/ui";
 import type { EstadoOvo } from "@/lib/dados/ovos";
+import type { Etiqueta } from "@/lib/dados/etiquetas";
 
 export interface ParceiroCasal {
   id: string;
@@ -30,6 +31,7 @@ export interface CasalListado {
   ninhadaAtual: number | null;
   ovosAtivos: number;
   estadoMaisUrgente: EstadoOvo | null;
+  etiquetas: Etiqueta[];
 }
 
 const CAMPOS_PARCEIRO =
@@ -86,7 +88,8 @@ const URGENCIA: Record<string, number> = {
 export async function listarCasais(): Promise<CasalListado[]> {
   const supabase = await criarClienteServidor();
 
-  const [{ data: casais, error }, { data: posturas }] = await Promise.all([
+  const [{ data: casais, error }, { data: posturas }, { data: vinculos }] =
+    await Promise.all([
     supabase
       .from("casais")
       .select(
@@ -101,11 +104,29 @@ export async function listarCasais(): Promise<CasalListado[]> {
     supabase
       .from("vw_posturas")
       .select("casal_id, ninhada_numero, situacao"),
+    // As etiquetas de todos os casais numa consulta só: uma por casal daria
+    // uma ida ao banco por linha da lista.
+    supabase.from("casal_tag_vinculo").select("casal_id, tag:casal_tags(id, nome, cor)"),
   ]);
 
   if (error) {
     console.error("listarCasais:", error.message);
     return [];
+  }
+
+  const porCasal = new Map<string, Etiqueta[]>();
+  for (const v of (vinculos ?? []) as Array<{
+    casal_id: string;
+    tag: Etiqueta | Etiqueta[] | null;
+  }>) {
+    const tag = Array.isArray(v.tag) ? v.tag[0] : v.tag;
+    if (!tag) continue;
+    const lista = porCasal.get(v.casal_id) ?? [];
+    lista.push(tag);
+    porCasal.set(v.casal_id, lista);
+  }
+  for (const lista of porCasal.values()) {
+    lista.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
   }
 
   const resumoPorCasal = new Map<
@@ -148,6 +169,7 @@ export async function listarCasais(): Promise<CasalListado[]> {
       // desfez o par; que uma postura DAQUELE dia ainda caiba no casal é outra
       // regra, e ela vive na validação da postura.
       ativo: c.vigencia_fim === null,
+      etiquetas: porCasal.get(c.id) ?? [],
       vigenciaInicio: c.vigencia_inicio,
       vigenciaFim: c.vigencia_fim,
       endogamiaPct: c.endogamia_pct !== null ? Number(c.endogamia_pct) : null,
@@ -227,6 +249,7 @@ export async function obterCasal(id: string): Promise<CasalDetalhe | null> {
     numero: data.numero,
     gaiola: data.gaiola,
     ativo: data.vigencia_fim === null,
+    etiquetas: await etiquetasDoCasal(id),
     vigenciaInicio: data.vigencia_inicio,
     vigenciaFim: data.vigencia_fim,
     endogamiaPct: data.endogamia_pct !== null ? Number(data.endogamia_pct) : null,
@@ -355,3 +378,61 @@ async function listarNinhadasDoCasal(casalId: string): Promise<NinhadaResumo[]> 
   });
 }
 
+
+export interface EtiquetaDoCriatorio {
+  id: string;
+  nome: string;
+  cor: string;
+  /** Quantos casais a usam — o criador decide pelo uso se ela ainda serve. */
+  casais: number;
+}
+
+/** O catálogo de etiquetas do criatório, com o uso de cada uma. */
+export async function listarEtiquetas(): Promise<EtiquetaDoCriatorio[]> {
+  const supabase = await criarClienteServidor();
+
+  const [{ data: tags, error }, { data: vinculos }] = await Promise.all([
+    supabase
+      .from("casal_tags")
+      // Sem `deleted_at`: a tabela não tem exclusão lógica, e o vínculo cai
+      // em cascata com a etiqueta.
+      .select("id, nome, cor")
+      .order("nome"),
+    supabase.from("casal_tag_vinculo").select("tag_id"),
+  ]);
+
+  if (error) {
+    console.error("listarEtiquetas:", error.message);
+    return [];
+  }
+
+  const uso = new Map<string, number>();
+  for (const v of (vinculos ?? []) as Array<{ tag_id: string }>) {
+    uso.set(v.tag_id, (uso.get(v.tag_id) ?? 0) + 1);
+  }
+
+  return ((tags ?? []) as Array<{ id: string; nome: string; cor: string }>).map((t) => ({
+    ...t,
+    casais: uso.get(t.id) ?? 0,
+  }));
+}
+
+/** As etiquetas aplicadas a um casal. */
+export async function etiquetasDoCasal(casalId: string): Promise<Etiqueta[]> {
+  const supabase = await criarClienteServidor();
+
+  const { data, error } = await supabase
+    .from("casal_tag_vinculo")
+    .select("tag:casal_tags(id, nome, cor)")
+    .eq("casal_id", casalId);
+
+  if (error) {
+    console.error("etiquetasDoCasal:", error.message);
+    return [];
+  }
+
+  return ((data ?? []) as Array<{ tag: Etiqueta | Etiqueta[] | null }>)
+    .map((v) => (Array.isArray(v.tag) ? v.tag[0] : v.tag))
+    .filter((t): t is Etiqueta => Boolean(t))
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+}

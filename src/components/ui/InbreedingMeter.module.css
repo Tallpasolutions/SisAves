@@ -52,7 +52,9 @@
   justify-content: space-between;
   font: var(--type-small);
   font-variant-numeric: tabular-nums;
-  color: var(--text-muted);
+  /* Os limiares da escala (6,25%, 12,5%) são o que dá sentido ao medidor:
+     texto essencial, e --text-muted dá 3,68:1. */
+  color: var(--text-secondary);
 }
 
 .explicacao {

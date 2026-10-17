@@ -10,7 +10,8 @@ inventário completo do que falta**, pendências e armadilhas — fica em
 
 O ciclo do ovo fecha pela interface — postura, ovoscopia, eclosão, anilhamento,
 separação e perda — e a ave sai do plantel por venda, doação, empréstimo, óbito
-ou fuga. Ave e casal se editam, e o casal se encerra. O próximo passo é a
+ou fuga. Ave e casal se editam, o casal se encerra, o ovo passa para outro
+casal chocar e um marco registrado por engano se desfaz. O próximo passo é a
 Fase 8: CRO, QR e validação pública.
 
 ## Começando
@@ -41,6 +42,7 @@ ciclo do ovo, com datas relativas a hoje — então sempre há o que ver na tela
 | `/plantel` · `/plantel/[id]` | lista e ficha da ave |
 | `/plantel/nova` | cadastrar ave |
 | `/plantel/[id]/editar` | corrigir os dados da ave |
+| `/plantel/[id]/pesagens` | registrar e acompanhar o peso |
 | `/plantel/[id]/saida` | registrar venda, doação, empréstimo, óbito ou fuga |
 | `/plantel/[id]/genealogia` | árvore de três gerações |
 | `/casais` · `/casais/[id]` | lista e ficha do casal, com endogamia |
@@ -49,6 +51,8 @@ ciclo do ovo, com datas relativas a hoje — então sempre há o que ver na tela
 | `/casais/[id]/postura` | registrar postura |
 | `/ovos` | ciclo do ovo, por estado |
 | `/ovos/[ninhada]` | a ninhada ovo por ovo — conferir o ninho e marcar o que mudou |
+| `/ovos/[ninhada]/transferir` | passar ovos para outro casal chocar |
+| `/ovos/[ninhada]/corrigir` | desfazer um marco do ciclo |
 | `/ovos/[ninhada]/anilhar` | anilhar filhotes |
 | `/painel` | painel do criatório (só no desktop) |
 | `/entrar` · `/cadastrar` · `/comecar` | autenticação e onboarding |
@@ -82,6 +86,7 @@ docs/
   ESTADO.md         estado do projeto
   design/           handoff de design e pranchas
 scripts/sql.mjs     runner de SQL
+scripts/testar.mjs  roda os testes de banco
 ```
 
 ## Banco
@@ -91,15 +96,14 @@ O runner conecta pelo **pooler**: o host direto `db.<ref>.supabase.co` só
 resolve em IPv6 e devolve `ENOTFOUND` em máquina sem rota IPv6.
 
 ```bash
-node scripts/sql.mjs -f supabase/migrations/0021_casal_ativo_alinhado.sql
+node scripts/sql.mjs -f supabase/migrations/0025_chocador_nas_telas.sql
 node scripts/sql.mjs "select 1"                        # consulta avulsa
 ```
 
-Depois de qualquer migration, rodar os dez testes — toda linha deve sair com
-`resultado = ok`:
+Depois de qualquer migration, rodar os testes:
 
 ```bash
-for t in supabase/tests/0*.sql; do node scripts/sql.mjs -f "$t"; done
+node scripts/testar.mjs
 ```
 
 Cada teste abre uma transação e termina em `rollback`, então rodar contra o
