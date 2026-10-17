@@ -1,0 +1,280 @@
+/* D2 — a página que abre ao escanear o QR.
+
+   Anônima: sem login, sem menu, sem tab bar. É uma página de CONSULTA, e tudo
+   nela serve a uma pergunta só — "este papel na minha mão é verdadeiro?".
+   O selo vem primeiro e é o único bloco de petróleo cheio da tela; a confiança
+   vem dele e do dado bruto, nunca de adjetivo. */
+
+.tela {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  padding: var(--space-5) var(--space-4) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  background: var(--surface-page);
+}
+
+/* --- Selo ---------------------------------------------------------------------- */
+.selo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--surface-inverse);
+  color: var(--text-on-brand);
+  border-radius: var(--radius-md);
+}
+
+/* Revogado troca a superfície, não só a cor do texto: estado nunca é
+   comunicado só por cor. */
+.seloRevogado {
+  background: var(--sis-tijolo-700);
+}
+
+.seloIcone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--sis-branco);
+  color: var(--sis-petroleo-700);
+}
+
+.seloRevogado .seloIcone { color: var(--sis-tijolo-700); }
+
+.seloTitulo {
+  font: var(--type-h2);
+  color: var(--text-on-brand);
+  margin: 0;
+}
+
+.seloTexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-on-brand);
+}
+
+.consulta {
+  margin-top: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.16);
+  font: var(--type-small);
+  color: var(--text-on-brand);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Cartão da ave --------------------------------------------------------------- */
+.cartao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.foto {
+  width: 72px;
+  height: 72px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.fotoImagem { width: 100%; height: 100%; object-fit: cover; }
+
+.fotoVazia {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  text-align: center;
+  padding: var(--space-1);
+}
+
+.cartaoTextos { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+
+.nome { font: var(--type-h3); margin: 0; }
+
+.especie {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.cartaoLinha { display: flex; gap: var(--space-2); align-items: center; }
+
+/* --- Anilha ------------------------------------------------------------------------ */
+.anilhaBloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface-brand-soft);
+  border: var(--border-width) solid var(--border-brand);
+  border-radius: var(--radius-md);
+}
+
+.rotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* --- Dados -------------------------------------------------------------------------- */
+.dados {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.dado {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.dadoRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.dadoValor { font: var(--type-body); font-variant-numeric: tabular-nums; }
+
+/* --- Seções -------------------------------------------------------------------------- */
+.secao { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.secaoTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.criatorio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.monograma {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--surface-brand-soft);
+  color: var(--text-brand);
+  font: var(--type-h4);
+}
+
+.criatorioTextos { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.criatorioNome { font: var(--type-body-strong); }
+
+.criatorioLinha {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Filiação --------------------------------------------------------------------------- */
+.filiacao {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+/* A faixa de sexo de 3px é um dos dois lugares onde ela é permitida. */
+.progenitor {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-left: var(--border-width-marker) solid var(--sis-neutro-400);
+  border-radius: var(--radius-sm);
+  min-width: 0;
+}
+
+.macho { border-left-color: var(--sis-petroleo-700); }
+.femea { border-left-color: var(--sis-azul-profundo); }
+
+.progenitorPapel {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.progenitorNome { font: var(--type-body-strong); }
+
+.progenitorDesconhecido {
+  font: var(--type-body);
+  /* Fato da genealogia, não decoração: --text-muted daria 3,68:1. */
+  color: var(--text-secondary);
+}
+
+.nota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Ação única ---------------------------------------------------------------------------- */
+.acao { display: flex; }
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: var(--control-h-lg);
+  padding: 0 var(--space-5);
+  background: var(--surface-inverse);
+  color: var(--text-on-brand);
+  border-radius: var(--radius-sm);
+  font: var(--type-label);
+  text-decoration: none;
+  transition: var(--transition-control);
+}
+
+.botao:hover { background: var(--sis-petroleo-800); }
+
+.botao:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.privacidade {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

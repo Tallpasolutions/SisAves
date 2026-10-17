@@ -1,0 +1,323 @@
+/* D1 — Certificado de Registro de Origem · A4 retrato.
+
+   É um DOCUMENTO FÍSICO, não uma tela: todas as medidas vêm em mm e pt, nunca
+   em px. Corpo 10pt, rótulo-guia 7,5pt, título 27pt, anilha 19pt — e nada
+   abaixo de 7,5pt, que é o limite de leitura confortável no papel.
+
+   A folha é sempre CLARA, nos dois temas: papel não tem tema escuro, e o CRO
+   impresso em fundo petróleo gastaria meio cartucho por via. As cores saem
+   literais aqui de propósito — `var(--surface-card)` seguiria o tema do
+   navegador na hora de imprimir. */
+
+.folha {
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 16mm 15mm 13mm;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #1b2528;
+  font-family: var(--font-ui), system-ui, sans-serif;
+  font-size: 10pt;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: 6mm;
+}
+
+/* Na tela, a folha ganha sombra e um fundo em volta para parecer papel. */
+@media screen {
+  .folha {
+    box-shadow: 0 2px 12px rgba(11, 45, 48, 0.14);
+    border-radius: 2px;
+  }
+}
+
+@media print {
+  .folha {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+/* --- 1 · Cabeçalho institucional -------------------------------------------- */
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8mm;
+  padding-bottom: 4mm;
+  border-bottom: 2px solid #0b5d5e;
+}
+
+.identidade { display: flex; gap: 5mm; align-items: flex-start; }
+
+.logo {
+  width: 19mm;
+  height: 19mm;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.4mm solid #dbe4e4;
+  border-radius: 1mm;
+  overflow: hidden;
+  background: #f4f7f6;
+}
+
+.logoImagem { width: 100%; height: 100%; object-fit: contain; }
+
+/* Ausência de imagem se resolve com tipografia, nunca com ornamento. */
+.logoVazio {
+  font-size: 7.5pt;
+  color: #5a6b70;
+  text-align: center;
+  padding: 1mm;
+}
+
+.criatorio { display: flex; flex-direction: column; gap: 0.8mm; }
+
+.criatorioNome {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 14pt;
+  font-weight: 700;
+  color: #163a45;
+}
+
+.criatorioLinha { font-size: 8.5pt; color: #5a6b70; }
+
+.numeracao { text-align: right; display: flex; flex-direction: column; gap: 0.8mm; }
+
+.rotulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6b70;
+}
+
+.numero {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 13pt;
+  font-variant-numeric: tabular-nums;
+  color: #0b5d5e;
+}
+
+.data {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 9pt;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 2 · Título e declaração ------------------------------------------------- */
+.titulo {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 27pt;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #163a45;
+  margin: 0;
+}
+
+.declaracao {
+  margin: 0;
+  font-size: 10pt;
+  max-width: 155mm;
+}
+
+/* --- 3 · Faixa da anilha ----------------------------------------------------- */
+/* O dado que o comprador procura primeiro. */
+.faixaAnilha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8mm;
+  padding: 4mm 5mm;
+  background: #eff5f5;
+  border: 0.4mm solid #b9d5d5;
+  border-radius: 1.5mm;
+}
+
+.anilha {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 19pt;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: #0b5d5e;
+}
+
+.endogamia { text-align: right; display: flex; flex-direction: column; gap: 0.5mm; }
+
+.endogamiaValor {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 13pt;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 4 e 5 · Dados da ave e foto --------------------------------------------- */
+.corpo { display: flex; gap: 6mm; align-items: flex-start; }
+
+.dados {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4mm 5mm;
+  margin: 0;
+}
+
+.dado { display: flex; flex-direction: column; gap: 0.5mm; min-width: 0; }
+
+.dadoRotulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6b70;
+}
+
+.dadoValor { font-size: 10pt; }
+
+.cientifico { font-style: italic; }
+
+.foto {
+  width: 52mm;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+
+.fotoQuadro {
+  width: 52mm;
+  height: 52mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.4mm solid #dbe4e4;
+  border-radius: 1mm;
+  overflow: hidden;
+  background: #f4f7f6;
+}
+
+.fotoImagem { width: 100%; height: 100%; object-fit: cover; }
+
+.fotoVazia { font-size: 8pt; color: #5a6b70; }
+
+.fotoLegenda { font-size: 7.5pt; color: #5a6b70; }
+
+/* --- 6 · Genealogia ----------------------------------------------------------- */
+.secao { display: flex; flex-direction: column; gap: 3mm; }
+
+.secaoTitulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6b70;
+  margin: 0;
+}
+
+.arvore {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4mm;
+  align-items: start;
+}
+
+.coluna { display: flex; flex-direction: column; gap: 2mm; }
+
+.colunaTitulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6b70;
+}
+
+/* A faixa de 2px à esquerda é um dos dois lugares onde ela é permitida. */
+.ancestral {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4mm;
+  padding: 1.8mm 2.5mm;
+  border-left: 0.6mm solid #9bb0b4;
+  background: #fafcfb;
+}
+
+.macho { border-left-color: #0b5d5e; }
+.femea { border-left-color: #163a45; }
+
+.ancestralPapel { font-size: 7.5pt; color: #5a6b70; }
+
+.ancestralNome { font-size: 9pt; font-weight: 500; }
+
+.ancestralAnilha {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 8pt;
+  font-variant-numeric: tabular-nums;
+  color: #5a6b70;
+}
+
+.desconhecido { color: #5a6b70; font-size: 9pt; }
+
+.notaArvore { font-size: 8.5pt; color: #5a6b70; margin: 0; }
+
+/* --- 7 · Assinatura e validação ----------------------------------------------- */
+.rodapeBloco {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8mm;
+  margin-top: auto;
+  padding-top: 6mm;
+}
+
+.assinatura { flex: 1; display: flex; flex-direction: column; gap: 1.5mm; }
+
+.linhaAssinatura {
+  margin-top: 10mm;
+  border-top: 0.3mm solid #1b2528;
+  padding-top: 1.2mm;
+  font-size: 8.5pt;
+  max-width: 80mm;
+}
+
+.aviso { font-size: 7.5pt; color: #5a6b70; max-width: 95mm; margin: 0; }
+
+.validacao {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5mm;
+  text-align: center;
+}
+
+.urlValidacao {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 7.5pt;
+  color: #5a6b70;
+  max-width: 40mm;
+  word-break: break-all;
+}
+
+/* --- 8 · Rodapé ---------------------------------------------------------------- */
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4mm;
+  padding-top: 3mm;
+  border-top: 0.3mm solid #dbe4e4;
+  font-size: 7.5pt;
+  color: #5a6b70;
+}
+
+.marca { font-weight: 600; color: #163a45; }
+
+/* Documento revogado: a tarja existe para quem segura o papel saber. */
+.revogado {
+  padding: 3mm 4mm;
+  background: #f7e4e1;
+  border: 0.4mm solid #a8352a;
+  border-radius: 1.5mm;
+  color: #8e2a20;
+  font-size: 9pt;
+}

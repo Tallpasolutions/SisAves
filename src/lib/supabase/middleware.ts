@@ -11,6 +11,9 @@ const PUBLICAS = [
   "/recuperar-senha",
   "/auth",
   "/v",
+  // A folha do CRO pela porta pública: quem recebeu a ave precisa poder
+  // imprimir a via que lhe entregaram, e não tem login.
+  "/cro/publico",
   "/offline",
 ];
 

@@ -1,0 +1,63 @@
+/* A mesa onde a folha aparece, e a barra que não sai no papel. */
+
+.mesa {
+  min-height: 100dvh;
+  padding: var(--space-5) var(--space-4) var(--space-8);
+  background: var(--sis-neutro-100);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* O fundo da mesa é sempre claro: a folha é branca, e um fundo escuro em volta
+   dela mentiria sobre como a peça sai impressa. */
+.barra {
+  width: 210mm;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--sis-branco);
+  border: var(--border-width) solid var(--sis-neutro-200);
+  border-radius: var(--radius-md);
+}
+
+.barraTextos { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.barraTitulo {
+  font: var(--type-body-strong);
+  color: var(--sis-grafite);
+  font-variant-numeric: tabular-nums;
+}
+
+.barraNota {
+  font: var(--type-small);
+  color: var(--sis-neutro-600);
+}
+
+.barraAcoes { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+/* --- Impressão ---------------------------------------------------------------
+   A folha já vem desenhada em mm; o que a impressão faz é tirar tudo que é
+   tela de volta dela. */
+/* A folha já carrega as margens de 16/15/13 mm; a página do navegador entra
+   com zero para não somar as duas. */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  .mesa {
+    min-height: auto;
+    padding: 0;
+    background: #ffffff;
+    display: block;
+  }
+
+  .barra { display: none; }
+}
