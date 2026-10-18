@@ -31,6 +31,7 @@ export default async function Cro({ params }: PageProps<"/cro/[id]">) {
         numero={certificado.sequencial}
         aveId={certificado.snapshot.ave.nome}
         revogado={certificado.revogadoEm !== null}
+        certificadoId={id}
       />
       <CertificadoA4 certificado={certificado} origem={`${protocolo}://${host}`} />
     </div>

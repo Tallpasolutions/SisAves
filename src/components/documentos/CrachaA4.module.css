@@ -1,0 +1,229 @@
+/* Crachá de gaiola · dois por folha A4 retrato.
+
+   Documento físico: mm e pt, cores literais. O cartão tem 186 × 62 mm — dois
+   cabem numa folha com a margem de 12 mm e a linha de corte entre eles.
+
+   Mesma linguagem das outras peças: faixa de 3px à esquerda para o sexo do
+   progenitor, sem pílula de fundo cheio, nada abaixo de 7,5pt. */
+
+.folha {
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 12mm;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #1b2528;
+  font-family: var(--font-ui), system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 8mm;
+}
+
+@media screen {
+  .folha {
+    box-shadow: 0 2px 12px rgba(11, 45, 48, 0.14);
+    border-radius: 2px;
+  }
+}
+
+@media print {
+  .folha {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+/* A linha de corte: tracejada, discreta, e só entre cartões. */
+.corte {
+  height: 0;
+  border-top: 0.25mm dashed #c3d0d1;
+}
+
+.cartao {
+  box-sizing: border-box;
+  width: 186mm;
+  height: 68mm;
+  display: flex;
+  gap: 4mm;
+  padding: 4mm;
+  border: 0.3mm solid #dbe3e3;
+  border-radius: 2mm;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.identidade {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * Nada aqui dentro encolhe.
+ *
+ * O cartão tem altura FIXA, e num flex em coluna isso faz cada filho ceder
+ * altura quando a soma passa: o nome da ave apareceu com 15px de caixa para
+ * 29px de texto, cortado no meio da letra. `flex: none` obriga o conteúdo a
+ * caber de verdade — se um dia não couber, transborda visivelmente em vez de
+ * mutilar a linha mais importante da peça.
+ */
+.identidade > * { flex: none; }
+
+/* --- Criatório ---------------------------------------------------------------- */
+.criatorio {
+  display: flex;
+  align-items: center;
+  gap: 2.5mm;
+  padding-bottom: 1.5mm;
+  border-bottom: 0.25mm solid #dbe3e3;
+}
+
+.logo {
+  width: 10mm;
+  height: 10mm;
+  flex: none;
+  object-fit: contain;
+}
+
+.criatorioTextos { min-width: 0; display: flex; flex-direction: column; }
+
+.criatorioNome {
+  font-size: 9pt;
+  font-weight: 600;
+  color: #163a45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.criatorioDados {
+  font-size: 7.5pt;
+  color: #5a6b70;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- A ave --------------------------------------------------------------------- */
+.nome {
+  margin: 2mm 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18pt;
+  font-weight: 700;
+  /* 1.2 e não 1.05: em 1.05 o descendente do "j" de Carijó era cortado pelo
+     overflow hidden da elipse. Nome de ave tem acento e perna embaixo. */
+  line-height: 1.2;
+  color: #163a45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.anilha {
+  margin: 0.5mm 0 2mm;
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 12pt;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #0b5d5e;
+}
+
+.dados {
+  margin: 0 0 2.5mm;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8mm 4mm;
+}
+
+.dado { display: flex; gap: 1.5mm; align-items: baseline; min-width: 0; }
+
+.dadoRotulo {
+  flex: none;
+  font-size: 7.5pt;
+  color: #5a6b70;
+}
+
+.dadoValor {
+  margin: 0;
+  font-size: 8.5pt;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Filiação ------------------------------------------------------------------ */
+.filiacao {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5mm;
+}
+
+.progenitor {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5mm 2mm;
+  border: 0.25mm solid #dbe3e3;
+  /* A faixa de sexo, como na árvore e no PedigreeNode da B6. */
+  border-left: 0.8mm solid #9aa7ab;
+  border-radius: 1.5mm;
+  background: #f4f7f6;
+}
+
+.pai { border-left-color: #0b5d5e; }
+.mae { border-left-color: #163a45; }
+
+.progenitorRotulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5a6b70;
+}
+
+.progenitorNome {
+  font-size: 9pt;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progenitorAnilha {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 7.5pt;
+  font-variant-numeric: tabular-nums;
+  color: #5a6b70;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Lado do QR ----------------------------------------------------------------- */
+.lado {
+  flex: none;
+  width: 24mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5mm;
+  padding-left: 4mm;
+  border-left: 0.25mm solid #dbe3e3;
+}
+
+.numero {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 7.5pt;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #0b5d5e;
+  text-align: center;
+}
+
+.contato {
+  font-size: 7.5pt;
+  color: #5a6b70;
+  text-align: center;
+  line-height: 1.2;
+}

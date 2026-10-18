@@ -1,0 +1,28 @@
+/* A mesa da folha paisagem. A barra não sai no papel. */
+
+.mesa {
+  min-height: 100dvh;
+  padding: var(--space-5) var(--space-4) var(--space-8);
+  background: var(--sis-neutro-100);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* A folha já carrega as margens de 12mm; a página entra com zero para não
+   somar as duas. Paisagem, ao contrário do CRO: são dezesseis posições na
+   com a linha de corte no meio. */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  .mesa {
+    min-height: auto;
+    padding: 0;
+    background: #ffffff;
+    display: block;
+  }
+}

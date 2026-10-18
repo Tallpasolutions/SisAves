@@ -15,6 +15,8 @@ export interface SnapshotCertificado {
     sexo: string;
     dt_nascimento: string | null;
     especie: string | null;
+    /** "Sporophila caerulescens" — só nos certificados emitidos a partir da 0035. */
+    especie_cientifica?: string | null;
     mutacao: string | null;
     foto_url: string | null;
   };
@@ -212,6 +214,17 @@ export const CAMINHOS_BISAVOS = [
   "ppp", "ppm", "pmp", "pmm", "mpp", "mpm", "mmp", "mmm",
 ] as const;
 
+/**
+ * A quarta geração: dezesseis posições.
+ *
+ * A ordem é a mesma das outras colunas — do lado paterno para o materno,
+ * macho antes de fêmea —, e é ela que faz as linhas de ligação baterem com os
+ * bisavós da coluna anterior, dois a dois.
+ */
+export const CAMINHOS_TRISAVOS = CAMINHOS_BISAVOS.flatMap(
+  (bisavo) => [`${bisavo}p`, `${bisavo}m`] as const,
+);
+
 export function porCaminho(
   genealogia: SnapshotCertificado["genealogia"],
 ): Map<string, SnapshotCertificado["genealogia"][number]> {
@@ -225,6 +238,10 @@ export function porCaminho(
  * 'pmp' são ambos "paternos" e viram o mesmo rótulo, repetido quatro vezes na
  * coluna. O bisavô é nomeado pelo avô de quem ele é — "Pai do avô paterno" —,
  * que é preciso e se lê sem esforço.
+ *
+ * A mesma regra sobe para a quarta geração ("Pai do pai do avô paterno"): o
+ * rótulo é sempre o do ancestral UM nível mais perto, nunca o do avô fixo —
+ * foi assim que os oito bisavós viraram quatro rótulos repetidos antes.
  */
 export function rotuloDoCaminho(caminho: string): string {
   const femea = caminho.endsWith("m");
@@ -236,10 +253,10 @@ export function rotuloDoCaminho(caminho: string): string {
     return femea ? `Avó ${lado}a`.replace("oa", "a") : `Avô ${lado}`;
   }
 
-  // Terceira geração: o pai ou a mãe do ancestral de segunda geração.
-  const avo = rotuloDoCaminho(caminho.slice(0, 2));
-  const artigo = avo.startsWith("Avó") ? "da" : "do";
-  return `${femea ? "Mãe" : "Pai"} ${artigo} ${avo.toLowerCase()}`;
+  // Terceira geração em diante: o pai ou a mãe do ancestral um nível abaixo.
+  const anterior = rotuloDoCaminho(caminho.slice(0, -1));
+  const artigo = anterior.startsWith("Avó") || anterior.startsWith("Mãe") ? "da" : "do";
+  return `${femea ? "Mãe" : "Pai"} ${artigo} ${anterior.toLowerCase()}`;
 }
 
 /**

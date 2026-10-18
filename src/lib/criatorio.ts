@@ -10,6 +10,10 @@ export interface CriatorioAtual {
   cidade: string | null;
   uf: string | null;
   logo_url: string | null;
+  whatsapp: string | null;
+  instagram: string | null;
+  /** Se o contato sai nas peças impressas. Nunca na validação pública. */
+  contato_no_documento: boolean;
   clube: { sigla: string; nome: string } | null;
 }
 
@@ -29,7 +33,7 @@ export const obterCriatorioAtual = cache(async (): Promise<CriatorioAtual | null
   const { data } = await supabase
     .from("criatorios")
     .select(
-      "id, nome, slug, nro_criador, registro_ibama, cidade, uf, logo_url, clube:clubes(sigla, nome)",
+      "id, nome, slug, nro_criador, registro_ibama, cidade, uf, logo_url, whatsapp, instagram, contato_no_documento, clube:clubes(sigla, nome)",
     )
     .is("deleted_at", null)
     .order("created_at", { ascending: true })

@@ -1,0 +1,366 @@
+/* Árvore genealógica · A4 PAISAGEM, quatro gerações.
+
+   Documento físico: mm e pt, nunca px, e cores literais — `var(--surface-*)`
+   seguiria o tema do navegador na hora de imprimir, e papel não tem tema
+   escuro. Mesma regra da folha do CRO.
+
+   Nada abaixo de 7,5pt, que é o limite de leitura confortável no papel. É o
+   que fixa a aritmética da peça: dezesseis posições na quarta geração, 160mm
+   úteis de altura, 10mm por linha — e duas linhas de 7,5pt cabem em 10mm.
+
+   O desenho é o da B6: faixa de sexo de 3px à esquerda (um dos dois únicos
+   lugares onde o contrato permite barra colorida), sem pílula de fundo cheio,
+   posição sem ancestral fica em branco. */
+
+.folha {
+  box-sizing: border-box;
+  width: 297mm;
+  min-height: 210mm;
+  padding: 12mm 12mm 9mm;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #1b2528;
+  font-family: var(--font-ui), system-ui, sans-serif;
+  font-size: 9pt;
+  line-height: 1.35;
+  display: flex;
+  flex-direction: column;
+  gap: 5mm;
+}
+
+@media screen {
+  .folha {
+    box-shadow: 0 2px 12px rgba(11, 45, 48, 0.14);
+    border-radius: 2px;
+  }
+}
+
+@media print {
+  .folha {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+/* --- Cabeçalho --------------------------------------------------------------- */
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8mm;
+  padding-bottom: 3mm;
+  border-bottom: 0.4mm solid #0b5d5e;
+}
+
+.titulo {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18pt;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #163a45;
+}
+
+.subtitulo {
+  margin: 1mm 0 0;
+  font-size: 8.5pt;
+  color: #5a6b70;
+}
+
+.numero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex: none;
+}
+
+.numeroRotulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6b70;
+}
+
+.numeroValor {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 13pt;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #0b5d5e;
+}
+
+.numeroData {
+  font-size: 7.5pt;
+  color: #5a6b70;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Corpo ------------------------------------------------------------------- */
+.corpo {
+  flex: 1;
+  display: flex;
+  gap: 6mm;
+  min-height: 0;
+}
+
+.lateral {
+  width: 58mm;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+
+.rotulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6b70;
+}
+
+.ave {
+  display: flex;
+  flex-direction: column;
+  padding: 3mm;
+  border: 0.3mm solid #dbe3e3;
+  border-radius: 2mm;
+  background: #f4f7f6;
+}
+
+.aveNome {
+  margin: 1mm 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 14pt;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #163a45;
+}
+
+.aveAnilha {
+  margin: 0.5mm 0 2mm;
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 10pt;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #0b5d5e;
+}
+
+.dados {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2mm;
+}
+
+.dado { display: flex; flex-direction: column; }
+
+.dadoRotulo {
+  font-size: 7.5pt;
+  color: #5a6b70;
+}
+
+.dadoValor {
+  margin: 0;
+  font-size: 8.5pt;
+}
+
+.dadoItalico { font-style: italic; }
+
+/* --- Validação ---------------------------------------------------------------- */
+.validacao {
+  display: flex;
+  gap: 3mm;
+  align-items: flex-start;
+  padding: 3mm;
+  border: 0.3mm solid #dbe3e3;
+  border-radius: 2mm;
+}
+
+.validacaoTextos { min-width: 0; display: flex; flex-direction: column; gap: 0.8mm; }
+
+.validacaoUrl {
+  margin: 0;
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 7.5pt;
+  line-height: 1.25;
+  word-break: break-all;
+  color: #1b2528;
+}
+
+.validacaoNota {
+  margin: 0;
+  font-size: 7.5pt;
+  color: #5a6b70;
+}
+
+.contato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6mm;
+  padding: 3mm;
+  border: 0.3mm solid #dbe3e3;
+  border-radius: 2mm;
+}
+
+.contatoLinha { margin: 0; font-size: 8.5pt; }
+
+/* --- A árvore ----------------------------------------------------------------- */
+.arvore {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 5mm;
+}
+
+.coluna { display: flex; flex-direction: column; min-width: 0; }
+
+.colunaTitulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6b70;
+  padding-bottom: 1.5mm;
+  margin-bottom: 1.5mm;
+  border-bottom: 0.3mm solid #dbe3e3;
+}
+
+/* Dezesseis linhas iguais em todas as colunas: é a grade comum que faz o par
+   de avós cair exatamente na altura do pai que eles geraram. */
+.colunaGrade {
+  flex: 1;
+  display: grid;
+  grid-template-rows: repeat(16, 1fr);
+  min-height: 0;
+}
+
+.celula {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0.4mm 0;
+}
+
+/* O traço que entra no nó, vindo da coluna anterior. */
+.celula::before {
+  content: "";
+  position: absolute;
+  left: -2.5mm;
+  top: 50%;
+  width: 2.5mm;
+  border-top: 0.25mm solid #c3d0d1;
+}
+
+/* E o traço vertical que une o par: sai do centro deste nó e desce até o
+   centro do irmão. A distância entre os dois centros é exatamente a altura de
+   uma célula, então `height: 100%` acerta em todas as gerações. */
+.primeiroDoPar::after {
+  content: "";
+  position: absolute;
+  left: -2.5mm;
+  top: 50%;
+  height: 100%;
+  border-left: 0.25mm solid #c3d0d1;
+}
+
+/* --- O nó --------------------------------------------------------------------- */
+.no {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3mm;
+  padding: 1.2mm 1.8mm;
+  border: 0.25mm solid #dbe3e3;
+  /* A faixa de sexo: 3px é a medida do contrato, aqui em mm para o papel. */
+  border-left: 0.8mm solid #9aa7ab;
+  border-radius: 1.5mm;
+  background: #ffffff;
+}
+
+.noMacho { border-left-color: #0b5d5e; }
+.noFemea { border-left-color: #163a45; }
+.noIndefinido { border-left-color: #9aa7ab; }
+
+/* Pais e mães ganham um pouco mais de presença: são a geração que o comprador
+   procura primeiro. */
+.noDestaque { background: #f4f7f6; }
+
+.noTopo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1mm;
+  min-width: 0;
+}
+
+.noNome {
+  font-size: 8pt;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #1b2528;
+}
+
+.noSexo {
+  flex: none;
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: #5a6b70;
+}
+
+.noAnilha {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 7.5pt;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: #5a6b70;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Na quarta geração cabe uma linha a menos de folga. */
+.noCompacto { padding: 0.8mm 1.5mm; }
+.noCompacto .noNome { font-size: 7.5pt; }
+
+/* Posição sem ancestral registrado: fica em branco, com o traço do contorno
+   dizendo que a posição existe. Dezesseis caixas escritas "INDEFINIDA"
+   competiriam com os ancestrais que de fato estão lá. */
+.noVazio {
+  border-style: dashed;
+  border-left-style: dashed;
+  border-left-color: #dbe3e3;
+  background: transparent;
+  align-items: center;
+}
+
+.vazioMarca {
+  font-size: 8pt;
+  color: #9aa7ab;
+}
+
+/* --- Rodapé -------------------------------------------------------------------- */
+.rodape {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6mm;
+  padding-top: 2.5mm;
+  border-top: 0.3mm solid #dbe3e3;
+  font-size: 7.5pt;
+  color: #5a6b70;
+}
+
+.rodapeMarca {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 700;
+  color: #0b5d5e;
+}
