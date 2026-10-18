@@ -3,13 +3,26 @@ import { inter, montserrat } from "./fonts";
 import { ThemeScript } from "./theme-script";
 import "./globals.css";
 
+const DESCRICAO =
+  "Gestão de criatório de aves ornamentais: plantel, casais, ciclo do ovo, genealogia e CRO.";
+
+/**
+ * O endereço do site, para o Next montar URL ABSOLUTA no Open Graph.
+ *
+ * WhatsApp, Telegram e afins não resolvem caminho relativo: sem isto, o
+ * `og:image` sai como "/opengraph-image" e nenhum deles monta o cartão.
+ */
+const SITE = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://sisaves.tallpa.com.br",
+);
+
 export const metadata: Metadata = {
+  metadataBase: SITE,
   title: {
     default: "SisAves",
     template: "%s · SisAves",
   },
-  description:
-    "Gestão de criatório de aves ornamentais: plantel, casais, ciclo do ovo, genealogia e CRO.",
+  description: DESCRICAO,
   applicationName: "SisAves",
   manifest: "/site.webmanifest",
   icons: {
@@ -20,6 +33,16 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
+  openGraph: {
+    type: "website",
+    siteName: "SisAves",
+    title: "SisAves",
+    description: DESCRICAO,
+    url: SITE,
+    locale: "pt_BR",
+  },
+  // O cartão grande: o resumo do WhatsApp segue o mesmo par de metas.
+  twitter: { card: "summary_large_image", title: "SisAves", description: DESCRICAO },
 };
 
 export const viewport: Viewport = {

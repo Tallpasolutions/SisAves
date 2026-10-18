@@ -15,6 +15,13 @@ const PUBLICAS = [
   // imprimir a via que lhe entregaram, e não tem login.
   "/cro/publico",
   "/offline",
+  /*
+   * O cartão de compartilhamento. Quem busca esta imagem é o robô do WhatsApp
+   * (ou do Telegram, ou do LinkedIn), que não tem cookie nenhum: com sessão
+   * exigida, ele recebia um 307 para a tela de login e o resumo saía sem
+   * imagem. Não há o que proteger aqui — é a marca e uma frase.
+   */
+  "/opengraph-image",
 ];
 
 function ehPublica(pathname: string) {
