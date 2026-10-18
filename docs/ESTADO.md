@@ -487,7 +487,7 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/plantel/[id]/saida` | Registrar saída | não desenhada; venda, doação, empréstimo, óbito e fuga — os campos mudam com o motivo e o casal vigente é encerrado junto |
 | `/certificados` · `/certificados/novo` | Certificados e **C3** | a C3 é a única tela exclusiva do desktop: a folha tem 210 mm e não há redução dela legível no telefone |
 | `/cro/[id]/arvore` | Árvore genealógica | A4 paisagem, quatro gerações, ancestral repetido em âmbar |
-| `/cro/[id]/cracha` | Crachá de gaiola | dois por folha A4, com pai, mãe e QR |
+| `/cro/[id]/cracha` | Crachá de gaiola | frente e verso lado a lado, dois pares por A4; o verso leva QR e três gerações |
 | `/cro/[id]` · `/cro/publico/[codigo]` | **D1** · a folha A4 | fora do grupo `(app)`: sem sidebar, sem tab bar, nada que saia no papel |
 | `/v/[codigo]` | **D2** · validação pública | anônima; o que abre ao escanear o QR, agora com a árvore inteira |
 | `/cro/publico/[codigo]/arvore` | Árvore pela porta pública | quem recebeu a ave imprime a folha sem ter login |
@@ -729,9 +729,16 @@ que gerou. **Ancestral que aparece em mais de um ramo ganha contorno âmbar**,
 comparado pela ANILHA e não por id — o snapshot não guarda id interno, porque
 ele é devolvido inteiro a quem escaneia o QR.
 
-O crachá **não leva a árvore**: em miniatura de 40mm nenhum nome é legível, e
-ornamento com forma de dado é pior que ausência. Leva pai e mãe, que é o que
-se consulta diante da gaiola.
+O crachá tem **frente e verso**, lado a lado na folha: recorta-se o par e
+colam-se as costas, como na peça que o criador já usa. A frente identifica a
+ave; o verso leva o QR e a árvore. Cada face tem 88 × 68 mm, dois pares por
+A4.
+
+**O verso leva TRÊS gerações, não quatro.** Não é economia: num cartão de
+68 mm, a quarta geração são dezesseis linhas de 3,7 mm — abaixo do limite de
+leitura do papel, onde nome de ave vira mancha com forma de dado. É
+exatamente o que acontece na peça do sistema antigo. Quem precisa das quatro
+tem a folha da árvore e o QR, que abre a árvore inteira no telefone.
 
 **O contato do criador não entra no snapshot.** `validar_certificado` devolve
 o snapshot INTEIRO a quem não tem login: contato ali dentro seria contato

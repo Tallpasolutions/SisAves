@@ -1,10 +1,11 @@
-/* Crachá de gaiola · dois por folha A4 retrato.
+/* Crachá de gaiola · frente e verso, dois pares por folha A4 retrato.
 
-   Documento físico: mm e pt, cores literais. O cartão tem 186 × 62 mm — dois
-   cabem numa folha com a margem de 12 mm e a linha de corte entre eles.
+   Cada face tem 88 × 62 mm e elas vêm lado a lado, como no documento que o
+   criador já usa: recorta-se o par e colam-se as costas.
 
-   Mesma linguagem das outras peças: faixa de 3px à esquerda para o sexo do
-   progenitor, sem pílula de fundo cheio, nada abaixo de 7,5pt. */
+   Documento físico: mm e pt, cores literais, nada abaixo de 7,5pt. Mesma
+   linguagem das outras peças — faixa de sexo de 3px à esquerda, sem pílula de
+   fundo cheio, posição vazia é vazio honesto. */
 
 .folha {
   box-sizing: border-box;
@@ -35,63 +36,58 @@
   }
 }
 
-/* A linha de corte: tracejada, discreta, e só entre cartões. */
-.corte {
-  height: 0;
-  border-top: 0.25mm dashed #c3d0d1;
+.par { display: flex; align-items: stretch; }
+
+/* A dobra entre as duas faces: 6mm de respiro com o tracejado no meio. */
+.dobra {
+  width: 6mm;
+  flex: none;
+  border-left: 0.25mm dashed #c3d0d1;
+  margin-left: 3mm;
+}
+
+.instrucao {
+  margin: 0;
+  font-size: 7.5pt;
+  color: #5a6b70;
 }
 
 .cartao {
   box-sizing: border-box;
-  width: 186mm;
+  width: 88mm;
+  /* 68mm e não 62: a conta do verso não fechava — topo de 20mm mais oito
+     linhas de árvore pedem 58mm úteis, e 62mm davam 54,4. Dois pares ainda
+     cabem com folga nos 273mm úteis da folha. */
   height: 68mm;
+  flex: none;
   display: flex;
-  gap: 4mm;
-  padding: 4mm;
+  flex-direction: column;
+  padding: 3.5mm;
   border: 0.3mm solid #dbe3e3;
   border-radius: 2mm;
   background: #ffffff;
   overflow: hidden;
 }
 
-.identidade {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
+/* Nada encolhe: a altura do cartão é física, e num flex em coluna os filhos
+   cederiam altura até cortar o nome da ave no meio da letra. */
+.cartao > * { flex: none; }
 
-/*
- * Nada aqui dentro encolhe.
- *
- * O cartão tem altura FIXA, e num flex em coluna isso faz cada filho ceder
- * altura quando a soma passa: o nome da ave apareceu com 15px de caixa para
- * 29px de texto, cortado no meio da letra. `flex: none` obriga o conteúdo a
- * caber de verdade — se um dia não couber, transborda visivelmente em vez de
- * mutilar a linha mais importante da peça.
- */
-.identidade > * { flex: none; }
-
-/* --- Criatório ---------------------------------------------------------------- */
+/* --- Frente -------------------------------------------------------------------- */
 .criatorio {
   display: flex;
   align-items: center;
-  gap: 2.5mm;
-  padding-bottom: 1.5mm;
+  gap: 2mm;
+  padding-bottom: 1.2mm;
   border-bottom: 0.25mm solid #dbe3e3;
 }
 
-.logo {
-  width: 10mm;
-  height: 10mm;
-  flex: none;
-  object-fit: contain;
-}
+.logo { width: 8mm; height: 8mm; flex: none; object-fit: contain; }
 
 .criatorioTextos { min-width: 0; display: flex; flex-direction: column; }
 
 .criatorioNome {
-  font-size: 9pt;
+  font-size: 8.5pt;
   font-weight: 600;
   color: #163a45;
   overflow: hidden;
@@ -105,14 +101,11 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* --- A ave --------------------------------------------------------------------- */
 .nome {
-  margin: 2mm 0 0;
+  margin: 1.5mm 0 0;
   font-family: var(--font-display), Georgia, serif;
-  font-size: 18pt;
+  font-size: 16pt;
   font-weight: 700;
-  /* 1.2 e não 1.05: em 1.05 o descendente do "j" de Carijó era cortado pelo
-     overflow hidden da elipse. Nome de ave tem acento e perna embaixo. */
   line-height: 1.2;
   color: #163a45;
   overflow: hidden;
@@ -121,54 +114,49 @@
 }
 
 .anilha {
-  margin: 0.5mm 0 2mm;
+  margin: 0 0 1.5mm;
   font-family: var(--font-numeric), ui-monospace, monospace;
-  font-size: 12pt;
+  font-size: 11pt;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: #0b5d5e;
 }
 
 .dados {
-  margin: 0 0 2.5mm;
+  margin: 0 0 2mm;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.8mm 4mm;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6mm 3mm;
 }
 
-.dado { display: flex; gap: 1.5mm; align-items: baseline; min-width: 0; }
+.dado { display: flex; gap: 1.2mm; align-items: baseline; min-width: 0; }
 
-.dadoRotulo {
-  flex: none;
-  font-size: 7.5pt;
-  color: #5a6b70;
-}
+.dadoRotulo { flex: none; font-size: 7.5pt; color: #5a6b70; }
 
 .dadoValor {
   margin: 0;
-  font-size: 8.5pt;
+  font-size: 8pt;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* --- Filiação ------------------------------------------------------------------ */
 .filiacao {
   margin-top: auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5mm;
+  gap: 2mm;
 }
 
 .progenitor {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 1.5mm 2mm;
+  padding: 1.2mm 1.6mm;
   border: 0.25mm solid #dbe3e3;
   /* A faixa de sexo, como na árvore e no PedigreeNode da B6. */
   border-left: 0.8mm solid #9aa7ab;
-  border-radius: 1.5mm;
+  border-radius: 1.2mm;
   background: #f4f7f6;
 }
 
@@ -177,53 +165,155 @@
 
 .progenitorRotulo {
   font-size: 7.5pt;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #5a6b70;
 }
 
 .progenitorNome {
-  font-size: 9pt;
+  font-size: 8.5pt;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.progenitorAnilha {
-  font-family: var(--font-numeric), ui-monospace, monospace;
-  font-size: 7.5pt;
-  font-variant-numeric: tabular-nums;
-  color: #5a6b70;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* --- Lado do QR ----------------------------------------------------------------- */
-.lado {
-  flex: none;
-  width: 24mm;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5mm;
-  padding-left: 4mm;
-  border-left: 0.25mm solid #dbe3e3;
-}
-
-.numero {
-  font-family: var(--font-numeric), ui-monospace, monospace;
-  font-size: 7.5pt;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: #0b5d5e;
-  text-align: center;
 }
 
 .contato {
+  margin: 1.5mm 0 0;
   font-size: 7.5pt;
   color: #5a6b70;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Verso --------------------------------------------------------------------- */
+.versoTopo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 3mm;
+  padding-bottom: 1.5mm;
+  margin-bottom: 1.5mm;
+  border-bottom: 0.25mm solid #dbe3e3;
+}
+
+.versoTextos { min-width: 0; display: flex; flex-direction: column; }
+
+.versoRotulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5a6b70;
+}
+
+.versoAve {
+  font-size: 11pt;
+  font-weight: 600;
+  color: #163a45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.versoNumero {
+  font-family: var(--font-numeric), ui-monospace, monospace;
+  font-size: 7.5pt;
+  font-variant-numeric: tabular-nums;
+  color: #0b5d5e;
+}
+
+.versoQr { flex: none; display: flex; flex-direction: column; align-items: center; }
+
+.versoValide { font-size: 7.5pt; color: #5a6b70; }
+
+/* A árvore ocupa o resto do cartão — e precisa de seletor mais específico que
+   o `.cartao > *` acima, que trava tudo em `flex: none`. Sem isto ela toma a
+   altura natural das oito linhas e vaza pelo `overflow: hidden` do cartão,
+   cortando a mãe no meio. */
+.cartao > .arvore {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 3mm;
+}
+
+.coluna { display: flex; flex-direction: column; min-width: 0; }
+
+.colunaTitulo {
+  font-size: 7.5pt;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #5a6b70;
+  padding-bottom: 0.8mm;
+}
+
+/* Oito linhas comuns às três colunas: é a grade que faz o par de avós cair na
+   altura do pai que eles geraram. */
+.grade {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+}
+
+.celula {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0.2mm 0;
+}
+
+.celula::before {
+  content: "";
+  position: absolute;
+  left: -1.5mm;
+  top: 50%;
+  width: 1.5mm;
+  border-top: 0.2mm solid #c3d0d1;
+}
+
+.primeiroDoPar::after {
+  content: "";
+  position: absolute;
+  left: -1.5mm;
+  top: 50%;
+  height: 100%;
+  border-left: 0.2mm solid #c3d0d1;
+}
+
+.coluna:first-child .celula::before,
+.coluna:first-child .primeiroDoPar::after { display: none; }
+
+/* Uma linha por ancestral: no verso cabe o NOME, que é o que se procura de
+   relance. A anilha e as quatro gerações estão atrás do QR. */
+.noMini {
+  width: 100%;
+  min-width: 0;
+  padding: 0.4mm 1.2mm;
+  border: 0.2mm solid #dbe3e3;
+  border-left: 0.7mm solid #9aa7ab;
+  border-radius: 1mm;
+  background: #ffffff;
+  font-size: 7.5pt;
+  font-weight: 600;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miniMacho { border-left-color: #0b5d5e; }
+.miniFemea { border-left-color: #163a45; }
+
+.miniVazio {
+  border-style: dashed;
+  border-left-style: dashed;
+  border-left-color: #dbe3e3;
+  background: transparent;
+  color: #9aa7ab;
+  font-weight: 400;
   text-align: center;
-  line-height: 1.2;
 }

@@ -25,7 +25,7 @@ const OUTRAS: Record<Peca, { rotulo: string; caminho: string }[]> = {
 const NOTA: Record<Peca, string> = {
   certificado: "Imprima em A4 retrato, sem redimensionar. O PDF sai pela própria impressão.",
   arvore: "Imprima em A4 PAISAGEM, sem redimensionar. O PDF sai pela própria impressão.",
-  cracha: "Imprima em A4 e recorte na linha. Cabem dois crachás por folha.",
+  cracha: "Imprima em A4, recorte cada par e cole as faces costas com costas. Dois crachás por folha.",
 };
 
 /**
