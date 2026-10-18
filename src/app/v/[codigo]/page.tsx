@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CircleAlert, CircleCheck, Download } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Anilha, SexChip } from "@/components/ui";
+import { ArvorePublica } from "./arvore";
 import {
   lerCodigo,
   porCaminho,
@@ -141,23 +142,35 @@ export default async function Validacao({ params }: PageProps<"/v/[codigo]">) {
         </div>
       </section>
 
-      {/* Genealogia resumida: só pai e mãe. */}
+      {/* A filiação em destaque, e a árvore inteira logo abaixo.
+          Mostrar só pai e mãe obrigava a confiar no papel justamente para
+          conferir o papel. */}
       <section className={styles.secao}>
         <h2 className={styles.secaoTitulo}>Filiação</h2>
         <div className={styles.filiacao}>
           <Progenitor papel="Pai" ancestral={pai} />
           <Progenitor papel="Mãe" ancestral={mae} />
         </div>
-        <p className={styles.nota}>
-          As três gerações completas constam no certificado impresso.
-        </p>
       </section>
+
+      {s.genealogia.length > 0 ? (
+        <section className={styles.secao}>
+          <h2 className={styles.secaoTitulo}>Genealogia registrada</h2>
+          <ArvorePublica genealogia={s.genealogia} />
+        </section>
+      ) : null}
 
       <div className={styles.acao}>
         <a href={`/cro/publico/${codigo}`} className={styles.botao}>
           <Download size={18} aria-hidden="true" />
-          Ver o certificado completo
+          Ver o certificado
         </a>
+        {s.genealogia.length > 0 ? (
+          <a href={`/cro/publico/${codigo}/arvore`} className={styles.botaoSecundario}>
+            <Download size={18} aria-hidden="true" />
+            Ver a árvore
+          </a>
+        ) : null}
       </div>
 
       {/* Decisão de privacidade registrada em 06-documentos-e-site.md. */}

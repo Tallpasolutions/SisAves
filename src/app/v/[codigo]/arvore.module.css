@@ -1,0 +1,169 @@
+/* A árvore na validação pública.
+
+   Aqui é TELA, não papel: tokens, px, e os dois temas valem — quem escaneia o
+   QR às onze da noite recebe o escuro do aparelho dele.
+
+   Rolagem horizontal, como a B6: quatro gerações não cabem na largura de um
+   telefone, e espremê-las tiraria a legibilidade do nome, que é o único dado
+   que a conferência usa. */
+
+.rolagem {
+  overflow-x: auto;
+  margin: 0 calc(var(--space-4) * -1);
+  padding: 0 var(--space-4) var(--space-2);
+  /* A rolagem é do conteúdo, não da página: sem isto o dedo arrasta a tela
+     inteira e a árvore nunca anda. */
+  overscroll-behavior-x: contain;
+}
+
+.arvore {
+  display: flex;
+  gap: var(--space-4);
+  min-width: min-content;
+}
+
+.coluna {
+  display: flex;
+  flex-direction: column;
+  width: 168px;
+  flex: none;
+}
+
+.colunaTitulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-2);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+/* Dezesseis linhas iguais em todas as colunas: é a grade comum que faz o par
+   de avós cair na altura do pai que eles geraram. */
+.grade {
+  display: grid;
+  grid-template-rows: repeat(16, 56px);
+}
+
+.celula {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 2px 0;
+}
+
+/* O traço que entra no nó, vindo da coluna anterior. */
+.celula::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--space-4) * -1);
+  top: 50%;
+  width: var(--space-4);
+  border-top: var(--border-width) solid var(--border-subtle);
+}
+
+/* O traço vertical que une o par: sai do centro deste nó e desce até o centro
+   do irmão. A distância entre os centros é a altura de uma célula. */
+.primeiroDoPar::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--space-4) * -1);
+  top: 50%;
+  height: 100%;
+  border-left: var(--border-width) solid var(--border-subtle);
+}
+
+/* A primeira coluna não tem de onde vir: o traço sairia do nada. */
+.coluna:first-child .celula::before,
+.coluna:first-child .primeiroDoPar::after {
+  display: none;
+}
+
+/* --- O nó --------------------------------------------------------------------- */
+.no {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: var(--space-2);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  /* A faixa de sexo de 3px: um dos dois únicos lugares onde o contrato
+     permite barra colorida à esquerda. */
+  border-left: 3px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.macho { border-left-color: var(--sis-petroleo-700); }
+.femea { border-left-color: var(--sis-azul-profundo); }
+.indefinido { border-left-color: var(--border-strong); }
+
+/* Ancestral em mais de um ramo. O âmbar não vai sozinho: a legenda abaixo da
+   árvore diz o que o contorno significa. */
+.repetido {
+  border-color: var(--surface-accent);
+  border-left-color: var(--surface-accent);
+}
+
+.posicao {
+  font-size: var(--text-2xs);
+  font-family: var(--font-ui);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nome {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font: var(--type-body-strong);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sexo {
+  flex: none;
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+}
+
+.anilha {
+  font-family: var(--font-numeric);
+  font-size: var(--text-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Posição sem ancestral: o contorno diz que ela existe, e o traço que não há
+   quem a ocupe. Trinta caixas escritas "desconhecido" competiriam com os
+   ancestrais que de fato estão lá. */
+.vazio {
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  border-left-style: dashed;
+  border-left-color: var(--border-subtle);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.legenda {
+  margin: var(--space-2) 0 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.legendaRepetido { color: var(--text-accent); }

@@ -468,7 +468,8 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/cro/[id]/arvore` | Árvore genealógica | A4 paisagem, quatro gerações, ancestral repetido em âmbar |
 | `/cro/[id]/cracha` | Crachá de gaiola | dois por folha A4, com pai, mãe e QR |
 | `/cro/[id]` · `/cro/publico/[codigo]` | **D1** · a folha A4 | fora do grupo `(app)`: sem sidebar, sem tab bar, nada que saia no papel |
-| `/v/[codigo]` | **D2** · validação pública | anônima; o que abre ao escanear o QR |
+| `/v/[codigo]` | **D2** · validação pública | anônima; o que abre ao escanear o QR, agora com a árvore inteira |
+| `/cro/publico/[codigo]/arvore` | Árvore pela porta pública | quem recebeu a ave imprime a folha sem ter login |
 | `/plantel/[id]/certificado` | Emitir CRO da ave | não desenhada; D1 é a FOLHA, não esta tela |
 | `/plantel/[id]/pesagens` | Pesagens | não desenhada; registro e histórico com a variação escrita por extenso |
 | `/plantel/[id]/genealogia` | B6 Árvore genealógica | três gerações em rolagem horizontal; aviso de ancestral repetido no topo; cabeçalho petróleo de borda a borda e legenda fixa no rodapé |
@@ -737,7 +738,14 @@ seguiria o tema do navegador na hora de imprimir. O PDF nasce da impressão do
 navegador: a peça já foi desenhada para sair pronta, e gerar PDF no servidor
 exigiria Chrome headless em função serverless para ganhar nada.
 
-**A validação** (`/v/[codigo]`) passa por `validar_certificado`, que é
+**A validação** (`/v/[codigo]`) mostra **a árvore inteira**, em rolagem
+horizontal como a B6, com o ancestral repetido em âmbar e a legenda do que o
+contorno significa. Antes só saíam pai e mãe, o que obrigava a confiar no
+papel justamente para conferir o papel — quem escaneia está com o documento na
+mão e o telefone na outra. Dali também se imprime a folha do CRO e a da
+árvore, as duas pela porta pública.
+
+Ela passa por `validar_certificado`, que é
 `security definer` e devolve só o snapshot. Nenhum id interno, nenhum contato
 do criador: a página prova a ave, não apresenta o vendedor. Verificada sem
 cookie nenhum — responde 200, sem redirecionar para o login.

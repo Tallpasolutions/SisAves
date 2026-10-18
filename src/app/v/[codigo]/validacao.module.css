@@ -248,7 +248,9 @@
 }
 
 /* --- Ação única ---------------------------------------------------------------------------- */
-.acao { display: flex; }
+/* Duas folhas, uma coluna: no telefone elas empilham e ocupam a largura
+   inteira — alvo cheio, como todo botão de ação do produto. */
+.acao { display: flex; flex-direction: column; gap: var(--space-2); }
 
 .botao {
   display: inline-flex;
@@ -277,4 +279,31 @@
   margin: 0;
   font: var(--type-small);
   color: var(--text-secondary);
+}
+
+/* A segunda folha: mesma forma do botão principal, sem o bloco de petróleo.
+   Um certificado tem duas peças, e nenhuma manda na outra — mas só uma pode
+   ser o bloco cheio da tela. */
+.botaoSecundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: var(--control-h-lg);
+  padding: 0 var(--space-5);
+  background: var(--surface-card);
+  color: var(--text-brand);
+  border: var(--border-width) solid var(--border-brand);
+  border-radius: var(--radius-sm);
+  font: var(--type-label);
+  text-decoration: none;
+  transition: var(--transition-control);
+}
+
+.botaoSecundario:hover { background: var(--surface-hover); }
+
+.botaoSecundario:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
