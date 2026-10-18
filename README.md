@@ -30,6 +30,7 @@ Para ter dados com que trabalhar, há uma conta de desenvolvimento e uma semente
 
 ```bash
 node scripts/usuario-teste.mjs criar                    # conta já confirmada
+                                                       # (senha em SENHA_USUARIO_TESTE)
 # fazer o onboarding do criatório na interface, então:
 node scripts/sql.mjs -f supabase/seeds/desenvolvimento.sql
 ```

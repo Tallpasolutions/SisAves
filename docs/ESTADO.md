@@ -955,7 +955,17 @@ tela "Hoje". É idempotente: apaga o que semeou antes e recria.
 - O criatório é pré-requisito de tudo: `/` manda para `/comecar` enquanto não
   existir um.
 - Conta de desenvolvimento: `node scripts/usuario-teste.mjs criar` cria
-  `teste@sisaves.local` já confirmada (senha no próprio script). `limpar` remove.
+  `teste@sisaves.local` já confirmada. **A senha vem de `SENHA_USUARIO_TESTE`,
+  no `.env.local`** — esteve escrita no script até 17/10/2026, num repositório
+  público, e quem achasse o repositório entrava numa conta do projeto Supabase
+  de verdade. O histórico do git guarda a senha antiga para sempre, então a
+  conta foi rotacionada junto: `criar` numa conta existente agora **troca a
+  senha** em vez de recriar.
+- **`criar` não recria mais a conta, e isso evitou um estrago.**
+  `criatorios.owner_id` é `ON DELETE RESTRICT`: a remoção era recusada pelo
+  banco, o script ignorava a resposta e falhava depois com "email already
+  registered". Se a restrição não existisse, recriar teria levado junto o
+  criatório de desenvolvimento inteiro.
 - **Node 22 é necessário.** `@supabase/supabase-js` exige WebSocket nativo, que
   o Node 20 não tem; `scripts/usuario-teste.mjs` usa `fetch` direto na API
   administrativa para contornar. Subir a versão resolve.
