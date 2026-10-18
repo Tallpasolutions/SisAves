@@ -16,30 +16,50 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 ## Próximo passo
 
 **O produto está no ar desde 18/10/2026**, em `https://sisaves.tallpa.com.br`
-— ver a seção "No ar". Antes de qualquer pessoa de fora usá-lo valem duas
-coisas da lista de pendências: **rotacionar as chaves do Supabase** (as duas
-ainda são as de 30/09, e a `service_role` ignora RLS) e **SMTP próprio**, sem
-o qual quem se cadastrar não recebe o e-mail de confirmação.
+— ver "No ar". As fases 0 a 9 estão concluídas, nenhum destino da navegação
+está desabilitado, e o CRO sai em três peças (certificado, árvore de quatro
+gerações e crachá). O que falta para FINALIZAR, em ordem de dependência:
 
-**Fase 10 — assinatura (Mercado Pago).** A Fase 9 fechou em 17/10/2026:
-financeiro (B10, lançamento, correção, exclusão e catálogo de categorias) e
-saúde (tratamentos com carência, medicamentos, doenças e sintomas). O banco da
-assinatura está pronto desde a Fase 1 (`assinaturas`,
-`assinatura_pagamentos`); faltam as credenciais do Mercado Pago, o checkout, o
-webhook e o bloqueio suave ao expirar.
+### 1 · Antes de qualquer pessoa de fora usar
 
-Depois dela, a Fase 11 (landing D3, SEO, domínio, migração do legado).
+Nada aqui é opcional, e nenhum depende dos outros:
 
-**Acabou a lista de telas que o handoff declarou não ter desenhado.** A última
-era a genealogia do plantel inteiro, que entrou em 17/10/2026 com o simulador
-de cruzamento — nenhum destino da navegação está mais desabilitado.
+- **Rotacionar as chaves do Supabase.** Conferido em 18/10: o `iat` das duas é
+  30/09. Passaram pelo chat, a `service_role` ignora RLS, e o site é público.
+  Rotacionar e atualizar `.env.local` **e** as variáveis da Vercel.
+- **SMTP próprio.** Confirmação de conta e recuperação de senha saem pelo
+  remetente padrão do Supabase, com limite baixo por hora e alta chance de
+  spam. Serve entre conhecidos; não serve para cliente.
+- **Tirar a rota `/ds`.** É a referência visual do artboard A3 e hoje responde
+  para qualquer um no domínio público.
 
-Depois dela: Fase 10 (Mercado Pago) e Fase 11 (landing, SEO, migração do
-legado).
+### 2 · Fase 10 — assinatura (Mercado Pago)
 
-**O que mais pesa fora das fases** está no item 5 de "O que falta": nenhum
-teste de interface, nunca publicado, as chaves do Supabase sem rotação, e o
-push das notificações, que depende de deploy.
+Banco pronto desde a Fase 1 (`assinaturas`, `assinatura_pagamentos`) e
+credenciais vazias no `.env`. Falta: checkout PIX e cartão, webhook em Route
+Handler **com verificação de assinatura do provedor**, e o bloqueio suave ao
+expirar — leitura preservada, escrita bloqueada, nunca reter os dados do
+criador. Modelo comercial atual: R$ 290/ano, R$ 270 no PIX.
+
+### 3 · Fase 11 — landing, SEO e migração do legado
+
+A landing D3 está desenhada no handoff. A migração é a parte que tem risco:
+mapear as 18 entidades do dossiê **preservando a validade dos QR já
+impressos** — ver o detalhe no item "Migração do legado", que ganhou forma ao
+ler um certificado real do cliente.
+
+### 4 · Fora das fases, e sem data
+
+- **Nenhum teste de interface.** O banco tem 243 asserções; o front, zero. O
+  defeito do plantel vazio viveu um dia e o QR de 0×0 foi para produção — os
+  dois teriam caído num teste de ponta a ponta do fluxo do CRO.
+- **Push das notificações.** Agora tem endereço estável; faltam a chave VAPID
+  e um cron na Vercel que gere e dispare.
+- **Projeto Supabase separado para produção.** Hoje produção e
+  desenvolvimento compartilham o mesmo, o que é certo enquanto não há cliente
+  e deixa de ser no primeiro.
+- **As quatro pendências do cliente** (item 6): `dias_choco` de 32 espécies,
+  prazo de anilhamento por porte, formato da anilha e o regime legal.
 
 > **Correção de registro, mantida.** Entre as fases 4 e 7 este arquivo e a
 > memória afirmavam que o ciclo do ovo já fechava pela interface. Não fechava:
@@ -113,7 +133,7 @@ abriria brecha para cor fora da paleta.
 | 5 · Genealogia (B6) | **concluída** (`10c0800`) |
 | 6 · Offline (fila + cache) | **concluída e verificada em navegador real** (`ec2288f`, `32eef1f`, `971774c`) |
 | 7 · Desktop (Faixa C) | **concluída**; C3 entrou com a Fase 8 |
-| 8 · CRO, QR e validação pública | **concluída** — emissão, folha A4, QR real, página pública e C3 |
+| 8 · CRO, QR e validação pública | **concluída** — emissão, três peças impressas (certificado, árvore de 4 gerações, crachá), QR real, validação pública com a árvore e C3 |
 | 9 · Financeiro e saúde | **concluída** — B10, catálogo de categorias, tratamentos com carência |
 | 10 · Assinatura (Mercado Pago) | banco pronto; integração não iniciada |
 | 11 · Landing e lançamento | não iniciada |
@@ -175,7 +195,7 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 `revogar_certificado` · `definir_sintomas_da_doenca` ·
 `definir_doencas_do_medicamento` · `descendentes`
 
-### Testes de banco — 231 asserções, todas passando
+### Testes de banco — 243 asserções, todas passando
 
 ```bash
 node scripts/testar.mjs
@@ -206,6 +226,7 @@ falha, e sai com código 1.
 | `16_financeiro` | 11 |
 | `17_saude` | 22 |
 | `18_linhagens` | 17 |
+| `19_snapshot_do_certificado` | 12 |
 
 E-mails de fixture usam o TLD reservado `.invalid` com prefixo por arquivo —
 os testes já quebraram por colidir com a conta de desenvolvimento.
@@ -640,7 +661,7 @@ O que **continua** faltando desta lista:
 
 ### 5 · Qualidade e lançamento
 
-- **Não há nenhum teste de interface.** O banco tem 231 asserções; o front,
+- **Não há nenhum teste de interface.** O banco tem 243 asserções; o front,
   zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
   fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
 - **O push das notificações não existe.** Os avisos se materializam quando o
@@ -662,7 +683,13 @@ O que **continua** faltando desta lista:
 - **Node 20 na máquina**; em produção a Vercel roda 22, que é o que
   `@supabase/supabase-js` exige.
 - **Migração do legado** — mapear as 18 entidades do dossiê, preservando a
-  validade dos certificados e QR já emitidos.
+  validade dos certificados e QR já emitidos. Em 18/10/2026, lendo um
+  certificado real do cliente, o requisito ganhou forma: o QR impresso aponta
+  para `gestaoplantel.com.br/arvore-qrcode/<id>-<hash>-<hash>-<n>`, um formato
+  que não é o nosso. Para o papel já entregue continuar validando, a migração
+  precisa **guardar o código antigo junto do certificado** e aceitar uma rota
+  que o traduza. Sem isso, todo CRO impresso até hoje vira QR morto no dia da
+  virada — e é justamente o contrário do que o certificado promete.
 
 ### 6 · Pendências que dependem do cliente
 
