@@ -2,7 +2,8 @@
 
 > **Leia este arquivo primeiro ao retomar o trabalho.** Ele diz o que existe, o
 > que está verificado, o que falta e o que depende de terceiros.
-> Atualizado em **11/10/2026**, com o inventário completo do que falta.
+> Atualizado em **18/10/2026**, o dia em que o produto foi ao ar em
+> `https://sisaves.tallpa.com.br`.
 
 ## O produto em uma frase
 
@@ -13,6 +14,12 @@ emissão de CRO com validação por QR. Reconstrução do zero de um sistema leg
 `sisaves.tallpa.com.br`.
 
 ## Próximo passo
+
+**O produto está no ar desde 18/10/2026**, em `https://sisaves.tallpa.com.br`
+— ver a seção "No ar". Antes de qualquer pessoa de fora usá-lo valem duas
+coisas da lista de pendências: **rotacionar as chaves do Supabase** (as duas
+ainda são as de 30/09, e a `service_role` ignora RLS) e **SMTP próprio**, sem
+o qual quem se cadastrar não recebe o e-mail de confirmação.
 
 **Fase 10 — assinatura (Mercado Pago).** A Fase 9 fechou em 17/10/2026:
 financeiro (B10, lançamento, correção, exclusão e catálogo de categorias) e
@@ -44,6 +51,7 @@ push das notificações, que depende de deploy.
 
 | | |
 |---|---|
+| **No ar** | https://sisaves.tallpa.com.br (Vercel + DNS na Cloudflare) |
 | Repositório | https://github.com/Tallpasolutions/SisAves (**público**, por escolha do cliente) |
 | Supabase | projeto `lisvevesopyrkviixwha`; credenciais em `.env.local` (fora do git, modo 600) |
 | Legado, para referência | `gestaoplantel.com.br` · `app2.meuplantel.com` · `api.meuplantel.com/api/v1` (expõe OpenAPI em `/docs`) |
@@ -381,6 +389,16 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   fora da tela assim que o valor virou "R$ 1.850,00". Precisa de
   `min-width: 0` — e o número do cartão precisou de um tamanho menor, que
   virou a variante `size="md"` do `StatCard`.
+- **Arquivo de convenção vence metadado declarado.** O ícone da aba era o
+  padrão do Next porque `src/app/favicon.ico` existia: o App Router o emite
+  antes do `/favicon.ico` que `icons` declara, e o navegador fica com o
+  primeiro. Quem herda um projeto criado por `create-next-app` herda esse
+  arquivo sem perceber.
+- **Robô de pré-visualização não tem cookie.** O `og:image` ficava atrás do
+  middleware de sessão e respondia 307 para o login, então o WhatsApp montava
+  resumo sem imagem. Toda rota que existe para ser buscada por terceiro —
+  imagem de compartilhamento, `sitemap`, `robots.txt`, manifest — precisa estar
+  fora da exigência de sessão.
 - **`--text-inverse` não serve para texto sobre preenchimento fixo.** No tema
   escuro ele vira grafite ("inverso" lá quer dizer escuro sobre claro), e o
   rótulo do botão primário saía 2,06:1 sobre petróleo. Use `--text-on-brand` e
@@ -599,7 +617,7 @@ O que **continua** faltando desta lista:
 
 ### 5 · Qualidade e lançamento
 
-- **Não há nenhum teste de interface.** O banco tem 181 asserções; o front,
+- **Não há nenhum teste de interface.** O banco tem 231 asserções; o front,
   zero. O plano previa Vitest e Playwright na Fase 0 e eles nunca entraram. O
   fluxo que mais merece um teste de ponta a ponta é o do ciclo do ovo.
 - **O push das notificações não existe.** Os avisos se materializam quando o
@@ -608,13 +626,18 @@ O que **continua** faltando desta lista:
   Faltam duas coisas, e as duas dependem de deploy: a chave **VAPID** e um
   **agendador** (cron da Vercel) que rode a geração e dispare o envio. A tela
   diz isso em vez de oferecer um botão que não ativa nada.
-- **Nunca foi publicado.** Sem `.vercel`, sem domínio apontado, sem variáveis
-  de produção.
-- **As chaves do Supabase passaram pelo chat e seguem sem rotação.** A
-  `service_role` ignora RLS. Rotacionar em Settings → API antes de qualquer
-  deploy.
-- **`/ds` sai antes do lançamento** — é a referência visual do artboard A3.
-- **Node 20**, e `@supabase/supabase-js` já exige 22.
+- ~~Nunca foi publicado.~~ **No ar desde 18/10/2026** — ver "No ar".
+- **As chaves do Supabase passaram pelo chat e SEGUEM sem rotação.** Conferido
+  em 18/10/2026: o `iat` das duas é 30/09. A `service_role` ignora RLS, e o
+  site agora é público — a pendência deixou de ser preventiva. Rotacionar em
+  Settings → API Keys e atualizar `.env.local` **e** as variáveis da Vercel.
+- **Sem SMTP próprio.** Confirmação de conta e recuperação de senha saem pelo
+  remetente padrão do Supabase, com limite baixo por hora e alta chance de cair
+  em spam. Serve para teste entre conhecidos; não serve para cliente.
+- **`/ds` sai antes do lançamento** — é a referência visual do artboard A3, e
+  hoje responde para qualquer pessoa no domínio público.
+- **Node 20 na máquina**; em produção a Vercel roda 22, que é o que
+  `@supabase/supabase-js` exige.
 - **Migração do legado** — mapear as 18 entidades do dossiê, preservando a
   validade dos certificados e QR já emitidos.
 
@@ -754,6 +777,100 @@ mesma recursão, e a diferença entre os dois não é de sinal:
   registro faltando. Só a segunda é apontada — e a semente de desenvolvimento
   precisou marcar as fundadoras como `compra`, porque o default da coluna é
   `nascimento_proprio` e a tela passava a acusar seis buracos inexistentes.
+
+## No ar
+
+Publicado em **18/10/2026**, em `https://sisaves.tallpa.com.br`.
+
+| Peça | Onde | Observação |
+|---|---|---|
+| Aplicação | Vercel, projeto importado do GitHub | Node 22; todo push no `main` redeploya |
+| DNS | Cloudflare, zona `tallpa.com.br` | `CNAME sisaves → …vercel-dns-017.com`, **proxy desligado** |
+| Verificação de domínio | Cloudflare | `TXT _vercel` com o `vc-domain-verify` que a Vercel pediu |
+| Banco e Auth | o MESMO projeto Supabase do desenvolvimento | produção e `localhost` leem os mesmos dados |
+
+**A nuvem da Cloudflare fica cinza.** Com o proxy ligado ela termina o TLS
+antes da Vercel e impede a emissão do certificado; e com o modo SSL em
+"Flexible" o site entra em laço de redirecionamento. Se um dia o proxy for
+desejado, o caminho é emitir o certificado com DNS only, pôr SSL/TLS em
+**Full (strict)** e só então ligar a nuvem laranja.
+
+**Produção e desenvolvimento compartilham o banco.** É a escolha certa
+enquanto não há cliente — o que se vê no `localhost` é o que se vê no ar —, e
+é a primeira coisa a mudar quando houver: um projeto Supabase separado para
+produção, com as variáveis da Vercel apontando para ele.
+
+### Variáveis na Vercel
+
+Só três, em Production e Preview:
+
+```
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+NEXT_PUBLIC_SITE_URL      → https://sisaves.tallpa.com.br
+```
+
+**`SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_PASSWORD`, `SUPABASE_PROJECT_REF`
+e `SENHA_USUARIO_TESTE` não vão para a Vercel.** Nenhuma tela as usa: são
+migrations, testes e scripts, que rodam da máquina do desenvolvedor. Levá-las
+para o servidor seria ampliar a superfície sem ganho nenhum.
+
+`NEXT_PUBLIC_SITE_URL` é só a **reserva** para montar o retorno do login
+quando a requisição não traz `origin`. No `.env.local` ela continua
+`http://localhost:3000` — apontá-la para produção na máquina de desenvolvimento
+jogaria uma volta de login local no site publicado. **O QR do CRO não sai
+dela**: ele usa o `host` da requisição, então o certificado carrega o domínio
+pelo qual foi aberto.
+
+### Entrar com Google
+
+Funciona, e o circuito foi conferido ponta a ponta até a porta do Google.
+
+- **Google Cloud** (projeto `sisaves`): cliente OAuth do tipo Aplicativo da
+  Web. O **URI de redirecionamento autorizado é o do SUPABASE**
+  (`https://<ref>.supabase.co/auth/v1/callback`), não o do app — o caminho é
+  navegador → Google → Supabase → app. "Origens JavaScript" fica vazio: o
+  fluxo é de servidor, e navegação de página não tem origem para validar.
+- **Supabase** → Authentication → Providers → Google, com o par Client ID e
+  Secret. **Esse par não mora em arquivo nenhum do projeto.**
+- **Supabase** → URL Configuration: Site URL do domínio, e Redirect URLs com
+  `https://sisaves.tallpa.com.br/auth/callback` e
+  `http://localhost:3000/auth/callback`.
+
+Conferido em 18/10: o endpoint `authorize` do Supabase devolve 302 para o
+Google carregando o `redirect_to` de produção — ou seja, a lista de retorno
+aceita o domínio.
+
+**Entrar com Google cria um usuário NOVO**, sem criatório, que cai no
+onboarding. Para ver os dados de teste com uma conta Google, convide-a em
+`/configuracoes/membros` estando logado na conta de desenvolvimento.
+
+### O que o deploy destravou
+
+- **O service worker registra de verdade.** Em desenvolvimento ele é desligado
+  de propósito (serviria HTML velho por cima do hot reload), então o offline só
+  pôde ser exercitado como produto a partir daqui.
+- **O QR do CRO sai com o domínio definitivo.** Ele vem do `host`, então toda
+  folha impressa a partir de agora aponta para `sisaves.tallpa.com.br`.
+- **Push e webhook do Mercado Pago passam a ter endereço estável**, que é o que
+  faltava para a Fase 10 e para o agendador das notificações.
+
+### A marca na aba e no compartilhamento
+
+Dois defeitos corrigidos em 18/10:
+
+- O ícone da aba era o **padrão do Next** — `src/app/favicon.ico` nunca tinha
+  sido substituído, e a convenção de arquivo do App Router vence o
+  `public/favicon.ico` declarado em `icons`. Apagar o arquivo resolveu.
+- Não havia **nenhuma** meta de Open Graph, então colar o endereço no WhatsApp
+  não montava resumo. Entraram `metadataBase` (sem ele o `og:image` sai
+  relativo e nenhum mensageiro resolve), o bloco `openGraph` e o
+  `twitter:card`. O cartão é gerado por `next/og` em `opengraph-image.tsx`,
+  1200×630, estático no build — e a assinatura vem do **SVG da marca**, não de
+  texto, porque remontá-la com fonte de sistema daria um "SisAves" parecido.
+- **`/opengraph-image` precisou entrar nas rotas públicas do middleware.** Quem
+  busca essa imagem é um robô sem cookie: com sessão exigida ele recebia 307
+  para o login e o resumo saía sem imagem.
 
 ## As duas faixas, uma rota só
 

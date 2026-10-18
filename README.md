@@ -14,9 +14,14 @@ ou fuga. Ave e casal se editam, o casal se encerra, o ovo passa para outro
 casal chocar, e o que entrou errado se corrige ou se apaga. Espécies, prazos,
 configurações do criatório, membros, relatórios e notificações também já têm
 tela, e o CRO se emite com QR real e página pública de validação. O
-financeiro lança receita e despesa com saldo por mês, e a saúde registra
-tratamentos com carência calculada do fim da aplicação. O próximo passo é a
-Fase 10: assinatura com Mercado Pago.
+financeiro lança receita e despesa com saldo por mês, a saúde registra
+tratamentos com carência calculada do fim da aplicação, e a genealogia do
+plantel simula um cruzamento antes de o casal existir.
+
+**No ar desde 18/10/2026 em https://sisaves.tallpa.com.br** — Vercel, com DNS
+na Cloudflare e entrada por e-mail ou Google. O próximo passo é a Fase 10:
+assinatura com Mercado Pago. Antes de abrir para quem quer que seja, faltam
+rotacionar as chaves do Supabase e configurar SMTP próprio.
 
 ## Começando
 
