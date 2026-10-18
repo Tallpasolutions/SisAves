@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { obterCriatorioAtual } from "@/lib/criatorio";
+import { SeletorTema } from "@/components/navegacao/SeletorTema";
 import { Sair } from "./sair";
 import styles from "./mais.module.css";
 
@@ -148,6 +149,17 @@ export default async function Mais() {
           </ul>
         </section>
       ))}
+
+      {/* Preferência de quem opera, não configuração do criatório — por isso
+          aqui, ao lado da conta, e não em Configurações. */}
+      <section className={styles.grupo}>
+        <h2 className={styles.grupoTitulo}>Aparência</h2>
+        <SeletorTema />
+        <p className={styles.notaTema}>
+          O tema escuro existe porque eclosão acontece de madrugada. Em
+          &ldquo;Sistema&rdquo;, ele acompanha o aparelho.
+        </p>
+      </section>
 
       <Sair />
     </div>

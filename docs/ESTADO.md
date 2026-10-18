@@ -280,6 +280,15 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   Fase 3, onde o "F" sumia no tema escuro. Use alias semântico
   (`--text-brand`, `--text-heading`).
 - **Card ou linha clicável é `<button>`**, não `<div>` com `onClick`.
+- **O tema tem seletor desde 18/10/2026** (`SeletorTema`), com três estados:
+  Sistema, Claro e Escuro. Até então `ThemeScript` lia
+  `localStorage["sisaves-tema"]` e **nada escrevia essa chave** — o controle
+  foi previsto e nunca construído, e o tema seguia o sistema operacional sem
+  alternativa. Fica junto da conta (pé da sidebar e `/mais`), não em
+  Configurações: é preferência de quem opera, não dado do criatório.
+  "Sistema" é um estado de verdade e é o padrão; um interruptor de duas
+  posições obrigaria a escolher para sempre e perderia o aparelho que escurece
+  sozinho ao anoitecer.
 - **`data-theme="dark"` é obrigatório desde o primeiro componente.**
   `colors.css` só aplica o escuro sob esse atributo — não há media query.
 - **Em formulário com Server Action, todo campo é controlado.** O React 19
@@ -887,8 +896,8 @@ com o tempo; e quem gira o celular não deveria ver outro produto.
 | Cabeçalho | título dentro da tela | top bar de 56px, com busca e sync |
 | Largura | 560px | toda a janela |
 
-**A conta mora no pé da sidebar** — quem está logado, "Ver perfil" e "Sair da
-conta". Faltava: Perfil e Sair só existiam em `/mais`, que é a quinta aba do
+**A conta mora no pé da sidebar** — quem está logado, o seletor de tema,
+"Ver perfil" e "Sair da conta". Faltava: Perfil e Sair só existiam em `/mais`, que é a quinta aba do
 CELULAR e não tem equivalente no desktop, então acima de 1024px não havia como
 sair sem digitar a rota. O avatar da top bar, que era um `span` com
 `aria-hidden`, virou link para o perfil. A lista de destinos rola; a conta fica

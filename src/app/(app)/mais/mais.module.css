@@ -118,3 +118,9 @@
   padding-top: var(--space-4);
   border-top: var(--border-width) solid var(--border-subtle);
 }
+
+.notaTema {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}

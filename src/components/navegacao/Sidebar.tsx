@@ -20,6 +20,7 @@ import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { LogOut, UserRound } from "lucide-react";
 import { sair } from "@/app/(auth)/acoes";
+import { SeletorTema } from "./SeletorTema";
 import styles from "./Sidebar.module.css";
 
 interface Destino {
@@ -153,6 +154,12 @@ export function Sidebar({
             <span className={styles.contaResumo}>Ver perfil</span>
           </span>
         </Link>
+
+        {/* O tema é preferência de quem opera, não configuração do criatório:
+            fica junto da conta, não em Configurações. */}
+        <div className={styles.tema}>
+          <SeletorTema tom="escuro" />
+        </div>
 
         <BotaoSair />
       </div>
