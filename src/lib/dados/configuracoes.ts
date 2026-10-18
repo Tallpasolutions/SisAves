@@ -12,6 +12,9 @@ export interface DadosCriatorio {
   uf: string | null;
   instagram: string | null;
   whatsapp: string | null;
+  logoUrl: string | null;
+  /** Se WhatsApp e Instagram saem nas peças impressas. */
+  contatoNoDocumento: boolean;
   /** Certificados já emitidos: é o que trava o slug. */
   certificados: number;
 }
@@ -33,7 +36,9 @@ export async function obterConfiguracoes(): Promise<{
   const [{ data }, { data: clubes }, { count }] = await Promise.all([
     supabase
       .from("criatorios")
-      .select("id, nome, slug, clube_id, nro_criador, registro_ibama, cidade, uf, instagram, whatsapp")
+      .select(
+        "id, nome, slug, clube_id, nro_criador, registro_ibama, cidade, uf, instagram, whatsapp, logo_url, contato_no_documento",
+      )
       .eq("id", atual.id)
       .maybeSingle(),
     supabase.from("clubes").select("id, sigla, nome").order("sigla"),
@@ -57,6 +62,8 @@ export async function obterConfiguracoes(): Promise<{
       uf: data.uf,
       instagram: data.instagram,
       whatsapp: data.whatsapp,
+      logoUrl: data.logo_url,
+      contatoNoDocumento: data.contato_no_documento,
       certificados: count ?? 0,
     },
     clubes: (clubes ?? []) as OpcaoClube[],

@@ -67,6 +67,9 @@ export async function salvarCriatorio(
     whatsapp: opcional(dados.get("whatsapp")),
   });
 
+  // Caixa desmarcada não chega no FormData: ausência é "não imprimir".
+  const contatoNoDocumento = dados.get("contato_no_documento") === "1";
+
   if (!resultado.success) {
     const campos: Record<string, string> = {};
     for (const problema of resultado.error.issues) {
@@ -89,6 +92,7 @@ export async function salvarCriatorio(
       uf: resultado.data.uf?.toUpperCase() ?? null,
       instagram: resultado.data.instagram?.replace(/^@/, "") ?? null,
       whatsapp: resultado.data.whatsapp ?? null,
+      contato_no_documento: contatoNoDocumento,
     })
     .eq("id", criatorio.id);
 
@@ -151,4 +155,124 @@ export async function salvarPerfil(
   revalidatePath("/", "layout");
   if (reenvio) return {};
   redirect("/perfil?salvo=1");
+}
+
+// -----------------------------------------------------------------------------
+// A logo do criatório
+// -----------------------------------------------------------------------------
+
+/** O que o bucket aceita. SVG fica de fora — ver a migration 0036. */
+const TIPOS_LOGO = ["image/png", "image/jpeg", "image/webp"] as const;
+const TAMANHO_MAXIMO = 2 * 1024 * 1024;
+
+const EXTENSAO: Record<string, string> = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+};
+
+/**
+ * Envia a logo que sai impressa nas peças.
+ *
+ * **Fora da fila offline, de propósito.** A fila guarda campos de formulário
+ * como texto; um arquivo binário não cabe nela, e fingir que coube deixaria o
+ * criador achando que a logo subiu. É a mesma exceção dos convites de membro.
+ *
+ * O caminho é `<criatorio_id>/logo.<ext>` — a primeira pasta é o que a
+ * política do Storage confere para saber se o arquivo é seu.
+ */
+export async function salvarLogo(
+  _anterior: EstadoConfiguracoes,
+  dados: FormData,
+): Promise<EstadoConfiguracoes> {
+  const criatorio = await obterCriatorioAtual();
+  if (!criatorio) return { erro: "Criatório não encontrado." };
+
+  const arquivo = dados.get("logo");
+  if (!(arquivo instanceof File) || arquivo.size === 0) {
+    return { campos: { logo: "Escolha um arquivo de imagem." } };
+  }
+
+  if (!TIPOS_LOGO.includes(arquivo.type as (typeof TIPOS_LOGO)[number])) {
+    return {
+      campos: {
+        logo: "A logo precisa ser PNG, JPG ou WEBP. SVG não é aceito por segurança.",
+      },
+    };
+  }
+
+  if (arquivo.size > TAMANHO_MAXIMO) {
+    const mb = (arquivo.size / 1024 / 1024).toFixed(1).replace(".", ",");
+    return { campos: { logo: `A imagem tem ${mb} MB. O máximo é 2 MB.` } };
+  }
+
+  const supabase = await criarClienteServidor();
+  const caminho = `${criatorio.id}/logo.${EXTENSAO[arquivo.type]}`;
+
+  const { error: erroUpload } = await supabase.storage
+    .from("criatorios")
+    .upload(caminho, arquivo, { upsert: true, contentType: arquivo.type });
+
+  if (erroUpload) {
+    console.error("salvarLogo:", erroUpload.message);
+    return { erro: "Não foi possível enviar a logo. Tente de novo." };
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("criatorios").getPublicUrl(caminho);
+
+  // O sufixo de versão força o navegador e a CDN a buscarem a imagem nova:
+  // o caminho é o mesmo a cada envio, e sem ele a logo antiga continuaria
+  // aparecendo no certificado por horas.
+  const url = `${publicUrl}?v=${Date.now()}`;
+
+  const { error } = await supabase
+    .from("criatorios")
+    .update({ logo_url: url })
+    .eq("id", criatorio.id);
+
+  if (error) {
+    console.error("salvarLogo (url):", error.message);
+    return { erro: "A imagem subiu, mas não foi possível salvá-la. Tente de novo." };
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/configuracoes?logo=1");
+}
+
+/**
+ * Tira a logo.
+ *
+ * O arquivo sai do bucket junto: logo removida que continua acessível por URL
+ * é logo removida só na tela. Certificado JÁ EMITIDO continua com ela, porque
+ * o snapshot congelou a URL — e é isso que faz a via impressa em 2026 seguir
+ * igual a si mesma.
+ */
+// Sem parâmetros: não há nada a ler do formulário, e uma função de aridade
+// menor é atribuível ao que `useActionState` espera.
+export async function removerLogo(): Promise<EstadoConfiguracoes> {
+  const criatorio = await obterCriatorioAtual();
+  if (!criatorio) return { erro: "Criatório não encontrado." };
+
+  const supabase = await criarClienteServidor();
+
+  await supabase.storage
+    .from("criatorios")
+    .remove(
+      Object.values(EXTENSAO).map((ext) => `${criatorio.id}/logo.${ext}`),
+    );
+
+  const { error } = await supabase
+    .from("criatorios")
+    .update({ logo_url: null })
+    .eq("id", criatorio.id);
+
+  if (error) {
+    console.error("removerLogo:", error.message);
+    return { erro: "Não foi possível remover a logo. Tente de novo." };
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/configuracoes?logo=0");
 }

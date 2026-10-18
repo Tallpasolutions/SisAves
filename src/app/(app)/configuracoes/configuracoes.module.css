@@ -252,3 +252,76 @@
   font: var(--type-small);
   color: var(--text-secondary);
 }
+
+/* --- Logo do criatório ------------------------------------------------------- */
+.logo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.logoPreview {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 96px;
+  height: 96px;
+  padding: var(--space-2);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.logoImagem { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.logoVazia { font: var(--type-small); color: var(--text-secondary); }
+
+.logoControles { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.logoFormulario { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.logoAcoes { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.logoArquivo {
+  font: var(--type-small);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 48ch;
+}
+
+.logoErro {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-danger);
+}
+
+/* --- Opção de impressão ------------------------------------------------------ */
+.opcao {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.opcao input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--sis-petroleo-700);
+  cursor: pointer;
+}
+
+.opcaoTextos { display: flex; flex-direction: column; gap: 2px; }
+
+.opcaoRotulo { font: var(--type-body-strong); }
+
+.opcaoNota { font: var(--type-small); color: var(--text-secondary); }

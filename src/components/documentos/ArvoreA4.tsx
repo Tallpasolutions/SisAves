@@ -45,6 +45,7 @@ export function ArvoreA4({
 }) {
   const s = certificado.snapshot;
   const ancestrais = porCaminho(s.genealogia);
+  const repetidos = ancestraisRepetidos(s.genealogia);
   const url = `${origem}${certificado.caminhoPublico}`;
 
   const temContato = Boolean(contato?.whatsapp || contato?.instagram);
@@ -52,8 +53,13 @@ export function ArvoreA4({
   return (
     <article className={styles.folha}>
       <header className={styles.cabecalho}>
-        <div>
-          <h1 className={styles.titulo}>Árvore genealógica</h1>
+        <div className={styles.cabecalhoMarca}>
+          {s.criatorio.logo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className={styles.logo} src={s.criatorio.logo_url} alt="" />
+          ) : null}
+          <div>
+            <h1 className={styles.titulo}>Árvore genealógica</h1>
           <p className={styles.subtitulo}>
             {[
               s.criatorio.nome,
@@ -67,7 +73,8 @@ export function ArvoreA4({
             ]
               .filter(Boolean)
               .join(" · ")}
-          </p>
+            </p>
+          </div>
         </div>
 
         <div className={styles.numero}>
@@ -144,6 +151,7 @@ export function ArvoreA4({
             caminhos={CAMINHOS_PAIS}
             linhas={8}
             ancestrais={ancestrais}
+            repetidos={repetidos}
             destaque
           />
           <Coluna
@@ -151,18 +159,21 @@ export function ArvoreA4({
             caminhos={CAMINHOS_AVOS}
             linhas={4}
             ancestrais={ancestrais}
+            repetidos={repetidos}
           />
           <Coluna
             titulo="Bisavós"
             caminhos={CAMINHOS_BISAVOS}
             linhas={2}
             ancestrais={ancestrais}
+            repetidos={repetidos}
           />
           <Coluna
             titulo="Trisavós"
             caminhos={CAMINHOS_TRISAVOS}
             linhas={1}
             ancestrais={ancestrais}
+            repetidos={repetidos}
             compacta
           />
         </div>
@@ -172,6 +183,15 @@ export function ArvoreA4({
         <span>
           A linhagem registrada no criatório até a quarta geração. Posição em
           branco é ancestral não registrado — não é ancestral desconhecido.
+          {repetidos.size > 0 ? (
+            <>
+              {" "}
+              <strong className={styles.rodapeDestaque}>
+                Contorno em âmbar: ancestral que aparece em mais de um ramo
+              </strong>{" "}
+              — é de onde vem o coeficiente de endogamia.
+            </>
+          ) : null}
         </span>
         <span className={styles.rodapeMarca}>SisAves</span>
       </footer>
@@ -179,11 +199,42 @@ export function ArvoreA4({
   );
 }
 
+/**
+ * Quem aparece em mais de um ramo da árvore.
+ *
+ * Comparado pela ANILHA, não por id: o snapshot não guarda id interno de
+ * propósito — ele é devolvido inteiro a quem escaneia o QR. A anilha é o que
+ * identifica a ave no papel, e é também o que um humano compararia olhando a
+ * folha. Sem anilha, resta o nome.
+ */
+function ancestraisRepetidos(
+  genealogia: SnapshotCertificado["genealogia"],
+): Set<string> {
+  const contagem = new Map<string, number>();
+  for (const a of genealogia) {
+    const chave = chaveDoAncestral(a);
+    if (!chave) continue;
+    contagem.set(chave, (contagem.get(chave) ?? 0) + 1);
+  }
+  return new Set(
+    [...contagem.entries()].filter(([, n]) => n > 1).map(([chave]) => chave),
+  );
+}
+
+function chaveDoAncestral(
+  a: SnapshotCertificado["genealogia"][number],
+): string | null {
+  const anilha = formatarAnilha(a.anilha);
+  if (anilha) return `anilha:${anilha}`;
+  return a.nome ? `nome:${a.nome.toLowerCase()}` : null;
+}
+
 function Coluna({
   titulo,
   caminhos,
   linhas,
   ancestrais,
+  repetidos,
   destaque,
   compacta,
 }: {
@@ -192,6 +243,7 @@ function Coluna({
   /** Quantas linhas da grade de 16 cada nó desta coluna ocupa. */
   linhas: number;
   ancestrais: Map<string, SnapshotCertificado["genealogia"][number]>;
+  repetidos: Set<string>;
   destaque?: boolean;
   compacta?: boolean;
 }) {
@@ -208,6 +260,7 @@ function Coluna({
             <No
               ancestral={ancestrais.get(caminho)}
               posicao={rotuloDoCaminho(caminho)}
+              repetidos={repetidos}
               destaque={destaque}
               compacta={compacta}
             />
@@ -221,11 +274,13 @@ function Coluna({
 function No({
   ancestral,
   posicao,
+  repetidos,
   destaque,
   compacta,
 }: {
   ancestral: SnapshotCertificado["genealogia"][number] | undefined;
   posicao: string;
+  repetidos: Set<string>;
   destaque?: boolean;
   compacta?: boolean;
 }) {
@@ -242,6 +297,8 @@ function No({
 
   const femea = ancestral.sexo === "femea";
   const macho = ancestral.sexo === "macho";
+  const chave = chaveDoAncestral(ancestral);
+  const repetido = chave !== null && repetidos.has(chave);
 
   return (
     <div
@@ -250,10 +307,11 @@ function No({
         femea ? styles.noFemea : macho ? styles.noMacho : styles.noIndefinido,
         destaque ? styles.noDestaque : "",
         compacta ? styles.noCompacto : "",
+        repetido ? styles.noRepetido : "",
       ]
         .filter(Boolean)
         .join(" ")}
-      title={posicao}
+      title={repetido ? `${posicao} · aparece em mais de um ramo` : posicao}
     >
       <span className={styles.noTopo}>
         <span className={styles.noNome}>{ancestral.nome ?? "Sem nome"}</span>

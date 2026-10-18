@@ -160,6 +160,8 @@ Migrations em `supabase/migrations/`, todas aplicadas no projeto remoto:
 | `0032_financeiro_na_tela` | `vw_financeiro_mensal`; `public.hoje()` nos DEFAULT de data que a 0022 não alcançou |
 | `0033_saude_na_tela` | `vw_tratamentos` (em curso e carência), `definir_sintomas_da_doenca`, `definir_doencas_do_medicamento`, catálogo de sintomas e doenças |
 | `0034_genealogia_do_plantel` | `descendentes()` e `vw_linhagens`: os fundadores com o tamanho e a profundidade da linhagem |
+| `0035_arvore_de_quatro_geracoes` | o snapshot passa a congelar 4 gerações e o nome científico; `criatorios.contato_no_documento` |
+| `0036_logo_do_criatorio` | bucket `criatorios` no Storage, leitura pública e escrita só na própria pasta |
 
 ### Funções do domínio
 
@@ -342,6 +344,15 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
   tanto quando tudo passa quanto quando o script morre antes do veredito. Dois
   arquivos de teste ficaram quebrados sem aparecer. `scripts/testar.mjs` trata
   erro de SQL e arquivo sem asserção como falha.
+- **Presença não é renderização.** O QR do CRO foi para produção com 0×0: a
+  biblioteca emite o SVG só com `viewBox`, e o código trocava um `width="…"`
+  que não existe no texto — não trocava nada, e dentro de um flex o SVG
+  colapsava. A conferência olhou se a URL estava no HTML e se havia um
+  `<svg>`. Medir a caixa é o que prova que a peça existe no papel.
+- **Altura fixa em coluna flex esmaga o conteúdo em silêncio.** O nome da ave
+  no crachá saiu com 15px de caixa para 29px de texto, cortado no meio da
+  letra: o cartão tem altura física fixa e os filhos cediam. `flex: none` faz
+  transbordar visivelmente em vez de mutilar a linha mais importante.
 - **Erro que o código engole some da tela, não do produto.** `listarEtiquetas`
   devolvia `[]` ao falhar, então a seção de etiquetas aparecia vazia e parecia
   certa; quem acusou foi o console do navegador. Toda leitura que devolve lista
@@ -454,6 +465,8 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/casais/[id]/editar` | Editar casal | não desenhada; gaiola, observações, vigência — e é aqui que o casal se encerra |
 | `/plantel/[id]/saida` | Registrar saída | não desenhada; venda, doação, empréstimo, óbito e fuga — os campos mudam com o motivo e o casal vigente é encerrado junto |
 | `/certificados` · `/certificados/novo` | Certificados e **C3** | a C3 é a única tela exclusiva do desktop: a folha tem 210 mm e não há redução dela legível no telefone |
+| `/cro/[id]/arvore` | Árvore genealógica | A4 paisagem, quatro gerações, ancestral repetido em âmbar |
+| `/cro/[id]/cracha` | Crachá de gaiola | dois por folha A4, com pai, mãe e QR |
 | `/cro/[id]` · `/cro/publico/[codigo]` | **D1** · a folha A4 | fora do grupo `(app)`: sem sidebar, sem tab bar, nada que saia no papel |
 | `/v/[codigo]` | **D2** · validação pública | anônima; o que abre ao escanear o QR |
 | `/plantel/[id]/certificado` | Emitir CRO da ave | não desenhada; D1 é a FOLHA, não esta tela |
@@ -667,6 +680,45 @@ cliente".
 ---
 
 ## O CRO
+
+**Três documentos saem do mesmo certificado**, do mesmo snapshot e com o mesmo
+QR: a folha do CRO (D1, A4 retrato), a **árvore genealógica** (A4 paisagem,
+quatro gerações) e o **crachá de gaiola** (dois por folha A4). Trocar entre
+elas é navegação, não emissão nova.
+
+A referência veio do sistema antigo, que o criador usa há anos: de lá entrou o
+QUE aparece — quatro gerações, o cartão de gaiola, o nome científico da
+espécie —, nunca o COMO. Nada de pílula verde para macho e vermelha para
+fêmea (a paleta é fechada e cor não pode ser o único sinal), nada de
+"INDEFINIDO" repetido dezesseis vezes. O desenho é o da B6: faixa de sexo de
+3px à esquerda mais a letra, que funciona impresso em preto e branco, e
+posição sem ancestral fica em branco — a geometria já diz qual posição é.
+
+A árvore é paisagem por aritmética: dezesseis posições na quarta geração não
+cabem legíveis na largura de um A4 em pé. As quatro colunas dividem a mesma
+grade de dezesseis linhas, e é isso que faz cada par cair na altura do filho
+que gerou. **Ancestral que aparece em mais de um ramo ganha contorno âmbar**,
+comparado pela ANILHA e não por id — o snapshot não guarda id interno, porque
+ele é devolvido inteiro a quem escaneia o QR.
+
+O crachá **não leva a árvore**: em miniatura de 40mm nenhum nome é legível, e
+ornamento com forma de dado é pior que ausência. Leva pai e mãe, que é o que
+se consulta diante da gaiola.
+
+**O contato do criador não entra no snapshot.** `validar_certificado` devolve
+o snapshot INTEIRO a quem não tem login: contato ali dentro seria contato
+publicado na internet. Ele é lido ao vivo da tabela, só na folha de quem está
+logado, e só com `criatorios.contato_no_documento` ligado — a chave fica em
+Configurações. É também mais correto: telefone muda, e o que se congela é o
+que a ave era.
+
+**A logo do criatório** finalmente pode ser enviada: `logo_url` existia desde
+a 0002 e a folha já sabia imprimi-la, mas não havia bucket, nem upload, nem
+campo. A 0036 cria o bucket `criatorios`, público na leitura (a logo aparece
+na validação anônima) e restrito na escrita pela PRIMEIRA PASTA do caminho,
+que é o id do criatório. **SVG é recusado**: o bucket é público e servido
+inline, então um SVG com `<script>` viraria execução de código no domínio que
+hospeda o certificado.
 
 Três peças, e cada uma responde a uma pergunta diferente.
 

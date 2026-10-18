@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 import { Toast } from "@/components/ui";
 import { obterConfiguracoes } from "@/lib/dados/configuracoes";
 import { FormularioCriatorio } from "./formulario";
+import { Logo } from "./logo";
 import styles from "./configuracoes.module.css";
 
 export const metadata: Metadata = { title: "Configurações" };
@@ -20,6 +21,21 @@ export default async function Configuracoes({
 
   return (
     <div className={styles.tela}>
+      {consulta.logo === "1" ? (
+        <Toast
+          tone="ok"
+          title="Logo enviada"
+          description="Ela sai nas peças emitidas daqui em diante. As já emitidas continuam com a logo do dia."
+        />
+      ) : null}
+      {consulta.logo === "0" ? (
+        <Toast
+          tone="ok"
+          title="Logo removida"
+          description="As peças passam a sair sem ela. Os certificados já emitidos não mudam."
+        />
+      ) : null}
+
       {consulta.salvo === "1" ? (
         <Toast
           tone="ok"
@@ -34,6 +50,8 @@ export default async function Configuracoes({
       </header>
 
       <FormularioCriatorio criatorio={criatorio} clubes={clubes} />
+
+      <Logo logoUrl={criatorio.logoUrl} />
 
       {/* O slug é o endereço público do certificado: mudá-lo quebraria o QR de
           toda peça já impressa, que é o oposto do que o snapshot do CRO

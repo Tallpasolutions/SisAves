@@ -364,3 +364,26 @@
   font-weight: 700;
   color: #0b5d5e;
 }
+
+/* A logo do criatório, quando houver. Altura fixa: a imagem é do criador e
+   pode vir em qualquer proporção. */
+.cabecalhoMarca { display: flex; align-items: center; gap: 4mm; min-width: 0; }
+
+.logo {
+  width: 16mm;
+  height: 16mm;
+  flex: none;
+  object-fit: contain;
+}
+
+/* Ancestral que aparece em mais de um ramo: contorno âmbar, como na B6.
+   É onde a endogamia nasce, e numa folha de trinta posições é o que o
+   comprador procura. A cor não vai sozinha — o rodapé explica o contorno. */
+.noRepetido {
+  border-color: #f2b544;
+  border-top-width: 0.4mm;
+  border-right-width: 0.4mm;
+  border-bottom-width: 0.4mm;
+}
+
+.rodapeDestaque { color: #8a5e12; font-weight: 600; }

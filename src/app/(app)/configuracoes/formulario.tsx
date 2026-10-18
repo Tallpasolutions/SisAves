@@ -33,6 +33,18 @@ export function FormularioCriatorio({
     whatsapp: criatorio.whatsapp ?? "",
   });
 
+  /*
+   * O contato nas peças impressas.
+   *
+   * Vai no papel que acompanha a ave vendida, para o comprador reencontrar
+   * quem a criou — e NUNCA na página pública do QR, que prova a ave e não
+   * apresenta o vendedor. Por ser dado pessoal num papel que circula, quem
+   * decide é o criador.
+   */
+  const [contatoNoDocumento, setContatoNoDocumento] = useState(
+    criatorio.contatoNoDocumento,
+  );
+
   const { aoEnviar, salvoNoAparelho, online } = useEnvioOffline({
     tipo: "criatorio",
     resumo: () => `Configurações · ${campos.nome}`,
@@ -191,8 +203,8 @@ export function FormularioCriatorio({
       <fieldset className={styles.grupo}>
         <legend className={styles.grupoTitulo}>Contato</legend>
         <p className={styles.grupoNota}>
-          Para o seu uso e para a landing. A página pública de validação do
-          certificado nunca mostra contato — é decisão de privacidade do
+          Sai nas peças impressas, se você marcar a opção abaixo. A página
+          pública de validação do certificado nunca mostra contato — é decisão de privacidade do
           projeto.
         </p>
 
@@ -231,6 +243,25 @@ export function FormularioCriatorio({
           </Field>
         </div>
       </fieldset>
+
+      <label className={styles.opcao}>
+        <input
+          type="checkbox"
+          name="contato_no_documento"
+          checked={contatoNoDocumento}
+          onChange={(e) => setContatoNoDocumento(e.target.checked)}
+          value="1"
+        />
+        <span className={styles.opcaoTextos}>
+          <span className={styles.opcaoRotulo}>
+            Imprimir meu contato nas peças
+          </span>
+          <span className={styles.opcaoNota}>
+            WhatsApp e Instagram saem no certificado, na árvore e no crachá. A
+            página pública do QR nunca mostra contato.
+          </span>
+        </span>
+      </label>
 
       <div className={styles.acao}>
         <Button type="submit" size="lg" disabled={enviando}>
