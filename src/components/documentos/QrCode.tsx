@@ -26,15 +26,31 @@ export async function QrCode({
     color: { dark: "#0B5D5E", light: "#FFFFFF" },
   });
 
-  // O SVG da biblioteca vem com width/height fixos; o documento manda em mm.
-  const ajustado = svg
-    .replace(/width="[^"]*"/, `width="${tamanhoMm}mm"`)
-    .replace(/height="[^"]*"/, `height="${tamanhoMm}mm"`);
+  /*
+   * A biblioteca emite o SVG com `viewBox` e NENHUM width/height.
+   *
+   * A primeira versão disto trocava um `width="…"` que não existe no texto —
+   * não trocava nada, e o SVG saía sem tamanho nenhum. Num contêiner flex
+   * isso colapsa para 0x0: o certificado foi para produção com o QR
+   * invisível, que é o oposto do que a peça existe para fazer. A conferência
+   * que deixou passar olhou se a URL estava no HTML e se havia um `<svg>`;
+   * presença não é renderização.
+   *
+   * Injetar no `<svg ` funciona independentemente do que a biblioteca
+   * resolva emitir — é acrescentar atributo, não substituir.
+   */
+  const ajustado = svg.replace(
+    "<svg ",
+    `<svg width="${tamanhoMm}mm" height="${tamanhoMm}mm" `,
+  );
 
   return (
     <span
       aria-label={`QR Code para ${url}`}
       role="img"
+      // `block` tira o espaço de linha de base embaixo do SVG, que no papel
+      // viraria um desalinhamento de meio milímetro.
+      style={{ display: "block", width: `${tamanhoMm}mm`, height: `${tamanhoMm}mm` }}
       dangerouslySetInnerHTML={{ __html: ajustado }}
     />
   );
