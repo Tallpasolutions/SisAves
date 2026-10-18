@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IndicadorSync } from "@/components/offline/IndicadorSync";
 import styles from "./TopBar.module.css";
@@ -50,13 +51,9 @@ function hojePorExtenso(): string {
   });
 }
 
-export function TopBar({
-  nomeCriatorio,
-  iniciais,
-}: {
-  nomeCriatorio: string;
-  iniciais: string;
-}) {
+/* O nome do criatório saiu daqui: ele já está na marca da sidebar, e o avatar
+   agora identifica a PESSOA, não o criatório. */
+export function TopBar({ iniciais }: { iniciais: string }) {
   const caminho = usePathname();
 
   return (
@@ -83,9 +80,14 @@ export function TopBar({
 
       <IndicadorSync compact />
 
-      <span className={styles.avatar} title={nomeCriatorio} aria-hidden="true">
-        {iniciais}
-      </span>
+      {/* Era um `span` com `aria-hidden`: ocupava o canto e não levava a
+          lugar nenhum — nem para o teclado, nem para o leitor de tela. O
+          perfil e o sair viviam só em `/mais`, que não existe no desktop. */}
+      <Link href="/perfil" className={styles.avatarElo} aria-label="Seu perfil">
+        <span className={styles.avatar} aria-hidden="true">
+          {iniciais}
+        </span>
+      </Link>
     </header>
   );
 }

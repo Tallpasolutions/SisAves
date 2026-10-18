@@ -86,3 +86,22 @@
   font-weight: var(--weight-semibold);
   color: var(--text-brand);
 }
+
+/* O avatar é um alvo: leva ao perfil, e é por onde se sai da conta no
+   desktop (o rodapé da sidebar tem o botão). 44px, como todo alvo. */
+.avatarElo {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+.avatarElo:hover { background: var(--surface-hover); }
+
+.avatarElo:focus-visible {
+  outline: var(--border-width-strong) solid var(--border-focus);
+  outline-offset: var(--focus-ring-offset);
+}

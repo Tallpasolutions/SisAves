@@ -14,7 +14,10 @@
   top: 0;
   padding: var(--space-5) var(--space-3);
   background: var(--sis-azul-profundo);
-  overflow-y: auto;
+  /* A barra inteira NÃO rola: quem rola é a lista de destinos, logo abaixo.
+     Com a rolagem aqui, numa tela de 900px o "Sair da conta" caía abaixo da
+     dobra — a ação de sair não pode depender de rolar a navegação. */
+  overflow: hidden;
 }
 
 /* --- Marca ------------------------------------------------------------------ */
@@ -51,6 +54,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
+  /* `min-height: 0` é o que permite encolher dentro do flex e de fato rolar;
+     sem ele o conteúdo empurra a coluna e vaza. */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .grupo {
@@ -131,3 +139,84 @@ a.itemAtivo:hover { background: var(--sis-petroleo-600); }
   font-size: var(--text-2xs);
   color: rgba(255, 255, 255, 0.40);
 }
+
+/* --- A conta, no pé --------------------------------------------------------- */
+/* `margin-top: auto` empurra o bloco para baixo sem posicionamento absoluto:
+   a barra é uma coluna flex de altura total, e a sidebar rola quando os
+   destinos não couberem. */
+.conta {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid rgba(255, 255, 255, 0.14);
+}
+
+.contaPerfil,
+.sair {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  /* Mesmo alvo dos destinos acima. */
+  min-height: 44px;
+  padding: var(--space-2) var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: var(--type-body);
+  text-align: left;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contaPerfil:hover,
+.sair:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+.contaPerfil:focus-visible,
+.sair:focus-visible {
+  outline: var(--border-width-strong) solid var(--sis-petroleo-200);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.sair:disabled {
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+.contaIcone {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+
+.contaTextos {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.contaNome {
+  font: var(--type-body-strong);
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contaResumo {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.sair svg { flex: none; }

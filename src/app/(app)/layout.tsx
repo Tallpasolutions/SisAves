@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { obterCriatorioAtual } from "@/lib/criatorio";
+import { obterPerfil } from "@/lib/dados/configuracoes";
 import { obterIndicadores, obterTarefasDeHoje } from "@/lib/dados/hoje";
 import { Sidebar } from "@/components/navegacao/Sidebar";
 import { TabBar } from "@/components/navegacao/TabBar";
@@ -25,9 +26,10 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
   const criatorio = await obterCriatorioAtual();
   if (!criatorio) redirect("/comecar");
 
-  const [tarefas, indicadores] = await Promise.all([
+  const [tarefas, indicadores, perfil] = await Promise.all([
     obterTarefasDeHoje(),
     obterIndicadores(),
+    obterPerfil(),
   ]);
 
   return (
@@ -38,6 +40,7 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
         <div className={styles.lateral}>
           <Sidebar
             nomeCriatorio={criatorio.nome}
+            nomeUsuario={perfil?.nome}
             contagens={{
               "/plantel": indicadores.aves,
               "/casais": indicadores.casaisAtivos,
@@ -48,10 +51,7 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
 
         <div className={styles.coluna}>
           <div className={styles.superior}>
-            <TopBar
-              nomeCriatorio={criatorio.nome}
-              iniciais={iniciaisDe(criatorio.nome)}
-            />
+            <TopBar iniciais={iniciaisDe(perfil?.nome || criatorio.nome)} />
           </div>
 
           <main id="conteudo" className={styles.conteudo}>
@@ -65,7 +65,7 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
   );
 }
 
-/** "Criatório Tibiriçá" -> "CT". Duas letras, como na prancha. */
+/** "Jhoni Cleyton" -> "JC". Duas letras, como na prancha. */
 function iniciaisDe(nome: string): string {
   return nome
     .split(/\s+/)

@@ -887,6 +887,13 @@ com o tempo; e quem gira o celular não deveria ver outro produto.
 | Cabeçalho | título dentro da tela | top bar de 56px, com busca e sync |
 | Largura | 560px | toda a janela |
 
+**A conta mora no pé da sidebar** — quem está logado, "Ver perfil" e "Sair da
+conta". Faltava: Perfil e Sair só existiam em `/mais`, que é a quinta aba do
+CELULAR e não tem equivalente no desktop, então acima de 1024px não havia como
+sair sem digitar a rota. O avatar da top bar, que era um `span` com
+`aria-hidden`, virou link para o perfil. A lista de destinos rola; a conta fica
+fixa, porque sair não pode depender de rolar a navegação numa tela de 900px.
+
 A `TabBar` e a `Sidebar` se escondem sozinhas por media query; o título da top
 bar é derivado da rota (`TITULOS` em `TopBar.tsx`), para que nenhuma tela nova
 possa esquecer de pôr o seu.

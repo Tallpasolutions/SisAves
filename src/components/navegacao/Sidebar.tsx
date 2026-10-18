@@ -17,6 +17,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTransition } from "react";
+import { LogOut, UserRound } from "lucide-react";
+import { sair } from "@/app/(auth)/acoes";
 import styles from "./Sidebar.module.css";
 
 interface Destino {
@@ -81,10 +84,16 @@ const GRUPOS: Grupo[] = [
 
 export interface SidebarProps {
   nomeCriatorio: string;
+  /** Quem está logado. Sem perfil preenchido, o rodapé diz "Sua conta". */
+  nomeUsuario?: string | null;
   contagens?: Partial<Record<string, number>>;
 }
 
-export function Sidebar({ nomeCriatorio, contagens = {} }: SidebarProps) {
+export function Sidebar({
+  nomeCriatorio,
+  nomeUsuario,
+  contagens = {},
+}: SidebarProps) {
   const caminho = usePathname();
 
   return (
@@ -124,7 +133,51 @@ export function Sidebar({ nomeCriatorio, contagens = {} }: SidebarProps) {
           </div>
         ))}
       </div>
+
+      {/*
+       * A conta, no pé.
+       *
+       * Faltava: o Perfil e o Sair só existiam em `/mais`, que é a quinta aba
+       * do CELULAR e não tem equivalente aqui — acima de 1024px não havia como
+       * sair da conta sem digitar a rota na barra de endereço. Fica no fim e
+       * separado dos destinos porque sair é a única ação daqui que tira o
+       * criador do produto.
+       */}
+      <div className={styles.conta}>
+        <Link href="/perfil" className={styles.contaPerfil}>
+          <span className={styles.contaIcone} aria-hidden="true">
+            <UserRound size={18} />
+          </span>
+          <span className={styles.contaTextos}>
+            <span className={styles.contaNome}>{nomeUsuario || "Sua conta"}</span>
+            <span className={styles.contaResumo}>Ver perfil</span>
+          </span>
+        </Link>
+
+        <BotaoSair />
+      </div>
     </nav>
+  );
+}
+
+/**
+ * Sair da conta.
+ *
+ * Sem confirmação: não destrói nada, e o caminho de volta é a tela de entrar.
+ */
+function BotaoSair() {
+  const [enviando, iniciar] = useTransition();
+
+  return (
+    <button
+      type="button"
+      className={styles.sair}
+      disabled={enviando}
+      onClick={() => iniciar(() => void sair())}
+    >
+      <LogOut size={18} aria-hidden="true" />
+      {enviando ? "Saindo…" : "Sair da conta"}
+    </button>
   );
 }
 
