@@ -10,9 +10,12 @@ import styles from "../layout.module.css";
 export function FormularioEntrar({
   destino,
   erroInicial,
+  googleAberto,
 }: {
   destino: string;
   erroInicial?: string;
+  /** Lido no servidor e passado para cá: o cliente não vê a variável. */
+  googleAberto: boolean;
 }) {
   const [estado, acao, enviando] = useActionState<EstadoFormulario, FormData>(entrar, {
     erro: erroInicial,
@@ -70,19 +73,27 @@ export function FormularioEntrar({
         </Button>
       </form>
 
-      <div className={styles.separador}>ou</div>
+      {/* Enquanto o sistema está no ar só para teste, a entrada por Google
+          fica desligada: o endereço é público e qualquer visitante criaria
+          conta. Reabrir é `LOGIN_GOOGLE=on` — e religar o provedor no
+          Supabase, que é onde a tranca de verdade está. */}
+      {googleAberto ? (
+        <>
+          <div className={styles.separador}>ou</div>
 
-      <form action={entrarComGoogle}>
-        <Button
-          type="submit"
-          variant="secondary"
-          size="lg"
-          bloco
-          iconeEsquerda={<IconeGoogle />}
-        >
-          Entrar com Google
-        </Button>
-      </form>
+          <form action={entrarComGoogle}>
+            <Button
+              type="submit"
+              variant="secondary"
+              size="lg"
+              bloco
+              iconeEsquerda={<IconeGoogle />}
+            >
+              Entrar com Google
+            </Button>
+          </form>
+        </>
+      ) : null}
     </>
   );
 }

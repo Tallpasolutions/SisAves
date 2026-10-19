@@ -32,6 +32,9 @@ Nada aqui é opcional, e nenhum depende dos outros:
   spam. Serve entre conhecidos; não serve para cliente.
 - **Tirar a rota `/ds`.** É a referência visual do artboard A3 e hoje responde
   para qualquer um no domínio público.
+- ~~Fechar as portas de entrada.~~ **Feito em 19/10** — ver "As portas de
+  entrada". Falta só o lado do Supabase: desligar o provedor Google e marcar
+  "Disable new user signups", que é onde a tranca é de verdade.
 
 ### 2 · Fase 10 — assinatura (Mercado Pago)
 
@@ -947,6 +950,54 @@ aceita o domínio.
 **Entrar com Google cria um usuário NOVO**, sem criatório, que cai no
 onboarding. Para ver os dados de teste com uma conta Google, convide-a em
 `/configuracoes/membros` estando logado na conta de desenvolvimento.
+
+### As portas de entrada
+
+Fechadas em **19/10/2026**, e é consequência direta de ter publicado: o
+endereço é público, então quem recebesse o link entrava com a própria conta
+Google — ou preenchia três campos em `/cadastrar` — e passava a ter conta e
+criatório dentro do projeto que também é o de desenvolvimento.
+
+O que isso expunha, exatamente: **nada do plantel**. A RLS é a fronteira, e
+uma conta nova não enxerga uma linha do criatório de teste. O que expunha era
+o projeto: linha em `auth.users`, e-mail saindo pelo SMTP padrão, e um
+convidado a mais para o dia em que as chaves forem rotacionadas.
+
+Duas variáveis em `src/lib/portas.ts`, e **só o valor exato `on` abre**:
+
+```
+LOGIN_GOOGLE=off
+CADASTRO_ABERTO=off
+```
+
+Falham fechadas de propósito: erro de digitação tranca, em vez de abrir. Quem
+**já tem conta** continua entrando por e-mail e senha nas duas — o que está
+desligado é criar conta nova.
+
+Cada porta é fechada em dois lugares, e o segundo é o que importa:
+
+- **A tela não oferece.** O bloco "Entrar com Google" e o convite
+  "Cadastre-se" não são renderizados; `/cadastrar` responde com "Cadastro
+  fechado" em vez de montar um formulário que só recusaria no fim.
+- **A Server Action recusa.** Esconder um botão não fecha nada: Server Action é
+  endpoint, e um POST direto chegaria lá. `entrarComGoogle` redireciona para
+  `/entrar?erro=google-desligado` antes de falar com o Supabase, e `cadastrar`
+  devolve erro antes do `signUp`. Conferido forçando o botão a aparecer com a
+  porta fechada: o clique voltou para o login com a mensagem, não foi para o
+  Google.
+
+**E isto NÃO tranca o Supabase.** O endpoint
+`/auth/v1/authorize?provider=google` do projeto responde a qualquer um com a
+chave anônima, que é pública por desenho — quem souber montar a URL continua
+recebendo sessão, sem passar por tela nenhuma do SisAves. A tranca de verdade
+é no painel, e são dois cliques:
+
+1. Authentication → Providers → **Google** → desligar.
+2. Authentication → Sign In / Providers → **Disable new user signups** →
+   marcar. Esta cobre as duas portas de uma vez, inclusive e-mail e senha.
+
+As variáveis são o par disso do lado de cá: mantêm a tela honesta com o que o
+servidor aceita, e sobrevivem a um painel religado por engano.
 
 ### O que o deploy destravou
 

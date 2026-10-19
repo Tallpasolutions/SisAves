@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FormularioEntrar } from "./formulario";
+import { CADASTRO_ABERTO, LOGIN_GOOGLE_ABERTO } from "@/lib/portas";
 import styles from "../layout.module.css";
 
 export const metadata: Metadata = { title: "Entrar" };
@@ -13,9 +14,11 @@ export default async function Entrar({
   const erroUrl =
     params.erro === "google"
       ? "Não foi possível entrar com o Google. Tente de novo ou use e-mail e senha."
-      : params.erro === "callback"
-        ? "O link expirou ou já foi usado. Peça um novo."
-        : undefined;
+      : params.erro === "google-desligado"
+        ? "A entrada por conta Google está desligada no momento. Use e-mail e senha."
+          : params.erro === "callback"
+            ? "O link expirou ou já foi usado. Peça um novo."
+            : undefined;
 
   return (
     <>
@@ -25,12 +28,20 @@ export default async function Entrar({
           <p className={styles.subtitulo}>Acesse o seu criatório.</p>
         </div>
 
-        <FormularioEntrar destino={destino} erroInicial={erroUrl} />
+        <FormularioEntrar
+          destino={destino}
+          erroInicial={erroUrl}
+          googleAberto={LOGIN_GOOGLE_ABERTO}
+        />
       </div>
 
-      <p className={styles.rodape}>
-        Ainda não tem conta? <Link href="/cadastrar">Cadastre-se</Link>
-      </p>
+      {/* Sem cadastro aberto o convite "Cadastre-se" é um beco: a tela do
+          outro lado só diz que está fechado. */}
+      {CADASTRO_ABERTO ? (
+        <p className={styles.rodape}>
+          Ainda não tem conta? <Link href="/cadastrar">Cadastre-se</Link>
+        </p>
+      ) : null}
     </>
   );
 }

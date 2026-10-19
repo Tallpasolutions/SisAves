@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { CADASTRO_ABERTO, LOGIN_GOOGLE_ABERTO } from "@/lib/portas";
 
 export interface EstadoFormulario {
   erro?: string;
@@ -76,6 +77,16 @@ export async function cadastrar(
   _anterior: EstadoFormulario,
   dados: FormData,
 ): Promise<EstadoFormulario> {
+  // Mesma razão do Google: a tela do /cadastrar nem monta o formulário, e a
+  // ação recusa de todo jeito.
+  if (!CADASTRO_ABERTO) {
+    return {
+      erro:
+        "O cadastro de novas contas está fechado no momento. " +
+        "Fale com quem administra o criatório para receber um convite.",
+    };
+  }
+
   const nome = String(dados.get("nome") ?? "").trim();
   const email = String(dados.get("email") ?? "").trim();
   const senha = String(dados.get("senha") ?? "");
@@ -111,6 +122,10 @@ export async function cadastrar(
 }
 
 export async function entrarComGoogle() {
+  // A tela não mostra o botão quando a porta está fechada, mas Server Action é
+  // endpoint: esconder o botão não impede um POST. A recusa mora aqui.
+  if (!LOGIN_GOOGLE_ABERTO) redirect("/entrar?erro=google-desligado");
+
   const supabase = await criarClienteServidor();
   const origem = (await headers()).get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL;
 
