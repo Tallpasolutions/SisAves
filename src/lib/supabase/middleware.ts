@@ -22,6 +22,14 @@ const PUBLICAS = [
    * imagem. Não há o que proteger aqui — é a marca e uma frase.
    */
   "/opengraph-image",
+  /*
+   * O webhook do Mercado Pago. Quem posta aqui é o servidor deles, que não tem
+   * cookie nenhum: com sessão exigida ele recebia 307 para /entrar e a
+   * notificação do pagamento nunca chegava — o criador pagaria e continuaria
+   * vencido. A rota não fica desprotegida por isso: ela valida HMAC-SHA256 do
+   * `x-signature` antes de olhar o corpo.
+   */
+  "/api/mercadopago",
 ];
 
 function ehPublica(pathname: string) {

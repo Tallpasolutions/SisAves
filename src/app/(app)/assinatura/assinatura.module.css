@@ -1,0 +1,213 @@
+/* Assinatura · tela de cobrança.
+   Tokens semânticos, nada de hex cru. Um bloco de petróleo cheio no máximo —
+   aqui é a faixa de situação, e só quando a assinatura está vigente. */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 720px;
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.titulo {
+  margin: 0;
+  font: var(--type-title);
+  color: var(--text-primary);
+}
+
+.subtitulo {
+  margin: 0;
+  font: var(--type-body);
+  color: var(--text-secondary);
+}
+
+/* --- A situação ---------------------------------------------------------- */
+.situacao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+/* Vencida é fato, não tragédia: borda e ícone bastam, sem fundo alarmante. */
+.situacaoVencida {
+  border-color: var(--border-strong);
+}
+
+.situacaoRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.situacaoValor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font: var(--type-heading);
+  color: var(--text-primary);
+}
+
+.situacaoIcone {
+  display: inline-flex;
+  color: var(--text-brand);
+}
+
+.situacaoVencida .situacaoIcone {
+  color: var(--text-accent);
+}
+
+.situacaoAte {
+  font: var(--type-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.situacaoNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* --- Os planos ----------------------------------------------------------- */
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.secaoTitulo {
+  margin: 0;
+  font: var(--type-heading);
+  color: var(--text-primary);
+}
+
+.planos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.plano {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+.planoMeio {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.planoValor {
+  font: var(--type-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-brand);
+}
+
+.planoPeriodo {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.planoNota {
+  margin: var(--space-1) 0 var(--space-3);
+  font: var(--type-small);
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.carregando {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.rodapeNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.link {
+  color: var(--text-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* --- Alertas ------------------------------------------------------------- */
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+  color: var(--text-primary);
+  background: var(--surface-subtle);
+}
+
+.alertaIcone {
+  display: inline-flex;
+  flex: none;
+  margin-top: 1px;
+}
+
+.alertaOk .alertaIcone { color: var(--text-brand); }
+.alertaAviso .alertaIcone { color: var(--text-accent); }
+.alertaErro .alertaIcone { color: var(--text-critical, var(--text-accent)); }
+
+.alertaErro { border-color: var(--border-strong); }
+
+/* --- Pagamentos ---------------------------------------------------------- */
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--type-small);
+}
+
+.tabela th {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.tabela td {
+  padding: var(--space-3);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.numerico {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

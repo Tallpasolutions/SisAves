@@ -2,9 +2,10 @@
 
 import {
   Award,
-  Bird,
   Bell,
+  Bird,
   ChartColumn,
+  CreditCard,
   Dna,
   Egg,
   Feather,
@@ -79,6 +80,7 @@ const GRUPOS: Grupo[] = [
       { href: "/notificacoes", rotulo: "Notificações", Icone: Bell },
       { href: "/especies", rotulo: "Espécies", Icone: Feather },
       { href: "/configuracoes", rotulo: "Configurações", Icone: Settings },
+      { href: "/assinatura", rotulo: "Assinatura", Icone: CreditCard },
     ],
   },
 ];
