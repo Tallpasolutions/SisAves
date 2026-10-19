@@ -30,10 +30,16 @@ create temp table pendente as
 insert into veredito values
   ('pendente não credita', 'false', (select j->>'creditado' from pendente));
 
+-- O criatório nasce com cinco dias de teste (0038). Um PIX pendente não pode
+-- derrubá-los: quem está testando continua testando enquanto não paga.
 insert into veredito values
-  ('e a assinatura não fica vigente', 'false',
-   (select coalesce((fim is not null and fim >= public.hoje())::text, 'false')
-      from public.assinaturas where criatorio_id = 'b0b0b0b0-1111-1111-1111-111111111111'));
+  ('pendente não derruba o teste em curso', (public.hoje() + 5)::text,
+   (select fim::text from public.assinaturas
+     where criatorio_id = 'b0b0b0b0-1111-1111-1111-111111111111')),
+
+  ('e o status segue teste', 'teste',
+   (select status::text from public.assinaturas
+     where criatorio_id = 'b0b0b0b0-1111-1111-1111-111111111111'));
 
 -- ---- Aprovado credita doze meses ---------------------------------------------
 create temp table aprovado as
@@ -44,7 +50,8 @@ insert into veredito values
   ('aprovado credita', 'true', (select j->>'creditado' from aprovado));
 
 insert into veredito values
-  ('a vigência vai para doze meses à frente', (public.hoje() + interval '12 months')::date::text,
+  ('sair do teste conta de HOJE, sem somar os 5 dias de teste',
+   (public.hoje() + interval '12 months')::date::text,
    (select fim::text from public.assinaturas
      where criatorio_id = 'b0b0b0b0-1111-1111-1111-111111111111')),
 

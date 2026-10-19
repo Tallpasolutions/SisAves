@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoCertificado {
   erro?: string;
@@ -32,6 +33,8 @@ export async function emitirCertificado(
     // A mensagem da função já fala a língua do domínio ("Esta ave não tem
     // anilha. O certificado afirma a anilha oficial…").
     if (error.code === "P0001") return { erro: error.message };
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("emitirCertificado:", error.message);
     return { erro: "Não foi possível emitir o certificado. Tente de novo." };
   }
@@ -60,6 +63,8 @@ export async function revogarCertificado(
 
   if (error) {
     if (error.code === "P0001") return { erro: error.message };
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("revogarCertificado:", error.message);
     return { erro: "Não foi possível revogar. Tente de novo." };
   }

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoNotificacao {
   erro?: string;
@@ -24,6 +25,8 @@ export async function marcarLida(
     .is("lida_em", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("marcarLida:", error.message);
     return { erro: "Não foi possível marcar como lido." };
   }

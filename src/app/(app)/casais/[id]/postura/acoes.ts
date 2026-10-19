@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoPostura {
   erro?: string;
@@ -135,6 +136,8 @@ export async function registrarPostura(
       // escrever.
       return { erro: "Outra ninhada foi registrada agora mesmo. Tente de novo." };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(erroNinhada)) return { erro: ERRO_ASSINATURA };
     console.error("registrarPostura/ninhada:", erroNinhada?.message);
     return { erro: "Não foi possível registrar a ninhada. Tente de novo." };
   }
@@ -152,6 +155,8 @@ export async function registrarPostura(
   if (erroOvos) {
     // A ninhada já entrou; sem os ovos ela fica órfã e confunde a tela.
     await supabase.from("ninhadas").delete().eq("id", ninhada.id);
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(erroOvos)) return { erro: ERRO_ASSINATURA };
     console.error("registrarPostura/ovos:", erroOvos.message);
     return { erro: "Não foi possível registrar os ovos. Tente de novo." };
   }

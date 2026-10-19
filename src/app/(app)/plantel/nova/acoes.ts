@@ -6,6 +6,7 @@ import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoCadastroAve {
   erro?: string;
@@ -221,6 +222,8 @@ export async function cadastrarAve(
     // traduzir de novo.
     if (error?.code === "P0001") return { erro: error.message };
 
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("cadastrarAve:", error?.message);
     return { erro: "Não foi possível cadastrar a ave. Tente de novo." };
   }

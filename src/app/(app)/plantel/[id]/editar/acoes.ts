@@ -6,6 +6,7 @@ import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { EstadoCadastroAve } from "@/app/(app)/plantel/nova/acoes";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 const opcional = (v: FormDataEntryValue | null) => {
   const texto = String(v ?? "").trim();
@@ -249,6 +250,8 @@ export async function editarAve(
     // que traduzir de novo.
     if (error.code === "P0001") return { erro: error.message };
 
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("editarAve:", error.message);
     return { erro: "Não foi possível salvar as alterações. Tente de novo." };
   }

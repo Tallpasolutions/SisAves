@@ -7,6 +7,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { calcularEndogamia, explicarEndogamia } from "@/lib/dados/casais";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoFormarCasal {
   erro?: string;
@@ -199,6 +200,8 @@ export async function formarCasal(
       }
       return { erro: "Outro casal foi formado agora mesmo. Tente de novo." };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("formarCasal:", error?.message);
     return { erro: "Não foi possível formar o casal. Tente de novo." };
   }

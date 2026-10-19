@@ -1,0 +1,96 @@
+/* A faixa de assinatura.
+
+   Âmbar é "exige ação humana agora" — e aqui exige. É o único elemento âmbar
+   das telas em que aparece, e o texto sobre âmbar vai em azul profundo, nunca
+   o contrário: âmbar como cor de texto sobre branco dá 1,83:1. */
+
+.faixa {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font: var(--type-small);
+}
+
+.icone {
+  display: inline-flex;
+  flex: none;
+}
+
+.texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.acao {
+  flex: none;
+  /* Alvo de toque: o criador clica nisto no galpão, com uma ave na outra mão. */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  font: var(--type-body-strong);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+
+.acao:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* --- Vencendo: o âmbar de ação ------------------------------------------- */
+.vencendo {
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+}
+
+.vencendo .icone { color: var(--text-on-accent); }
+
+.vencendo .acao {
+  background: var(--sis-azul-profundo);
+  color: #ffffff;
+}
+
+/* Hover escurece a superfície; nunca opacidade. */
+.vencendo .acao:hover { background: var(--sis-grafite, #1b2528); }
+
+/* --- Vencida: gravidade, não alarme -------------------------------------- */
+/* Vencer é um fato administrativo. A faixa informa com borda e ícone, sem
+   pintar a tela inteira de vermelho em cima de quem já está contrariado. */
+.vencida {
+  background: var(--surface-subtle);
+  border: var(--border-width) solid var(--border-strong);
+  color: var(--text-primary);
+}
+
+.vencida .icone { color: var(--text-accent); }
+
+.vencida .acao {
+  border: var(--border-width) solid var(--border-strong);
+  color: var(--text-brand);
+}
+
+.vencida .acao:hover {
+  background: var(--surface-hover);
+  border-color: var(--sis-petroleo-700);
+}
+
+@media (max-width: 640px) {
+  .faixa {
+    flex-wrap: wrap;
+  }
+  .texto {
+    flex: 1 1 100%;
+    order: 2;
+  }
+  .acao {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+}

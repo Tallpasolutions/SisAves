@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoMembro {
   erro?: string;
@@ -70,6 +71,8 @@ export async function convidarMembro(
         campos: { email: `Já existe um convite aberto para ${resultado.data.email}.` },
       };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("convidarMembro:", error.message);
     return { erro: "Não foi possível convidar. Tente de novo." };
   }
@@ -94,6 +97,8 @@ export async function cancelarConvite(
     .is("aceito_em", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("cancelarConvite:", error.message);
     return { erro: "Não foi possível cancelar o convite. Tente de novo." };
   }
@@ -136,6 +141,8 @@ export async function removerMembro(
     .eq("usuario_id", usuarioId);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("removerMembro:", error.message);
     return { erro: "Não foi possível remover. Tente de novo." };
   }

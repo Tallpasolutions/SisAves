@@ -6,6 +6,7 @@ import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { SAIDAS, type MotivoSaida } from "@/lib/dados/situacao";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoSaida {
   erro?: string;
@@ -99,6 +100,8 @@ export async function registrarSaida(
     // do plantel: vendida."); repassar é melhor que traduzir de novo.
     if (error.code === "P0001") return { erro: error.message };
 
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("registrarSaida:", error.message);
     return { erro: "Não foi possível registrar a saída. Tente de novo." };
   }
@@ -123,6 +126,8 @@ export async function reativarAve(
 
   if (error) {
     if (error.code === "P0001") return { erro: error.message };
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("reativarAve:", error.message);
     return { erro: "Não foi possível devolver a ave ao plantel. Tente de novo." };
   }

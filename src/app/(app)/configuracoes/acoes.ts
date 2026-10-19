@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoConfiguracoes {
   erro?: string;
@@ -97,6 +98,8 @@ export async function salvarCriatorio(
     .eq("id", criatorio.id);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarCriatorio:", error.message);
     return { erro: "Não foi possível salvar. Tente de novo." };
   }
@@ -148,6 +151,8 @@ export async function salvarPerfil(
     .eq("id", user.id);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarPerfil:", error.message);
     return { erro: "Não foi possível salvar o perfil. Tente de novo." };
   }
@@ -214,6 +219,8 @@ export async function salvarLogo(
     .upload(caminho, arquivo, { upsert: true, contentType: arquivo.type });
 
   if (erroUpload) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(erroUpload)) return { erro: ERRO_ASSINATURA };
     console.error("salvarLogo:", erroUpload.message);
     return { erro: "Não foi possível enviar a logo. Tente de novo." };
   }
@@ -233,6 +240,8 @@ export async function salvarLogo(
     .eq("id", criatorio.id);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarLogo (url):", error.message);
     return { erro: "A imagem subiu, mas não foi possível salvá-la. Tente de novo." };
   }
@@ -269,6 +278,8 @@ export async function removerLogo(): Promise<EstadoConfiguracoes> {
     .eq("id", criatorio.id);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("removerLogo:", error.message);
     return { erro: "Não foi possível remover a logo. Tente de novo." };
   }

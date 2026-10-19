@@ -6,6 +6,7 @@ import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoSaude {
   erro?: string;
@@ -137,6 +138,8 @@ export async function registrarTratamento(
       if (reenvio) return {};
       redirect("/saude");
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("registrarTratamento:", error.message);
     return { erro: "Não foi possível registrar o tratamento. Tente de novo." };
   }
@@ -208,6 +211,8 @@ export async function editarTratamento(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("editarTratamento:", error.message);
     return { erro: "Não foi possível salvar o tratamento. Tente de novo." };
   }
@@ -240,6 +245,8 @@ export async function excluirTratamento(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("excluirTratamento:", error.message);
     return { erro: "Não foi possível excluir o tratamento. Tente de novo." };
   }
@@ -342,6 +349,8 @@ export async function salvarMedicamento(
         },
       };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarMedicamento:", error.message);
     return { erro: "Não foi possível salvar o medicamento. Tente de novo." };
   }
@@ -429,6 +438,8 @@ export async function salvarDoenca(
         },
       };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarDoenca:", error.message);
     return { erro: "Não foi possível salvar a doença. Tente de novo." };
   }
@@ -441,6 +452,8 @@ export async function salvarDoenca(
       p_sintomas: sintomas,
     });
     if (erroVinculo) {
+      // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+      if (barradoPelaAssinatura(erroVinculo)) return { erro: ERRO_ASSINATURA };
       console.error("definir_sintomas_da_doenca:", erroVinculo.message);
       return { erro: "A doença foi salva, mas os sintomas não. Tente de novo." };
     }
@@ -501,6 +514,8 @@ export async function salvarSintoma(
         },
       };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarSintoma:", error.message);
     return { erro: "Não foi possível salvar o sintoma. Tente de novo." };
   }

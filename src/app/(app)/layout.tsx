@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { obterPerfil } from "@/lib/dados/configuracoes";
 import { obterIndicadores, obterTarefasDeHoje } from "@/lib/dados/hoje";
+import { FaixaAssinatura } from "@/components/navegacao/FaixaAssinatura";
 import { Sidebar } from "@/components/navegacao/Sidebar";
 import { TabBar } from "@/components/navegacao/TabBar";
 import { TopBar } from "@/components/navegacao/TopBar";
@@ -55,6 +56,10 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
           </div>
 
           <main id="conteudo" className={styles.conteudo}>
+            {/* Antes do conteúdo, e em todas as telas: o bloqueio mora na RLS,
+                e descobri-lo pelo erro do banco depois de preencher um
+                formulário inteiro seria a pior forma de saber. */}
+            <FaixaAssinatura />
             {children}
           </main>
         </div>

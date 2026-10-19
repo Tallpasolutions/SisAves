@@ -6,6 +6,7 @@ import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { CORES_ETIQUETA, COR_PADRAO } from "@/lib/dados/etiquetas";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoEdicaoCasal {
   erro?: string;
@@ -156,6 +157,8 @@ export async function editarCasal(
     if (error.code === "23505") {
       return { erro: "Outro casal já usa esse número." };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("editarCasal:", error.message);
     return { erro: "Não foi possível salvar as alterações. Tente de novo." };
   }

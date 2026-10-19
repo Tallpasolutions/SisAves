@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { CORES_ETIQUETA } from "@/lib/dados/etiquetas";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoEtiqueta {
   erro?: string;
@@ -46,6 +47,8 @@ export async function renomearEtiqueta(
     if (error.code === "23505") {
       return { campos: { nome: `Já existe uma etiqueta chamada "${nome}".` } };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("renomearEtiqueta:", error.message);
     return { erro: "Não foi possível salvar a etiqueta. Tente de novo." };
   }
@@ -76,6 +79,8 @@ export async function excluirEtiqueta(
   const { error } = await supabase.from("casal_tags").delete().eq("id", etiquetaId);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("excluirEtiqueta:", error.message);
     return { erro: "Não foi possível excluir a etiqueta. Tente de novo." };
   }

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { hojeNoCriatorio } from "@/lib/data";
 import { MARCOS_DESFAZIVEIS, type MarcoDesfazivel } from "@/lib/dados/marcos";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoCorrecao {
   erro?: string;
@@ -48,6 +49,8 @@ export async function desfazerMarco(
     // As mensagens da função já falam a língua do domínio; repassar é melhor
     // que traduzir de novo.
     if (error.code === "P0001") return { erro: error.message };
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("desfazerMarco:", error.message);
     return { erro: "Não foi possível desfazer. Tente de novo." };
   }
@@ -106,6 +109,8 @@ export async function corrigirDataMarco(
     // As mensagens da função já falam a língua do domínio; repassar é melhor
     // que traduzir de novo.
     if (error.code === "P0001") return { campos: { data: error.message } };
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("corrigirDataMarco:", error.message);
     return { erro: "Não foi possível mudar a data. Tente de novo." };
   }

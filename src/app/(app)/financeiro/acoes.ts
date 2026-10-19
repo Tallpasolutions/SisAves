@@ -7,6 +7,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { hojeNoCriatorio } from "@/lib/data";
 import { ICONES_CATEGORIA } from "@/lib/dados/financeiro-rotulos";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoLancamento {
   erro?: string;
@@ -146,6 +147,8 @@ export async function registrarLancamento(
       if (reenvio) return {};
       redirect(`/financeiro?mes=${mesDe(resultado.data.data)}`);
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("registrarLancamento:", error.message);
     return { erro: "Não foi possível registrar o lançamento. Tente de novo." };
   }
@@ -195,6 +198,8 @@ export async function editarLancamento(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("editarLancamento:", error.message);
     return { erro: "Não foi possível salvar o lançamento. Tente de novo." };
   }
@@ -230,6 +235,8 @@ export async function excluirLancamento(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("excluirLancamento:", error.message);
     return { erro: "Não foi possível excluir o lançamento. Tente de novo." };
   }
@@ -332,6 +339,8 @@ export async function salvarCategoria(
         },
       };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarCategoria:", error.message);
     return { erro: "Não foi possível salvar a categoria. Tente de novo." };
   }
@@ -372,6 +381,8 @@ export async function excluirCategoria(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("excluirCategoria:", error.message);
     return { erro: "Não foi possível excluir a categoria. Tente de novo." };
   }

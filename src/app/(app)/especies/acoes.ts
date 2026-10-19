@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { obterCriatorioAtual } from "@/lib/criatorio";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoEspecie {
   erro?: string;
@@ -125,6 +126,8 @@ export async function salvarPrazos(
         campos: { dias_ovoscopia: "A ovoscopia tem de cair antes da eclosão." },
       };
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("salvarPrazos:", error.message);
     return { erro: "Não foi possível salvar a espécie. Tente de novo." };
   }
@@ -159,6 +162,8 @@ export async function alternarEspecie(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("alternarEspecie:", error.message);
     return { erro: "Não foi possível mudar a espécie. Tente de novo." };
   }
@@ -204,6 +209,8 @@ export async function excluirEspecie(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("excluirEspecie:", error.message);
     return { erro: "Não foi possível excluir a espécie. Tente de novo." };
   }
@@ -272,6 +279,8 @@ export async function adotarDoCatalogo(
     .upsert(linhas, { onConflict: "criatorio_id,nome", ignoreDuplicates: true });
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("adotarDoCatalogo:", error.message);
     return { erro: "Não foi possível adotar as espécies. Tente de novo." };
   }

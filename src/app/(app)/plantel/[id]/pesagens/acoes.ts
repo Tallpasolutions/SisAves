@@ -6,6 +6,7 @@ import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { CONTEXTOS_PESAGEM } from "@/lib/dados/contextos-de-pesagem";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoPesagem {
   erro?: string;
@@ -122,6 +123,8 @@ export async function registrarPesagem(
       if (reenvio) return {};
       redirect(`/plantel/${aveId}/pesagens`);
     }
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("registrarPesagem:", error.message);
     return { erro: "Não foi possível registrar a pesagem. Tente de novo." };
   }
@@ -209,6 +212,8 @@ export async function editarPesagem(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("editarPesagem:", error.message);
     return { erro: "Não foi possível salvar a pesagem. Tente de novo." };
   }
@@ -243,6 +248,8 @@ export async function excluirPesagem(
     .is("deleted_at", null);
 
   if (error) {
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("excluirPesagem:", error.message);
     return { erro: "Não foi possível excluir a pesagem. Tente de novo." };
   }

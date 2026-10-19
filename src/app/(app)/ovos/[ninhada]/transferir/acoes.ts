@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoTransferencia {
   erro?: string;
@@ -52,6 +53,8 @@ export async function transferirPosturas(
     // As mensagens da função já falam a língua do domínio ("O casal 03 está
     // encerrado e não recebe ovo para chocar."); repassar é melhor.
     if (error.code === "P0001") return { erro: error.message };
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("transferirPosturas:", error.message);
     return { erro: "Não foi possível transferir. Tente de novo." };
   }
@@ -81,6 +84,8 @@ export async function devolverPostura(
 
   if (error) {
     if (error.code === "P0001") return { erro: error.message };
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("devolverPostura:", error.message);
     return { erro: "Não foi possível devolver o ovo. Tente de novo." };
   }

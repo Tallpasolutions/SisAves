@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { hojeNoCriatorio } from "@/lib/data";
+import { barradoPelaAssinatura, ERRO_ASSINATURA } from "@/lib/erros";
 
 export interface EstadoAnilhamento {
   erro?: string;
@@ -151,6 +152,8 @@ export async function anilharFilhotes(
     // anilhado em 28/09/2026."); repassar é melhor que traduzir de novo.
     if (error.code === "P0001") return { erro: error.message };
 
+    // Vencido não é "tente de novo": tentar de novo nunca vai funcionar.
+    if (barradoPelaAssinatura(error)) return { erro: ERRO_ASSINATURA };
     console.error("anilharFilhotes:", error.message);
     return { erro: "Não foi possível anilhar. Tente de novo." };
   }
