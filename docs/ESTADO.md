@@ -36,13 +36,10 @@ Nada aqui é opcional, e nenhum depende dos outros:
   entrada". Falta só o lado do Supabase: desligar o provedor Google e marcar
   "Disable new user signups", que é onde a tranca é de verdade.
 
-### 2 · Fase 10 — assinatura (Mercado Pago)
+### 2 · ~~Fase 10 — assinatura (Mercado Pago)~~ · feita em 19/10/2026
 
-Banco pronto desde a Fase 1 (`assinaturas`, `assinatura_pagamentos`) e
-credenciais vazias no `.env`. Falta: checkout PIX e cartão, webhook em Route
-Handler **com verificação de assinatura do provedor**, e o bloqueio suave ao
-expirar — leitura preservada, escrita bloqueada, nunca reter os dados do
-criador. Modelo comercial atual: R$ 290/ano, R$ 270 no PIX.
+Ver "A assinatura" abaixo. Resta ligar o PIX na conta do Mercado Pago e levar
+as variáveis para a Vercel.
 
 ### 3 · Fase 11 — landing, SEO e migração do legado
 
@@ -883,6 +880,118 @@ mesma recursão, e a diferença entre os dois não é de sinal:
   registro faltando. Só a segunda é apontada — e a semente de desenvolvimento
   precisou marcar as fundadoras como `compra`, porque o default da coluna é
   `nascimento_proprio` e a tela passava a acusar seis buracos inexistentes.
+
+## A assinatura
+
+Checkout Pro, API de Preferences, feito em **19/10/2026**. Aplicação `SisAves`
+no painel do Mercado Pago; credenciais de teste no `.env.local`, nunca em
+arquivo versionado.
+
+### Por que Checkout Pro e não Assinaturas
+
+O produto "Assinaturas" do Mercado Pago tem três contratos de `/preapproval` e
+**os três exigem cartão tokenizado**. Como o modelo é anual com desconto no
+PIX, a recorrência cobriria metade dos clientes. O Checkout Pro é pagamento
+avulso que empurra `assinaturas.fim` um ano para frente, com o catálogo
+inteiro de meios e **nenhum dado de cartão passando pelo SisAves** — zero
+escopo PCI, nenhum formulário de cartão para manter.
+
+Perde-se a renovação automática. Para R$ 290/ano com bloqueio suave, é o troco
+certo.
+
+### O desconto do PIX obriga dois botões
+
+No Checkout Pro o comprador escolhe o meio **na página do Mercado Pago**,
+depois de o preço já estar fixado na preferência. "R$ 270 se for PIX" não cabe
+numa preferência só: são duas, cada uma restringindo os meios por
+`payment_methods.excluded_payment_types`. Sem a restrição o desconto do PIX
+vazaria para o cartão.
+
+Duas descobertas do primeiro checkout real, nenhuma em documentação:
+
+- **`account_money cannot be excluded`** — 400, e a preferência inteira é
+  recusada. Saldo do Mercado Pago é sempre aceito. Quando o PIX entrar, quem
+  tiver saldo paga os R$ 270 com saldo: R$ 20 de desconto para carteira, sem
+  como desligar.
+- **A conta não tinha PIX.** `/v1/payment_methods` devolvia cartão, pré-pago,
+  saldo, débito e boleto, e nenhum `bank_transfer` — é preciso cadastrar chave
+  PIX na CONTA, não no painel de desenvolvedor. Daí `MP_PIX_ATIVO`, falhando
+  fechado: com a oferta de R$ 270 no ar sem PIX, a preferência excluiria todos
+  os meios e o criador chegaria a um checkout sem forma de pagar.
+
+Confira com `node scripts/mercadopago-meios.mjs` (`--bruto` lista tudo).
+
+### O preço nunca vem do navegador
+
+A Server Action resolve a oferta no catálogo do servidor, grava
+`assinatura_intencoes` com a sessão do criador — a RLS vale — e manda ao
+Mercado Pago só o id dela como `external_reference`. Quando o webhook volta, o
+valor a creditar está no banco, não no corpo da notificação.
+
+### O webhook
+
+`/api/mercadopago/webhook`. Valida HMAC-SHA256 do `x-signature` sobre
+`id:{data.id};request-id:{x-request-id};ts:{ts};` com `timingSafeEqual`, ANTES
+de olhar o corpo. Responde 200 e processa no **`after()`** do `next/server`: em
+serverless a função congela depois da resposta, e o `queueMicrotask` dos
+exemplos de Express perderia o crédito.
+
+**Precisou sair do `proxy.ts`** — o Mercado Pago posta sem cookie e levava 307
+para `/entrar`. Mesmo caso do `/opengraph-image`.
+
+**A escrita sem sessão exige `service_role`.** Ela vai atrás de
+`creditar_pagamento_mercadopago()`, `security definer` sem execute para `anon`
+nem `authenticated`: a chave que o servidor carrega consegue fazer uma coisa
+só. **Isso muda o que vai para a Vercel** — a `SUPABASE_SERVICE_ROLE_KEY`
+passa a existir lá, e sobe a prioridade de rotacionar as chaves.
+
+Idempotência em dois lugares: índice único em `(provedor, provedor_id)`, e a
+vigência só avança quando o pagamento ENTRA em `approved`.
+
+### Bloqueio suave
+
+Cinco dias de teste para todo criatório novo, por gatilho. O bloqueio é só no
+`WITH CHECK` das políticas, com `meus_criatorios_ativos()` no lugar de
+`meus_criatorios()`:
+
+- **SELECT** usa o `USING` → leitura intacta, sempre.
+- **INSERT e UPDATE** barram quando vencido.
+- **DELETE** continua permitido: impedir o criador de apagar os próprios dados
+  por não ter pago é o contrário da promessa.
+- **`assinatura_intencoes` fica de fora** — trancá-la deixaria o vencido sem
+  como deixar de estar vencido.
+
+`criatorio_com_acesso()` usava `current_date`. Em servidor UTC o dia vira às
+21h no Brasil, e a assinatura recusaria escrita três horas antes da meia-noite
+do criador, que estaria no galpão anilhando. Agora é `public.hoje()`.
+
+Sair do teste conta de hoje; renovar um período pago soma ao que resta. Antes
+os cinco dias de teste eram somados ao ano comprado.
+
+**A metade visível importa tanto quanto a regra.** O bloqueio mora na RLS, que
+fala `42501: new row violates row-level security policy`. Conferido no
+navegador: o formulário de cadastrar ave respondia "Não foi possível cadastrar
+a ave. Tente de novo." — e tentar de novo nunca ia funcionar. Agora a
+`FaixaAssinatura` avisa no topo de toda tela, e 46 pontos de escrita traduzem
+o erro por `barradoPelaAssinatura()`.
+
+### O que falta
+
+- Cadastrar chave PIX na conta → `node scripts/mercadopago-meios.mjs` →
+  `MP_PIX_ATIVO=on`.
+- `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET` e `SUPABASE_SERVICE_ROLE_KEY` na
+  Vercel. **O segredo do webhook é diferente em "Modo de teste" e "Modo de
+  produção"** — trocar os dois juntos, ou todo webhook volta 401.
+- `/mp-integrate test-setup` (usuário de teste) e `/mp-review` antes de
+  produção. Os dois precisam do MCP autorizado: `/mcp` →
+  `plugin:mercadopago:mcp`.
+- `validate-checkout-cta.mjs` acusa dois itens que ele não consegue satisfazer
+  em Server Action: ele espera `<form action="/rota" method="POST">` ou um
+  handler com `fetch` + `init_point` + navegação. Trocar Server Actions por
+  rota REST só para passar no grep seria pior arquitetura. Verificado no
+  navegador: o botão chega à página do Mercado Pago com "SisAves · assinatura
+  anual · R$ 290".
+
 
 ## No ar
 
