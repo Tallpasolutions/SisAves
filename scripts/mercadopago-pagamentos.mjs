@@ -32,6 +32,38 @@ if (!token) {
   process.exit(1);
 }
 
+// As merchant_orders nascem quando o comprador ENTRA no checkout, antes de
+// qualquer pagamento. Se elas existem e pagamento não, a falha está entre
+// abrir o checkout e autorizar — não na cobrança.
+if (process.argv.includes("--ordens")) {
+  const r = await fetch(
+    "https://api.mercadopago.com/merchant_orders/search?sort=date_created&criteria=desc&limit=10",
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  if (!r.ok) {
+    console.error(`merchant_orders devolveu ${r.status}: ${await r.text()}`);
+    process.exit(1);
+  }
+  const { elements = [] } = await r.json();
+  console.log(`\n${elements.length} merchant_order(s):\n`);
+  for (const o of elements) {
+    console.log(`  id ${o.id}  ${o.date_created?.slice(0, 19).replace("T", " ")}`);
+    console.log(`  status        ${o.status}`);
+    console.log(`  order_status  ${o.order_status}`);
+    console.log(`  pago          R$ ${o.paid_amount} de R$ ${o.total_amount}`);
+    console.log(`  pagamentos    ${o.payments?.length ?? 0}`);
+    console.log(`  referência    ${o.external_reference ?? "(nenhuma)"}`);
+    console.log("");
+  }
+  if (elements.length === 0) {
+    console.log(
+      "  Nenhuma. O comprador nem chegou a ser reconhecido no checkout —\n" +
+        "  o que aponta para autorização do pagador, não para a integração.\n",
+    );
+  }
+  process.exit(0);
+}
+
 const resposta = await fetch(
   "https://api.mercadopago.com/v1/payments/search?sort=date_created&criteria=desc&limit=10",
   { headers: { Authorization: `Bearer ${token}` } },
