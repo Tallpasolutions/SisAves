@@ -74,6 +74,16 @@ console.log(
   `\n${temPix ? "✓" : "✗"} 'bank_transfer' ${temPix ? "existe" : "NÃO existe"} nesta conta` +
     `${temPix ? " — é o tipo do PIX, e ofertas.ts está certo." : " — ajuste src/lib/mercadopago/ofertas.ts para o tipo correto acima."}`,
 );
+if (process.argv.includes("--bruto")) {
+  console.log("\nTodos os meios, cru:\n");
+  for (const m of meios) {
+    console.log(
+      `  ${String(m.id).padEnd(16)} ${String(m.payment_type_id).padEnd(16)} ${m.status}  ${m.name ?? ""}`,
+    );
+  }
+  console.log("");
+}
+
 console.log(
   "\nConfira também se todo tipo que você NÃO quer na oferta do PIX está",
   "\nlistado em TIPOS_SEM_PIX. Tipo habilitado e não excluído aparece no",

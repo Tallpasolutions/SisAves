@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CircleAlert, CircleCheck, TriangleAlert } from "lucide-react";
 import { obterVigencia, listarPagamentos } from "@/lib/dados/assinatura";
 import { mercadoPagoConfigurado } from "@/lib/mercadopago/cliente";
+import { PIX_ATIVO } from "@/lib/mercadopago/ofertas";
 import { formatarData, formatarMoeda } from "@/lib/formato";
 import { FormularioAssinatura } from "./formulario";
 import styles from "./assinatura.module.css";
@@ -31,7 +32,10 @@ export default async function Assinatura() {
           <h2 className={styles.secaoTitulo}>
             {vigencia?.vigente ? "Renovar" : "Assinar"}
           </h2>
-          <FormularioAssinatura renovacao={Boolean(vigencia?.vigente)} />
+          <FormularioAssinatura
+            renovacao={Boolean(vigencia?.vigente)}
+            pixAtivo={PIX_ATIVO}
+          />
         </section>
       ) : (
         <p className={`${styles.alerta} ${styles.alertaAviso}`} role="status">

@@ -14,7 +14,14 @@ import styles from "./assinatura.module.css";
  * o preço já estar fixado na preferência. Para cobrar R$ 270 no PIX e R$ 290
  * no cartão, a escolha precisa acontecer aqui.
  */
-export function FormularioAssinatura({ renovacao }: { renovacao: boolean }) {
+export function FormularioAssinatura({
+  renovacao,
+  pixAtivo,
+}: {
+  renovacao: boolean;
+  /** Resolvido no servidor: a conta do Mercado Pago aceita PIX? */
+  pixAtivo: boolean;
+}) {
   const [estado, acao, enviando] = useActionState<EstadoAssinatura, FormData>(
     irParaCheckout,
     {},
@@ -32,15 +39,20 @@ export function FormularioAssinatura({ renovacao }: { renovacao: boolean }) {
       ) : null}
 
       <div className={styles.planos}>
-        <Plano
-          acao={acao}
-          enviando={enviando}
-          oferta="anual-pix"
-          meio="PIX"
-          valor="R$ 270,00"
-          nota="Confirmação em minutos."
-          destaque
-        />
+        {/* O botão do PIX só aparece quando a conta consegue receber por PIX.
+            Oferecer o preço com desconto e entregar um checkout sem forma de
+            pagamento é pior do que não oferecer. */}
+        {pixAtivo ? (
+          <Plano
+            acao={acao}
+            enviando={enviando}
+            oferta="anual-pix"
+            meio="PIX"
+            valor="R$ 270,00"
+            nota="Confirmação em minutos."
+            destaque
+          />
+        ) : null}
         <Plano
           acao={acao}
           enviando={enviando}
@@ -48,6 +60,7 @@ export function FormularioAssinatura({ renovacao }: { renovacao: boolean }) {
           meio="Cartão"
           valor="R$ 290,00"
           nota="Crédito ou débito, em uma página segura do Mercado Pago."
+          destaque={!pixAtivo}
         />
       </div>
 
