@@ -975,6 +975,29 @@ a ave. Tente de novo." — e tentar de novo nunca ia funcionar. Agora a
 `FaixaAssinatura` avisa no topo de toda tela, e 46 pontos de escrita traduzem
 o erro por `barradoPelaAssinatura()`.
 
+### Provado de ponta a ponta em 21/10/2026
+
+Pagamento real de R$ 290 pelo usuário de teste: `approved` / `accredited`, meio
+`account_money`. O crédito entrou, a vigência foi para **21/10/2027** — doze
+meses de HOJE, não somando os cinco dias de teste que iam até 24/10 — e a tela
+passou a dizer "Ativa até 21/10/2027", com o botão virando "Renovar".
+
+**A idempotência deixou de ser só asserção de teste:** a mesma notificação foi
+entregue duas vezes e o banco ficou com uma linha de pagamento e a mesma data
+de vencimento.
+
+**O webhook não chega em localhost.** O `notification_url` sai com o host da
+requisição, então em desenvolvimento ele aponta para um endereço que o Mercado
+Pago não alcança: o pagamento acontece lá e a notificação não tem para onde ir.
+Não é defeito do código, é o que localhost é. Para fechar a volta sem publicar,
+`scripts/mercadopago-reenviar.mjs <id>` monta a string canônica, assina com o
+`MP_WEBHOOK_SECRET` e posta no receptor local. Não é atalho para creditar o que
+não foi pago: a rota busca o pagamento na API e credita pelo status que ELA
+devolve, a referência tem de existir, e a assinatura tem de bater.
+
+Em produção chegam DUAS notificações — a do `notification_url` da preferência e
+a da URL cadastrada no painel. A idempotência cobre isso.
+
 ### O que falta
 
 - Cadastrar chave PIX na conta → `node scripts/mercadopago-meios.mjs` →
