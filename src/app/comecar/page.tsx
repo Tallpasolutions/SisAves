@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Cadastrar criatório" };
 
 export default async function Comecar() {
   // Quem já tem criatório não passa por aqui de novo.
-  if (await obterCriatorioAtual()) redirect("/");
+  if (await obterCriatorioAtual()) redirect("/hoje");
 
   const supabase = await criarClienteServidor();
   const { data: clubes } = await supabase

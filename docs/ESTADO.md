@@ -43,6 +43,9 @@ as variáveis para a Vercel.
 
 ### 3 · Fase 11 — landing, SEO e migração do legado
 
+**A landing foi construída em 21/10/2026** — ver "A landing" abaixo. Faltam a
+migração do legado e as duas seções que dependem de dado real.
+
 A landing D3 está desenhada no handoff. A migração é a parte que tem risco:
 mapear as 18 entidades do dossiê **preservando a validade dos QR já
 impressos** — ver o detalhe no item "Migração do legado", que ganhou forma ao
@@ -1014,6 +1017,73 @@ a da URL cadastrada no painel. A idempotência cobre isso.
   rota REST só para passar no grep seria pior arquitetura. Verificado no
   navegador: o botão chega à página do Mercado Pago com "SisAves · assinatura
   anual · R$ 290".
+
+
+## A landing
+
+Construída em **21/10/2026**, na raiz. Nove seções do artboard D3, sete
+construídas.
+
+### `/` mudou de dono
+
+A raiz servia a tela "Hoje" do app. Agora serve a landing, pública, e **"Hoje"
+mora em `/hoje`** — TabBar, redirects de login, callback do OAuth, onboarding e
+a tela offline foram repontados. Visitante vê a landing; quem já tem sessão é
+redirecionado para `/hoje` antes de qualquer pixel de venda.
+
+### Duas seções do desenho NÃO foram construídas
+
+O artboard traz uma faixa com "1.240 criadores · 86 mil aves · 19 mil CRO" e
+três depoimentos de criadores com nome, cidade e espécie. **São marcadores de
+posição**, e publicá-los seria estatística e depoimento fabricados numa página
+de venda. O lugar está reservado; entram quando houver número real e criador
+que autorize o nome.
+
+No lugar, o hero mostra o que o produto devolve — um certificado com anilha,
+espécie e endogamia —, que é verificável.
+
+As molduras de 300 × 640 da seção "no galpão" também ficaram como vazio
+honesto: desenhar um app aproximado ali seria mostrar o que a pessoa não vai
+receber. Entram capturas reais quando existirem.
+
+### O preço
+
+**R$ 290/ano, plano único.** O artboard pedia Iniciante R$ 19,90, Criador
+R$ 39,90 e Clube sob consulta — isso é produto que não existe (limite de aves,
+CRO bloqueado no plano barato), e anunciar R$ 39,90 com o checkout cobrando
+R$ 290 é quebra de promessa na primeira tela.
+
+O preço do PIX só aparece com `MP_PIX_ATIVO` ligado, pela mesma razão que o
+botão: anunciar um desconto que o checkout não oferece é prometer o que não se
+cumpre na página seguinte. Os botões de "Testar 5 dias" seguem
+`CADASTRO_ABERTO` — com o cadastro fechado eles viram "Entrar", em vez de levar
+a um beco.
+
+### Três defeitos que só a medição pegou
+
+Todos passariam numa conferência por leitura de texto, porque o texto estava lá:
+
+- **Título do cartão de importação invisível** — azul profundo sobre fundo azul
+  profundo, 1:1. O reset global pinta todo título de azul profundo, e esse
+  cartão TEM fundo azul profundo.
+- **Título do hero e da chamada final a 1,59:1** — mesma causa, sobre petróleo.
+  São os dois maiores textos da página, e no screenthot pequeno passavam por
+  aceitáveis.
+- **`robots.txt` e `sitemap.xml` redirecionando para `/entrar`** — mesma classe
+  do `/opengraph-image`: o robô não tem cookie. O Google leria a tela de login
+  no lugar do mapa do site.
+
+A varredura que achou os dois primeiros mede contraste calculado de todo
+elemento de texto contra o fundo real, com o limiar certo por tamanho e peso.
+Depois da correção: **84 elementos medidos, zero reprovados.**
+
+### SEO
+
+`sitemap.xml` com a raiz e `/entrar`. As páginas `/v/<codigo>` ficam de fora
+de propósito: são uma por certificado, não têm audiência de busca, e listá-las
+entregaria a um varredor a lista inteira dos códigos — exatamente o que o hash
+aleatório do certificado existe para impedir. O `robots.txt` as deixa
+**liberadas** para varredura, porque quem escaneia o QR precisa chegar lá.
 
 
 ## No ar

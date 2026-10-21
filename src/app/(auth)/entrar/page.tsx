@@ -10,7 +10,7 @@ export default async function Entrar({
   searchParams,
 }: PageProps<"/entrar">) {
   const params = await searchParams;
-  const destino = typeof params.destino === "string" ? params.destino : "/";
+  const destino = typeof params.destino === "string" ? params.destino : "/hoje";
   const erroUrl =
     params.erro === "google"
       ? "Não foi possível entrar com o Google. Tente de novo ou use e-mail e senha."

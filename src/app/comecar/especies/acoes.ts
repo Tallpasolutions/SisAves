@@ -75,5 +75,5 @@ export async function adotarEspecies(
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/hoje");
 }

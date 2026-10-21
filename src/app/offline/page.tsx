@@ -139,8 +139,7 @@ export default function SemConexao() {
         </p>
         {/* <a> e não <Link>: daqui queremos recarga de verdade. A navegação do
             cliente buscaria a carga RSC, que é exatamente o que não há. */}
-        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/">Voltar para Hoje</a>
+        <a href="/hoje">Voltar para Hoje</a>
       </main>
     </>
   );

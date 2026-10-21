@@ -1,0 +1,691 @@
+/* A landing (D3).
+
+   Três superfícies cheias, bem separadas na rolagem: petróleo no hero, petróleo
+   na chamada final, azul profundo no rodapé. A regra de "um bloco de petróleo
+   por tela" vale por dobra, não pela página inteira.
+
+   Um âmbar de ação por dobra: o botão do hero, a pílula de prazo no cartão do
+   ciclo do ovo, o botão da chamada final. Âmbar nunca é cor de texto sobre
+   claro — é fundo, com texto em azul profundo. */
+
+.pagina {
+  background: var(--surface-page);
+  color: var(--text-primary);
+}
+
+/* --- Navegação ----------------------------------------------------------- */
+.navegacao {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  background: var(--surface-page);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.navegacaoInterna {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.marca { display: inline-flex; flex: none; }
+
+.marca:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 4px;
+  border-radius: var(--radius-xs);
+}
+
+.links {
+  flex: 1;
+  display: flex;
+  gap: var(--space-6);
+}
+
+.links a {
+  font: var(--type-body);
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: var(--space-2) 0;
+}
+
+.links a:hover { color: var(--text-brand); }
+
+.links a:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.navegacaoAcoes {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* --- Botões -------------------------------------------------------------- */
+/* Alvos de 44px no site, 48px no app de campo. */
+.botaoTerciario,
+.botaoAmbar,
+.botaoAmbarGrande,
+.botaoClaro,
+.botaoPetroleoGrande {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  transition: background var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard);
+}
+
+.botaoTerciario:focus-visible,
+.botaoAmbar:focus-visible,
+.botaoAmbarGrande:focus-visible,
+.botaoClaro:focus-visible,
+.botaoPetroleoGrande:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.botaoTerciario {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  font: var(--type-body-strong);
+  color: var(--text-brand);
+}
+
+.botaoTerciario:hover { background: var(--surface-hover); }
+
+.botaoAmbar {
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  font: var(--type-body-strong);
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+}
+
+.botaoAmbar:hover { background: var(--sis-ambar-600); }
+.botaoAmbar:active { background: var(--sis-ambar-700); }
+
+.botaoAmbarGrande {
+  min-height: 52px;
+  padding: 0 var(--space-7);
+  font: var(--type-body-strong);
+  font-size: var(--text-md);
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+}
+
+.botaoAmbarGrande:hover { background: var(--sis-ambar-600); }
+.botaoAmbarGrande:active { background: var(--sis-ambar-700); }
+
+/* Sobre petróleo cheio: borda clara, nunca opacidade. */
+.botaoClaro {
+  min-height: 52px;
+  padding: 0 var(--space-6);
+  font: var(--type-body-strong);
+  color: var(--sis-branco);
+  border: var(--border-width) solid rgba(255, 255, 255, 0.45);
+}
+
+.botaoClaro:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--sis-branco);
+}
+
+.botaoPetroleoGrande {
+  min-height: 52px;
+  width: 100%;
+  padding: 0 var(--space-6);
+  margin-top: var(--space-5);
+  font: var(--type-body-strong);
+  background: var(--sis-petroleo-700);
+  color: var(--sis-branco);
+}
+
+.botaoPetroleoGrande:hover { background: var(--sis-petroleo-800); }
+.botaoPetroleoGrande:active { background: var(--sis-petroleo-900); }
+
+/* --- Hero ---------------------------------------------------------------- */
+.hero {
+  background: var(--sis-petroleo-700);
+  color: var(--sis-branco);
+  padding: var(--space-10) 0;
+}
+
+.heroInterno {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: var(--space-9);
+  align-items: center;
+}
+
+.heroTexto { min-width: 0; }
+
+.pilula {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-pill);
+  font: var(--type-small);
+}
+
+.heroTitulo {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-display);
+  font-size: 54px;
+  line-height: 1.1;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.01em;
+  /* Explícito: o reset global pinta todo título de azul profundo, e aqui o
+     fundo É escuro. Sem isto dá 1,59:1 no maior texto da página. */
+  color: var(--sis-branco);
+}
+
+.heroParagrafo {
+  margin: 0 0 var(--space-7);
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  /* Sobre petróleo, o branco puro em corpo longo cansa; este tom mantém
+     contraste bem acima de 4,5:1. */
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 54ch;
+}
+
+.heroAcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.heroNota {
+  margin: 0;
+  font: var(--type-small);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* --- A peça do hero ------------------------------------------------------ */
+.heroPeca {
+  background: var(--sis-branco);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-lg);
+}
+
+.pecaCabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+  font: var(--type-body-strong);
+  color: var(--text-brand);
+}
+
+.pecaDados { margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+
+.pecaLinha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.pecaLinha dt { font: var(--type-small); color: var(--text-secondary); }
+
+.pecaLinha dd { margin: 0; font: var(--type-body-strong); }
+
+.numerico { font-family: var(--font-numeric); font-variant-numeric: tabular-nums; }
+
+.pecaRodape {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--border-subtle);
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.pecaRodape svg { flex: none; color: var(--text-brand); }
+
+/* --- Seções -------------------------------------------------------------- */
+.secao { padding: var(--space-10) 0; }
+
+.secao:nth-of-type(even) { background: var(--surface-subtle); }
+
+.secaoInterna {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.secaoTitulo {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--sis-azul-profundo);
+}
+
+.secaoResumo {
+  margin: 0 0 var(--space-8);
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  max-width: 62ch;
+}
+
+/* --- Cartões ------------------------------------------------------------- */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-5);
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+/* O cartão da importação, em azul profundo: é oferta de serviço, não recurso. */
+.cartaoDestaque {
+  background: var(--sis-azul-profundo);
+  border-color: var(--sis-azul-profundo);
+  color: var(--sis-branco);
+}
+
+.cartaoIcone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle);
+  color: var(--text-brand);
+}
+
+.cartaoDestaque .cartaoIcone {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--sis-branco);
+}
+
+/* O único âmbar desta dobra: o bloco de prazo. */
+.cartaoIconeAcao {
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+}
+
+.cartaoTitulo {
+  margin: 0 0 var(--space-2);
+  font: var(--type-heading);
+}
+
+.cartaoTexto {
+  margin: 0 0 var(--space-5);
+  font: var(--type-body);
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+/* O h3 herdaria a cor do cartão, mas o reset global pinta todo título de azul
+   profundo — e o cartão de destaque TEM fundo azul profundo. Dava 1:1, texto
+   presente no DOM e invisível na tela. */
+.cartaoDestaque .cartaoTitulo { color: var(--sis-branco); }
+
+.cartaoDestaque .cartaoTexto { color: rgba(255, 255, 255, 0.85); }
+
+.cartaoDado {
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.cartaoDestaque .cartaoDado {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: var(--sis-branco);
+}
+
+.cartaoDadoAcao {
+  background: var(--surface-accent);
+  border-color: var(--surface-accent);
+  color: var(--text-on-accent);
+  font-weight: var(--weight-semibold);
+}
+
+/* --- Demonstração -------------------------------------------------------- */
+.demonstracao {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-9);
+  align-items: center;
+}
+
+.provas { display: flex; flex-direction: column; gap: var(--space-6); }
+
+.prova {
+  padding-left: var(--space-5);
+  border-left: 3px solid var(--sis-petroleo-700);
+}
+
+.provaTitulo { margin: 0 0 var(--space-1); font: var(--type-heading); }
+
+.provaTexto { margin: 0; font: var(--type-body); color: var(--text-secondary); }
+
+.telas { display: flex; gap: var(--space-5); }
+
+/* Vazio honesto: a moldura mostra o formato, e não um app aproximado que não
+   corresponde ao que a pessoa receberia. */
+.tela {
+  width: 300px;
+  height: 640px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-width) dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+}
+
+.telaRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  /* --text-muted é 3,68:1 e o contrato só o libera acima de 24px. Aqui são
+     11px, e o rótulo nomeia a tela. */
+  color: var(--text-secondary);
+}
+
+/* --- Planos -------------------------------------------------------------- */
+.planos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.plano {
+  padding: var(--space-7);
+  background: var(--surface-card);
+  /* A borda de 2px em petróleo que o artboard dá ao plano escolhido. Como o
+     plano é único, ela marca o cartão que importa. */
+  border: 2px solid var(--sis-petroleo-700);
+  border-radius: var(--radius-md);
+}
+
+.planoRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.planoValor {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-brand);
+  line-height: 1.1;
+}
+
+.planoPeriodo {
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  font-weight: var(--weight-regular);
+  color: var(--text-secondary);
+}
+
+.planoPix {
+  margin: var(--space-2) 0 0;
+  font: var(--type-body);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.planoLista {
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.planoLista li {
+  position: relative;
+  padding-left: var(--space-5);
+  font: var(--type-body);
+}
+
+/* O marcador é desenhado, não é glifo unicode de check. */
+.planoLista li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sis-petroleo-700);
+}
+
+.planoNota {
+  margin: var(--space-3) 0 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.planoFalta {
+  padding: var(--space-7);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: transparent;
+}
+
+.planoFaltaTitulo { margin: 0 0 var(--space-4); font: var(--type-heading); }
+
+.planoFaltaLista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.planoFaltaLista li {
+  display: flex;
+  gap: var(--space-3);
+  font: var(--type-body);
+  color: var(--text-secondary);
+}
+
+.planoFaltaLista svg { flex: none; margin-top: 3px; color: var(--text-muted); }
+
+/* --- Perguntas ----------------------------------------------------------- */
+.perguntas {
+  display: flex;
+  flex-direction: column;
+  max-width: 76ch;
+}
+
+.pergunta { border-bottom: var(--border-width) solid var(--border-subtle); }
+
+.perguntaTitulo {
+  padding: var(--space-5) 0;
+  font: var(--type-heading);
+  cursor: pointer;
+  list-style: none;
+}
+
+.perguntaTitulo::-webkit-details-marker { display: none; }
+
+.perguntaTitulo:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.perguntaResposta {
+  padding: 0 0 var(--space-5);
+  font: var(--type-body);
+  color: var(--text-secondary);
+  max-width: 68ch;
+}
+
+/* --- Chamada final ------------------------------------------------------- */
+.chamada {
+  background: var(--sis-petroleo-700);
+  color: var(--sis-branco);
+  padding: var(--space-10) 0;
+}
+
+.chamadaInterna {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.chamadaTitulo {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--sis-branco);
+}
+
+.chamadaTexto {
+  margin: 0 0 var(--space-7);
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 56ch;
+}
+
+/* --- Rodapé -------------------------------------------------------------- */
+.rodape {
+  background: var(--sis-azul-profundo);
+  color: var(--sis-branco);
+  padding: var(--space-9) 0 var(--space-6);
+}
+
+.rodapeInterno {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-7);
+}
+
+.rodapeColuna { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.rodapeTitulo {
+  margin: 0;
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.rodapeColuna a {
+  font: var(--type-body);
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  min-height: 24px;
+}
+
+.rodapeColuna a:hover { color: var(--sis-branco); text-decoration: underline; }
+
+.rodapeColuna a:focus-visible {
+  outline: 2px solid var(--sis-branco);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.rodapeTexto {
+  margin: 0;
+  font: var(--type-small);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.rodapeAssinatura {
+  max-width: 1200px;
+  margin: var(--space-8) auto 0;
+  padding: var(--space-5) var(--space-6) 0;
+  border-top: var(--border-width) solid rgba(255, 255, 255, 0.18);
+  font: var(--type-small);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- No celular ---------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .heroInterno,
+  .demonstracao,
+  .planos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heroTitulo { font-size: 38px; }
+
+  .telas { justify-content: center; flex-wrap: wrap; }
+
+  .tela { width: 100%; max-width: 300px; height: 480px; }
+}
+
+@media (max-width: 767px) {
+  .links { display: none; }
+
+  .navegacaoInterna { gap: var(--space-4); }
+
+  .navegacaoAcoes { flex: 1; justify-content: flex-end; }
+
+  .hero, .secao, .chamada { padding: var(--space-8) 0; }
+
+  .heroTitulo { font-size: 32px; }
+
+  .heroAcoes > * { flex: 1 1 100%; }
+}
+
+/* `prefers-reduced-motion` zera tudo — a regra do contrato. */
+@media (prefers-reduced-motion: reduce) {
+  .botaoTerciario,
+  .botaoAmbar,
+  .botaoAmbarGrande,
+  .botaoClaro,
+  .botaoPetroleoGrande {
+    transition: none;
+  }
+}

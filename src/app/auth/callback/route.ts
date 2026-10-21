@@ -7,7 +7,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const code = searchParams.get("code");
-  const destino = searchParams.get("destino") ?? "/";
+  const destino = searchParams.get("destino") ?? "/hoje";
 
   if (code) {
     const supabase = await criarClienteServidor();

@@ -33,7 +33,7 @@ const ROTAS_SEM_BARRA = [
 ];
 
 const DESTINOS = [
-  { href: "/", rotulo: "Hoje", Icone: Sun },
+  { href: "/hoje", rotulo: "Hoje", Icone: Sun },
   { href: "/plantel", rotulo: "Plantel", Icone: Bird },
   { href: "/casais", rotulo: "Casais", Icone: Users },
   { href: "/ovos", rotulo: "Ovos", Icone: Egg },
@@ -53,7 +53,7 @@ export function TabBar({ tarefasPendentes = 0 }: { tarefasPendentes?: number }) 
       <div className={styles.espaco} aria-hidden="true" />
       <nav className={styles.barra} aria-label="Navegação principal">
         {DESTINOS.map(({ href, rotulo, Icone }) => {
-          const ativo = href === "/" ? caminho === "/" : caminho.startsWith(href);
+          const ativo = caminho === href || caminho.startsWith(`${href}/`);
           const icone = (
             // O item ativo ganha traço mais grosso: o estado não é só cor.
             <Icone size={22} strokeWidth={ativo ? 2.25 : 2} aria-hidden="true" />
@@ -67,7 +67,7 @@ export function TabBar({ tarefasPendentes = 0 }: { tarefasPendentes?: number }) 
               aria-current={ativo ? "page" : undefined}
             >
               <span className={styles.icone}>
-                {href === "/" && tarefasPendentes > 0 ? (
+                {href === "/hoje" && tarefasPendentes > 0 ? (
                   <NotificationBadge
                     count={tarefasPendentes}
                     rotulo={`${tarefasPendentes} tarefas hoje`}

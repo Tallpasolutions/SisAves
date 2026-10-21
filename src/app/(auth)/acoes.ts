@@ -41,7 +41,7 @@ export async function entrar(
 ): Promise<EstadoFormulario> {
   const email = String(dados.get("email") ?? "").trim();
   const senha = String(dados.get("senha") ?? "");
-  const destino = String(dados.get("destino") ?? "") || "/";
+  const destino = String(dados.get("destino") ?? "") || "/hoje";
 
   if (!email || !senha) {
     return { erro: "Preencha o e-mail e a senha." };
@@ -118,7 +118,7 @@ export async function cadastrar(
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/hoje");
 }
 
 export async function entrarComGoogle() {
@@ -181,5 +181,5 @@ export async function definirNovaSenha(
   if (error) return { erro: traduzirErro(error.message) };
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/hoje");
 }

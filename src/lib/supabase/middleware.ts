@@ -6,6 +6,9 @@ import { NextResponse, type NextRequest } from "next/server";
 // sessão nela seria pedir uma ida ao servidor justamente quando não há
 // servidor alcançável.
 const PUBLICAS = [
+  // A landing. Note que `${p}/` para "/" vira "//", que nenhum caminho real
+  // começa — então isto libera a raiz e nada mais.
+  "/",
   "/entrar",
   "/cadastrar",
   "/recuperar-senha",
@@ -22,6 +25,14 @@ const PUBLICAS = [
    * imagem. Não há o que proteger aqui — é a marca e uma frase.
    */
   "/opengraph-image",
+  /*
+   * O mapa do site e as regras de varredura. Mesmo caso do cartão acima: quem
+   * busca estes arquivos é um robô sem cookie, e com sessão exigida ele recebia
+   * 307 para /entrar — ou seja, o Google leria a tela de login no lugar do
+   * sitemap, e nunca saberia que a landing existe.
+   */
+  "/robots.txt",
+  "/sitemap.xml",
   /*
    * O webhook do Mercado Pago. Quem posta aqui é o servidor deles, que não tem
    * cookie nenhum: com sessão exigida ele recebia 307 para /entrar e a
