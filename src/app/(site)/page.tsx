@@ -233,13 +233,13 @@ function Funcionalidades() {
           <Cartao
             Icone={WifiOff}
             titulo="Funciona sem sinal"
-            texto="O galpão não tem rede. O registro é gravado no aparelho e sincroniza quando a rede volta — com contagem visível do que está pendente, nunca um salvamento fingido."
+            texto="O galpão não tem rede. O registro é gravado no aparelho e sincroniza quando a rede volta, com a contagem do que está pendente sempre visível na tela."
             dado="Salvo no aparelho"
           />
           <Cartao
             Icone={FileSpreadsheet}
             titulo="Traga a sua planilha"
-            texto="Se o seu plantel está em Excel ou em outro sistema, a importação é feita junto com você — inclusive preservando a validade dos QR Codes já impressos."
+            texto="Se o seu plantel está em Excel ou em outro sistema, a importação é feita junto com você, preservando a validade dos QR Codes já impressos."
             dado="Importação acompanhada"
             destaque
           />
@@ -286,10 +286,10 @@ function Demonstracao() {
   return (
     <section className={styles.secao} id="demonstracao">
       <div className={styles.secaoInterna}>
-        <h2 className={styles.secaoTitulo}>Feito para a mão com luva</h2>
+        <h2 className={styles.secaoTitulo}>Operação no galpão</h2>
         <p className={styles.secaoResumo}>
-          A tela que importa é a que você abre em pé, no galpão, com uma ave na
-          outra mão.
+          As telas de campo foram dimensionadas para o uso em pé, com luva, e
+          funcionam sem rede.
         </p>
 
         <div className={styles.demonstracao}>
@@ -308,9 +308,17 @@ function Demonstracao() {
             />
           </div>
 
-          <div className={styles.telas} aria-hidden="true">
-            <TelaFalsa titulo="Hoje" />
-            <TelaFalsa titulo="Ninhadas" />
+          <div className={styles.telas}>
+            <Captura
+              arquivo="hoje"
+              titulo="Painel do dia"
+              descricao="A tela Hoje do SisAves, com três ninhadas na janela de anilhamento e as tarefas do dia em ordem de urgência."
+            />
+            <Captura
+              arquivo="ovos"
+              titulo="Ciclo do ovo"
+              descricao="A tela de ninhadas do SisAves, com o estado de cada postura e o prazo de anilhamento de cada uma."
+            />
           </div>
         </div>
       </div>
@@ -327,16 +335,35 @@ function Prova({ titulo, texto }: { titulo: string; texto: string }) {
   );
 }
 
-/*
- * As molduras de 300 × 640 do artboard. Ficam como vazio honesto até existir
- * captura real das telas — desenhar um "app" aproximado aqui seria mostrar um
- * produto que não é o que a pessoa vai receber.
+/**
+ * As molduras do artboard, com captura real do produto.
+ *
+ * São telas do SisAves em execução, tiradas em 375 × 812, não maquete: o que
+ * aparece aqui é exatamente o que o criador recebe. O `alt` descreve o que a
+ * imagem mostra, porque para quem usa leitor de tela a prova precisa chegar em
+ * palavras.
  */
-function TelaFalsa({ titulo }: { titulo: string }) {
+function Captura({
+  arquivo,
+  titulo,
+  descricao,
+}: {
+  arquivo: string;
+  titulo: string;
+  descricao: string;
+}) {
   return (
-    <div className={styles.tela}>
-      <span className={styles.telaRotulo}>{titulo}</span>
-    </div>
+    <figure className={styles.tela}>
+      <Image
+        src={`/capturas/${arquivo}.png`}
+        alt={descricao}
+        width={420}
+        height={900}
+        className={styles.telaImagem}
+        sizes="(max-width: 1023px) 45vw, 300px"
+      />
+      <figcaption className={styles.telaRotulo}>{titulo}</figcaption>
+    </figure>
   );
 }
 
@@ -372,8 +399,7 @@ function Planos() {
               <li>Certificado, árvore e crachá com QR Code</li>
               <li>Financeiro e saúde do plantel</li>
               <li>Funciona offline, no celular e no computador</li>
-              <li>Importação do seu plantel atual, acompanhada</li>
-            </ul>
+              </ul>
 
             {CADASTRO_ABERTO ? (
               <Link href="/cadastrar" className={styles.botaoPetroleoGrande}>
@@ -400,16 +426,16 @@ function Planos() {
             <ul className={styles.planoFaltaLista}>
               <li>
                 <Minus size={16} aria-hidden="true" />
-                Aplicativo nas lojas — o SisAves roda no navegador e se instala
-                na tela inicial
+                Aplicativo nas lojas. O SisAves roda no navegador e se instala
+                na tela inicial do celular.
               </li>
               <li>
                 <Minus size={16} aria-hidden="true" />
-                Notificação por push — os prazos aparecem no painel do dia
+                Notificação por push. Os prazos aparecem no painel do dia.
               </li>
               <li>
                 <Minus size={16} aria-hidden="true" />
-                Leitura de anilha por câmera
+                Leitura de anilha por câmera.
               </li>
             </ul>
           </aside>
@@ -436,16 +462,16 @@ function Perguntas() {
           </Pergunta>
 
           <Pergunta pergunta="Se eu cancelar, perco os meus dados?">
-            Não. Ao vencer, a <strong>leitura continua inteira</strong> — plantel,
-            genealogia e certificados já emitidos seguem acessíveis para
-            consultar e imprimir. O que para é o registro de dados novos. A
+            Não. Ao vencer, a <strong>leitura continua inteira</strong>:
+            plantel, genealogia e certificados já emitidos seguem acessíveis
+            para consultar e imprimir. O que para é o registro de dados novos. A
             exportação funciona inclusive depois do cancelamento.
           </Pergunta>
 
           <Pergunta pergunta="Funciona mesmo sem internet no galpão?">
             Funciona. O registro é gravado no aparelho e sincroniza quando a rede
             volta, com a contagem do que está pendente visível na tela. A
-            mensagem é <em>Offline — salvo no aparelho</em>, nunca{" "}
+            mensagem é <em>Offline, salvo no aparelho</em>, nunca{" "}
             <em>tente de novo mais tarde</em>.
           </Pergunta>
 
@@ -453,7 +479,7 @@ function Perguntas() {
             A importação é feita junto com você, a partir da sua planilha ou do
             sistema atual. Se você já entregou certificados com QR Code
             impresso,{" "}
-            <strong>esses códigos continuam validando</strong> — é requisito da
+            <strong>esses códigos continuam validando</strong>. É requisito da
             migração, não um detalhe.
           </Pergunta>
 
@@ -544,7 +570,7 @@ function Rodape() {
           <h2 className={styles.rodapeTitulo}>Validação</h2>
           <p className={styles.rodapeTexto}>
             Recebeu uma ave com certificado? Escaneie o QR Code do documento para
-            conferir a genealogia — não é preciso ter conta.
+            conferir a genealogia. Não é preciso ter conta.
           </p>
         </div>
       </div>

@@ -1042,9 +1042,17 @@ que autorize o nome.
 No lugar, o hero mostra o que o produto devolve — um certificado com anilha,
 espécie e endogamia —, que é verificável.
 
-As molduras de 300 × 640 da seção "no galpão" também ficaram como vazio
-honesto: desenhar um app aproximado ali seria mostrar o que a pessoa não vai
-receber. Entram capturas reais quando existirem.
+As molduras da seção "Operação no galpão" levam **captura real do produto**,
+tirada em 375 × 812 do SisAves em execução: a tela Hoje com as ninhadas na
+janela de anilhamento, e a tela de ninhadas com o prazo de cada postura. Não é
+maquete. O `alt` descreve o que a imagem mostra, porque para quem usa leitor de
+tela a prova precisa chegar em palavras.
+
+Em 22/10 o cliente apontou que a cópia tinha "cara de IA" por causa dos
+travessões. Foram removidos do texto visível: a verificação conta `—` no
+`innerText` e hoje devolve zero. "Feito para a mão com luva" virou "Operação no
+galpão", e a lista do plano perdeu a linha da importação, que prometia serviço
+de migração dentro do preço.
 
 ### O preço
 

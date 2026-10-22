@@ -403,18 +403,24 @@
 
 .telas { display: flex; gap: var(--space-5); }
 
-/* Vazio honesto: a moldura mostra o formato, e não um app aproximado que não
-   corresponde ao que a pessoa receberia. */
+/* A moldura da captura. Sombra curta e fria, nunca colorida. */
 .tela {
   width: 300px;
-  height: 640px;
   flex: none;
+  margin: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border: var(--border-width) dashed var(--border-strong);
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.telaImagem {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: var(--border-width) solid var(--border-subtle);
   border-radius: var(--radius-lg);
   background: var(--surface-card);
+  box-shadow: var(--shadow-lg);
 }
 
 .telaRotulo {
@@ -424,6 +430,7 @@
   /* --text-muted é 3,68:1 e o contrato só o libera acima de 24px. Aqui são
      11px, e o rótulo nomeia a tela. */
   color: var(--text-secondary);
+  text-align: center;
 }
 
 /* --- Planos -------------------------------------------------------------- */
@@ -662,7 +669,7 @@
 
   .telas { justify-content: center; flex-wrap: wrap; }
 
-  .tela { width: 100%; max-width: 300px; height: 480px; }
+  .tela { width: 100%; max-width: 280px; }
 }
 
 @media (max-width: 767px) {
