@@ -51,3 +51,6 @@ supabase/.branches
 
 # Progresso do assistente do plugin Mercado Pago
 .mp-integrate-progress.md
+
+# Prévias dos templates de e-mail: conferência, não entrega.
+.previa-email/
