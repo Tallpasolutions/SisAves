@@ -63,7 +63,7 @@
 /* Vencer é um fato administrativo. A faixa informa com borda e ícone, sem
    pintar a tela inteira de vermelho em cima de quem já está contrariado. */
 .vencida {
-  background: var(--surface-subtle);
+  background: var(--surface-sunken);
   border: var(--border-width) solid var(--border-strong);
   color: var(--text-primary);
 }

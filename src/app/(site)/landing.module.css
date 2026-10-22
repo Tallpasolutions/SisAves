@@ -223,7 +223,10 @@
 
 /* --- A peça do hero ------------------------------------------------------ */
 .heroPeca {
-  background: var(--sis-branco);
+  /* Fundo e texto precisam virar JUNTOS. Antes era --sis-branco literal com
+     --text-primary, que no tema escuro clareia: dava 1,17:1, texto invisível
+     sobre o cartão branco. */
+  background: var(--surface-card);
   color: var(--text-primary);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
@@ -272,7 +275,7 @@
 /* --- Seções -------------------------------------------------------------- */
 .secao { padding: var(--space-10) 0; }
 
-.secao:nth-of-type(even) { background: var(--surface-subtle); }
+.secao:nth-of-type(even) { background: var(--surface-sunken); }
 
 .secaoInterna {
   max-width: 1200px;
@@ -285,7 +288,9 @@
   font-family: var(--font-display);
   font-size: var(--text-3xl);
   font-weight: var(--weight-bold);
-  color: var(--sis-azul-profundo);
+  /* O alias, não a cor da paleta: --sis-azul-profundo é literal e no tema
+     escuro dava 1,43:1 contra a página. --text-heading inverte. */
+  color: var(--text-heading);
 }
 
 .secaoResumo {
@@ -358,7 +363,7 @@
   height: 40px;
   margin-bottom: var(--space-4);
   border-radius: var(--radius-sm);
-  background: var(--surface-subtle);
+  background: var(--surface-sunken);
   color: var(--text-brand);
 }
 

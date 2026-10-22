@@ -110,10 +110,26 @@ export async function cadastrar(
 
   if (error) return { erro: traduzirErro(error.message) };
 
-  // Sem sessão na resposta = o projeto exige confirmação de e-mail.
+  /*
+   * Sem sessão na resposta: ou o projeto exige confirmação de e-mail, ou o
+   * endereço JÁ TEM CONTA.
+   *
+   * O Supabase não distingue os dois de propósito. Se ele respondesse "este
+   * e-mail já está cadastrado", qualquer um descobriria quem é cliente do
+   * SisAves testando endereços — a mesma razão pela qual `pedirRecuperacao`
+   * responde igual existindo ou não a conta.
+   *
+   * O que ele devolve é `identities: []` no caso de e-mail repetido, mas usar
+   * isso para mudar a mensagem reabriria o mesmo buraco. Então a mensagem
+   * cobre os dois casos sem afirmar o que não aconteceu: antes ela dizia
+   * "Enviamos um link", e para quem já tinha conta nada havia sido enviado.
+   */
   if (!data.session) {
     return {
-      aviso: `Enviamos um link de confirmação para ${email}. Abra o e-mail para ativar a conta.`,
+      aviso:
+        `Se ${email} ainda não tiver conta, enviamos um link de confirmação. ` +
+        `Abra o e-mail para ativar. Se você já tem conta neste endereço, ` +
+        `entre normalmente ou use "Esqueci a senha".`,
     };
   }
 
