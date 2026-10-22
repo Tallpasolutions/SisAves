@@ -141,9 +141,7 @@ function Hero() {
             </a>
           </div>
 
-          <p className={styles.heroNota}>
-            Sem cartão para testar. O plantel continua seu, assinando ou não.
-          </p>
+          <p className={styles.heroNota}>Sem cartão para testar.</p>
         </div>
 
         {/*
@@ -204,6 +202,14 @@ function Funcionalidades() {
           paralela.
         </p>
 
+        {/* A visão geral vem antes dos cartões: é mais fácil acreditar numa
+            lista de recursos depois de ver o sistema montado. */}
+        <Panorama
+          arquivo="painel"
+          descricao="O painel do SisAves no computador: aves no plantel, casais ativos, ovos em choco e nascimentos do mês, com o gráfico de nascimentos por mês, as tarefas pendentes de anilhamento e as últimas movimentações do criatório."
+          legenda="O painel do criatório, no computador"
+        />
+
         <div className={styles.grade}>
           <Cartao
             Icone={Dna}
@@ -244,8 +250,52 @@ function Funcionalidades() {
             destaque
           />
         </div>
+
+        <div className={styles.duasTelas}>
+          <Panorama
+            arquivo="plantel"
+            descricao="A tela de plantel do SisAves no computador, com a tabela de aves mostrando anilha, espécie, sexo, idade e situação de cada uma."
+            legenda="O plantel em tabela"
+          />
+          <Panorama
+            arquivo="genealogia"
+            descricao="A tela de genealogia do SisAves no computador, com as linhagens do criatório e o simulador de cruzamento que calcula o coeficiente de endogamia antes de formar o casal."
+            legenda="Genealogia e simulação de cruzamento"
+          />
+        </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * Uma tela do sistema, em tamanho de leitura.
+ *
+ * São capturas de 1440 × 900 em escala 2, geradas por
+ * `scripts/capturas.mjs` contra o SisAves em execução. Quando a tela muda,
+ * roda-se o script de novo: nenhuma imagem desta página é desenho.
+ */
+function Panorama({
+  arquivo,
+  descricao,
+  legenda,
+}: {
+  arquivo: string;
+  descricao: string;
+  legenda: string;
+}) {
+  return (
+    <figure className={styles.panorama}>
+      <Image
+        src={`/capturas/${arquivo}.png`}
+        alt={descricao}
+        width={1440}
+        height={900}
+        className={styles.panoramaImagem}
+        sizes="(max-width: 1023px) 100vw, 1100px"
+      />
+      <figcaption className={styles.panoramaLegenda}>{legenda}</figcaption>
+    </figure>
   );
 }
 
@@ -295,16 +345,16 @@ function Demonstracao() {
         <div className={styles.demonstracao}>
           <div className={styles.provas}>
             <Prova
-              titulo="Alvo de 48 pixels"
-              texto="Botão que se acerta com luva, e não com a ponta da unha. A ação principal de cada tela é uma só."
+              titulo="Usa com a gaiola na outra mão"
+              texto="Os botões são grandes o bastante para acertar sem tirar a luva, e cada tela tem uma única coisa a fazer. Nada de menu escondido no meio da conferência."
             />
             <Prova
-              titulo="Anilha legível a meio metro"
-              texto="O código oficial em fonte tabular, do tamanho que se lê com o celular apoiado no viveiro."
+              titulo="A anilha se lê de longe"
+              texto="O código aparece grande e no formato do clube. Dá para conferir com o celular apoiado no viveiro, sem aproximar o olho da tela."
             />
             <Prova
-              titulo="Três toques, offline"
-              texto="Registrar a postura são três toques e um teclado numérico de 52 pixels. Sem rede, grava no aparelho e avisa."
+              titulo="Anota sem internet"
+              texto="Registrar uma postura leva segundos. Sem sinal no galpão, fica salvo no aparelho e sobe sozinho quando você volta para a área coberta."
             />
           </div>
 

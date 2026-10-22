@@ -1042,11 +1042,31 @@ que autorize o nome.
 No lugar, o hero mostra o que o produto devolve — um certificado com anilha,
 espécie e endogamia —, que é verificável.
 
-As molduras da seção "Operação no galpão" levam **captura real do produto**,
-tirada em 375 × 812 do SisAves em execução: a tela Hoje com as ninhadas na
-janela de anilhamento, e a tela de ninhadas com o prazo de cada postura. Não é
-maquete. O `alt` descreve o que a imagem mostra, porque para quem usa leitor de
-tela a prova precisa chegar em palavras.
+Toda imagem da landing é **captura do produto em execução**, gerada por
+`node scripts/capturas.mjs`: Playwright entra com a conta de desenvolvimento,
+abre cada tela em 390 × 844 ou 1440 × 900 com `deviceScaleFactor: 2`, e
+fotografa. Quando a tela mudar, roda-se o script de novo. Nenhuma imagem é
+desenho, e nenhuma é recorte feito à mão uma vez e esquecido.
+
+O `alt` de cada uma descreve o que aparece, porque para quem usa leitor de tela
+a prova precisa chegar em palavras.
+
+**O Playwright entrou aqui** porque o painel do navegador embutido é estreito e
+encolhe o viewport emulado: um print de desktop saía com um terço da resolução
+real, com texto ilegível. Ele estava previsto na Fase 0 e nunca tinha sido
+instalado, e agora também destrava os testes de interface que faltam.
+
+Duas armadilhas do próprio script, que viraram comentário nele:
+
+- a primeira captura saiu durante a troca de fonte. `networkidle` não espera
+  por fonte; é preciso `document.fonts.ready`;
+- o script removia a faixa de assinatura por `[class*="faixa"]`, e `faixa` é
+  também a classe da barra de gravidade de 3px da tabela de movimentações. Com
+  a assinatura em dia a faixa de aviso nem é renderizada, então o `.first()`
+  apagava a barra da primeira linha: um filho a menos no grid, e todas as
+  células daquela linha andavam uma coluna. A imagem saía com a data por cima
+  do evento e **parecia defeito da aplicação**. O componente ganhou
+  `data-aviso-assinatura` e o script passou a mirar nisso.
 
 Em 22/10 o cliente apontou que a cópia tinha "cara de IA" por causa dos
 travessões. Foram removidos do texto visível: a verificação conta `—` no

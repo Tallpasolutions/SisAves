@@ -295,6 +295,38 @@
   max-width: 62ch;
 }
 
+/* --- Telas do sistema ---------------------------------------------------- */
+.panorama {
+  margin: 0 0 var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.panoramaImagem {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  /* Sombra curta e fria. Nunca colorida, nunca brilho. */
+  box-shadow: var(--shadow-lg);
+}
+
+.panoramaLegenda {
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+.duasTelas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+}
+
+.duasTelas .panorama { margin-bottom: 0; }
+
 /* --- Cartões ------------------------------------------------------------- */
 .grade {
   display: grid;

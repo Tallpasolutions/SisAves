@@ -22,7 +22,11 @@ export async function FaixaAssinatura() {
   // Vencido: a escrita está barrada agora.
   if (!vigencia.comAcesso) {
     return (
-      <p className={`${styles.faixa} ${styles.vencida}`} role="status">
+      <p
+        className={`${styles.faixa} ${styles.vencida}`}
+        role="status"
+        data-aviso-assinatura
+      >
         <span className={styles.icone}>
           <CircleAlert size={18} aria-hidden="true" />
         </span>
@@ -46,7 +50,11 @@ export async function FaixaAssinatura() {
   if (dias > (emTeste ? 5 : 15)) return null;
 
   return (
-    <p className={`${styles.faixa} ${styles.vencendo}`} role="status">
+    <p
+      className={`${styles.faixa} ${styles.vencendo}`}
+      role="status"
+      data-aviso-assinatura
+    >
       <span className={styles.icone}>
         <TriangleAlert size={18} aria-hidden="true" />
       </span>
