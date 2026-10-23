@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { obterPerfil } from "@/lib/dados/configuracoes";
 import { obterIndicadores, obterTarefasDeHoje } from "@/lib/dados/hoje";
+import { souOperador } from "@/lib/dados/operador";
 import { FaixaAssinatura } from "@/components/navegacao/FaixaAssinatura";
 import { Sidebar } from "@/components/navegacao/Sidebar";
 import { TabBar } from "@/components/navegacao/TabBar";
@@ -27,10 +28,11 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
   const criatorio = await obterCriatorioAtual();
   if (!criatorio) redirect("/comecar");
 
-  const [tarefas, indicadores, perfil] = await Promise.all([
+  const [tarefas, indicadores, perfil, operador] = await Promise.all([
     obterTarefasDeHoje(),
     obterIndicadores(),
     obterPerfil(),
+    souOperador(),
   ]);
 
   return (
@@ -42,6 +44,7 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
           <Sidebar
             nomeCriatorio={criatorio.nome}
             nomeUsuario={perfil?.nome}
+            souOperador={operador}
             contagens={{
               "/plantel": indicadores.aves,
               "/casais": indicadores.casaisAtivos,

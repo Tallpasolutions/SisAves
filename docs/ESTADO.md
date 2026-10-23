@@ -1114,6 +1114,68 @@ aleatório do certificado existe para impedir. O `robots.txt` as deixa
 **liberadas** para varredura, porque quem escaneia o QR precisa chegar lá.
 
 
+## A tela de Operação
+
+Feita em **23/10/2026**, em `/operacao`. É a **única tela do produto que
+atravessa a fronteira do multi-tenant**: mostra os criatórios de todos os
+clientes a quem opera o SisAves.
+
+### O que ela NÃO mostra
+
+Nenhuma ave, anilha, genealogia ou certificado de cliente. As views devolvem
+**contagens** dessas coisas, nunca as linhas. Um operador curioso não navega no
+plantel de um criador por esta porta; teria de abrir o banco, que é outro nível
+de acesso e deixa rastro diferente.
+
+O que ela mostra de pessoal: nome, e-mail e último acesso dos clientes. É o
+preço de poder dar suporte, e está escrito na própria tela.
+
+### Onde a trava mora
+
+`perfis.is_admin` existe desde a 0002 e **nunca tinha sido usado**. Agora vale,
+por `public.sou_admin()`.
+
+As três views são `security_invoker = off` — as únicas assim. Com `on`, a RLS
+se aplicaria e o operador veria só o criatório dele. O que impede qualquer
+pessoa de consultá-las não é a RLS: é o **`where public.sou_admin()`** dentro
+de cada uma. Quem não é operador recebe zero linhas, não erro.
+
+Se alguém remover esse `where` achando que é redundante, abre o banco inteiro
+para qualquer autenticado. O teste 22 verifica estruturalmente que ele está lá,
+nas três.
+
+A página também faz `notFound()` para quem não é operador, em vez de 403: um
+403 confirmaria que a rota existe.
+
+### O defeito que a primeira versão tinha
+
+A view usava `public.criatorio_com_acesso(c.id)`. A função **não é
+`security definer`**, então, mesmo dentro de uma view que roda como dona, ela
+lia `assinaturas` sob a RLS da sessão — achava só a linha do próprio operador e
+devolvia `false` para todos os outros. O painel chamava de **vencido** todo
+cliente em dia. Um criatório em teste até 27/10 aparecia "Vencido · 27/10" no
+dia 23.
+
+A correção **não** foi tornar a função `definer`: isso deixaria qualquer
+autenticado perguntar se o criatório do vizinho está em dia, e situação
+comercial de um criador não é assunto de outro. A view já tinha a assinatura no
+`join`, e passou a calcular ali. O teste compara as duas regras, para o dia em
+que divergirem.
+
+### É leitura, só
+
+Estender teste, cancelar assinatura e apagar criatório são ações destrutivas
+sobre dado de cliente. Entram depois, uma a uma, com registro de quem fez.
+
+### O número que importava
+
+A pergunta era "quantos clientes se inscreveram no teste". A resposta de uma
+contagem simples seria **sete**. A real, em 23/10: sete contas, **dois
+criatórios**, e **cinco pessoas que criaram conta e nunca cadastraram o
+criatório** — das quais quatro nunca sequer entraram depois de confirmar o
+e-mail. A tela mostra essas cinco em seção própria, porque é onde o funil vaza.
+
+
 ## No ar
 
 Publicado em **18/10/2026**, em `https://sisaves.tallpa.com.br`.

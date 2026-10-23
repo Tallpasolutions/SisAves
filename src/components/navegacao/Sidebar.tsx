@@ -9,6 +9,7 @@ import {
   Dna,
   Egg,
   Feather,
+  Gauge,
   Settings,
   Sun,
   Syringe,
@@ -90,14 +91,29 @@ export interface SidebarProps {
   /** Quem está logado. Sem perfil preenchido, o rodapé diz "Sua conta". */
   nomeUsuario?: string | null;
   contagens?: Partial<Record<string, number>>;
+  /**
+   * Operador do SisAves, não do criatório.
+   *
+   * Esconder o grupo para os demais é cortesia, não segurança: a rota responde
+   * 404 e as views devolvem zero linhas a quem não é operador. Aqui é só para
+   * o criador não ver na navegação uma porta que não é dele.
+   */
+  souOperador?: boolean;
 }
+
+const GRUPO_OPERACAO: Grupo = {
+  titulo: "SisAves",
+  destinos: [{ href: "/operacao", rotulo: "Operação", Icone: Gauge }],
+};
 
 export function Sidebar({
   nomeCriatorio,
   nomeUsuario,
   contagens = {},
+  souOperador = false,
 }: SidebarProps) {
   const caminho = usePathname();
+  const grupos = souOperador ? [...GRUPOS, GRUPO_OPERACAO] : GRUPOS;
 
   return (
     <nav className={styles.barra} aria-label="Navegação do criatório">
@@ -114,7 +130,7 @@ export function Sidebar({
       </div>
 
       <div className={styles.grupos}>
-        {GRUPOS.map((grupo, indice) => (
+        {grupos.map((grupo, indice) => (
           <div key={grupo.titulo ?? indice} className={styles.grupo}>
             {grupo.titulo ? (
               <span className={styles.grupoTitulo}>{grupo.titulo}</span>

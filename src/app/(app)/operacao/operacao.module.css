@@ -1,0 +1,174 @@
+/* Operação · o painel de quem opera o SisAves.
+
+   Densidade de dados é requisito aqui: esta é uma tela de computador, usada
+   sentado, para varrer dezenas de linhas. Mesmo assim vale o contrato — um
+   bloco de petróleo cheio, um âmbar de ação, tokens semânticos, tabular-nums
+   em todo número. */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.cabecalho { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.titulo { margin: 0; font: var(--type-title); color: var(--text-heading); }
+
+.subtitulo { margin: 0; font: var(--type-body); color: var(--text-secondary); }
+
+/* --- Indicadores --------------------------------------------------------- */
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.indicador {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+/* O único bloco de petróleo cheio da tela: o número que importa. */
+.indicadorDestaque {
+  background: var(--sis-petroleo-700);
+  border-color: var(--sis-petroleo-700);
+}
+
+.indicadorDestaque .indicadorRotulo { color: rgba(255, 255, 255, 0.8); }
+.indicadorDestaque .indicadorValor,
+.indicadorDestaque .indicadorNota { color: var(--sis-branco); }
+
+/* Âmbar só quando há prazo vencendo, e só aqui. */
+.indicadorAtencao {
+  background: var(--surface-accent);
+  border-color: var(--surface-accent);
+}
+
+.indicadorAtencao .indicadorRotulo,
+.indicadorAtencao .indicadorValor { color: var(--text-on-accent); }
+
+.indicadorRotulo {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.indicadorValor {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  color: var(--text-heading);
+}
+
+.indicadorNota { font: var(--type-small); color: var(--text-secondary); }
+
+/* --- Seções -------------------------------------------------------------- */
+.secao { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.secaoTitulo { margin: 0; font: var(--type-heading); color: var(--text-heading); }
+
+.secaoNota { margin: 0 0 var(--space-2); font: var(--type-small); color: var(--text-secondary); }
+
+.vazio { margin: 0; font: var(--type-body); color: var(--text-secondary); }
+
+/* --- Tabela -------------------------------------------------------------- */
+/* Rolagem horizontal em vez de espremer: oito colunas não cabem num laptop
+   estreito, e coluna espremida corta justamente a anilha e o e-mail. */
+.rolagem {
+  overflow-x: auto;
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--type-small);
+  white-space: nowrap;
+}
+
+.tabela th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--surface-sunken);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+}
+
+.tabela td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width) solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: top;
+}
+
+.tabela tbody tr:last-child td { border-bottom: 0; }
+
+.tabela tbody tr:hover { background: var(--surface-hover); }
+
+.numerico { text-align: right; font-variant-numeric: tabular-nums; }
+
+.tabela th.numerico { text-align: right; }
+
+/* Nome em cima, detalhe embaixo: duas informações numa coluna sem virar duas
+   colunas. */
+.nome { display: block; font-weight: var(--weight-semibold); }
+
+.detalhe {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--text-2xs);
+  color: var(--text-secondary);
+}
+
+/* --- Chips de situação --------------------------------------------------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  border: var(--border-width) solid transparent;
+}
+
+.chipAtivo {
+  background: var(--surface-brand-soft);
+  color: var(--text-brand);
+}
+
+.chipVencendo {
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+}
+
+/* Vencido informa, não alarma: borda e ícone, sem fundo vermelho. */
+.chipVencido {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.rodapeNota {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+  max-width: 76ch;
+}
