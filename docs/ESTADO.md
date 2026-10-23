@@ -1220,6 +1220,51 @@ jogaria uma volta de login local no site publicado. **O QR do CRO não sai
 dela**: ele usa o `host` da requisição, então o certificado carrega o domínio
 pelo qual foi aberto.
 
+### URL Configuration: o acerto que faltava
+
+Em 23/10 o link de recuperação de senha levava ao cadastro de criatório. Não
+era defeito do código, e a primeira hipótese que levantei estava errada — por
+isso nasceu `scripts/link-de-recuperacao.mjs`, que pede ao Supabase o mesmo
+link que sairia no e-mail e mostra para onde ele aponta, **sem enviar nada**.
+
+Ele apontou duas coisas no painel:
+
+- **A Site URL ainda era `http://localhost:3000`.** É para ela que o Supabase
+  manda quando recusa o `redirect_to`. Como o criador clicou na máquina que
+  roda o servidor de desenvolvimento, caiu no app local, sem criatório, e o
+  layout o mandou para o cadastro de criatório. Num celular, o mesmo link não
+  abriria nada.
+- **`https://sisaves.tallpa.com.br/auth/callback` não estava na lista de
+  Redirect URLs.** Conferido pedindo a URL limpa, sem parâmetro: foi recusada
+  igual.
+
+Isso quebrava **os três fluxos de e-mail**, não só a senha: confirmação de
+cadastro e entrada pelo Google pedem o mesmo endereço.
+
+Agora: Site URL `https://sisaves.tallpa.com.br`, e Redirect URLs com
+`https://sisaves.tallpa.com.br/auth/callback*` e
+`http://localhost:3000/auth/callback*`. O **asterisco** importa, porque a
+recuperação pede `?destino=/nova-senha` pendurado na URL.
+
+Para conferir sem depender da caixa de ninguém:
+
+```
+node scripts/link-de-recuperacao.mjs <email> https://sisaves.tallpa.com.br
+```
+
+### Nada lê o fragmento da URL
+
+Descoberto ao tentar seguir o link do script até o fim. A API de administração
+gera links de **fluxo implícito** (token depois do `#`); a aplicação usa
+**PKCE** (`?code=` na query), que é o que `/auth/callback` sabe tratar.
+
+Não existe `location.hash`, `access_token` nem `onAuthStateChange` em lugar
+nenhum do código. Então **qualquer link de fluxo implícito é ignorado em
+silêncio** — a pessoa cai na landing e nada acontece. Os links da aplicação não
+passam por isso, mas um link gerado pelo painel do Supabase, sim.
+
+Fica registrado porque volta como "mandei um link pelo painel e não funcionou".
+
 ### Entrar com Google
 
 Funciona, e o circuito foi conferido ponta a ponta até a porta do Google.
