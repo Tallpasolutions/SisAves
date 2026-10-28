@@ -82,9 +82,12 @@ export default async function Operacao() {
             Pararam antes de cadastrar o criatório
           </h2>
           <p className={styles.secaoNota}>
-            Criaram conta e não concluíram. É onde o funil vaza.
+            Criaram conta e não concluíram. É onde o funil vaza. Confira o
+            e-mail antes de contar como cliente perdido: a mesma pessoa pode
+            aparecer aqui e na lista de criatórios, se errou o endereço na
+            primeira tentativa.
           </p>
-          <TabelaContas contas={semCriatorio} />
+          <TabelaContas contas={semCriatorio} comCriatorio={criatorios} />
         </section>
       ) : null}
 
@@ -248,7 +251,32 @@ function Situacao({ criatorio: c }: { criatorio: CriatorioNoPainel }) {
   );
 }
 
-function TabelaContas({ contas }: { contas: ContaNoPainel[] }) {
+/**
+ * Quem criou conta e parou.
+ *
+ * O `repetida` existe por um engano concreto: duas contas da mesma pessoa, uma
+ * com o e-mail errado, apareciam com o MESMO nome em duas seções da tela. A
+ * de cima dizia "nunca entrou" e a de baixo tinha um criatório com três aves,
+ * e a leitura natural foi de que os números se contradiziam.
+ *
+ * Nome em destaque com e-mail em letra pequena favorece esse engano, então a
+ * coluna de nome passa a avisar quando a mesma pessoa já tem criatório por
+ * outro endereço. A comparação é pelo NOME do perfil, que é o que a pessoa
+ * digitou nas duas vezes.
+ */
+function TabelaContas({
+  contas,
+  comCriatorio,
+}: {
+  contas: ContaNoPainel[];
+  comCriatorio: CriatorioNoPainel[];
+}) {
+  const nomesComCriatorio = new Set(
+    comCriatorio
+      .map((c) => c.donoNome?.trim().toLowerCase())
+      .filter((n): n is string => Boolean(n)),
+  );
+
   return (
     <div className={styles.rolagem}>
       <table className={styles.tabela}>
@@ -264,8 +292,15 @@ function TabelaContas({ contas }: { contas: ContaNoPainel[] }) {
         <tbody>
           {contas.map((c) => (
             <tr key={c.id}>
-              <td>{c.nome ?? "—"}</td>
-              <td>{c.email}</td>
+              <td>
+                <span className={styles.nome}>{c.nome ?? "—"}</span>
+                {c.nome && nomesComCriatorio.has(c.nome.trim().toLowerCase()) ? (
+                  <span className={styles.repetida}>
+                    já tem criatório por outro e-mail
+                  </span>
+                ) : null}
+              </td>
+              <td className={styles.email}>{c.email}</td>
               <td className={styles.numerico}>{formatarData(c.criadaEm)}</td>
               <td>{c.emailConfirmado ? "Sim" : "Não"}</td>
               <td className={styles.numerico}>

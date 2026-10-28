@@ -180,6 +180,22 @@
   .indicadorValor { font-size: var(--text-2xl); }
 }
 
+/* O aviso de conta repetida. Âmbar seria exagero: não é prazo vencendo, é
+   contexto para quem lê a lista não contar a mesma pessoa duas vezes. */
+.repetida {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--text-2xs);
+  color: var(--text-accent);
+}
+
+/* O e-mail é o que distingue duas contas de mesmo nome, então ele para de ser
+   detalhe secundário nesta tabela. */
+.email {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+}
+
 .rodapeNota {
   margin: 0;
   font: var(--type-small);
