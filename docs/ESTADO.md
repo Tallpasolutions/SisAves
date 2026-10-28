@@ -1162,6 +1162,56 @@ comercial de um criador não é assunto de outro. A view já tinha a assinatura 
 `join`, e passou a calcular ali. O teste compara as duas regras, para o dia em
 que divergirem.
 
+### Vencido não vê mais nada
+
+Mudança de política em **27/10/2026**. Antes era "leitura preservada, escrita
+bloqueada". Na prática isso deixava cadastrar o plantel inteiro em cinco dias
+e usar o SisAves como consulta para sempre, de graça.
+
+Agora, a partir do vencimento, **o layout do app manda para `/assinatura` e
+não renderiza tela de dado nenhuma**. O pagamento abre sozinho no login.
+
+A casca do bloqueio é mínima: marca, a tela de assinatura e "Sair da conta".
+Sem barra lateral e sem tab bar — com a navegação normal, cada toque numa aba
+voltaria para cá, e no celular, onde sair mora dentro de **Mais**, a pessoa
+ficaria presa sem conseguir trocar de conta.
+
+**O bloqueio é da aplicação, não da RLS.** Fechar a leitura no banco
+significaria que um erro numa política tranca quem ESTÁ pagando, e há
+criadores reais lá dentro. Errar para o lado de deixar passar uma consulta é
+recuperável; errar para o lado de trancar quem pagou, não. O teste 21 afirma
+isso explicitamente, para ninguém "corrigir" depois.
+
+Quatro textos prometiam que a leitura continuava e viraram mentira no mesmo
+commit: a tela de assinatura, a faixa de aviso, o FAQ da landing e a mensagem
+de erro de escrita. Todos reescritos para "o acesso está pausado, nada foi
+apagado".
+
+### O operador nunca vence
+
+`criatorio_com_acesso()` devolve `true` para quem tem `is_admin`. Operador
+mantém o sistema de pé para quem assina; não é cobrado por ele. É por função, e
+não por uma assinatura com `fim` nulo, que ficaria indistinguível de um acesso
+vitalício dado a um cliente por engano — e qualquer operador futuro fica
+liberado sozinho ao receber a marca.
+
+O painel de operação **não** herda isso: `vw_admin_criatorios` calcula a
+vigência direto da linha de assinatura. Se herdasse, todo criatório de operador
+apareceria ativo e a tela mentiria sobre a própria base. Há asserção para os
+dois lados.
+
+### O laço que a primeira versão tinha
+
+O layout precisa saber a rota para não redirecionar `/assinatura` para
+`/assinatura`, e Server Component não enxerga o caminho. A primeira tentativa
+passou por cabeçalho do middleware com `request.headers.set(...)` — que **não
+propaga**. O cabeçalho chegava vazio, `"".startsWith("/assinatura")` dava
+falso, e a tela redirecionava para si mesma: laço infinito e página em branco.
+
+A correção é `NextResponse.next({ request: { headers: novoHeaders } })`. E ficou
+uma trava: o bloqueio só vale quando há rota conhecida, então o pior caso passa
+a ser "não bloqueou", em vez de "travou o produto para todo mundo".
+
 ### É leitura, só
 
 Estender teste, cancelar assinatura e apagar criatório são ações destrutivas

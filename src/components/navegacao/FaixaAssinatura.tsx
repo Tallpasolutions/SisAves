@@ -31,9 +31,8 @@ export async function FaixaAssinatura() {
           <CircleAlert size={18} aria-hidden="true" />
         </span>
         <span className={styles.texto}>
-          <strong>Assinatura vencida.</strong> O plantel, a genealogia e os
-          certificados continuam aqui para consultar e imprimir — o registro de
-          dados novos volta com o pagamento.
+          <strong>Assinatura vencida.</strong> O acesso ao criatório está
+          pausado. Os dados continuam guardados e voltam com o pagamento.
         </span>
         <Link className={styles.acao} href="/assinatura">
           Ver assinatura

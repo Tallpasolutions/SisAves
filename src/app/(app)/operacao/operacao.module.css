@@ -166,6 +166,20 @@
   color: var(--text-secondary);
 }
 
+/* No celular, `minmax(180px)` só cabe uma coluna nos 343px úteis, e os sete
+   indicadores viram quase mil pixels de rolagem antes da primeira tabela. Com
+   150px entram dois por linha. */
+@media (max-width: 640px) {
+  .indicadores {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .indicador { padding: var(--space-3); }
+
+  .indicadorValor { font-size: var(--text-2xl); }
+}
+
 .rodapeNota {
   margin: 0;
   font: var(--type-small);

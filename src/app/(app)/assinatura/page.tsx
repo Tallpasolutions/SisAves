@@ -137,8 +137,9 @@ function Situacao({
 
       {vencida ? (
         <p className={styles.situacaoNota}>
-          A leitura continua liberada — plantel, genealogia, certificados já
-          emitidos. O registro de dados novos volta com o pagamento.
+          O acesso ao criatório está pausado. Tudo o que você cadastrou
+          continua guardado e volta assim que o pagamento for confirmado:
+          nenhuma ave, ninhada ou certificado foi apagado.
         </p>
       ) : null}
     </section>

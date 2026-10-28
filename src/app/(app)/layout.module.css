@@ -45,3 +45,23 @@
     padding: var(--space-5);
   }
 }
+
+/* --- Vencido ------------------------------------------------------------- */
+/* A casca de quem perdeu o acesso: sem navegação, porque toda aba voltaria
+   para cá. Só a marca, a tela de assinatura e a saída. */
+.bloqueio {
+  min-height: 100dvh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4);
+  background: var(--surface-page);
+}
+
+.bloqueioInterno {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}

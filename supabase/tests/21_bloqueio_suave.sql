@@ -74,15 +74,28 @@ insert into veredito values
 set local role authenticated;
 set local request.jwt.claims = '{"sub":"c1c1c1c1-0000-0000-0000-000000000002"}';
 
--- LÊ tudo. Esta é a metade que não pode quebrar.
+/*
+ * No BANCO, o vencido continua lendo. É deliberado, e mudou de razão em
+ * 27/10: antes era a promessa do produto; agora é segurança operacional.
+ *
+ * O bloqueio de leitura que o cliente sente é da APLICAÇÃO — o layout manda
+ * para /assinatura e não renderiza tela nenhuma de dado. Fechar a leitura
+ * aqui, na RLS, significaria que um erro numa política tranca quem ESTÁ
+ * pagando, e há criadores reais no banco. Errar para o lado de deixar passar
+ * uma consulta é recuperável; errar para o lado de trancar quem pagou, não.
+ *
+ * Quem contorna o bloqueio da aplicação precisa falar PostgREST com a chave
+ * anônima. Não é o criador de canário; e para quem sabe fazer isso, a
+ * fronteira que importa — não ver o criatório ALHEIO — continua de pé.
+ */
 insert into veredito values
-  ('vencido continua vendo as próprias aves', '1',
+  ('no banco, o vencido ainda lê as próprias aves (de propósito)', '1',
    (select count(*)::text from public.passaros)),
 
-  ('vencido continua vendo o próprio criatório', '1',
+  ('no banco, ainda lê o próprio criatório', '1',
    (select count(*)::text from public.criatorios)),
 
-  ('vencido continua vendo as próprias espécies', '1',
+  ('no banco, ainda lê as próprias espécies', '1',
    (select count(*)::text from public.especies));
 
 -- E NÃO escreve. Cada tentativa é capturada: a política devolve
@@ -137,6 +150,45 @@ end $$;
 
 insert into veredito values
   ('vencido AINDA consegue iniciar o pagamento', 'pode pagar', (select r from bruno_paga));
+
+-- ---- O operador nunca vence (0042) ----------------------------------------
+-- Quem opera o SisAves mantém o sistema de pé para quem assina; não é cobrado
+-- por ele. A liberação é por is_admin, não por uma assinatura com fim nulo
+-- que ficaria indistinguível de um acesso vitalício dado por engano.
+update public.perfis set is_admin = true
+ where id = 'c1c1c1c1-0000-0000-0000-000000000002';
+
+update public.criatorios set owner_id = 'c1c1c1c1-0000-0000-0000-000000000002'
+ where id = 'c1c1c1c1-2222-2222-2222-222222222222';
+
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"c1c1c1c1-0000-0000-0000-000000000002"}';
+
+create temp table operador_vencido as
+  select public.criatorio_com_acesso('c1c1c1c1-2222-2222-2222-222222222222') as r;
+grant all on operador_vencido to authenticated, anon;
+
+reset role;
+
+insert into veredito values
+  ('operador tem acesso mesmo com assinatura vencida', 'true',
+   (select r::text from operador_vencido));
+
+-- E o painel de operação NÃO pode herdar essa liberação: se herdasse, todo
+-- criatório de operador apareceria ativo e a tela mentiria sobre a base.
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"c1c1c1c1-0000-0000-0000-000000000002"}';
+
+create temp table painel_vencido as
+  select com_acesso from public.vw_admin_criatorios
+   where id = 'c1c1c1c1-2222-2222-2222-222222222222';
+grant all on painel_vencido to authenticated, anon;
+
+reset role;
+
+insert into veredito values
+  ('mas o painel de operação continua mostrando que venceu', 'false',
+   (select com_acesso::text from painel_vencido));
 
 reset role;
 

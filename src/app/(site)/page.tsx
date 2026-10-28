@@ -512,10 +512,11 @@ function Perguntas() {
           </Pergunta>
 
           <Pergunta pergunta="Se eu cancelar, perco os meus dados?">
-            Não. Ao vencer, a <strong>leitura continua inteira</strong>:
-            plantel, genealogia e certificados já emitidos seguem acessíveis
-            para consultar e imprimir. O que para é o registro de dados novos. A
-            exportação funciona inclusive depois do cancelamento.
+            <strong>Não.</strong> Ao vencer, o acesso ao criatório é pausado e
+            tudo continua guardado: nenhuma ave, ninhada ou certificado é
+            apagado. Basta retomar a assinatura para encontrar o plantel como
+            estava. Se quiser levar os dados embora, peça a exportação pelo
+            suporte.
           </Pergunta>
 
           <Pergunta pergunta="Funciona mesmo sem internet no galpão?">

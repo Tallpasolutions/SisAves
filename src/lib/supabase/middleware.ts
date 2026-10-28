@@ -54,7 +54,22 @@ function ehPublica(pathname: string) {
  * Supabase. Ler a sessão do cookie sem validar aceitaria um cookie forjado.
  */
 export async function atualizarSessao(request: NextRequest) {
-  let resposta = NextResponse.next({ request });
+  /*
+   * A rota, para o layout do app poder decidir o bloqueio sem descobrir onde
+   * está. Um Server Component não enxerga o caminho — `usePathname` é de
+   * cliente —, e fazer a checagem aqui no middleware custaria uma ida ao banco
+   * a cada navegação, inclusive nas telas que já consultam.
+   */
+  // Um `Headers` NOVO, não `request.headers.set(...)`.
+  //
+  // Mutar o objeto original não propaga: o cabeçalho não chegava ao layout,
+  // `caminho` vinha vazio, `"".startsWith("/assinatura")` dava falso, e o
+  // layout redirecionava para /assinatura a partir da própria /assinatura.
+  // Laço infinito, tela branca, e o log com dezenas de GET seguidos.
+  const cabecalhos = new Headers(request.headers);
+  cabecalhos.set("x-caminho", request.nextUrl.pathname);
+
+  let resposta = NextResponse.next({ request: { headers: cabecalhos } });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -68,7 +83,7 @@ export async function atualizarSessao(request: NextRequest) {
           for (const { name, value } of cookiesToSet) {
             request.cookies.set(name, value);
           }
-          resposta = NextResponse.next({ request });
+          resposta = NextResponse.next({ request: { headers: cabecalhos } });
           for (const { name, value, options } of cookiesToSet) {
             resposta.cookies.set(name, value, options);
           }

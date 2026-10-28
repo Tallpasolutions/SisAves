@@ -7,6 +7,7 @@ import {
   CreditCard,
   Dna,
   Feather,
+  Gauge,
   Settings,
   Syringe,
   Tags,
@@ -17,6 +18,7 @@ import {
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { obterCriatorioAtual } from "@/lib/criatorio";
+import { souOperador } from "@/lib/dados/operador";
 import { SeletorTema } from "@/components/navegacao/SeletorTema";
 import { Sair } from "./sair";
 import styles from "./mais.module.css";
@@ -128,8 +130,32 @@ const GRUPOS: Array<{ titulo: string; destinos: Destino[] }> = [
   },
 ];
 
+/**
+ * O grupo de quem opera o SisAves.
+ *
+ * Fica fora de `GRUPOS` porque depende de quem está logado. A sidebar do
+ * desktop já tinha o dele; esta tela não, e no celular ela é a ÚNICA porta
+ * para o que não está na tab bar — então a tela existia e não tinha como
+ * chegar nela.
+ */
+const GRUPO_OPERACAO = {
+  titulo: "SisAves",
+  destinos: [
+    {
+      href: "/operacao",
+      rotulo: "Operação",
+      resumo: "Assinantes, testes e contas criadas",
+      Icone: Gauge,
+    },
+  ],
+};
+
 export default async function Mais() {
-  const criatorio = await obterCriatorioAtual();
+  const [criatorio, operador] = await Promise.all([
+    obterCriatorioAtual(),
+    souOperador(),
+  ]);
+  const grupos = operador ? [...GRUPOS, GRUPO_OPERACAO] : GRUPOS;
 
   return (
     <div className={styles.tela}>
@@ -144,7 +170,7 @@ export default async function Mais() {
         ) : null}
       </header>
 
-      {GRUPOS.map((grupo) => (
+      {grupos.map((grupo) => (
         <section key={grupo.titulo} className={styles.grupo}>
           <h2 className={styles.grupoTitulo}>{grupo.titulo}</h2>
           <ul className={styles.lista}>

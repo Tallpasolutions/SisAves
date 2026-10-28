@@ -35,6 +35,6 @@ export function barradoPelaAssinatura(erro: ErroDeBanco | null | undefined): boo
  * perda.
  */
 export const ERRO_ASSINATURA =
-  "A assinatura do criatório venceu, então o registro de dados novos está " +
-  "pausado. O plantel, a genealogia e os certificados continuam aqui para " +
-  "consultar e imprimir. Abra Assinatura para reativar.";
+  "A assinatura do criatório venceu e o acesso está pausado. Nada foi " +
+  "apagado: o plantel volta como estava assim que o pagamento for " +
+  "confirmado. Abra Assinatura para reativar.";

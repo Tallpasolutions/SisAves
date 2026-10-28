@@ -1,9 +1,13 @@
+import { headers } from "next/headers";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { obterCriatorioAtual } from "@/lib/criatorio";
 import { obterPerfil } from "@/lib/dados/configuracoes";
 import { obterIndicadores, obterTarefasDeHoje } from "@/lib/dados/hoje";
+import { obterVigencia } from "@/lib/dados/assinatura";
 import { souOperador } from "@/lib/dados/operador";
+import { Sair } from "./mais/sair";
 import { FaixaAssinatura } from "@/components/navegacao/FaixaAssinatura";
 import { Sidebar } from "@/components/navegacao/Sidebar";
 import { TabBar } from "@/components/navegacao/TabBar";
@@ -28,12 +32,74 @@ export default async function LayoutApp({ children }: { children: ReactNode }) {
   const criatorio = await obterCriatorioAtual();
   if (!criatorio) redirect("/comecar");
 
-  const [tarefas, indicadores, perfil, operador] = await Promise.all([
-    obterTarefasDeHoje(),
-    obterIndicadores(),
-    obterPerfil(),
-    souOperador(),
-  ]);
+  const [tarefas, indicadores, perfil, operador, vigencia, cabecalhos] =
+    await Promise.all([
+      obterTarefasDeHoje(),
+      obterIndicadores(),
+      obterPerfil(),
+      souOperador(),
+      obterVigencia(),
+      headers(),
+    ]);
+
+  /*
+   * Vencido não vê dado nenhum.
+   *
+   * Até aqui o bloqueio era só de escrita: quem não pagasse continuava lendo o
+   * plantel inteiro. Na prática isso permitia cadastrar tudo em cinco dias e
+   * usar o SisAves como consulta para sempre, de graça.
+   *
+   * `vigencia === null` NÃO bloqueia. É falha para o lado aberto, de
+   * propósito: um defeito na consulta não pode trancar quem está pagando.
+   * Quem não tem linha de assinatura é criatório recém-criado, e o gatilho da
+   * 0038 cria a dele em seguida.
+   *
+   * O operador nunca cai aqui — `criatorio_com_acesso()` o libera na 0042.
+   */
+  const caminho = cabecalhos.get("x-caminho") ?? "";
+
+  /*
+   * `caminho` vazio NÃO bloqueia, e essa condição é uma trava, não um detalhe.
+   *
+   * Na primeira versão o cabeçalho não chegava — mutar `request.headers` no
+   * middleware não propaga —, então `caminho` era vazio,
+   * `"".startsWith("/assinatura")` dava falso e o layout mandava para
+   * /assinatura DE DENTRO de /assinatura. Laço infinito e tela branca.
+   *
+   * Exigir uma rota conhecida para bloquear faz o pior caso ser "não
+   * bloqueou", em vez de "travou o produto para todo mundo".
+   */
+  const bloqueado =
+    vigencia !== null && !vigencia.comAcesso && caminho.startsWith("/");
+
+  if (bloqueado && !caminho.startsWith("/assinatura")) {
+    redirect("/assinatura");
+  }
+
+  /*
+   * Casca mínima para quem está vencido: sem barra lateral, sem tab bar.
+   *
+   * Com a navegação normal, cada toque numa aba voltaria para cá, e no celular
+   * — onde "Sair da conta" mora dentro de Mais — a pessoa ficaria presa sem
+   * conseguir nem trocar de conta.
+   */
+  if (bloqueado) {
+    return (
+      <div className={styles.bloqueio}>
+        <div className={styles.bloqueioInterno}>
+          <Image
+            src="/brand/sisaves-logo-horizontal.svg"
+            alt="SisAves"
+            width={140}
+            height={34}
+            priority
+          />
+          <main id="conteudo">{children}</main>
+          <Sair />
+        </div>
+      </div>
+    );
+  }
 
   return (
     // A fila offline é estado de aplicação, não de tela: vive no layout para
