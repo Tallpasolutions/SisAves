@@ -3,21 +3,28 @@
 import { CircleAlert } from "lucide-react";
 import { useActionState } from "react";
 import { Button, Field, Input } from "@/components/ui";
-import { criarCriatorio, type EstadoOnboarding } from "./acoes";
+import { salvarDadosPessoais, type EstadoDadosPessoais } from "./acoes";
 import styles from "./comecar.module.css";
 
-export interface ClubeOpcao {
-  id: string;
-  sigla: string | null;
-  nome: string;
-  uf: string | null;
-}
-
-export function FormularioCriatorio({ clubes }: { clubes: ClubeOpcao[] }) {
-  const [estado, acao, enviando] = useActionState<EstadoOnboarding, FormData>(
-    criarCriatorio,
-    {},
-  );
+/**
+ * O primeiro passo do onboarding: quem é o criador.
+ *
+ * Os três campos são obrigatórios, e cada um tem um motivo que está escrito na
+ * tela. Pedir CPF sem dizer para quê faz parte das pessoas desistirem no meio
+ * do cadastro — e com razão: um sistema de aves querendo documento, sem
+ * explicação, parece outra coisa.
+ */
+export function FormularioDadosPessoais({
+  nome,
+  telefone,
+}: {
+  nome?: string | null;
+  telefone?: string | null;
+}) {
+  const [estado, acao, enviando] = useActionState<
+    EstadoDadosPessoais,
+    FormData
+  >(salvarDadosPessoais, {});
 
   return (
     <div className={styles.cartao}>
@@ -31,13 +38,21 @@ export function FormularioCriatorio({ clubes }: { clubes: ClubeOpcao[] }) {
       ) : null}
 
       <form action={acao} className={styles.formulario}>
-        <Field label="Nome do criatório" required>
-          {({ id, invalido }) => (
+        <Field
+          label="Nome completo"
+          required
+          hint="Como aparece no seu documento."
+          error={estado.campos?.nome}
+        >
+          {({ id, descritoPor, invalido }) => (
             <Input
               id={id}
               name="nome"
               size="lg"
-              placeholder="Criatório Santos"
+              autoComplete="name"
+              defaultValue={nome ?? ""}
+              placeholder="Alex José Fausto"
+              aria-describedby={descritoPor}
               invalid={invalido}
               required
             />
@@ -45,54 +60,52 @@ export function FormularioCriatorio({ clubes }: { clubes: ClubeOpcao[] }) {
         </Field>
 
         <Field
-          label="Clube ou federação"
-          hint="Define a sigla que aparece nas anilhas das suas aves."
+          label="CPF"
+          required
+          hint="Usado na nota fiscal da assinatura. Não aparece em certificado nem em documento do plantel."
+          error={estado.campos?.cpf}
         >
-          {({ id, descritoPor }) => (
-            <select id={id} name="clube_id" className={styles.selecao} aria-describedby={descritoPor}>
-              <option value="">Não informar agora</option>
-              {clubes.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.sigla ? `${c.sigla} — ` : ""}
-                  {c.nome}
-                  {c.uf ? ` (${c.uf})` : ""}
-                </option>
-              ))}
-            </select>
-          )}
-        </Field>
-
-        <Field label="Número de criador" hint="A sua matrícula no clube.">
-          {({ id, descritoPor }) => (
-            <Input id={id} name="nro_criador" size="lg" numeric aria-describedby={descritoPor} placeholder="1234" />
+          {({ id, descritoPor, invalido }) => (
+            <Input
+              id={id}
+              name="cpf"
+              size="lg"
+              inputMode="numeric"
+              autoComplete="off"
+              placeholder="000.000.000-00"
+              aria-describedby={descritoPor}
+              invalid={invalido}
+              required
+            />
           )}
         </Field>
 
         <Field
-          label="Registro IBAMA"
-          hint="Exigido no cabeçalho do certificado. Pode preencher depois."
+          label="Celular"
+          required
+          hint="Com DDD. É por onde falamos com você se algo travar."
+          error={estado.campos?.telefone}
         >
-          {({ id, descritoPor }) => (
-            <Input id={id} name="registro_ibama" size="lg" aria-describedby={descritoPor} />
+          {({ id, descritoPor, invalido }) => (
+            <Input
+              id={id}
+              name="telefone"
+              size="lg"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              defaultValue={telefone ?? ""}
+              placeholder="(48) 99179-3316"
+              aria-describedby={descritoPor}
+              invalid={invalido}
+              required
+            />
           )}
         </Field>
 
-        <div className={styles.duasColunas}>
-          <Field label="Cidade">
-            {({ id }) => <Input id={id} name="cidade" size="lg" placeholder="Florianópolis" />}
-          </Field>
-          <Field label="UF">
-            {({ id }) => (
-              <Input id={id} name="uf" size="lg" maxLength={2} placeholder="SC" />
-            )}
-          </Field>
-        </div>
-
-        <div className={styles.acoes}>
-          <Button type="submit" size="lg" disabled={enviando}>
-            {enviando ? "Salvando…" : "Continuar"}
-          </Button>
-        </div>
+        <Button type="submit" size="lg" bloco disabled={enviando}>
+          {enviando ? "Salvando…" : "Continuar"}
+        </Button>
       </form>
     </div>
   );

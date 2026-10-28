@@ -3,24 +3,53 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
-import { gerarSlug } from "@/lib/criatorio";
+import { celularValido, cpfValido, soDigitos } from "@/lib/cpf";
 
-export interface EstadoOnboarding {
+export interface EstadoDadosPessoais {
   erro?: string;
+  campos?: Record<string, string>;
 }
 
-export async function criarCriatorio(
-  _anterior: EstadoOnboarding,
+/**
+ * O primeiro passo: quem é o criador.
+ *
+ * O CPF é conferido aqui, com dígitos verificadores, e não só na restrição do
+ * banco: a tabela recusa o que não tiver onze dígitos, mas não sabe dizer que
+ * o número está errado — e "violação de restrição" não é mensagem para
+ * ninguém.
+ */
+export async function salvarDadosPessoais(
+  _anterior: EstadoDadosPessoais,
   dados: FormData,
-): Promise<EstadoOnboarding> {
+): Promise<EstadoDadosPessoais> {
   const nome = String(dados.get("nome") ?? "").trim();
-  const clubeId = String(dados.get("clube_id") ?? "") || null;
-  const nroCriador = String(dados.get("nro_criador") ?? "").trim() || null;
-  const registroIbama = String(dados.get("registro_ibama") ?? "").trim() || null;
-  const cidade = String(dados.get("cidade") ?? "").trim() || null;
-  const uf = String(dados.get("uf") ?? "").trim().toUpperCase() || null;
+  const cpfBruto = String(dados.get("cpf") ?? "");
+  const telefoneBruto = String(dados.get("telefone") ?? "");
 
-  if (!nome) return { erro: "Informe o nome do criatório." };
+  const campos: Record<string, string> = {};
+
+  if (nome.length < 3) {
+    campos.nome = "Informe o seu nome completo.";
+  } else if (!nome.includes(" ")) {
+    campos.nome = "Informe nome e sobrenome.";
+  }
+
+  const cpf = soDigitos(cpfBruto);
+  if (!cpf) {
+    campos.cpf = "Informe o seu CPF.";
+  } else if (!cpfValido(cpf)) {
+    // Cita o que foi digitado: quem erra um dígito costuma não enxergar qual.
+    campos.cpf = `O CPF ${cpfBruto.trim()} não confere. Verifique os números.`;
+  }
+
+  const telefone = soDigitos(telefoneBruto);
+  if (!telefone) {
+    campos.telefone = "Informe o seu celular com DDD.";
+  } else if (!celularValido(telefone)) {
+    campos.telefone = "Informe o celular com DDD, como (48) 99179-3316.";
+  }
+
+  if (Object.keys(campos).length > 0) return { campos };
 
   const supabase = await criarClienteServidor();
   const {
@@ -28,39 +57,34 @@ export async function criarCriatorio(
   } = await supabase.auth.getUser();
   if (!user) redirect("/entrar");
 
-  const base = gerarSlug(nome) || "criatorio";
-
-  // O slug é a URL pública dos certificados e precisa ser único e estável.
-  // Tenta o natural e, se já existir, acrescenta sufixo — em vez de falhar na
-  // cara de quem está se cadastrando.
-  let slug = base;
-  for (let tentativa = 2; tentativa <= 60; tentativa++) {
-    const { data: existe } = await supabase
-      .from("criatorios")
-      .select("id")
-      .eq("slug", slug)
-      .maybeSingle();
-    if (!existe) break;
-    slug = `${base}-${tentativa}`.slice(0, 50);
-  }
-
-  const { error } = await supabase.from("criatorios").insert({
-    owner_id: user.id,
-    nome,
-    slug,
-    clube_id: clubeId,
-    nro_criador: nroCriador,
-    registro_ibama: registroIbama,
-    cidade,
-    uf,
-  });
+  const { error } = await supabase
+    .from("perfis")
+    .update({ nome, cpf, telefone, dados_em: new Date().toISOString() })
+    .eq("id", user.id);
 
   if (error) {
-    return error.code === "23505"
-      ? { erro: "Já existe um criatório com esse endereço. Ajuste o nome." }
-      : { erro: "Não foi possível criar o criatório. Tente de novo." };
+    /*
+     * 23505 é o índice único do CPF.
+     *
+     * Dizer "este CPF já está em outra conta" confirma a um estranho que
+     * aquele CPF é cliente do SisAves. Mas aqui a pessoa está logada e
+     * digitando o próprio documento, e a alternativa — um erro genérico —
+     * deixaria quem perdeu o acesso à conta antiga sem entender nada. O texto
+     * não revela QUAL conta, e manda falar com o suporte.
+     */
+    if (error.code === "23505") {
+      return {
+        campos: {
+          cpf:
+            "Já existe uma conta no SisAves com este CPF. Entre por ela, ou " +
+            "escreva para suporte@tallpa.com.br se não tiver mais acesso.",
+        },
+      };
+    }
+    console.error("salvarDadosPessoais:", error.message);
+    return { erro: "Não foi possível salvar. Tente de novo em instantes." };
   }
 
   revalidatePath("/", "layout");
-  redirect("/comecar/especies");
+  redirect("/comecar/criatorio");
 }

@@ -34,7 +34,7 @@ export default async function Especies() {
     <div className={styles.tela}>
       <main id="conteudo" className={styles.conteudo}>
         <header className={styles.cabecalho}>
-          <span className={styles.passo}>Passo 2 de 2</span>
+          <span className={styles.passo}>Passo 3 de 3</span>
           <h1 className={styles.titulo}>O que você cria</h1>
           <p className={styles.resumo}>
             Os prazos de cada espécie movem o ciclo do ovo — é por eles que o
