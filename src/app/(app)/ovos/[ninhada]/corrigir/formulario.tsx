@@ -176,7 +176,7 @@ function FormularioData({
       {!online ? (
         <span className={styles.nota}>
           <WifiOff size={14} aria-hidden="true" />
-          Offline — será salvo no aparelho
+          Offline. Será salvo no aparelho
         </span>
       ) : null}
     </form>
@@ -241,7 +241,7 @@ function BotaoDesfazer({
       {!online ? (
         <span className={styles.nota}>
           <WifiOff size={14} aria-hidden="true" />
-          Offline — será salvo no aparelho
+          Offline. Será salvo no aparelho
         </span>
       ) : null}
     </form>

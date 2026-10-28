@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CircleAlert, CircleCheck, TriangleAlert } from "lucide-react";
 import { obterVigencia, listarPagamentos } from "@/lib/dados/assinatura";
 import { mercadoPagoConfigurado } from "@/lib/mercadopago/cliente";
+import { souOperador } from "@/lib/dados/operador";
 import { PIX_ATIVO } from "@/lib/mercadopago/ofertas";
 import { formatarData, formatarMoeda } from "@/lib/formato";
 import { FormularioAssinatura } from "./formulario";
@@ -10,9 +11,10 @@ import styles from "./assinatura.module.css";
 export const metadata: Metadata = { title: "Assinatura" };
 
 export default async function Assinatura() {
-  const [vigencia, pagamentos] = await Promise.all([
+  const [vigencia, pagamentos, operador] = await Promise.all([
     obterVigencia(),
     listarPagamentos(),
+    souOperador(),
   ]);
   const configurado = mercadoPagoConfigurado();
 
@@ -25,7 +27,7 @@ export default async function Assinatura() {
         </p>
       </header>
 
-      <Situacao vigencia={vigencia} />
+      {operador ? <SituacaoOperador /> : <Situacao vigencia={vigencia} />}
 
       {configurado ? (
         <section className={styles.secao}>
@@ -77,6 +79,30 @@ export default async function Assinatura() {
         </section>
       ) : null}
     </div>
+  );
+}
+
+/**
+ * Quem opera o SisAves não assina o SisAves.
+ *
+ * Sem isto a tela contava os dias de teste do criatório do operador, que nunca
+ * vencem — um prazo falso na tela de quem mantém o produto de pé.
+ */
+function SituacaoOperador() {
+  return (
+    <section className={styles.situacao}>
+      <span className={styles.situacaoRotulo}>Situação</span>
+      <p className={styles.situacaoValor}>
+        <span className={styles.situacaoIcone}>
+          <CircleCheck size={18} aria-hidden="true" />
+        </span>
+        Acesso de operação
+      </p>
+      <p className={styles.situacaoNota}>
+        Esta conta mantém o SisAves e não passa pela assinatura. O que está
+        abaixo é a mesma tela que o criador vê.
+      </p>
+    </section>
   );
 }
 
@@ -137,9 +163,9 @@ function Situacao({
 
       {vencida ? (
         <p className={styles.situacaoNota}>
-          O acesso ao criatório está pausado. Tudo o que você cadastrou
-          continua guardado e volta assim que o pagamento for confirmado:
-          nenhuma ave, ninhada ou certificado foi apagado.
+          Seu criatório está em pausa. Nada foi apagado. Assim que o
+          pagamento cair, as aves, as ninhadas e os certificados voltam como
+          você deixou.
         </p>
       ) : null}
     </section>

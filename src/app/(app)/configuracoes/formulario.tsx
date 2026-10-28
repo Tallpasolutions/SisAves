@@ -270,7 +270,7 @@ export function FormularioCriatorio({
         {!online ? (
           <span className={styles.nota}>
             <WifiOff size={14} aria-hidden="true" />
-            Offline — será salvo no aparelho
+            Offline. Será salvo no aparelho
           </span>
         ) : null}
       </div>

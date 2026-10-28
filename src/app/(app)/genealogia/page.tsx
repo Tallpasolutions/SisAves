@@ -80,7 +80,7 @@ export default async function Genealogia({
         </p>
         <p className={styles.explicacao}>
           A árvore de uma ave se abre na ficha dela. Esta tela responde a
-          pergunta inversa — de onde vem este plantel — e deixa simular um
+          pergunta inversa, de onde vem este plantel, e deixa simular um
           cruzamento antes de formar o casal.
         </p>
       </header>
@@ -99,7 +99,7 @@ export default async function Genealogia({
           {!par ? (
             <p className={styles.espera}>
               Escolha um macho e uma fêmea. O coeficiente aparece antes de o
-              casal existir — é essa a hora em que ele muda uma decisão.
+              casal existir. É essa a hora em que ele muda uma decisão.
             </p>
           ) : (
             <>
@@ -147,7 +147,7 @@ export default async function Genealogia({
                 {faixa === "risco" ? (
                   <span className={styles.nota}>
                     Acima de 12,5% o acasalamento é desaconselhado. O sistema
-                    não impede — a decisão é do criador.
+                    não impede. A decisão é do criador.
                   </span>
                 ) : null}
               </div>
@@ -159,7 +159,7 @@ export default async function Genealogia({
       <section className={styles.bloco}>
         <h2 className={styles.blocoTitulo}>Linhagens do plantel</h2>
         <p className={styles.blocoNota}>
-          Cada fundador é uma ave sem pai nem mãe no sistema — quase sempre a
+          Cada fundador é uma ave sem pai nem mãe no sistema, quase sempre a
           que você comprou ou recebeu. O pedigree dela está no papel do
           vendedor, e é ali que a árvore dos descendentes para.
         </p>
@@ -196,7 +196,7 @@ export default async function Genealogia({
             {cobertura.nascidasAquiSemFiliacao === 1
               ? "ave nasceu neste criatório e está sem filiação registrada"
               : "aves nasceram neste criatório e estão sem filiação registrada"}
-            . Ave comprada sem progenitor é normal — essa é a origem da
+            . Ave comprada sem progenitor é normal, e é dela que vem a
             linhagem. Nascida aqui sem pai nem mãe é registro faltando, e a
             filiação se corrige na edição da ave.
           </p>

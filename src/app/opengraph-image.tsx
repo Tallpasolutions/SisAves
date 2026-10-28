@@ -15,7 +15,7 @@ import { ImageResponse } from "next/og";
  */
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "SisAves — gestão de criatório de aves ornamentais";
+export const alt = "SisAves · gestão de criatório de aves ornamentais";
 
 /**
  * Lido do disco e embutido em data URI.

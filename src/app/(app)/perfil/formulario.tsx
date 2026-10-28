@@ -109,7 +109,7 @@ export function FormularioPerfil({ perfil }: { perfil: DadosPerfil }) {
         {!online ? (
           <span className={styles.nota}>
             <WifiOff size={14} aria-hidden="true" />
-            Offline — será salvo no aparelho
+            Offline. Será salvo no aparelho
           </span>
         ) : null}
       </div>

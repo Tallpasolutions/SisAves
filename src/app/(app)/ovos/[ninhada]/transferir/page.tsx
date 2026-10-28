@@ -48,7 +48,7 @@ export default async function Transferir({
         </p>
         <p className={styles.explicacao}>
           Transferir muda só quem choca. O ovo continua sendo do casal que o
-          pôs, e o filhote nasce com a filiação dele — é isso que o certificado
+          pôs, e o filhote nasce com a filiação dele. É isso que o certificado
           vai afirmar.
         </p>
       </header>

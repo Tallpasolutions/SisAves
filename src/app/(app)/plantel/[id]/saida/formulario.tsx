@@ -208,7 +208,7 @@ export function FormularioSaida({ ave }: { ave: AveDetalhe }) {
           {!online ? (
             <span className={styles.aviso}>
               <WifiOff size={14} aria-hidden="true" />
-              Offline — será salvo no aparelho
+              Offline. Será salvo no aparelho
             </span>
           ) : null}
         </div>

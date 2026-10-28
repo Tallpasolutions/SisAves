@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CircleAlert, TriangleAlert } from "lucide-react";
 import { obterVigencia } from "@/lib/dados/assinatura";
+import { souOperador } from "@/lib/dados/operador";
 import styles from "./FaixaAssinatura.module.css";
 
 /**
@@ -16,8 +17,21 @@ import styles from "./FaixaAssinatura.module.css";
  * correndo: fora disso não desenha nada.
  */
 export async function FaixaAssinatura() {
-  const vigencia = await obterVigencia();
+  const [vigencia, operador] = await Promise.all([
+    obterVigencia(),
+    souOperador(),
+  ]);
   if (!vigencia) return null;
+
+  /*
+   * Operador não recebe aviso de vencimento.
+   *
+   * A 0042 o liberou do bloqueio, mas a faixa continuou contando os dias do
+   * período de teste do criatório dele. Um prazo que não vai acontecer, no
+   * topo de toda tela, todo dia — e que ensina a ignorar a faixa justamente
+   * quando ela for verdadeira para um cliente.
+   */
+  if (operador) return null;
 
   // Vencido: a escrita está barrada agora.
   if (!vigencia.comAcesso) {
@@ -31,8 +45,8 @@ export async function FaixaAssinatura() {
           <CircleAlert size={18} aria-hidden="true" />
         </span>
         <span className={styles.texto}>
-          <strong>Assinatura vencida.</strong> O acesso ao criatório está
-          pausado. Os dados continuam guardados e voltam com o pagamento.
+          <strong>Assinatura vencida.</strong> O criatório está em pausa.
+          Assine e você encontra tudo como deixou.
         </span>
         <Link className={styles.acao} href="/assinatura">
           Ver assinatura
@@ -62,7 +76,8 @@ export async function FaixaAssinatura() {
         {dias <= 0
           ? "termina hoje"
           : `termina em ${dias} ${dias === 1 ? "dia" : "dias"}`}
-        . Depois disso, o registro de dados novos para — a consulta continua.
+        . Quando acabar, o criatório entra em pausa até você assinar. Nada é
+        apagado.
       </span>
       <Link className={styles.acao} href="/assinatura">
         Assinar

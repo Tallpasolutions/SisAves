@@ -66,7 +66,7 @@ export default async function Corrigir({
         <EmptyState
           icon={<Egg size={28} />}
           title="Nada a corrigir"
-          description="Esta ninhada só tem a postura registrada, ou o que foi marcado já não pode ser desfeito — filhote anilhado, por exemplo, virou ave no plantel."
+          description="Esta ninhada só tem a postura registrada, ou o que foi marcado já não pode ser desfeito. Filhote anilhado, por exemplo, virou ave no plantel."
           acao={<Button href={`/ovos/${id}`}>Voltar para a ninhada</Button>}
           compact
         />

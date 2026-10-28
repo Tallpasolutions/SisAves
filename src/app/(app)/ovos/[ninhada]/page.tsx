@@ -111,7 +111,7 @@ export default async function Ninhada({
       ) : null}
 
       {/* Onde o ovo ESTÁ, que pode não ser onde ele nasceu. Sem isto o criador
-          procura na gaiola errada — que é o problema que a transferência
+          procura na gaiola errada, que é o problema que a transferência
           existe para resolver. */}
       {ninhada.transferidos > 0 ? (
         <p className={styles.chocador}>
@@ -125,7 +125,7 @@ export default async function Ninhada({
       <FormularioConferencia ninhada={ninhada} />
 
       {/* Fora do formulário de propósito: <form> dentro de <form> é inválido,
-          e o gesto é outro — ali se registra o que se viu, aqui se apaga o que
+          e o gesto é outro: ali se registra o que se viu, aqui se apaga o que
           não aconteceu. */}
       {ninhada.emCurso > 0 ? (
         <div className={styles.corrigir}>

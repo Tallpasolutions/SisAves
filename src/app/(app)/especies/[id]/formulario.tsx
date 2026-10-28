@@ -177,7 +177,7 @@ export function FormularioPrazos({ especie }: { especie: EspecieDoCriatorio }) {
         {!online ? (
           <span className={styles.nota}>
             <WifiOff size={14} aria-hidden="true" />
-            Offline — será salvo no aparelho
+            Offline. Será salvo no aparelho
           </span>
         ) : null}
       </div>
@@ -253,7 +253,7 @@ export function BotaoAlternar({ especie }: { especie: EspecieDoCriatorio }) {
           {estado.erro}
         </span>
       ) : null}
-      {!online ? <span className={styles.nota}>Offline — será salvo no aparelho</span> : null}
+      {!online ? <span className={styles.nota}>Offline. Será salvo no aparelho</span> : null}
     </form>
   );
 }
@@ -303,7 +303,7 @@ export function BotaoExcluir({ especie }: { especie: EspecieDoCriatorio }) {
           {estado.erro}
         </span>
       ) : null}
-      {!online ? <span className={styles.nota}>Offline — será salvo no aparelho</span> : null}
+      {!online ? <span className={styles.nota}>Offline. Será salvo no aparelho</span> : null}
     </form>
   );
 }

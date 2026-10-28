@@ -137,7 +137,7 @@ export function NovaCategoria() {
         {!online ? (
           <span className={styles.nota}>
             <WifiOff size={14} aria-hidden="true" />
-            Offline — será salvo no aparelho
+            Offline. Será salvo no aparelho
           </span>
         ) : null}
       </div>
@@ -257,7 +257,7 @@ function FormularioCategoria({ categoria }: { categoria: CategoriaFinanceira }) 
         {!online ? (
           <span className={styles.nota}>
             <WifiOff size={14} aria-hidden="true" />
-            Offline — será salvo no aparelho
+            Offline. Será salvo no aparelho
           </span>
         ) : null}
       </div>
@@ -417,7 +417,7 @@ function BotaoExcluir({ categoria }: { categoria: CategoriaFinanceira }) {
         </span>
       ) : null}
       {!online ? (
-        <span className={styles.nota}>Offline — será salvo no aparelho</span>
+        <span className={styles.nota}>Offline. Será salvo no aparelho</span>
       ) : null}
     </form>
   );

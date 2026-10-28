@@ -54,3 +54,6 @@ supabase/.branches
 
 # Prévias dos templates de e-mail: conferência, não entrega.
 .previa-email/
+
+# Prévias dos estados de assinatura: conferência, não entrega.
+.previa-assinatura/

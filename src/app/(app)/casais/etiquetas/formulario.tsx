@@ -118,7 +118,7 @@ function FormularioEtiqueta({ etiqueta }: { etiqueta: EtiquetaDoCriatorio }) {
         {!online ? (
           <span className={styles.nota}>
             <WifiOff size={14} aria-hidden="true" />
-            Offline — será salvo no aparelho
+            Offline. Será salvo no aparelho
           </span>
         ) : null}
       </div>
@@ -213,7 +213,7 @@ function BotaoExcluir({ etiqueta }: { etiqueta: EtiquetaDoCriatorio }) {
         </span>
       ) : null}
       {!online ? (
-        <span className={styles.nota}>Offline — será salvo no aparelho</span>
+        <span className={styles.nota}>Offline. Será salvo no aparelho</span>
       ) : null}
     </form>
   );

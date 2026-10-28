@@ -27,7 +27,7 @@ export default async function Saida({ params }: PageProps<"/plantel/[id]/saida">
         <header className={styles.cabecalho}>
           <h1 className={styles.titulo}>Esta ave já saiu do plantel</h1>
           <p className={styles.contexto}>
-            A ficha mostra quando e para onde, e é de lá que ela volta — quando
+            A ficha mostra quando e para onde, e é de lá que ela volta, quando
             o caso admite volta.
           </p>
         </header>

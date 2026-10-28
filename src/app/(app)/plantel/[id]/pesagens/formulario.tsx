@@ -220,7 +220,7 @@ export function FormularioPesagem({
         {!online ? (
           <span className={styles.aviso}>
             <WifiOff size={14} aria-hidden="true" />
-            Offline — será salvo no aparelho
+            Offline. Será salvo no aparelho
           </span>
         ) : null}
       </div>
@@ -287,7 +287,7 @@ export function BotaoExcluirPesagem({
         </span>
       ) : null}
       {!online ? (
-        <span className={styles.notaLinha}>Offline — será salvo no aparelho</span>
+        <span className={styles.notaLinha}>Offline. Será salvo no aparelho</span>
       ) : null}
     </form>
   );
