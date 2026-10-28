@@ -498,7 +498,7 @@ Utilitários de formatação pt-BR em `src/lib/formato.ts`: `formatarData`,
 | `/plantel/[id]/pesagens` | Pesagens | não desenhada; registro e histórico com a variação escrita por extenso |
 | `/plantel/[id]/genealogia` | B6 Árvore genealógica | três gerações em rolagem horizontal; aviso de ancestral repetido no topo; cabeçalho petróleo de borda a borda e legenda fixa no rodapé |
 | `/entrar`, `/cadastrar`, `/recuperar-senha`, `/nova-senha` | B4 e derivadas | cartão sempre claro sobre o petróleo |
-| `/comecar`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais |
+| `/comecar`, `/comecar/criatorio`, `/comecar/especies` | onboarding | não desenhado; feito na linguagem das demais; três passos, começando pelos dados do criador |
 | `/ds` | biblioteca | referência do artboard A3; sai antes do lançamento |
 
 Não há mais vazio honesto no produto: todas as rotas que existem fazem alguma
@@ -1662,6 +1662,22 @@ tela "Hoje". É idempotente: apaga o que semeou antes e recria.
   testes e `scripts/`. Os clientes de app usam a chave anônima, com RLS valendo.
 - O criatório é pré-requisito de tudo: `/` manda para `/comecar` enquanto não
   existir um.
+- **O onboarding tem três passos, e o primeiro é quem é o criador.**
+  `/comecar` pede nome completo, CPF e celular; `/comecar/criatorio` é o passo
+  2; `/comecar/especies`, o passo 3. Cada passo encaminha ao seguinte quando já
+  está preenchido, então ninguém digita o CPF duas vezes.
+- **O CPF é único em `perfis`, e é isso que impede o teste infinito.** Sem o
+  índice, cinco dias grátis viram infinitos: basta trocar de e-mail a cada
+  vencimento. O índice é parcial (`where cpf is not null`) porque quem entrou
+  antes de 0044 tem a coluna nula e nunca mais passa pelo onboarding — pedir o
+  dado a essa gente é outra conversa, numa tela de perfil.
+- O número é conferido com dígitos verificadores em `src/lib/cpf.ts`, não só
+  pela restrição da tabela: a tabela sabe recusar, não sabe explicar. O erro
+  cita o que foi digitado, porque quem erra um dígito não enxerga qual.
+- Conta descartável para exercitar o onboarding:
+  `node scripts/usuario-descartavel.mjs criar` (e `--manter`, para ter duas e
+  testar o CPF repetido). **Apagar com `limpar` ao terminar** — o banco é o de
+  produção, e as outras contas sem criatório são de clientes de verdade.
 - Conta de desenvolvimento: `node scripts/usuario-teste.mjs criar` cria
   `teste@sisaves.local` já confirmada. **A senha vem de `SENHA_USUARIO_TESTE`,
   no `.env.local`** — esteve escrita no script até 17/10/2026, num repositório
