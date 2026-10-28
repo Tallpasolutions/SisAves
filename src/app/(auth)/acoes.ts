@@ -9,6 +9,14 @@ import { CADASTRO_ABERTO, LOGIN_GOOGLE_ABERTO } from "@/lib/portas";
 export interface EstadoFormulario {
   erro?: string;
   aviso?: string;
+  /**
+   * O e-mail existe, a senha está certa, e falta confirmar o endereço.
+   *
+   * Não é um erro como os outros: a pessoa não tem o que corrigir no
+   * formulário. Ou ela acha o e-mail antigo, ou precisa de um novo — e a tela
+   * só consegue oferecer o reenvio se souber que é este o caso.
+   */
+  precisaConfirmar?: string;
 }
 
 /**
@@ -50,7 +58,15 @@ export async function entrar(
   const supabase = await criarClienteServidor();
   const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
 
-  if (error) return { erro: traduzirErro(error.message) };
+  if (error) {
+    if (error.message.toLowerCase().includes("email not confirmed")) {
+      return {
+        erro: "Falta confirmar o seu e-mail antes de entrar.",
+        precisaConfirmar: email,
+      };
+    }
+    return { erro: traduzirErro(error.message) };
+  }
 
   await aceitarConvitesPendentes(supabase);
 
@@ -135,6 +151,43 @@ export async function cadastrar(
 
   revalidatePath("/", "layout");
   redirect("/hoje");
+}
+
+/**
+ * Manda outro link de confirmação.
+ *
+ * Existe por dois casos reais: uma conta criada quando a confirmação estava
+ * desligada no Supabase, e outra cujo link apontava para `localhost` porque a
+ * Site URL do projeto ainda não tinha sido corrigida. Nos dois, a pessoa ficou
+ * com a conta pela metade e sem nada a fazer na tela.
+ *
+ * A resposta é a mesma havendo ou não conta com aquele endereço, pela razão de
+ * sempre: dizer "não existe conta" entregaria quem é cliente a quem testasse
+ * endereços.
+ */
+export async function reenviarConfirmacao(
+  _anterior: EstadoFormulario,
+  dados: FormData,
+): Promise<EstadoFormulario> {
+  const email = String(dados.get("email") ?? "").trim();
+  if (!email) return { erro: "Informe o e-mail da conta." };
+
+  const supabase = await criarClienteServidor();
+  const origem = (await headers()).get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL;
+
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: { emailRedirectTo: `${origem}/auth/callback` },
+  });
+
+  if (error) console.error("reenviarConfirmacao:", error.message);
+
+  return {
+    aviso:
+      `Se ${email} tiver uma conta esperando confirmação, o link já está a ` +
+      `caminho. Ele vale por uma hora.`,
+  };
 }
 
 export async function entrarComGoogle() {

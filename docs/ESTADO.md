@@ -1114,6 +1114,49 @@ aleatório do certificado existe para impedir. O `robots.txt` as deixa
 **liberadas** para varredura, porque quem escaneia o QR precisa chegar lá.
 
 
+## Conta que não confirma o e-mail
+
+### O bloqueio já existia; faltava a saída
+
+O Supabase recusa o login de quem não confirmou, e a mensagem mandava procurar
+"o link que enviamos". Para quem perdeu o e-mail, ou recebeu um link quebrado,
+não havia nada a fazer na tela.
+
+Agora o login devolve `precisaConfirmar` com o endereço, e a tela mostra um
+botão de **enviar outro link**. A resposta é igual havendo ou não conta com
+aquele e-mail, pela razão de sempre: dizer "não existe conta" entregaria quem é
+cliente a quem testasse endereços.
+
+Isso nasceu de dois casos reais. Hygor criou conta em 18/10 e ela foi
+confirmada em 44 milésimos sem e-mail nenhum, porque a confirmação estava
+desligada no projeto; ele voltou para o login sem saber que já tinha cadastro.
+Fabiano recebeu o link em 23/10 e **clicou em 47 segundos**, mas foi de
+madrugada, antes de a Site URL ser corrigida: o link apontava para o
+`localhost` dele.
+
+### A limpeza das abandonadas
+
+`limpar_contas_abandonadas(p_dias, p_simular)`, chamada uma vez por dia pelo
+cron da Vercel em `/api/limpeza/contas`. `pg_cron` não está instalado no
+projeto, daí o cron ser da Vercel e não do banco.
+
+Ela **simula por padrão**: sem `p_simular => false` só devolve a lista.
+
+Quatro travas, e nenhuma é decorativa:
+
+1. só e-mail **não confirmado** — quem confirmou é cliente, mesmo inativo;
+2. só mais velha que o prazo — ninguém some enquanto ainda pode clicar;
+3. só sem criatório e sem vínculo de membro — se há dado, não é abandono;
+4. nunca operador.
+
+A rota exige `Authorization: Bearer <CRON_SECRET>` e **recusa quando a variável
+não existe**: uma rota pública que apaga contas, confiando em ninguém achar o
+endereço, seria pior que não ter rotina. Está fora do `proxy.ts` porque o cron
+não tem cookie.
+
+Na primeira simulação, **zero contas** — Hygor e Fabiano confirmaram o e-mail,
+então são contatos reais e a rotina não encosta neles.
+
 ## A tela de Operação
 
 Feita em **23/10/2026**, em `/operacao`. É a **única tela do produto que

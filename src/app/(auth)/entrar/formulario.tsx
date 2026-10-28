@@ -1,10 +1,15 @@
 "use client";
 
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, CircleCheck, Mail } from "lucide-react";
 import Link from "next/link";
 import { useActionState } from "react";
 import { Button, Field, Input } from "@/components/ui";
-import { entrar, entrarComGoogle, type EstadoFormulario } from "../acoes";
+import {
+  entrar,
+  entrarComGoogle,
+  reenviarConfirmacao,
+  type EstadoFormulario,
+} from "../acoes";
 import styles from "../layout.module.css";
 
 export function FormularioEntrar({
@@ -20,9 +25,22 @@ export function FormularioEntrar({
   const [estado, acao, enviando] = useActionState<EstadoFormulario, FormData>(entrar, {
     erro: erroInicial,
   });
+  const [reenvio, reenviar, reenviando] = useActionState<
+    EstadoFormulario,
+    FormData
+  >(reenviarConfirmacao, {});
 
   return (
     <>
+      {reenvio.aviso ? (
+        <p className={`${styles.alerta} ${styles.alertaAviso}`} role="status">
+          <span className={styles.alertaIcone}>
+            <CircleCheck size={16} aria-hidden="true" />
+          </span>
+          {reenvio.aviso}
+        </p>
+      ) : null}
+
       {estado.erro ? (
         <p className={`${styles.alerta} ${styles.alertaErro}`} role="alert">
           <span className={styles.alertaIcone}>
@@ -30,6 +48,29 @@ export function FormularioEntrar({
           </span>
           {estado.erro}
         </p>
+      ) : null}
+
+      {/* A senha estava certa e só falta confirmar o endereço. Sem este botão
+          a pessoa lê "falta confirmar" e não tem o que fazer na tela: foi o
+          que aconteceu com quem recebeu um link quebrado. */}
+      {estado.precisaConfirmar && !reenvio.aviso ? (
+        <form action={reenviar} className={styles.reenvio}>
+          <input type="hidden" name="email" value={estado.precisaConfirmar} />
+          <p className={styles.reenvioTexto}>
+            Procure o e-mail com o assunto <strong>Confirme o seu e-mail no
+            SisAves</strong>, inclusive no spam. Se não achar, peça outro:
+          </p>
+          <Button
+            type="submit"
+            variant="secondary"
+            size="lg"
+            bloco
+            disabled={reenviando}
+            iconeEsquerda={<Mail size={18} aria-hidden="true" />}
+          >
+            {reenviando ? "Enviando…" : "Enviar outro link"}
+          </Button>
+        </form>
       ) : null}
 
       <form action={acao} className={styles.formulario}>

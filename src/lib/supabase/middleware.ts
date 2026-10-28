@@ -41,6 +41,13 @@ const PUBLICAS = [
    * `x-signature` antes de olhar o corpo.
    */
   "/api/mercadopago",
+  /*
+   * A limpeza diária de contas não confirmadas. Quem chama é o cron da
+   * Vercel, que não tem cookie — com sessão exigida ele receberia 307 e a
+   * rotina nunca rodaria. A rota exige `Authorization: Bearer <CRON_SECRET>`
+   * e recusa qualquer chamada sem ele.
+   */
+  "/api/limpeza",
 ];
 
 function ehPublica(pathname: string) {

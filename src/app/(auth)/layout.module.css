@@ -147,3 +147,22 @@
   flex: none;
   margin-top: 1px;
 }
+
+/* --- Reenvio da confirmação ---------------------------------------------- */
+/* Aparece só quando a senha estava certa e falta confirmar o endereço. */
+.reenvio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+}
+
+.reenvioTexto {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
